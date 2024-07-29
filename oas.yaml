@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: 예시 API
-  description: 이 API는 예시 데이터를 관리합니다.
+  title: 카카오 선물하기 API
+  description: 카카오 선물하기 서비스의 Rest API 명세입니다.
   version: 1.0.0
 
 servers:
