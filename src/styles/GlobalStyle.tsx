@@ -13,7 +13,6 @@ const baseStyle = css`
 `;
 
 function GlobalStyle() {
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <Global styles={baseStyle} />;
 }
 

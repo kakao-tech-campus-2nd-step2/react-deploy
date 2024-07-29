@@ -7,9 +7,7 @@ import {
   screen,
 } from '@testing-library/react';
 import { RouterWrapper } from '@utils/testUtil/TestWrapper';
-import ProductCounterForm from '@components/organisms/product/ProductCounterForm';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import fireEvent from '@testing-library/user-event';
+import ProductCounterForm from '@components/organisms/product/ProductCounterForm';import fireEvent from '@testing-library/user-event';
 
 describe('Product details page', () => {
   setupMockBeforeTest();

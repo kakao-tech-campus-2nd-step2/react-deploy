@@ -3,9 +3,7 @@ import {
 } from '@testing-library/react';
 import {
   describe, expect, it, vi,
-} from 'vitest';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import fireEvent from '@testing-library/user-event';
+} from 'vitest';import fireEvent from '@testing-library/user-event';
 import ProductOrderForm from '@components/organisms/product/ProductOrderForm';
 import TestIds from '@constants/TestIds';
 import setupMockBeforeTest from '@utils/testUtil';
