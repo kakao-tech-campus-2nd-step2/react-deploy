@@ -10,7 +10,7 @@ import { setupWorker } from 'msw/browser';
 import LoginContextProvider from '@/providers/LoginContextProvider';
 
 const queryClient = new QueryClient();
-const testFlagEnabled = import.meta.env.VITE_RUNNING_ON_DEV;
+const testFlagEnabled = import.meta.env.MODE === 'development';
 
 function render() {
   ReactDOM.createRoot(document.getElementById('root')!).render(
