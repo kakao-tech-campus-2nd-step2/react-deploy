@@ -26,6 +26,10 @@ export interface CategoryProductsRequestQuery {
   categoryId: number;
 }
 
+export interface CategoryDeleteRequestPath {
+  categoryId: number;
+}
+
 export interface RegisterRequestBody {
   email: string;
   password: string;

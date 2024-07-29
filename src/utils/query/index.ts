@@ -1,6 +1,11 @@
 import { axiosInstance, replacePathParams } from '@utils/network';
 import RequestURLs from '@constants/RequestURLs';
-import { AddWishesBody, DeleteWishesPath, LoginRequestBody } from '@/types/request';
+import {
+  AddWishesBody,
+  CategoryDeleteRequestPath,
+  DeleteWishesPath,
+  LoginRequestBody,
+} from '@/types/request';
 import {
   AddWishesResponse,
   CategoryResponse,
@@ -8,7 +13,7 @@ import {
   ProductDetailResponse,
 } from '@/types/response';
 import { CategoryRepository } from '@/types';
-import { ProductData } from '@/dto';
+import { CategoryData, ProductData } from '@/dto';
 
 export const addWishProduct = async (body: AddWishesBody) => {
   const response = await axiosInstance.post<AddWishesResponse>(RequestURLs.WISHES, body);
@@ -30,6 +35,17 @@ export const requestAuth = async (body: LoginRequestBody, authType: 'login' | 'r
 
   return response.data;
 };
+
+export const deleteCategory = ({ categoryId }: CategoryDeleteRequestPath) => axiosInstance.delete(
+  replacePathParams(
+    RequestURLs.DELETE_CATEGORY,
+    {
+      categoryId: categoryId.toString(),
+    },
+  ),
+);
+
+export const addCategory = (category: Omit<CategoryData, 'id'>) => axiosInstance.post(RequestURLs.CATEGORY, category);
 
 export const fetchCategories = async () => {
   const response = await axiosInstance.get<CategoryResponse>(RequestURLs.CATEGORY);
