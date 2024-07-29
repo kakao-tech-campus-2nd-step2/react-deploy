@@ -79,7 +79,7 @@ export type OrderFormData =
 
 export type CashReceiptType = typeof CashReceiptOptions[string];
 
-export type CategoryRepository = { [key: string]: CategoryData };
+export type CategoryRepository = { [key: number]: CategoryData };
 
 export type FetchStatusType = typeof FetchStatus[string];
 
