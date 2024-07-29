@@ -70,5 +70,6 @@
       "mock",
       "public"
     ]
-  }
+  },
+  "packageManager": "yarn@4.3.1"
 }
