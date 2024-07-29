@@ -1,12 +1,7 @@
 import {
-  LegacyProductData,
   ProductData,
   CategoryData, WishData,
 } from '@/dto';
-
-export interface RankingProductsResponse {
-  products: LegacyProductData[];
-}
 
 export type CategoryResponse = CategoryData[];
 
