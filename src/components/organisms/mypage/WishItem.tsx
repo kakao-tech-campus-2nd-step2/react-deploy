@@ -6,11 +6,11 @@ import {
 import { Link } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import Image from '@components/atoms/image/Image';
-import { WishRemoveButton } from '@components/organisms/mypage/WishesContent.styles';
 import { useCallback } from 'react';
 import { deleteWishProduct } from '@utils/query';
 import { isAxiosError } from 'axios';
 import { StatusCodes } from 'http-status-codes';
+import RemoveButton from '@components/atoms/button/RemoveButton';
 import { WishData } from '@/dto';
 
 interface WishItemProps {
@@ -45,9 +45,9 @@ function WishItem({
 
   return (
     <GoodsItemWrapper>
-      <WishRemoveButton onClick={onClickRemove}>
+      <RemoveButton onClick={onClickRemove}>
         X
-      </WishRemoveButton>
+      </RemoveButton>
       <Link to={Paths.PRODUCT_DETAILS(product.id.toString())}>
         <Image ratio="square" radius={3} src={product.imageUrl} />
         <Subtitle>{product.name}</Subtitle>
