@@ -6,6 +6,7 @@ const Paths = {
   PRODUCT_DETAILS: (productId: string) => `/products/${productId}`,
   PRODUCT_ORDER: '/order',
   REGISTER_PAGE: '/register',
+  ADMIN_PAGE: '/admin',
 };
 
 export default Paths;
