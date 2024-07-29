@@ -12,6 +12,7 @@ const endpoints = {
   REGISTER: '/members/register',
   WISHES: '/wishes',
   DELETE_WISHES: '/wishes/:wishId',
+  DELETE_CATEGORY: '/category/:categoryId',
 };
 
 type RequestURLKey = keyof typeof endpoints;
