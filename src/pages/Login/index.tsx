@@ -1,30 +1,30 @@
-import { Box, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { useLogin } from '@/api/hooks/auth/login.api';
+import { useRegister } from '@/api/hooks/auth/register.api';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+// import { authSessionStorage } from '@/utils/storage';
 import { useAuth } from '@/provider/Auth';
-import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
 export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-  const loginMutation = useLogin();
   const { setAuthInfo } = useAuth();
+  const loginMutation = useLogin();
+  const registerMutation = useRegister();
 
   const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
-
     try {
       const data = await loginMutation.mutateAsync({ email: id, password });
       setAuthInfo({ id: data.email, name: data.email, token: data.token });
@@ -33,6 +33,24 @@ export const LoginPage = () => {
       window.location.replace(redirectUrl);
     } catch (error: unknown) {
       alert('로그인 실패: ' + (error as Error).message);
+    }
+  };
+
+  const handleSignup = async () => {
+    if (!id || !password) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const data = await registerMutation.mutateAsync({ email: id, password });
+      setAuthInfo({ id: data.email, name: data.email, token: data.token });
+
+      alert('회원가입이 완료되었습니다.');
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      window.location.replace(redirectUrl);
+    } catch (error: unknown) {
+      alert('회원가입 실패: ' + (error as Error).message);
     }
   };
 
@@ -56,15 +74,9 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing />
+        <Button onClick={handleSignup}>회원가입</Button>
       </FormWrapper>
-      <Box display="flex" textAlign="center" alignItems="center" margin="10px">
-        <Text fontSize="12px">아직 가입 안하셨을까요~? &nbsp; </Text>
-        <Link to={RouterPath.register}>
-          <Text fontWeight="700" color="blue">
-            회원가입
-          </Text>
-        </Link>
-      </Box>
     </Wrapper>
   );
 };
