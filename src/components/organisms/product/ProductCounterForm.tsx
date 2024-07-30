@@ -44,11 +44,16 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
       if (confirm) {
         navigate(Paths.LOGIN_PAGE);
       }
+
+      return false;
     }
+
+    return true;
   }, [loginStatus.isLoggedIn, navigate]);
 
   const handleAddWishClick = useCallback(async () => {
-    checkLogin();
+    if (!checkLogin()) return;
+
     try {
       await addWishProduct({
         productId,
@@ -76,7 +81,7 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
   }, [checkLogin, productId]);
 
   const handleSubmitClick = useCallback(() => {
-    checkLogin();
+    if (!checkLogin()) return;
 
     const productHistoryData: OrderHistoryData = {
       productId,
