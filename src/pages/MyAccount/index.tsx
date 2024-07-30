@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { useAuth } from '@/provider/Auth';
+import { useAuth } from '@/provider/Auth/AuthContext';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 

@@ -8,7 +8,7 @@ import {
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
-import { useAuth } from '@/provider/Auth';
+import { useAuth } from '@/provider/Auth/AuthContext';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
 

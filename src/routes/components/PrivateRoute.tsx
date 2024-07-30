@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useAuth } from '@/provider/Auth';
+import { useAuth } from '@/provider/Auth/AuthContext';
 
 import { getDynamicPath } from '../path';
 
