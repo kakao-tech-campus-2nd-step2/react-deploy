@@ -17,26 +17,10 @@ export interface WishListItem {
 
 interface GetWishListResponse {
   content: WishListItem[];
-  pageable: {
-    sort: {
-      sorted: boolean;
-      unsorted: boolean;
-      empty: boolean;
-    };
-    pageNumber: number;
-    pageSize: number;
-    offset: number;
-    unpaged: boolean;
-    paged: boolean;
-  };
-  totalPages: number;
   totalElements: number;
   last: boolean;
   number: number;
   size: number;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
 }
 
 export const getWishList = async (page: number, size: number): Promise<GetWishListResponse> => {

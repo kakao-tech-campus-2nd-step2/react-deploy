@@ -36,7 +36,7 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
   const response = await fetchInstance.get<ProductsResponseRawData>(ApiPath.products.root, {
     params: {
       categoryId: params.categoryId,
-      sort: 'name,asc',
+      sort: 'createdData,desc',
       page: params.pageToken,
       size: params.maxResults,
     },
