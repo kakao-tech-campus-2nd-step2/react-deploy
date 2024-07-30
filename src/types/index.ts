@@ -66,3 +66,9 @@ export type InterestItem = {
   productId: number;
   product: Product;
 }
+
+// 서버(api) 선택을 위한 타입 정의
+export type Server = {
+  name: string;
+  url: string;
+}
