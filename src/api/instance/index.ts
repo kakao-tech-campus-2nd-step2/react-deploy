@@ -18,10 +18,11 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
+// export const BASE_URL = process.env.REACT_APP_API_URL;
 export const BASE_URL = 'https://api.example.com';
 
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: `${BASE_URL}`,
 });
 
 fetchInstance.interceptors.request.use((config) => {
