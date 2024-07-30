@@ -30,6 +30,7 @@ function useFetchProducts({ productType, itemsPerPage, sort }: UseFetchProductsP
         params,
       },
     );
+    console.log(url);
 
     return productType === 'ordered'
       ? response.data as OrderedProductsResponse
@@ -41,7 +42,7 @@ function useFetchProducts({ productType, itemsPerPage, sort }: UseFetchProductsP
   } = useSuspenseInfiniteQuery({
     initialData: undefined,
     initialPageParam: undefined,
-    queryKey: [QueryKeys.WISHES],
+    queryKey: [QueryKeys.PRODUCTS, productType],
     queryFn: fetchPage,
     getNextPageParam: (lastPage) => (
       lastPage.last ? undefined : lastPage.pageable.pageNumber + 1
