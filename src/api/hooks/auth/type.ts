@@ -7,5 +7,3 @@ export type UserResponseData = {
   email: string;
   token: string;
 };
-
-export type AuthProps = UserRequestData;

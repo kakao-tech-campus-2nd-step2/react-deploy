@@ -4,8 +4,6 @@ export type ProductDetailRequestParams = {
   productId: string;
 };
 
-export type ProductDetailProps = ProductDetailRequestParams;
-
 export type ProductOptionsResponseData = ProductOptionsData[];
 
 export type GoodsDetailResponseData = ProductData;

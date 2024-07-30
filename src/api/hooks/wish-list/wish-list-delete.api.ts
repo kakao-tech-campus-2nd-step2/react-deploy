@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { BASE_URL, tokenInstance } from '@/api/instance';
 
-import type { WishDeleteProps, WishRequestData } from './type';
+import type { WishRequestData } from './type';
 import { getWishListPath } from './wish-list-add.api';
 
 export const deleteWishListPath = (wishId: number) => `${BASE_URL}/api/wishes/${wishId}`;
@@ -17,7 +17,7 @@ export const useDeleteWishList = () => {
   const queryKey = [getWishListPath()];
 
   return useMutation({
-    mutationFn: (wishId: WishDeleteProps) => deleteWishList(wishId),
+    mutationFn: (wishId: WishRequestData) => deleteWishList(wishId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
     },
