@@ -9,13 +9,13 @@ import { Routes } from './routes';
 const App = () => {
   return (
     <ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BaseURLProvider>
+      <BaseURLProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
             <Routes />
-          </BaseURLProvider>
-        </AuthProvider>
-      </QueryClientProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </BaseURLProvider>
     </ChakraProvider>
   );
 };

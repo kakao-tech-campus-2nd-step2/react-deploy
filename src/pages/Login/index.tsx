@@ -33,7 +33,7 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="카카오메일 아이디, 이메일, 전화번호" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -49,6 +49,13 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <OrBox>
+          <OrText>또는</OrText>
+        </OrBox>
+        <Button theme='lightGray' onClick={handleConfirm}>이메일로 로그인</Button>
+        <SignUp>
+          <SignUpA href='/register'>회원가입</SignUpA>
+        </SignUp>
       </FormWrapper>
     </Wrapper>
   );
@@ -78,3 +85,48 @@ const FormWrapper = styled.article`
     padding: 60px 52px;
   }
 `;
+
+const OrBox = styled.span`
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 15px 0;
+  font-size: 0;
+  line-height: 0;
+  text-align: center;
+
+  &::before,
+  &::after {
+    content: "";
+    display: inline-block;
+    width: calc(50% - 30px);
+    height: 1px;
+    margin: 8px 0;
+    background-color: rgba(0, 0, 0, 0.06);
+    vertical-align: top;
+  }
+
+  &::before {
+    margin-right: 10px;
+  }
+
+  &::after {
+    margin-left: 10px;
+  }
+`;
+
+const OrText = styled.span`
+  display: inline-block;
+  width: 40px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #828282;
+  vertical-align: middle;
+`
+
+const SignUp = styled.div`
+  margin-top: 15px;
+`
+
+const SignUpA = styled.a`
+`
