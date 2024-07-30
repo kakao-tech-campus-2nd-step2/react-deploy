@@ -1,7 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
 import { OrderRequestBody } from '@types/request';
-import { CategoryData } from '@/dto';
+import { CategoryData, ProductOption } from '@/dto';
 import { CashReceiptOptions } from '@/constants';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -67,15 +67,23 @@ export interface FixedSize {
   height: string,
 }
 
-export type OrderHistoryData = Pick<OrderRequestBody, 'productId' | 'productQuantity'>;
+export type OrderHistoryData = {
+  productId: number;
+  quantity: number;
+  option: ProductOption;
+};
 
 export interface OrderFormStatus {
   isDirty: boolean;
   errorMessage?: FormErrorMessages[string] | boolean;
 }
 
-export type OrderFormData =
-  Pick<OrderRequestBody, 'messageCardTextMessage' | 'cashReceiptNumber' | 'hasCashReceipt' | 'cashReceiptType'>;
+export type OrderFormData = {
+  messageCardTextMessage: string;
+  cashReceiptNumber: string;
+  hasCashReceipt: boolean;
+  cashReceiptType: CashReceiptType;
+};
 
 export type CashReceiptType = typeof CashReceiptOptions[string];
 

@@ -8,14 +8,14 @@ import { generateRandomId } from '@/utils';
 
 interface ProductOptionsSectionProps {
   options: ProductOption[];
-  currentOptionId: number;
-  setOptionId: (id: number) => void;
+  currentOption?: ProductOption;
+  setOption: (option: ProductOption) => void;
 }
 
 function ProductOptionsSection({
   options,
-  currentOptionId,
-  setOptionId,
+  currentOption,
+  setOption,
 }: ProductOptionsSectionProps) {
   const productOptionsId = useRef(generateRandomId());
 
@@ -27,6 +27,7 @@ function ProductOptionsSection({
       padding="15px 0"
       cssProps={{
         gap: '2px',
+        cursor: 'pointer',
       }}
     >
       {
@@ -35,7 +36,7 @@ function ProductOptionsSection({
             w="100%"
             padding="12px 14px 16px"
             border={
-              currentOptionId === option.id
+              currentOption?.id === option.id
                 ? 'rgb(100, 100, 100) 2px solid'
                 : 'rgb(237, 237, 237) 1px solid'
             }
@@ -43,7 +44,7 @@ function ProductOptionsSection({
             flexDirection="column"
             key={productOptionsId.current + index.toString()}
             onClick={() => {
-              setOptionId(option.id);
+              setOption(option);
             }}
           >
             <Text fontWeight="bold">{option.name}</Text>

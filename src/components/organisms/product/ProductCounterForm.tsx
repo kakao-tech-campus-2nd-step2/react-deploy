@@ -29,7 +29,7 @@ function ProductCounterForm({
   productId, productPrice, productName, productOptions,
 }: ProductCounterAreaProps) {
   const [count, setCount] = useState(1);
-  const [optionId, setOptionId] = useState(0);
+  const [option, setOption] = useState<ProductOption>();
   const loginStatus = useContext(LoginContext);
   const navigate = useNavigate();
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
@@ -87,17 +87,18 @@ function ProductCounterForm({
   }, [checkLogin, productId]);
 
   const handleSubmitClick = useCallback(() => {
-    if (!checkLogin()) return;
+    if (!checkLogin() || !option) return;
 
     const productHistoryData: OrderHistoryData = {
       productId,
-      productQuantity: count,
+      quantity: count,
+      option,
     };
 
     orderHistoryStorage.set(productHistoryData);
 
     navigate(Paths.PRODUCT_ORDER);
-  }, [checkLogin, productId, count, navigate]);
+  }, [checkLogin, option, productId, count, navigate]);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -147,8 +148,8 @@ function ProductCounterForm({
       </Container>
       <ProductOptionsSection
         options={productOptions}
-        currentOptionId={optionId}
-        setOptionId={setOptionId}
+        currentOption={option}
+        setOption={setOption}
       />
       <Container flexDirection="column" cssProps={{ gap: '16px' }}>
         <Box
