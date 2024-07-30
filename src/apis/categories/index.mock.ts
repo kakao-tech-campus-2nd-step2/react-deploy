@@ -1,9 +1,10 @@
 import { rest } from 'msw';
+import { CATEGORIES_PATHS } from '@apis/path';
 
-import { getCategoriesPath } from './useGetCategorys';
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const categoriesMockHandler = [
-  rest.get(getCategoriesPath(), (_, res, ctx) => res(ctx.json(CATEGORIES_RESPONSE_DATA))),
+  rest.get(`${BASE_URL}${CATEGORIES_PATHS.CATEGORIES}`, (_, res, ctx) => res(ctx.json(CATEGORIES_RESPONSE_DATA))),
 ];
 
 const CATEGORIES_RESPONSE_DATA = [

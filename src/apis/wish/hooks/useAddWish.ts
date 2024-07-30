@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import axiosInstance from '@apis/instance';
 import { AddWishRequest } from '@internalTypes/requestTypes';
 import { AddWishResponse } from '@internalTypes/responseTypes';
-import { WISH_PATHS } from '@apis/wish/path';
+import { WISH_PATHS } from '@apis/path';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 
 const addWish = async (request: AddWishRequest): Promise<AddWishResponse> => {

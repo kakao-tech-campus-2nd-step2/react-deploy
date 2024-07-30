@@ -3,7 +3,7 @@ import { ProductDetailRequest } from '@internalTypes/requestTypes';
 import { ProductDetailResponse } from '@internalTypes/responseTypes';
 import { AxiosError } from 'axios';
 import axiosInstance from '@apis/instance';
-import { PRODUCTS_PATHS } from '../path';
+import { PRODUCTS_PATHS } from '@apis/path';
 
 const getProductsDetail = async (params?: ProductDetailRequest): Promise<ProductDetailResponse> => {
   if (!params) throw new Error('params is required');

@@ -1,4 +1,6 @@
-import { ProductData, MessageCardTemplateData, ThemeData } from './dataTypes';
+import { ProductData, MessageCardTemplateData, ThemeData, CategoryData } from './dataTypes';
+
+export type CategoriesResponse = CategoryData[];
 
 export interface RankingProductsResponse {
   products: ProductData[];

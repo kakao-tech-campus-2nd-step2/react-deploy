@@ -1,13 +1,13 @@
 import { rest } from 'msw';
-import { MEMBERS_PATH } from './path';
+import { MEMBERS_PATHS } from '@apis/path';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const memberMockHandler = [
-  rest.post(`${BASE_URL}${MEMBERS_PATH.REGISTER}`, (req, res, ctx) =>
+  rest.post(`${BASE_URL}${MEMBERS_PATHS.REGISTER}`, (req, res, ctx) =>
     res(ctx.status(200), ctx.json({ access_token: '1234' })),
   ),
-  rest.post(`${BASE_URL}${MEMBERS_PATH.LOGIN}`, (req, res, ctx) =>
+  rest.post(`${BASE_URL}${MEMBERS_PATHS.LOGIN}`, (req, res, ctx) =>
     res(ctx.status(200), ctx.json({ access_token: '1234' })),
   ),
 ];

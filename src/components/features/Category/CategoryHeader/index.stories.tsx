@@ -1,16 +1,12 @@
 import React, { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { Meta, StoryObj } from '@storybook/react';
+import { CategoryLocationState } from '@internalTypes/dataTypes';
 import { ROUTE_PATH } from '@routes/path';
-import ThemeHeader from '.';
+import CategoryHeader from '.';
 
 interface MockUseLocationDecoratorProps {
-  state: {
-    title: string;
-    label: string;
-    description?: string;
-    backgroundColor: string;
-  };
+  state: CategoryLocationState;
   children: ReactNode;
 }
 
@@ -24,18 +20,17 @@ function MockUseLocationDecorator({ state, children }: MockUseLocationDecoratorP
   );
 }
 
-const meta: Meta<typeof ThemeHeader> = {
-  title: 'features/Theme/ThemeHeader',
-  component: ThemeHeader,
+const meta: Meta<typeof CategoryHeader> = {
+  title: 'features/Category/CategoryHeader',
+  component: CategoryHeader,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
       <MockUseLocationDecorator
         state={{
-          title: 'Title',
-          label: 'Label',
+          name: 'name',
           description: 'description.',
-          backgroundColor: '#f3a2a2',
+          color: '#f3a2a2',
         }}
       >
         <Story />
@@ -46,6 +41,6 @@ const meta: Meta<typeof ThemeHeader> = {
 
 export default meta;
 
-type Story = StoryObj<typeof ThemeHeader>;
+type Story = StoryObj<typeof CategoryHeader>;
 
 export const Default: Story = {};

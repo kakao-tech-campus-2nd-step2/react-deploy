@@ -5,17 +5,17 @@ import { Container, Image } from '@components/common';
 const IMAGE_SIZE = 90;
 const IMAGE_RADIUS = 32;
 
-export interface ThemeItemProps {
-  image: string;
-  label: string;
+export interface CategoryItemProps {
+  imageUrl: string;
+  name: string;
 }
 
-export default function ThemeItem({ image, label }: ThemeItemProps) {
+export default function CategoryItem({ imageUrl, name }: CategoryItemProps) {
   return (
     <ThemeItemContainer>
       <Container flexDirection="column" alignItems="center">
-        <Image src={image} width={IMAGE_SIZE} height={IMAGE_SIZE} radius={IMAGE_RADIUS} alt={label} />
-        <CategoryName>{label}</CategoryName>
+        <Image src={imageUrl} width={IMAGE_SIZE} height={IMAGE_SIZE} radius={IMAGE_RADIUS} alt={name} />
+        <CategoryName>{name}</CategoryName>
       </Container>
     </ThemeItemContainer>
   );

@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { DeleteWishRequest } from '@internalTypes/requestTypes';
 import { useMutation, UseMutationResult, UseMutationOptions } from '@tanstack/react-query';
-import { WISH_PATHS } from '../path';
+import { WISH_PATHS } from '@apis/path';
 
 const deleteWish = async ({ wishId }: DeleteWishRequest): Promise<void> => {
   await axios.delete(`${WISH_PATHS.DELETE_WISH}/${wishId}`, {

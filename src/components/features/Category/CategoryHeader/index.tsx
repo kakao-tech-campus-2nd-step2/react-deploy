@@ -3,39 +3,32 @@ import styled from '@emotion/styled';
 import { CenteredContainer } from '@components/common';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTE_PATH } from '@routes/path';
+import { CategoryLocationState } from '@internalTypes/dataTypes';
 
-interface LocationState {
-  title: string;
-  label: string;
-  description?: string;
-  backgroundColor: string;
-}
-
-export default function ThemeHeader() {
+export default function CategoryHeader() {
   const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as LocationState | null;
+  const state = location.state as CategoryLocationState | null;
 
   useEffect(() => {
     if (!state) navigate(ROUTE_PATH.HOME);
   }, [state, navigate]);
 
   if (!state) return null;
-
-  const { title, label, description, backgroundColor } = state;
+  const { name, color, description } = state;
 
   return (
-    <ThemeHeaderContainer color={backgroundColor}>
+    <CategoryHeaderContainer color={color}>
       <CenteredContainer maxWidth="md">
-        <Label>{label}</Label>
-        <Title>{title}</Title>
+        <Label>{name}</Label>
+        <Title>{name}</Title>
         <Description>{description}</Description>
       </CenteredContainer>
-    </ThemeHeaderContainer>
+    </CategoryHeaderContainer>
   );
 }
 
-const ThemeHeaderContainer = styled.section<{ color?: string }>`
+const CategoryHeaderContainer = styled.section<{ color?: string }>`
   margin-top: 60px;
   background-color: ${({ color }) => color};
   padding: 50px 0;

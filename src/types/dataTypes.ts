@@ -1,5 +1,11 @@
 export type ThemeData = [];
 
+export interface CategoryLocationState {
+  color: string;
+  name: string;
+  description: string;
+}
+
 export interface UserInfoData {
   email: string;
   password: string;
@@ -8,9 +14,9 @@ export interface UserInfoData {
 export type CategoryData = {
   id: number;
   name: string;
-  description: string;
   color: string;
   imageUrl: string;
+  description: string;
 };
 
 export type ProductData = {

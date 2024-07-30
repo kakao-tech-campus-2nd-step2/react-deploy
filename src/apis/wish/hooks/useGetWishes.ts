@@ -2,7 +2,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import { GetWishesRequest } from '@internalTypes/requestTypes';
 import { GetWishesResponse } from '@internalTypes/responseTypes';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { WISH_PATHS } from '../path';
+import { WISH_PATHS } from '@apis/path';
 
 const getWishes = async (params: GetWishesRequest): Promise<GetWishesResponse> => {
   const { page, size, sort } = params;

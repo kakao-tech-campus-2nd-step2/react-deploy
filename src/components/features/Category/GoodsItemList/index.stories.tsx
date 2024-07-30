@@ -1,15 +1,15 @@
 import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import { Meta, StoryObj } from '@storybook/react';
 import GlobalStyles from '@assets/styles';
-import ThemeCategory from '.';
+import GoodsItemList from '.';
 
 const queryClient = new QueryClient();
 
-const meta: Meta<typeof ThemeCategory> = {
-  title: 'features/Home/ThemeCategory',
-  component: ThemeCategory,
+const meta: Meta<typeof GoodsItemList> = {
+  title: 'features/Category/GoodsItemList',
+  component: GoodsItemList,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -25,6 +25,6 @@ const meta: Meta<typeof ThemeCategory> = {
 
 export default meta;
 
-type Story = StoryObj<typeof ThemeCategory>;
+type Story = StoryObj<typeof GoodsItemList>;
 
 export const Default: Story = {};

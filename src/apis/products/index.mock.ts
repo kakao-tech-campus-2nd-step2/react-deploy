@@ -1,5 +1,5 @@
 import { rest } from 'msw';
-import { PRODUCTS_PATHS } from './path';
+import { PRODUCTS_PATHS } from '@apis/path';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 

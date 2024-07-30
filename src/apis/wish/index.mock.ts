@@ -1,14 +1,15 @@
 import { rest } from 'msw';
+import { WISH_PATHS } from '@apis/path';
 
 export const wishMockHandler = [
-  rest.get('/api/wishes', (req, res, ctx) => {
+  rest.get(`${WISH_PATHS}`, (req, res, ctx) => {
     const page = req.url.searchParams.get('page');
     const size = req.url.searchParams.get('size');
     const sort = req.url.searchParams.get('sort');
 
     return res(ctx.status(200), ctx.json(WISHES_MOCK_DATA));
   }),
-  rest.delete(`/api/wishes/:wishId`, (req, res, ctx) => {
+  rest.delete(`${WISH_PATHS}/:wishId`, (req, res, ctx) => {
     const wishId = req.params.wishId as string;
     const wishIdNumber = Array.isArray(wishId) ? parseInt(wishId[0], 10) : parseInt(wishId, 10);
 
