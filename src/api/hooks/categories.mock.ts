@@ -1,9 +1,9 @@
 import { rest } from 'msw';
 
-import { getCategoriesPath } from './useGetCategorys';
+import { ApiPath } from '@/routes/path';
 
 export const categoriesMockHandler = [
-  rest.get(getCategoriesPath(), (_, res, ctx) => {
+  rest.get(ApiPath.categories, (_, res, ctx) => {
     return res(ctx.json(CATEGORIES_RESPONSE_DATA));
   }),
 ];

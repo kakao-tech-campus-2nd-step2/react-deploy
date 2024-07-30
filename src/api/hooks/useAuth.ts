@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchInstance } from '@/api/instance';
+import { ApiPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
 export const useAuth = () => {
@@ -26,21 +27,22 @@ export const useAuth = () => {
     }
 
     try {
-      const response = await fetchInstance.post('/api/members/login', {
+      const response = await fetchInstance.post(ApiPath.members.login, {
         email: id,
         password,
       });
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         const data = response.data;
-        console.log('로그인 성공:', data);
+        console.log('로그인 성공:', response);
         authSessionStorage.set(data.token);
         redirectAfterAuth();
       } else {
-        console.error('로그인 실패:', response.statusText);
+        console.error('로그인 실패:', response.statusText, response.status);
       }
     } catch (error) {
       console.error('로그인 요청 오류:', error);
+      console.log(error);
     }
   };
 
@@ -51,7 +53,7 @@ export const useAuth = () => {
     }
 
     try {
-      const response = await fetchInstance.post('/api/members/register', {
+      const response = await fetchInstance.post(ApiPath.members.register, {
         email: id,
         password,
       });
