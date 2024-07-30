@@ -12,10 +12,10 @@ import {
 } from '@chakra-ui/react';
 
 import { useDeleteWishList } from '@/api/hooks/wish-list/wish-list-delete.api';
-import { useGetWishList } from '@/api/hooks/wish-list/wish-list-find.api';
+import { getWishListPath, useGetWishList } from '@/api/hooks/wish-list/wish-list-find.api';
 import { queryClient } from '@/api/instance';
 
-const WishList = () => {
+export const WishList = () => {
   const { data, isLoading, isError, error } = useGetWishList();
 
   const { mutate: deleteWish } = useDeleteWishList();
@@ -26,7 +26,7 @@ const WishList = () => {
       { wishId },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: [findWishListPath()] });
+          queryClient.invalidateQueries({ queryKey: [getWishListPath()] });
 
           toast({
             title: '삭제 완료',
@@ -82,7 +82,9 @@ const WishList = () => {
                 mb={4}
               />
               <Text fontWeight="bold">{item.product.name}</Text>
-              <Text color="gray.600">${item.product.price}</Text>
+              <Text color="gray.600" fontSize="2rem">
+                {item.product.price}원
+              </Text>
               <Button
                 colorScheme="red"
                 size="sm"
@@ -99,8 +101,3 @@ const WishList = () => {
     </Box>
   );
 };
-
-export default WishList;
-function findWishListPath(): unknown {
-  throw new Error('Function not implemented.');
-}
