@@ -1,25 +1,4 @@
-export type CategoryData = {
-  id: number;
-  name: string;
-  description: string;
-  color: string;
-  imageUrl: string;
-};
-
-export type ProductData = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  categoryId: number;
-};
-
-export type ProductOptionsData = {
-  id: number;
-  name: string;
-  quantity: number;
-  productId: number;
-};
+import type { Product } from './product';
 
 export type GoodsDetailOptionItemData = {
   key: string;
@@ -31,47 +10,10 @@ export type GoodsDetailOptionItemData = {
   stockQuantity: number;
 };
 
-export type OrderHistory = {
-  id: number;
-  count: number;
-};
-
-export type OrderFormData = {
-  productId: number;
-  productQuantity: number;
-  messageCardTextMessage: string;
-  senderId: number;
-  receiverId: number;
-  hasCashReceipt: boolean;
-  cashReceiptType?: 'PERSONAL' | 'BUSINESS';
-  cashReceiptNumber?: string;
-};
-
 export type MessageCardTemplateData = {
   id: number;
   defaultTextMessage: string;
   thumbUrl: string;
-  imageUrl: string;
-};
-
-export type UserRequestData = {
-  email: string;
-  password: string;
-};
-
-export type UserResponseData = {
-  email: string;
-  token: string;
-};
-
-export type WishData = {
-  productId: number;
-};
-
-export type Product = {
-  id: number;
-  name: string;
-  price: number;
   imageUrl: string;
 };
 
@@ -93,16 +35,4 @@ export type Pageable = {
   offset: number;
   unpaged: boolean;
   paged: boolean;
-};
-export type ProductListResponse = {
-  content: Content[];
-  pageable: Pageable;
-  totalPages: number;
-  totalElements: number;
-  last: boolean;
-  number: number;
-  size: number;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
 };
