@@ -5,4 +5,5 @@ export const QueryKeys = {
   RANKING_PRODUCTS: 'rankingProducts',
   PRODUCT_DETAILS: 'productDetails',
   WISHES: 'wishes',
+  PRODUCT_OPTIONS: 'productOptions',
 };

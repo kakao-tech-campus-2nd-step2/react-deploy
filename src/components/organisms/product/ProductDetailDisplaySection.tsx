@@ -3,31 +3,36 @@ import Image from '@components/atoms/image/Image';
 import { Divider, Text } from '@chakra-ui/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { QueryKeys } from '@constants/QueryKeys';
-import { fetchProductDetail } from '@utils/query';
+import { fetchProductDetail, fetchProductOptions } from '@utils/query';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import Paths from '@constants/Paths';
 import { useNavigate } from 'react-router-dom';
 import ProductCounterForm from '@components/organisms/product/ProductCounterForm';
-import { ProductData } from '@/dto';
+import { isNotFound } from '@utils/network';
+import { ProductData, ProductOption } from '@/dto';
 
 interface ProductDetailSectionProps {
   productId: number;
 }
 
 function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
-  const { data: product, error } = useSuspenseQuery<ProductData>({
+  const { data: product, error: productFetchError } = useSuspenseQuery<ProductData>({
     queryKey: [QueryKeys.PRODUCT_DETAILS, productId],
     queryFn: () => fetchProductDetail({ productId: productId.toString() }),
+  });
+  const { data: options, error: optionsFetchError } = useSuspenseQuery<ProductOption[]>({
+    queryKey: [QueryKeys.PRODUCT_OPTIONS, productId],
+    queryFn: () => fetchProductOptions({ productId: productId.toString() }),
   });
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error && axios.isAxiosError(error) && error.response?.status === StatusCodes.NOT_FOUND) {
+    if (isNotFound(productFetchError) || isNotFound(optionsFetchError)) {
       navigate(Paths.MAIN_PAGE);
     }
-  }, [error, navigate, productId]);
+  }, [productFetchError, navigate, productId]);
 
   return (
     <>

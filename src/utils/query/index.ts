@@ -11,9 +11,10 @@ import {
   CategoryResponse,
   LoginResponse,
   ProductDetailResponse,
+  ProductOptionsResponse,
 } from '@/types/response';
 import { CategoryRepository } from '@/types';
-import { CategoryData, ProductData } from '@/dto';
+import { CategoryData, ProductData, ProductOption } from '@/dto';
 
 export const addWishProduct = async (body: AddWishesBody) => {
   const response = await axiosInstance.post<AddWishesResponse>(RequestURLs.WISHES, body);
@@ -65,4 +66,11 @@ export const fetchProductDetail = async ({ productId }: { productId: string }) =
   const response = await axiosInstance.get<ProductDetailResponse>(endpoint);
 
   return response.data as ProductData;
+};
+
+export const fetchProductOptions = async ({ productId } : { productId: string }) => {
+  const endpoint = replacePathParams(RequestURLs.PRODUCT_OPTIONS, { productId });
+  const response = await axiosInstance.get<ProductOptionsResponse>(endpoint);
+
+  return response.data as ProductOption[];
 };

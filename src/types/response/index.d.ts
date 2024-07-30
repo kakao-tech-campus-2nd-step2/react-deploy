@@ -1,6 +1,6 @@
 import {
   ProductData,
-  CategoryData, WishData,
+  CategoryData, WishData, ProductOption,
 } from '@/dto';
 
 export type CategoryResponse = CategoryData[];
@@ -30,6 +30,8 @@ export interface CategoryProductsResponse {
 }
 
 export type ProductDetailResponse = ProductData;
+
+export type ProductOptionsResponse = ProductOption[];
 
 export interface LoginResponse {
   email: string;
