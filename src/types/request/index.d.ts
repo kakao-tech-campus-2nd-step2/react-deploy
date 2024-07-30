@@ -4,6 +4,12 @@ export interface ProductDetailRequestPath {
 
 export interface ProductOptionsRequestPath extends ProductDetailRequestPath {}
 
+export interface OrderListRequestBody {
+  size: number;
+  page: number;
+  sort: string;
+}
+
 export interface OrderRequestBody {
   optionId: number;
   quantity: number;

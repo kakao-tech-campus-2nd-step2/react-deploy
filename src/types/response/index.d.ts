@@ -5,8 +5,7 @@ import {
 
 export type CategoryResponse = CategoryData[];
 
-export interface CategoryProductsResponse {
-  content: ProductData[];
+export interface PagedProductReponse {
   pageable: {
     sort: {
       sorted: boolean;
@@ -27,6 +26,18 @@ export interface CategoryProductsResponse {
   numberOfElements: number;
   first: boolean;
   empty: boolean;
+}
+
+export interface CategoryProductsResponse extends PagedProductReponse {
+  content: ProductData[];
+}
+
+export interface WishedProductsResponse extends PagedProductReponse {
+  content: WishData[];
+}
+
+export interface OrderedProductsResponse extends PagedProductReponse {
+  content: ProductData[];
 }
 
 export type ProductDetailResponse = ProductData;
@@ -46,28 +57,4 @@ export interface RegisterResponse {
 export interface AddWishesResponse {
   id: number,
   productId: number,
-}
-
-export interface WishedProductsResponse {
-  content: WishData[];
-  pageable: {
-    sort: {
-      sorted: boolean;
-      unsorted: boolean;
-      empty: boolean;
-    };
-    pageNumber: number;
-    pageSize: number;
-    offset: number;
-    unpaged: boolean;
-    paged: boolean;
-  };
-  totalPages: number;
-  totalElements: number;
-  last: boolean;
-  number: number;
-  size: number;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
 }
