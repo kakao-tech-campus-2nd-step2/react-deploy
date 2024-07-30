@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { getProductOptionsPath } from './useGetProductOptions';
+import { getProductOptionsPath } from '@/api/hooks/product/product-options.api';
 
 export const productOptionsMockHandler = [
   rest.get(getProductOptionsPath(':productId'), (req, res, ctx) => {

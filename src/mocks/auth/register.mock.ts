@@ -1,11 +1,10 @@
 import { rest } from 'msw';
 
-import type { UserRequestData, UserResponseData } from '@/types';
+import { getRegisterPath } from '@/api/hooks/auth/register.api';
+import type { UserRequestData, UserResponseData } from '@/api/hooks/auth/type';
 
-import { getLoginPath } from './useGetLogin';
-
-export const loginMockHandler = [
-  rest.post(getLoginPath(), (req, res, ctx) => {
+export const registerMockHandler = [
+  rest.post(getRegisterPath(), (req, res, ctx) => {
     const { email, password } = req.body as UserRequestData;
 
     if (email === '123' && password === '123') {

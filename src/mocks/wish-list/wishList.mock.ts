@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 
-import { getWishListPath } from '@/api/hooks/useGetWishList';
-import type { WishData } from '@/types';
+import { getWishListPath } from '@/api/hooks/wish-list/wish-list-add.api';
+import type { WishData } from '@/types/wishlist';
 
 export type WishResponseData = {
   id: number;
