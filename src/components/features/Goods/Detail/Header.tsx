@@ -2,8 +2,8 @@ import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useMutation } from '@tanstack/react-query';
 
-import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+import type { ProductDetailRequestParams } from '@/api/types';
 import { addToWishlist } from '@/api/utils';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';

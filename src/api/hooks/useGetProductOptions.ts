@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { getProductOptions } from '@/api/utils';
 import { BASE_URL } from '@/api/instance';
-import { ProductDetailRequestParams } from '@/api/types';
+import type { ProductDetailRequestParams } from '@/api/types';
+import { getProductOptions } from '@/api/utils';
 
 export const getProductOptionsPath = (productId: string) =>
   `${BASE_URL}/api/products/${productId}/options`;

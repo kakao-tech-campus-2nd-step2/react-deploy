@@ -1,9 +1,8 @@
 import { CATEGORIES_RESPONSE_DATA } from '@/api/hooks/categories.mock';
 import { PRODUCTS_MOCK_DATA, PRODUCTS_MOCK_OPTIONS } from '@/api/hooks/products.mock';
-import { getCategories } from '@/api/hooks/useGetCategorys';
 import { getProductDetailPath } from '@/api/hooks/useGetProductDetail';
 import { getProductOptionsPath } from '@/api/hooks/useGetProductOptions';
-import { getProducts } from '@/api/hooks/useGetProducts';
+import { getCategories, getProducts } from '@/api/utils';
 
 import { worker } from '../../server';
 

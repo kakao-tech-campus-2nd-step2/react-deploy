@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getCategories } from '@/api/utils';
 import { BASE_URL } from '@/api/instance';
+import { getCategories } from '@/api/utils';
 
 export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
 

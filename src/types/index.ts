@@ -14,6 +14,14 @@ export type ProductData = {
   categoryId: number;
 };
 
+export type OrderData = {
+  id: number;
+  optionId: number;
+  quantity: number;
+  orderDateTime: string;
+  message: string;
+};
+
 export type ProductOptionsData = {
   id: number;
   name: string;
