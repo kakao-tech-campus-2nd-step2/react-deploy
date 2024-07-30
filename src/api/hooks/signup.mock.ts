@@ -1,5 +1,6 @@
 import { rest } from 'msw';
-import { getUserSignupPath, UserRequestData, UserResponseData } from '@/api/hooks/useSignup';
+import type { UserRequestData, UserResponseData } from '@/api/hooks/useSignup';
+import { getUserSignupPath } from '@/api/hooks/useSignup';
 
 export const signupMockHandler = [
   rest.post(getUserSignupPath(), (req, res, ctx) => {

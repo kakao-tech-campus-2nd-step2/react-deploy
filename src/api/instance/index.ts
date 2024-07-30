@@ -5,7 +5,7 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
-const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
+export const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
     ...config,
@@ -18,10 +18,25 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 
   return instance;
 };
-export const BASE_URL = 'https://api.example.com';
+
+const getBaseURL = () => {
+  const selectedValue = sessionStorage.getItem('selectedValue');
+  switch (selectedValue) {
+    case 'dog':
+      return 'https://api.dog.example.com';
+    case 'cat':
+      return 'https://api.cat.example.com';
+    case 'hamster':
+      return 'https://api.hamster.example.com';
+    default:
+      return 'https://api.example.com';
+  }
+};
+
+export const BASE_URL = getBaseURL();
 // TODO: 추후 서버 API 주소 변경 필요
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: getBaseURL(),
 });
 
 export const queryClient = new QueryClient({

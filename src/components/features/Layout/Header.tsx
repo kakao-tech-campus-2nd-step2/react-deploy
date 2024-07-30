@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import { Box, Select } from '@chakra-ui/react';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -11,6 +12,13 @@ export const Header = () => {
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    sessionStorage.setItem('selectedValue', selectedValue);
+
+    window.location.reload();
   };
 
   return (
@@ -22,6 +30,13 @@ export const Header = () => {
             alt="카카오 선물하기 로고"
           />
         </Link>
+        <Box ml={4}>
+          <Select placeholder="Select" onChange={handleSelectChange}>
+            <option value="dog">도기현</option>
+            <option value="cat">김영인</option>
+            <option value="hamster">한영진</option>
+          </Select>
+        </Box>
         <RightWrapper>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
