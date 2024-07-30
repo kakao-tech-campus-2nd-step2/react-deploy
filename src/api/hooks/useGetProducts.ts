@@ -7,15 +7,15 @@ import {
 import type { ProductData } from '@/types';
 
 import { BASE_URL } from '../instance';
-import { fetchInstance } from './../instance/index';
+import { getProducts } from '@/api/utils';
 
-type RequestParams = {
+export type RequestParams = {
   categoryId: string;
   pageToken?: string;
   maxResults?: number;
 };
 
-type ProductsResponseData = {
+export type ProductsResponseData = {
   products: ProductData[];
   nextPageToken?: string;
   pageInfo: {
@@ -24,13 +24,15 @@ type ProductsResponseData = {
   };
 };
 
-type ProductsResponseRawData = {
+export type ProductsResponseRawData = {
   content: ProductData[];
   number: number;
   totalElements: number;
   size: number;
   last: boolean;
 };
+
+export type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
 
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
@@ -43,27 +45,12 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
 
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
-  const data = response.data;
-
-  return {
-    products: data.content,
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
-    pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
-    },
-  };
-};
-
-type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
 export const useGetProducts = ({
   categoryId,
   maxResults = 20,
   initPageToken,
-}: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
-  return useInfiniteQuery({
+}: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> =>
+  useInfiniteQuery({
     queryKey: ['products', categoryId, maxResults, initPageToken],
     queryFn: async ({ pageParam = initPageToken }) => {
       return getProducts({ categoryId, pageToken: pageParam, maxResults });
@@ -71,4 +58,3 @@ export const useGetProducts = ({
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,
   });
-};

@@ -1,11 +1,24 @@
 import { fetchInstance } from '@/api/instance';
 import type {
   AddToWishlistResponse,
+  CategoryResponseData,
+  ProductDetailResponseData,
   LoginUserRequest,
   LoginUserResponse,
+  ProductDetailRequestParams,
+  ProductOptionsResponseData,
   RegisterUserRequest,
   RegisterUserResponse,
 } from '@/api/types';
+import { getCategoriesPath } from '@/api/hooks/useGetCategorys';
+import { getProductDetailPath } from '@/api/hooks/useGetProductDetail';
+import { getProductOptionsPath } from '@/api/hooks/useGetProductOptions';
+import {
+  getProductsPath,
+  ProductsResponseData,
+  ProductsResponseRawData,
+  RequestParams,
+} from '@/api/hooks/useGetProducts';
 
 export const registerUser = async ({ email, password }: RegisterUserRequest) => {
   try {
@@ -71,4 +84,40 @@ export const deleteFromWishlist = async (productId: number): Promise<void> => {
   } catch (error) {
     throw new Error('위시 리스트 삭제에 실패했습니다.');
   }
+};
+
+export const getCategories = async () => {
+  const response = await fetchInstance.get<CategoryResponseData>(getCategoriesPath());
+
+  return response.data;
+};
+
+export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
+  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+  const data = response.data;
+
+  return {
+    products: data.content,
+    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
+    pageInfo: {
+      totalResults: data.totalElements,
+      resultsPerPage: data.size,
+    },
+  };
+};
+
+export const getProductDetail = async (params: ProductDetailRequestParams) => {
+  const response = await fetchInstance.get<ProductDetailResponseData>(
+    getProductDetailPath(params.productId),
+  );
+
+  return response.data;
+};
+
+export const getProductOptions = async (params: ProductDetailRequestParams) => {
+  const response = await fetchInstance.get<ProductOptionsResponseData>(
+    getProductOptionsPath(params.productId),
+  );
+
+  return response.data;
 };
