@@ -7,4 +7,7 @@ export const memberMockHandler = [
   rest.post(`${BASE_URL}${MEMBERS_PATH.REGISTER}`, (req, res, ctx) =>
     res(ctx.status(200), ctx.json({ access_token: '1234' })),
   ),
+  rest.post(`${BASE_URL}${MEMBERS_PATH.LOGIN}`, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ access_token: '1234' })),
+  ),
 ];
