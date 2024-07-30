@@ -40,7 +40,6 @@ export const OrderForm = ({ orderHistory }: Props) => {
     alert('주문이 완료되었습니다.');
   };
 
-  // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
   const preventEnterKeySubmission = (e: React.KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLFormElement;
     if (e.key === 'Enter' && !['TEXTAREA'].includes(target.tagName)) {

@@ -13,11 +13,9 @@ export const DeleteWishListMockHandler = [
       return res(ctx.status(400), ctx.json({ message: 'Invalid wishId' }));
     }
 
-    // Get current mock data and remove the item with the specified ID
     const mockData = getMockData();
     const updatedContent = mockData.content.filter((item) => item.id !== wishIdNumber);
 
-    // Update mock data
     updateMockData({
       ...mockData,
       content: updatedContent,

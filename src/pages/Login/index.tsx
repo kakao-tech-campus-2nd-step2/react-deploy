@@ -8,7 +8,6 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-// import { authSessionStorage } from '@/utils/storage';
 import { useAuth } from '@/provider/Auth';
 import { breakpoints } from '@/styles/variants';
 
