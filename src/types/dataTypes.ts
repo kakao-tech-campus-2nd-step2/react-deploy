@@ -1,5 +1,10 @@
 export type ThemeData = [];
 
+export interface UserInfoData {
+  email: string;
+  password: string;
+}
+
 export type CategoryData = {
   id: number;
   name: string;

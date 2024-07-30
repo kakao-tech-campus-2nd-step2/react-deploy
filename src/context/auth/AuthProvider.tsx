@@ -18,8 +18,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   }, [authToken]);
 
   const login = useCallback(
-    (userName: string) => {
-      setAuthToken(userName);
+    (accessToken: string) => {
+      setAuthToken(accessToken);
     },
     [setAuthToken],
   );

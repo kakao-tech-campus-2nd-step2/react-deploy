@@ -1,17 +1,15 @@
+import { UserInfoData } from '@internalTypes/dataTypes';
 import { useAuth } from '@context/auth/useAuth';
 import { ROUTE_PATH } from '@routes/path';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface UserInfoState {
-  email: string;
-  password: string;
-}
+import { useMemberRegister } from '@apis/members/hooks/useMemberRegister';
 
 export default function useAuthForm() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [userInfo, setUserInfo] = useState<UserInfoState>({
+  const { mutate } = useMemberRegister();
+  const [userInfo, setUserInfo] = useState<UserInfoData>({
     email: '',
     password: '',
   });
@@ -21,16 +19,31 @@ export default function useAuthForm() {
     setUserInfo({ ...userInfo, [name]: value });
   };
 
-  const handleLogin = () => {
-    if (userInfo.email !== '' && userInfo.password !== '') {
-      login(userInfo.email);
-      navigate(ROUTE_PATH.HOME);
-    }
+  const handleSignUp = () => {
+    mutate(userInfo, {
+      onSuccess: (data) => {
+        login(data.access_token);
+        navigate(ROUTE_PATH.HOME);
+      },
+      onError: (error) => {
+        console.error('Error:', error);
+      },
+    });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleLogin = () => {
+    login(userInfo.email);
+    navigate(ROUTE_PATH.HOME);
+  };
+
+  const isUserInfoData = () => userInfo.email !== '' && userInfo.password !== '';
+
+  const handleSubmit = (e: FormEvent, isSignUp: boolean) => {
     e.preventDefault();
-    handleLogin();
+    if (isUserInfoData()) {
+      if (isSignUp) return handleSignUp();
+      return handleLogin();
+    }
   };
 
   return {

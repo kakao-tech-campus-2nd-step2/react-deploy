@@ -18,7 +18,7 @@ export default function AuthField({ isSignUp }: AuthFieldProps) {
         userInfo={userInfo}
         onChange={handleChange}
         submitButton={
-          <Button theme="kakao" size="large" onClick={handleSubmit}>
+          <Button theme="kakao" size="large" onClick={(e) => handleSubmit(e, isSignUp)}>
             {isSignUp ? '회원가입' : '로그인'}
           </Button>
         }

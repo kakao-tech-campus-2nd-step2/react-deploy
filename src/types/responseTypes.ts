@@ -122,3 +122,7 @@ export interface MyAccountWishProductsResponse {
     resultsPerPage: number;
   };
 }
+
+export interface MemberResponse {
+  access_token: string;
+}
