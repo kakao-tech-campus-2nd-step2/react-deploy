@@ -3,3 +3,8 @@ export type WishRequestData = {
 };
 
 export type WishDeleteProps = WishRequestData;
+
+export type WishResponseData = {
+  id: number;
+  productId: number;
+};
