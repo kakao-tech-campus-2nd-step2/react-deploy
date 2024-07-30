@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Header, Footer } from '@components/common';
+import Header from './Header';
+import Footer from './Footer';
 
 export interface PageWrapperProps {
   children: ReactNode;

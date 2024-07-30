@@ -63,7 +63,8 @@
           ["@context", "./src/context"],
           ["@internalTypes", "./src/types"],
           ["@apis", "./src/apis"],
-          ["@mocks", "./src/mocks"]
+          ["@mocks", "./src/mocks"],
+          ["@features", "./src/features"]
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

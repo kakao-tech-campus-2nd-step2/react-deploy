@@ -1,6 +1,6 @@
 import React from 'react';
-import Layout from '@components/features/Layout';
-import { FriendSelector, FriendGiftRecommendation, TrendingGifts, Categories } from '@components/features/Home';
+import Layout from '@features/Layout';
+import { FriendSelector, FriendGiftRecommendation, TrendingGifts, Categories } from '@features/Home';
 
 export default function Home() {
   return (

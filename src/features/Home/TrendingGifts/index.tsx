@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { CenteredContainer } from '@components/common/';
-import { RankingList, Filter } from '@components/features/Home';
+import { CenteredContainer } from '@components/common';
+import { RankingList, Filter } from '@features/Home';
 
 export default function TrendingGifts() {
   return (
