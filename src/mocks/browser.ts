@@ -5,7 +5,9 @@ import { registerMockHandler } from './auth/register.mock';
 import { categoriesMockHandler } from './categories/categories.mock';
 import { productOptionsMockHandler } from './product/product-options.mock';
 import { productsMockHandler } from './product/products.mock';
-import { getWishListMockHandler } from './wish-list/wishList.mock';
+import { AddWishListMockHandler } from './wish-list/wish-list-add.mock';
+import { DeleteWishListMockHandler } from './wish-list/wish-list-delete.mock';
+import { FindWishListMockHandler } from './wish-list/wish-list-find.mock';
 
 export const worker = setupWorker(
   ...categoriesMockHandler,
@@ -14,5 +16,7 @@ export const worker = setupWorker(
   ...loginMockHandler,
   ...registerMockHandler,
   ...productOptionsMockHandler,
-  ...getWishListMockHandler,
+  ...AddWishListMockHandler,
+  ...FindWishListMockHandler,
+  ...DeleteWishListMockHandler,
 );
