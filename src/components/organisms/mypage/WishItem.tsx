@@ -15,10 +15,11 @@ import { WishData } from '@/dto';
 
 interface WishItemProps {
   wishData: WishData;
+  refetch: () => void;
 }
 
 function WishItem({
-  wishData,
+  wishData, refetch,
 }: WishItemProps) {
   const { product } = wishData;
 
@@ -28,6 +29,7 @@ function WishItem({
         wishId: wishData.id,
       });
       alert('삭제가 완료되었습니다.');
+      refetch();
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response?.status === StatusCodes.NOT_FOUND) {
