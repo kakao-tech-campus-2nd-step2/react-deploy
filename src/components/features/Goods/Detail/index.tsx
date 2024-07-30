@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
+import type { ProductDetailRequestParams } from '@/api/hooks/product/type';
 import { breakpoints } from '@/styles/variants';
 
 import { GoodsDetailHeader } from './Header';

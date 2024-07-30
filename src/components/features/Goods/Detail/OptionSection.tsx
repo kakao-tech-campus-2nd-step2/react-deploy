@@ -2,11 +2,9 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
-import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { useGetProductDetail } from '@/api/hooks/product/product-detail.api';
+import { useGetProductOptions } from '@/api/hooks/product/product-options.api';
+import type { ProductDetailRequestParams } from '@/api/hooks/product/type';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';

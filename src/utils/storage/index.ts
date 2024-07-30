@@ -1,4 +1,4 @@
-import type { OrderHistory } from '@/types';
+import type { OrderHistory } from '@/types/order';
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   const storageKey = `${key}`;

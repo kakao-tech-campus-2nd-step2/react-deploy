@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { RouterPath } from '@/routes/path';
-import type { OrderHistory } from '@/types';
+import type { OrderHistory } from '@/types/order';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 export const useHandleOrderHistory = () => {

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Container } from '@/components/common/layouts/Container';
 import { useCurrentCategory } from '@/hooks/useCurrentCategory';
 import { breakpoints } from '@/styles/variants';
-import type { CategoryData } from '@/types';
+import type { CategoryData } from '@/types/categories';
 
 type Props = {
   categoryId: string;

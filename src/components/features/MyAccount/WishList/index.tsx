@@ -11,8 +11,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { useDeleteWishList } from '@/api/hooks/useDeleteWishList';
-import { useGetWishList } from '@/api/hooks/useFindWishList';
+import { useDeleteWishList } from '@/api/hooks/wish-list/wish-list-delete.api';
+import { useGetWishList } from '@/api/hooks/wish-list/wish-list-find.api';
 import { queryClient } from '@/api/instance';
 
 const WishList = () => {

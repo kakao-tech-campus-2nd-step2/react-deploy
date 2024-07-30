@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
-import type { OrderFormData, OrderHistory } from '@/types';
+import type { OrderFormData, OrderHistory } from '@/types/order';
 
 import { HEADER_HEIGHT } from '../../Layout/Header';
 import { GoodsInfo } from './GoodsInfo';

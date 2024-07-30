@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+import { useGetProductDetail } from '@/api/hooks/product/product-detail.api';
 import { Image } from '@/components/common/Image';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import type { OrderHistory } from '@/types';
+import type { OrderHistory } from '@/types/order';
 
 import { LabelText } from '../Common/LabelText';
 

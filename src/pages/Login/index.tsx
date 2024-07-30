@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import { useLogin } from '@/api/hooks/useGetLogin';
+import { useLogin } from '@/api/hooks/auth/login.api';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
