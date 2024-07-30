@@ -23,6 +23,7 @@ export const ApiPath = {
     detail: (productId: string) => `/api/products/${productId}`,
     options: (productId: string) => `/api/products/${productId}/options`,
   },
+  categories: '/api/categories',
 };
 
 export const getDynamicPath = {
