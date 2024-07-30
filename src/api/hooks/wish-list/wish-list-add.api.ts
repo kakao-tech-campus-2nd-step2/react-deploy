@@ -1,12 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
-import type { WishData } from '@/types';
-
-import { BASE_URL, fetchInstance } from '../instance';
-
-export type WishRequestData = {
-  wishId: number;
-};
+import { BASE_URL, fetchInstance } from '@/api/instance';
+import type { WishData } from '@/types/wishlist';
 
 export const getWishListPath = () => `${BASE_URL}/api/wishlist`;
 

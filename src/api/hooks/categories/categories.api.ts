@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { CategoryData } from '@/types';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 
-import { BASE_URL, fetchInstance } from '../instance';
-
-export type CategoryResponseData = CategoryData[];
+import type { CategoryResponseData } from './type';
 
 export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
+
 const categoriesQueryKey = [getCategoriesPath()];
 
 export const getCategories = async () => {

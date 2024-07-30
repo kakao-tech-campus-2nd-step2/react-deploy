@@ -4,10 +4,10 @@ import {
   type UseInfiniteQueryResult,
 } from '@tanstack/react-query';
 
-import type { ProductData } from '@/types';
+import { BASE_URL, fetchInstance } from '@/api/instance';
+import type { ProductData } from '@/types/product';
 
-import { BASE_URL } from '../instance';
-import { fetchInstance } from './../instance/index';
+import type { ProductsParams } from './type';
 
 type RequestParams = {
   categoryId: string;
@@ -57,12 +57,11 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
   };
 };
 
-type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
 export const useGetProducts = ({
   categoryId,
   maxResults = 20,
   initPageToken,
-}: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
+}: ProductsParams): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   return useInfiniteQuery({
     queryKey: ['products', categoryId, maxResults, initPageToken],
     queryFn: async ({ pageParam = initPageToken }) => {

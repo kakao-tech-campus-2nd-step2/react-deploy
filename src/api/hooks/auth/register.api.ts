@@ -1,10 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 
-import type { UserRequestData, UserResponseData } from '@/types';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 
-import { BASE_URL, fetchInstance } from '../instance';
-
-type Props = UserRequestData;
+import type { AuthProps, UserRequestData, UserResponseData } from './type';
 
 export const getRegisterPath = () => `${BASE_URL}/api/members/register`;
 
@@ -15,5 +13,5 @@ export const registerUser = async (data: UserRequestData) => {
 
 export const useRegister = () =>
   useMutation({
-    mutationFn: (userData: Props) => registerUser(userData),
+    mutationFn: (userData: AuthProps) => registerUser(userData),
   });
