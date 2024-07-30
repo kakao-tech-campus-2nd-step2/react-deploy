@@ -1,3 +1,4 @@
+import { Box, Select } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -22,13 +23,21 @@ export const Header = () => {
             alt="카카오 선물하기 로고"
           />
         </Link>
-        <RightWrapper>
-          {authInfo ? (
-            <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
-          ) : (
-            <LinkButton onClick={handleLogin}>로그인</LinkButton>
-          )}
-        </RightWrapper>
+        <Box display="flex" justifyContent="space-between" gap="2rem" alignItems="center">
+          <Select placeholder="API 선택" minWidth="7rem">
+            <option value="1">이상희</option>
+            <option value="2">장우석</option>
+            <option value="3">정수현</option>
+            <option value="4">탁정민</option>
+          </Select>
+          <RightWrapper>
+            {authInfo ? (
+              <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
+            ) : (
+              <LinkButton onClick={handleLogin}>로그인</LinkButton>
+            )}
+          </RightWrapper>
+        </Box>
       </Container>
     </Wrapper>
   );
@@ -49,7 +58,9 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  width: 100%;
+`;
 
 const LinkButton = styled.p`
   align-items: center;
