@@ -2,6 +2,7 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://15.165.74.97:8080/",
   "homepage": "https://00306.github.io/react-deploy",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
@@ -10,7 +11,7 @@
     "test": "craco test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:mock": "cross-env REACT_APP_RUN_MSW=true npm run test"
+    "test:mock": "cross-env REACT_APP_RUN_MSW=true npm run test",
     "predeploy": "craco build",
     "deploy": "gh-pages -d build"
   },
