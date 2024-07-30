@@ -6,6 +6,7 @@ import { HEADER_HEIGHT, MAX_CONTENT_WIDTH } from '@styles/size';
 import { Link } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import { useContext } from 'react';
+import APISelector from '@components/organisms/semantic/header/APISelector';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 interface PageHeaderProps {
@@ -48,11 +49,19 @@ function PageHeader({ displayLogo }: PageHeaderProps) {
               src={headerLogo}
             />
           ) : null}
-        <HeaderAccountButton>
-          <Link to={isLoggedIn ? Paths.MYACCOUNT_PAGE : Paths.LOGIN_PAGE}>
-            {isLoggedIn ? '마이페이지' : '로그인'}
-          </Link>
-        </HeaderAccountButton>
+        <Container
+          alignItems="center"
+          cssProps={{
+            gap: '30px',
+          }}
+        >
+          <APISelector />
+          <HeaderAccountButton>
+            <Link to={isLoggedIn ? Paths.MYACCOUNT_PAGE : Paths.LOGIN_PAGE}>
+              {isLoggedIn ? '마이페이지' : '로그인'}
+            </Link>
+          </HeaderAccountButton>
+        </Container>
       </Container>
     </header>
   );
