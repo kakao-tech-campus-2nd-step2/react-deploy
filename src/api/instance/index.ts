@@ -24,6 +24,14 @@ export const fetchInstance = initInstance({
   baseURL: 'https://api.example.com',
 });
 
+fetchInstance.interceptors.request.use((config) => {
+  const token = authSessionStorage.get();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -34,21 +42,3 @@ export const queryClient = new QueryClient({
     },
   },
 });
-
-const initTokenInstance = () => {
-  const instance = initInstance({
-    baseURL: BASE_URL,
-  });
-
-  instance.interceptors.request.use((config) => {
-    const token = authSessionStorage.get();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
-
-  return instance;
-};
-
-export const tokenInstance = initTokenInstance();
