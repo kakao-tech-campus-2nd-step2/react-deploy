@@ -83,6 +83,12 @@ const handlers = [
       });
     },
   ),
+  http.get(
+    BASE_URL + RequestURLs.PRODUCT_OPTIONS,
+    async () => (
+      HttpResponse.json(MockData.MOCK_OPTIONS)
+    ),
+  ),
 ];
 
 export default handlers;

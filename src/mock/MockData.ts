@@ -1,4 +1,21 @@
 const MockData = {
+  MOCK_OPTIONS: [
+    {
+      id: 1,
+      name: '옵션1',
+      quantity: 10000,
+    },
+    {
+      id: 2,
+      name: '옵션2',
+      quantity: 10000,
+    },
+    {
+      id: 3,
+      name: '옵션3',
+      quantity: 10000,
+    },
+  ],
   MOCK_WISHES: {
     pageable: {
       sort: {
