@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 
-import { useGetCategories } from '@/api/hooks/useGetCategorys';
+import { useGetCategories } from '@/api/hooks/useGetCategories';
 
 import { CATEGORIES_RESPONSE_DATA } from './categories.mock';
 
