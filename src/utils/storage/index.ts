@@ -9,7 +9,7 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 
     return JSON.parse(value as string);
   };
-  const set = (value: StorageKey[T]) => {
+  const set = (value?: StorageKey[T]) => {
     if (typeof value === 'undefined' || value === null) {
       storage.removeItem(storageKey);
 
