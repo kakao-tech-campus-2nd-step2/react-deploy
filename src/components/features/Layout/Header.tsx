@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { fetchInstance } from '@/api/instance';
+import { Dropdown } from '@/components/common/Dropdown/Dropdown';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -13,6 +15,11 @@ export const Header = () => {
     navigate(getDynamicPath.login());
   };
 
+  const handleSelect = (url: string) => {
+    fetchInstance.defaults.baseURL = url;
+    console.log(url);
+  };
+
   return (
     <Wrapper>
       <Container flexDirection="row" alignItems="center" justifyContent="space-between">
@@ -23,6 +30,7 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <Dropdown onSelect={handleSelect} />
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,7 +57,11 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
 
 const LinkButton = styled.p`
   align-items: center;
