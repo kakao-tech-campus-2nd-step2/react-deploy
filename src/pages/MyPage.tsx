@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import WishesSection from '@components/organisms/mypage/WishesSection';
+import OrderHistorySection from '@components/organisms/mypage/OrderHistorySection';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 const GreetingTitle = styled.h1`
@@ -62,6 +63,7 @@ function MyPage() {
         </Container>
 
         <WishesSection />
+        <OrderHistorySection />
       </Container>
     </Page>
   );
