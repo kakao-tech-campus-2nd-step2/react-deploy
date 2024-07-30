@@ -14,7 +14,7 @@ export type UserResponseData = {
   token: string;
 };
 
-export const getUserSignupPath = () => `${BASE_URL}/api/members/login`;
+export const getUserSignupPath = () => `${BASE_URL}/api/members/register`;
 
 export const postSignup = async (userData: UserRequestData) => {
   const response = await fetchInstance.post<UserResponseData>(getUserSignupPath(), userData);

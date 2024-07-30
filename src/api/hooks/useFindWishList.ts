@@ -17,7 +17,7 @@ export type ProductListResponse = {
   empty: boolean;
 };
 
-export const getWishListPath = () => `${BASE_URL}/api/wishes?page=0&size=10&sort=createdDate`;
+export const getWishListPath = () => `${BASE_URL}/api/wishes?&size=10`;
 const wishListQueryKey = [getWishListPath()];
 
 export const getWishList = async () => {

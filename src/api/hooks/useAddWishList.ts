@@ -13,11 +13,11 @@ export type WishResponseData = {
   productId: number;
 };
 
-export const postAddWishListPath = () => `${BASE_URL}/api/wishes`;
+export const postAddWishListPath = (wishId: number) => `${BASE_URL}/api/wishes/${wishId}`;
 
 export const addWishList = async (product: WishRequestData) => {
   const response = await fetchWithTokenInstance.post<WishResponseData>(
-    postAddWishListPath(),
+    postAddWishListPath(product.productId),
     product,
   );
   return response.data;

@@ -1,8 +1,11 @@
 import { rest } from 'msw';
-import { postAddWishListPath, WishRequestData, WishResponseData } from '@/api/hooks/useAddWishList';
+import type { WishRequestData, WishResponseData } from '@/api/hooks/useAddWishList';
+import { postAddWishListPath } from '@/api/hooks/useAddWishList';
+
+export const wishId = 123;
 
 export const AddWishListMockHandler = [
-  rest.post(postAddWishListPath(), (req, res, ctx) => {
+  rest.post(postAddWishListPath(wishId), (req, res, ctx) => {
     const { productId } = req.body as WishRequestData;
 
     if (!productId) {
