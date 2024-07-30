@@ -82,7 +82,11 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
           register={register}
           errors={errors}
         />
-        <ProductOrderHistorySection productDetails={product} count={orderHistory.quantity} />
+        <ProductOrderHistorySection
+          productDetails={product}
+          count={orderHistory.quantity}
+          option={orderHistory.option}
+        />
       </Container>
       <Container
         elementSize="full-width"
