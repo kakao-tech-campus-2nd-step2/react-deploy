@@ -5,8 +5,6 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { QueryKeys } from '@constants/QueryKeys';
 import { fetchProductDetail, fetchProductOptions } from '@utils/query';
 import { useEffect } from 'react';
-import axios from 'axios';
-import { StatusCodes } from 'http-status-codes';
 import Paths from '@constants/Paths';
 import { useNavigate } from 'react-router-dom';
 import ProductCounterForm from '@components/organisms/product/ProductCounterForm';
@@ -32,7 +30,7 @@ function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
     if (isNotFound(productFetchError) || isNotFound(optionsFetchError)) {
       navigate(Paths.MAIN_PAGE);
     }
-  }, [productFetchError, navigate, productId]);
+  }, [productFetchError, optionsFetchError, navigate, productId]);
 
   return (
     <>
@@ -69,6 +67,7 @@ function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
         productId={productId}
         productPrice={product.price}
         productName={product.name}
+        productOptions={options}
       />
     </>
   );

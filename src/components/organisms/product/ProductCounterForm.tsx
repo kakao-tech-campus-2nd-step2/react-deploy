@@ -13,17 +13,23 @@ import { orderHistoryStorage } from '@utils/storage';
 import { addWishProduct } from '@utils/query';
 import { isAxiosError } from 'axios';
 import { StatusCodes } from 'http-status-codes';
+import ProductOptionsSection from '@components/organisms/product/ProductOptionsSection';
 import { LoginContext } from '@/providers/LoginContextProvider';
 import { OrderHistoryData } from '@/types';
+import { ProductOption } from '@/dto';
 
 interface ProductCounterAreaProps {
   productId: number;
   productName: string;
   productPrice: number;
+  productOptions: ProductOption[];
 }
 
-function ProductCounterForm({ productId, productPrice, productName }: ProductCounterAreaProps) {
+function ProductCounterForm({
+  productId, productPrice, productName, productOptions,
+}: ProductCounterAreaProps) {
   const [count, setCount] = useState(1);
+  const [optionId, setOptionId] = useState(0);
   const loginStatus = useContext(LoginContext);
   const navigate = useNavigate();
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
@@ -139,6 +145,11 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
           </HStack>
         </Box>
       </Container>
+      <ProductOptionsSection
+        options={productOptions}
+        currentOptionId={optionId}
+        setOptionId={setOptionId}
+      />
       <Container flexDirection="column" cssProps={{ gap: '16px' }}>
         <Box
           w="100%"
