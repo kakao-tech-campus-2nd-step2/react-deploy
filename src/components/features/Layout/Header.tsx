@@ -9,16 +9,16 @@ import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 
 const BACKEND_URLS: { [key: string]: string } = {
-  김태윤: 'http://43.202.1.135:8080',
-  강수민: 'http://43.201.60.56:8080',
-  유경미: 'http://3.17.81.229:8080',
+  김태윤: process.env.REACT_APP_BACKEND_URL_KIM_TAEYUN!,
+  강수민: process.env.REACT_APP_BACKEND_URL_KANG_SUMIN!,
+  유경미: process.env.REACT_APP_BACKEND_URL_YOO_KYUNGMI!,
 };
 
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
   const [selectedName, setSelectedName] = useState(() => {
-    const currentBaseUrl = sessionStorage.getItem('baseUrl');
+    const currentBaseUrl = sessionStorage.getItem('baseUrl') || fetchInstance.defaults.baseURL;
     return Object.keys(BACKEND_URLS).find((key) => BACKEND_URLS[key] === currentBaseUrl);
   });
 

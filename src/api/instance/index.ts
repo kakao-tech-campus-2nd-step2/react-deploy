@@ -17,7 +17,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 };
 
 export const fetchInstance = initInstance({
-  baseURL: sessionStorage.getItem('baseUrl') ?? 'http://3.17.81.229:8080',
+  baseURL: sessionStorage.getItem('baseUrl') ?? process.env.REACT_APP_BACKEND_URL_YOO_KYUNGMI!,
 });
 
 fetchInstance.interceptors.request.use(
