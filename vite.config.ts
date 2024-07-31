@@ -11,5 +11,10 @@ export default defineConfig(() => {
       }),
       tsconfigPaths(),
     ],
+    server: {
+      proxy: {
+          '/api': import.meta.env.VITE_API_BASE_URL,
+      },
+    },
   };
 });
