@@ -11,18 +11,33 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
     navigate(RouterPath.home);
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const validateEmail = (value: string) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(value);
+    };
+
+    setEmail(e.target.value);
+    setIsEmailValid(validateEmail(email)); // 이메일 형식 검사
+  };
+
   const handleConfirm = async () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+    if (!email || !password) {
+      alert('회원 정보를 모두 입력해주세요.');
+      return;
+    } else if (!isEmailValid) {
+      alert('이메일을 바르게 입력해주세요.');
       return;
     }
 
@@ -30,7 +45,7 @@ export const SignUpPage = () => {
       // TODO: 실제 회원가입 API 호출
 
       // 임시 회원가입 처리
-      authSessionStorage.set(id);
+      authSessionStorage.set(email);
 
       const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
       navigate(redirectUrl);
@@ -44,7 +59,13 @@ export const SignUpPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" onClick={handleLogoClick} />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          type="email"
+          placeholder="이메일"
+          value={email}
+          onChange={handleEmailChange}
+        />
+        {!isEmailValid && <ErrorText>이메일 형식으로 입력해주세요.</ErrorText>}
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -87,4 +108,10 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
+`;
+
+const ErrorText = styled.p`
+  color: #7d7d7d;
+  font-size: 12px;
+  margin-top: 5px;
 `;

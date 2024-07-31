@@ -11,21 +11,22 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+
   const navigate = useNavigate();
 
   const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    authSessionStorage.set(email);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     window.location.replace(redirectUrl);
@@ -39,7 +40,12 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          type="email"
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
