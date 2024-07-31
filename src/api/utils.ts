@@ -8,7 +8,6 @@ import type {
   CategoryResponseData,
   LoginUserRequest,
   LoginUserResponse,
-  PaginationRawResponse,
   PaginationResponseData,
   ProductDetailRequestParams,
   ProductDetailResponseData,
@@ -22,31 +21,37 @@ import type { CreateOrderRequestParams } from '@/api/types';
 import type { WishlistItem } from '@/components/features/MyAccount/WhishList';
 import type { OrderData, ProductData } from '@/types';
 
-export const registerUser = async ({ email, password }: RegisterUserRequest) => {
+export const registerUser = async ({
+  email,
+  password,
+}: RegisterUserRequest): Promise<RegisterUserResponse> => {
   try {
-    const response = await fetchInstance.post<RegisterUserResponse>('/api/members/register', {
+    const response = await fetchInstance.post('/api/members/register', {
       email,
       password,
     });
-    const { token } = response.data;
+    const { token } = response.data.data;
     localStorage.setItem('token', token);
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error('회원가입에 실패했습니다.');
   }
 };
 
-export const loginUser = async ({ email, password }: LoginUserRequest) => {
+export const loginUser = async ({
+  email,
+  password,
+}: LoginUserRequest): Promise<LoginUserResponse> => {
   try {
-    const response = await fetchInstance.post<LoginUserResponse>('/api/members/login', {
+    const response = await fetchInstance.post('/api/members/login', {
       email,
       password,
     });
-    const { token } = response.data;
+    const { token } = response.data.data;
     localStorage.setItem('token', token);
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error('로그인에 실패했습니다.');
   }
@@ -58,16 +63,14 @@ export const getCategories = async (): Promise<CategoryResponseData> => {
   return response.data.data;
 };
 
-export const getProducts: (
-  params: ProductRequestParams,
-) => Promise<PaginationResponseData<ProductData>> = async (
+export const getProducts = async (
   params: ProductRequestParams,
 ): Promise<PaginationResponseData<ProductData>> => {
   const response = await fetchInstance.get(getProductsPath(params));
   const data = response.data.data;
 
   return {
-    products: data.content,
+    contents: data.content,
     nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
     pageInfo: {
       totalResults: data.totalElements,
@@ -76,35 +79,38 @@ export const getProducts: (
   };
 };
 
-export const getProductDetail = async (params: ProductDetailRequestParams) => {
-  const response = await fetchInstance.get<ProductDetailResponseData>(
-    getProductDetailPath(params.productId),
-  );
+export const getProductDetail = async (
+  params: ProductDetailRequestParams,
+): Promise<ProductDetailResponseData> => {
+  const response = await fetchInstance.get(getProductDetailPath(params.productId));
 
-  return response.data;
+  return response.data.data;
 };
 
-export const getProductOptions = async (params: ProductDetailRequestParams) => {
-  const response = await fetchInstance.get<ProductOptionsResponseData>(
-    getProductOptionsPath(params.productId),
-  );
+export const getProductOptions = async (
+  params: ProductDetailRequestParams,
+): Promise<ProductOptionsResponseData> => {
+  const response = await fetchInstance.get(getProductOptionsPath(params.productId));
 
-  return response.data;
+  return response.data.data;
 };
 
-export const addToWishlist = async (productId: string) => {
+export const addToWishlist = async (productId: string): Promise<AddToWishlistResponse> => {
   try {
-    const response = await fetchInstance.post<AddToWishlistResponse>('/api/wishes', { productId });
+    const response = await fetchInstance.post('/api/wishes', { productId });
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error('위시 리스트 추가에 실패했습니다.');
   }
 };
 
-export const getWishlist = async (page: number, size: number) => {
+export const getWishlist = async (
+  page: number,
+  size: number,
+): Promise<PaginationResponseData<WishlistItem>> => {
   try {
-    const response = await fetchInstance.get<PaginationRawResponse<WishlistItem>>(`/api/wishes`, {
+    const response = await fetchInstance.get(`/api/wishes`, {
       params: {
         page,
         size,
@@ -112,10 +118,10 @@ export const getWishlist = async (page: number, size: number) => {
       },
     });
 
-    const data = response.data;
+    const data = response.data.data;
 
     return {
-      wishlist: data.content,
+      contents: data.content,
       nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
       pageInfo: {
         totalResults: data.totalElements,
@@ -131,7 +137,7 @@ export const deleteFromWishlist = async (productId: number): Promise<void> => {
   try {
     const response = await fetchInstance.delete(`/api/wishes/${productId}`);
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error('위시 리스트 삭제에 실패했습니다.');
   }
@@ -149,15 +155,17 @@ export const createOrder = async (order: CreateOrderRequestParams) => {
 
 // TODO: 아직 사용하지 않는 함수
 // export const getOrderList: Promise<PaginationResponseData<OrderData>> = async (
-export const getOrderList = async (params: OrderListRequestParams) => {
+export const getOrderList = async (
+  params: OrderListRequestParams,
+): Promise<PaginationResponseData<OrderData>> => {
   try {
-    const response = await fetchInstance.get<PaginationRawResponse<OrderData>>('/api/orders', {
+    const response = await fetchInstance.get('/api/orders', {
       params: params,
     });
-    const data = response.data;
+    const data = response.data.data;
 
     return {
-      orders: data.content,
+      contents: data.content,
       nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
       pageInfo: {
         totalResults: data.totalElements,
