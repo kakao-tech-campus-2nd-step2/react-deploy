@@ -16,10 +16,8 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: 'http://43.202.1.135:8080',
 });
 
 fetchInstance.interceptors.request.use(
