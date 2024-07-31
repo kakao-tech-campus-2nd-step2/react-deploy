@@ -15,6 +15,9 @@ export const Header = () => {
     { name: '위시', path: RouterPath.wish },
   ];
 
+  const ApiList = ['김은선', '박준석', '이도훈', '안재민'];
+  const ApiListAscending = ApiList.sort();
+
   const handleLogin = () => {
     navigate(getDynamicPath.login());
   };
@@ -44,6 +47,18 @@ export const Header = () => {
             ))}
           </NavBar>
         </NavBarWrapper>
+        <ApiSelectorWrapper>
+          <ApiSelector defaultValue={ApiListAscending[0]}>
+            <option value="default" disabled>
+              API 선택
+            </option>
+            {ApiListAscending.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </ApiSelector>
+        </ApiSelectorWrapper>
         <RightWrapper>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
@@ -83,6 +98,8 @@ const Logo = styled.img`
   max-height: ${HEADER_HEIGHT};
 `;
 
+//
+
 const NavBarWrapper = styled.nav`
   padding: 20px 20px 20px 0;
   height: 100%;
@@ -117,10 +134,29 @@ const NavButtonText = styled(Link)`
   }
 `;
 
+//
+
+const ApiSelectorWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: auto;
+  margin-right: 20px;
+`;
+
+const ApiSelector = styled.select`
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ededed;
+`;
+
+//
+
 const RightWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: auto;
+  /* margin-left: auto; */
 `;
 
 const LinkButton = styled.p`
