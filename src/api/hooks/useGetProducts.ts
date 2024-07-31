@@ -11,7 +11,7 @@ import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
   categoryId: string;
-  pageToken?: string;
+  page?: string;
   maxResults?: number;
 };
 
@@ -32,12 +32,11 @@ type ProductsResponseRawData = {
   last: boolean;
 };
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+export const getProductsPath = ({ categoryId, page, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
-  params.append('sort', 'name,asc');
-  if (pageToken) params.append('page', pageToken);
+  params.append('category', categoryId);
+  if (page) params.append('page', page);
   if (maxResults) params.append('size', maxResults.toString());
 
   return `${BASE_URL}/api/products?${params.toString()}`;
@@ -66,7 +65,7 @@ export const useGetProducts = ({
   return useInfiniteQuery({
     queryKey: ['products', categoryId, maxResults, initPageToken],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+      return getProducts({ categoryId, page: pageParam, maxResults });
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,

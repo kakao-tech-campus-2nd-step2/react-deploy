@@ -3,14 +3,14 @@ export type CategoryData = {
   name: string;
   description: string;
   color: string;
-  imageUrl: string;
+  image_url: string;
 };
 
 export type ProductData = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
+  image_url: string;
   categoryId: number;
 };
 
@@ -18,7 +18,6 @@ export type ProductOptionsData = {
   id: number;
   name: string;
   quantity: number;
-  productId: number;
 };
 
 export type GoodsDetailOptionItemData = {

@@ -18,6 +18,8 @@ export const useDeleteWishlistItem = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
     },
-    onError: () => console.log('여기서 에러 발생'),
+    onError: (error) => {
+      console.error(error);
+    },
   });
 };

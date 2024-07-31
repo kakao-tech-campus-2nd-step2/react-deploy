@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { useLogin } from '@/api/hooks/useLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
@@ -12,7 +11,6 @@ import { breakpoints } from '@/styles/variants';
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   const { mutate: login } = useLogin();
 
   const handleConfirm = () => {
@@ -22,10 +20,6 @@ export const LoginPage = () => {
     }
 
     login({ email, password });
-  };
-
-  const handleRegister = () => {
-    navigate('/register');
   };
 
   return (
@@ -52,8 +46,6 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing height={20} />
-        <Button onClick={handleRegister}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
