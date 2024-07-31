@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "http://jasper200207.duckdns.org/",
   "scripts": {
-    "start": "craco start",
-    "start:mock": "cross-env REACT_APP_RUN_MSW=true cross-env PUBLIC_URL=/ npm run start",
+    "start": "cross-env HTTPS=true craco start",
+    "start:mock": "cross-env REACT_APP_RUN_MSW=true cross-env PUBLIC_URL=/ craco start",
     "build": "craco build",
     "test": "craco test --watchAll",
     "test:mock": "cross-env REACT_APP_RUN_MSW=true npm run test",
