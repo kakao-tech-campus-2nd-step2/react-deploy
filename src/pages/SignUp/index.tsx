@@ -18,10 +18,6 @@ export const SignUpPage = () => {
 
   const navigate = useNavigate();
 
-  const handleLogoClick = () => {
-    navigate(RouterPath.home);
-  };
-
   const handleConfirm = async () => {
     if (!email || !password) {
       alert('회원 정보를 모두 입력해주세요.');
@@ -47,7 +43,7 @@ export const SignUpPage = () => {
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카오 CI" onClick={handleLogoClick} />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" onClick={() => navigate(RouterPath.home)} />
       <FormWrapper>
         <UnderlineTextField
           type="email"
@@ -70,6 +66,8 @@ export const SignUpPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>회원가입</Button>
+        <Spacing height={26} />
+        <LinkButton onClick={() => navigate(RouterPath.login)}>이미 계정이 있어요</LinkButton>
       </FormWrapper>
     </Wrapper>
   );
@@ -87,6 +85,7 @@ const Wrapper = styled.div`
 const Logo = styled.img`
   width: 88px;
   color: #333;
+  cursor: pointer;
 `;
 
 const FormWrapper = styled.article`
@@ -100,8 +99,16 @@ const FormWrapper = styled.article`
   }
 `;
 
-const ErrorText = styled.p`
-  color: #7d7d7d;
+const LinkButton = styled.p`
+  float: left;
   font-size: 12px;
-  margin-top: 5px;
+  color: #191919;
+  cursor: pointer;
+`;
+
+const ErrorText = styled.p`
+  color: #e65f3e;
+  font-size: 11px;
+  letter-spacing: -0.05em;
+  margin-top: 8px;
 `;

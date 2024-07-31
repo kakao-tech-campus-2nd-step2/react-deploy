@@ -36,13 +36,9 @@ export const LoginPage = () => {
     window.location.replace(redirectUrl);
   };
 
-  const handleSignUp = () => {
-    navigate(RouterPath.signup);
-  };
-
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" onClick={() => navigate(RouterPath.home)} />
       <FormWrapper>
         <UnderlineTextField
           type="email"
@@ -66,7 +62,7 @@ export const LoginPage = () => {
         />
         <Button onClick={handleConfirm}>로그인</Button>
         <Spacing height={26} />
-        <SignUpButton onClick={handleSignUp}>회원가입</SignUpButton>
+        <LinkButton onClick={() => navigate(RouterPath.signup)}>회원가입</LinkButton>
       </FormWrapper>
     </Wrapper>
   );
@@ -84,6 +80,7 @@ const Wrapper = styled.div`
 const Logo = styled.img`
   width: 88px;
   color: #333;
+  cursor: pointer;
 `;
 
 const FormWrapper = styled.article`
@@ -97,7 +94,7 @@ const FormWrapper = styled.article`
   }
 `;
 
-const SignUpButton = styled.p`
+const LinkButton = styled.p`
   float: left;
   font-size: 12px;
   color: #191919;
@@ -105,7 +102,8 @@ const SignUpButton = styled.p`
 `;
 
 const ErrorText = styled.p`
-  color: #7d7d7d;
-  font-size: 12px;
-  margin-top: 5px;
+  color: #e65f3e;
+  font-size: 11px;
+  letter-spacing: -0.05em;
+  margin-top: 8px;
 `;
