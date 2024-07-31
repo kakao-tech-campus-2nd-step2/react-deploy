@@ -16,11 +16,15 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
+export const BASE_URL = localStorage.getItem('selectedAPI') || '';
+
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: BASE_URL,
 });
+
+export const updateInstanceBaseURL = (newBaseURL: string) => {
+  fetchInstance.defaults.baseURL = newBaseURL;
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {
