@@ -8,40 +8,39 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
+import { userLogin } from '@/api/hooks/useLogin';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const redirect = queryParams.get('redirect') || `${window.location.origin}/`;
+  const { mutate } = userLogin(redirect);
 
   const handleConfirm = () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
-
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+    const loginInfo = {
+      email: id,
+      password,
+    };
+    mutate(loginInfo);
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="이름" value={id} onChange={e => setId(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
           placeholder="비밀번호"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
         />
 
         <Spacing
