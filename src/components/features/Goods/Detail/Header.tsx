@@ -2,6 +2,8 @@ import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import { useAddWishlist } from '@/api/hooks/useAddWishlist';
+import { useDeleteWishlistItem } from '@/api/hooks/useDeleteWishlistItem';
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { breakpoints } from '@/styles/variants';
@@ -10,16 +12,43 @@ type Props = ProductDetailRequestParams;
 
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
+
   const [isFavorite, setIsFavorite] = useState(false);
+  const addWishlist = useAddWishlist();
+  const deleteWishlistItem = useDeleteWishlistItem();
 
   const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
-    alert(isFavorite ? '관심 등록 해제' : '관심 등록 완료');
+    const id = parseInt(productId);
+
+    if (isFavorite) {
+      deleteWishlistItem.mutate(id, {
+        onSuccess: () => {
+          setIsFavorite(false);
+          alert('관심 등록 해제');
+        },
+        onError: () => {
+          alert('관심 등록 해제 중 오류가 발생했습니다.');
+        },
+      });
+    } else {
+      addWishlist.mutate(
+        { product_id: id },
+        {
+          onSuccess: () => {
+            setIsFavorite(true);
+            alert('관심 등록 완료');
+          },
+          onError: () => {
+            alert('관심 등록 중 오류가 발생했습니다.');
+          },
+        },
+      );
+    }
   };
 
   return (
     <Wrapper>
-      <GoodsImage src={detail.imageUrl} alt={detail.name} />
+      <GoodsImage src={detail.image_url} alt={detail.name} />
       <InfoWrapper>
         <Title>{detail.name}</Title>
         <Price>{detail.price}원</Price>
