@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
@@ -7,6 +7,7 @@ import { getDynamicPath, RouterPath } from '@/routes/path';
 
 export const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const authInfo = useAuth();
 
   const NavButtonList = [
@@ -55,31 +56,36 @@ export const Header = () => {
   );
 };
 
-export const HEADER_HEIGHT = '74px';
+export const HEADER_HEIGHT = '80px';
 
 const Wrapper = styled.header<{ borderBottom: boolean }>`
   position: fixed;
   z-index: 9999;
   width: 100%;
-  max-width: 100vw;
   height: ${HEADER_HEIGHT};
   background-color: #fff;
   padding: 0 16px;
+  display: flex;
+  align-items: center;
 
   border-bottom: ${({ borderBottom }) => (borderBottom ? '1px solid #ededed' : 'none')};
 `;
 
 const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
   padding-right: 50px;
-  height: auto;
 `;
 
 const Logo = styled.img`
-  height: ${HEADER_HEIGHT};
+  height: 100%;
+  max-height: ${HEADER_HEIGHT};
 `;
 
 const NavBarWrapper = styled.nav`
   padding: 20px 20px 20px 0;
+  height: 100%;
 `;
 
 const NavBar = styled.ul`
@@ -112,6 +118,8 @@ const NavButtonText = styled(Link)`
 `;
 
 const RightWrapper = styled.div`
+  display: flex;
+  align-items: center;
   margin-left: auto;
 `;
 
