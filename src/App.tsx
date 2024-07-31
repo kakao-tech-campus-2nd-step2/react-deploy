@@ -2,6 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { queryClient } from './api/instance';
+import { ApiProvider } from './provider/Api';
 import { AuthProvider } from './provider/Auth';
 import { Routes } from './routes';
 
@@ -10,7 +11,9 @@ const App = () => {
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <Routes />
+          <ApiProvider>
+            <Routes />
+          </ApiProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ChakraProvider>
