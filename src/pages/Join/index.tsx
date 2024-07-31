@@ -16,8 +16,6 @@ export const JoinPage = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  //TODO: 에러 처리 추가하기
-
   const onSuccess = () => {
     alert('회원가입이 완료되었습니다.');
     authSessionStorage.set(email);

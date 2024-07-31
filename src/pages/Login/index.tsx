@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import type { PostUserLoginResponse } from '@/api/hooks/userPostUserLogin';
 import { usePostUserLogin } from '@/api/hooks/userPostUserLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -15,10 +16,9 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  //TODO: 반환받은 email로 저장하도록 수정
-  const onSuccess = () => {
+  const onSuccess = ({ token }: PostUserLoginResponse) => {
     alert('로그인이 완료되었습니다.');
-    authSessionStorage.set(email);
+    authSessionStorage.set(token);
     navigate('/');
   };
 

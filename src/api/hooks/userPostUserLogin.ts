@@ -8,8 +8,15 @@ import { BASE_URL, fetchInstance } from '../instance';
 
 export const getPostUserLoginPath = () => `${BASE_URL}/api/members/login`;
 
+export interface PostUserLoginResponse {
+  email: string;
+  token: string;
+}
 export const postUserLogin = async (userInput: UserAccountInput) => {
-  const response = await fetchInstance.post(getPostUserLoginPath(), userInput);
+  const response = await fetchInstance.post<PostUserLoginResponse>(
+    getPostUserLoginPath(),
+    userInput,
+  );
 
   return response.data;
 };

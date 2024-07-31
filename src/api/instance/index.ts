@@ -46,6 +46,11 @@ export const fetchWithToken = initInstance({
   },
 });
 
+fetchWithToken.interceptors.response.use(function (error) {
+  alert(JSON.stringify(error));
+  return Promise.reject(error);
+});
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -10,7 +10,7 @@ export interface PostWishlistResponseData {
   productId: 1;
 }
 
-export const getPostWishlistPath = () => `${BASE_URL}/api/wishlist`;
+export const getPostWishlistPath = () => `${BASE_URL}/api/wishes`;
 
 export const postWishlist = async (params: PostWishlistRequestParams) => {
   const response = await fetchWithToken.post<PostWishlistResponseData>(
