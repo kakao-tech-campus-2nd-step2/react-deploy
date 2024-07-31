@@ -1,0 +1,51 @@
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches: [ test-production ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build
+        env:
+          VITE_BASE_URL: $${{ secrets.MOCK_URL }}
+          VITE_URLS: ${{ secrets.SERVER_URLS }}
+        run: yarn run build
+
+      - name: Move files from dist to web root
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_URL }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            rm -rf ${{ secrets.WEB_PUBLIC }}/dist ${{ secrets.WEB_PUBLIC }}/assets ${{ secrets.WEB_PUBLIC }}/index.html
+
+      - name: Copy files to Lightsail
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_URL }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: "dist/*"
+          target: ${{ secrets.WEB_PUBLIC }}/
+
+      - name: Move files from dist to web root
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_URL }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            mv ${{ secrets.WEB_PUBLIC }}/dist/* ${{ secrets.WEB_PUBLIC }}/
