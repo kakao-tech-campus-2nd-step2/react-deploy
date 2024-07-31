@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { ProductOptionResponse } from '@internalTypes/responseTypes';
 import { ProductOptionsRequest } from '@internalTypes/requestTypes';
-
 import { AxiosError } from 'axios';
 import axiosInstance from '@apis/instance';
 import { PRODUCTS_PATHS } from '@apis/path';
@@ -14,7 +13,9 @@ export const getProductsOptions = async (params?: ProductOptionsRequest): Promis
   return res.data;
 };
 
-export const useGetProductsOption = ({ productId }: ProductOptionsRequest) =>
+export const useGetProductsOption = ({
+  productId,
+}: ProductOptionsRequest): UseQueryResult<ProductOptionResponse, AxiosError> =>
   useQuery<ProductOptionResponse, AxiosError>({
     queryKey: ['productOption', productId],
     queryFn: () => getProductsOptions({ productId }),

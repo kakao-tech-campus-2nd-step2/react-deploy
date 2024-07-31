@@ -12,19 +12,22 @@ export const productsMockHandler = [
     const { productId } = req.params;
     return res(ctx.json(PRODUCTS_MOCK_DATA.content.find((data) => productId === String(data.id))));
   }),
-  rest.get(`${BASE_URL}${PRODUCTS_PATHS.PRODUCTS_OPTIONS(':productId')}`, (req, res, ctx) => {
-    const { productId } = req.params;
-    if (productId === '3245119') {
-      return res(
-        ctx.json({
-          options: {
-            giftOrderLimit: 100,
-          },
-        }),
-      );
-    }
-    return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
-  }),
+  rest.get(`${BASE_URL}${PRODUCTS_PATHS.PRODUCTS_OPTIONS(':productId')}`, (_, res, ctx) =>
+    res(
+      ctx.json([
+        {
+          id: 1,
+          name: '옵션이름1',
+          quantity: 100,
+        },
+        {
+          id: 2,
+          name: '옵션이름2',
+          quantity: 100,
+        },
+      ]),
+    ),
+  ),
 ];
 
 const PRODUCTS_MOCK_DATA = {

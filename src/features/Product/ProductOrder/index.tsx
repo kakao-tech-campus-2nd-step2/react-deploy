@@ -5,26 +5,24 @@ import { ROUTE_PATH } from '@routes/path';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@context/auth/useAuth';
 import { Button } from '@components/common';
-import QuantitySelector from './QuantitySelector';
-
-interface ProductOrderProps {
-  name?: string;
-  giftOrderLimit?: number;
-}
+import { useGetProductsOption } from '@apis/products/hooks/useGetProductsOption';
+import OptionItem from './OptionItem';
+import QuantitySelector from './OptionItem/QuantitySelector';
 
 export interface QuantityValues {
   count: number;
 }
 
-export default function ProductOrder({ name, giftOrderLimit }: ProductOrderProps) {
+export default function ProductOrder() {
+  const { productId } = useParams<{ productId: string }>();
+  const { data: productOption } = useGetProductsOption({ productId });
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const { watch, setValue } = useForm<QuantityValues>({
     defaultValues: {
       count: 1,
     },
   });
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  const { productId } = useParams<{ productId: string }>();
 
   const handleOrderClick = () => {
     const data = { count: watch('count') };
@@ -38,10 +36,12 @@ export default function ProductOrder({ name, giftOrderLimit }: ProductOrderProps
 
   return (
     <ProductOrderContainer>
-      <QuantitySelectorContainer>
-        <Title data-testid="option-name">{name}</Title>
-        <QuantitySelector giftOrderLimit={giftOrderLimit} setValue={setValue} />
-      </QuantitySelectorContainer>
+      <OptionsContainer>
+        {productOption?.map((option) => (
+          <OptionItem name={option.name} quantity={option.quantity} setValue={setValue} />
+        ))}
+      </OptionsContainer>
+
       <div>
         <TotalAmount>
           <dl>
@@ -64,18 +64,9 @@ const ProductOrderContainer = styled.aside`
   max-width: 360px;
 `;
 
-const QuantitySelectorContainer = styled.div`
+const OptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 12px 14px 16px;
-  border: 1px solid rgb(237, 237, 237);
-  border-radius: 2px;
-`;
-
-const Title = styled.p`
-  font-weight: 700;
-  margin-bottom: 12px;
 `;
 
 const TotalAmount = styled.div`

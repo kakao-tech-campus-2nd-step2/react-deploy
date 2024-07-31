@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Button, useNumberInput, HStack } from '@chakra-ui/react';
 import { UseFormSetValue } from 'react-hook-form';
-import { QuantityValues } from '..';
+import { QuantityValues } from '../../index';
 
 interface QuantitySelectorProps {
-  giftOrderLimit?: number;
+  quantity?: number;
   setValue: UseFormSetValue<QuantityValues>;
 }
 
-export default function QuantitySelector({ giftOrderLimit, setValue }: QuantitySelectorProps) {
+export default function QuantitySelector({ quantity, setValue }: QuantitySelectorProps) {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, valueAsNumber } = useNumberInput({
     step: 1,
     defaultValue: 1,
     min: 1,
-    max: giftOrderLimit,
+    max: quantity,
   });
 
   const [inputValue, setInputValue] = useState<string>('1');

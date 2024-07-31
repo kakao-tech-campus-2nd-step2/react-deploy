@@ -1,26 +1,25 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { useGetProductsDetail } from '@apis/products/hooks/useGetProductsDetail';
 import { Image } from '@chakra-ui/react';
 import { Container } from '@components/common';
 import WishButton from '../WishButton';
 
 const IMAGE_SIZE = 450;
 
-interface ProductInfoProps {
-  name?: string;
-  image?: string;
-  price?: number;
-}
+export default function ProductInfo() {
+  const { productId } = useParams<{ productId: string }>();
+  const { data } = useGetProductsDetail({ productId });
 
-export default function ProductInfo({ name, image, price }: ProductInfoProps) {
   return (
     <ProductContainer>
       <article>
         <Container justifyContent="space-between">
-          <Image src={image} maxW={IMAGE_SIZE} maxH={IMAGE_SIZE} mr={6} data-testid="product-image" />
+          <Image src={data?.imageUrl} maxW={IMAGE_SIZE} maxH={IMAGE_SIZE} mr={6} data-testid="product-image" />
           <div>
-            <ProductTitle data-testid="product-name">{name}</ProductTitle>
-            <ProductPrice data-testid="product-price">{price}원</ProductPrice>
+            <ProductTitle data-testid="product-name">{data?.name}</ProductTitle>
+            <ProductPrice data-testid="product-price">{data?.price}원</ProductPrice>
             <GiftInfo>
               <hr />
               <p>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</p>

@@ -16,7 +16,7 @@ export const PRODUCTS_PATHS = {
   PRODUCTS: (params: GetProductsRequest) =>
     `${API_BASE}/products?page=${params.page}&size=${params.size}&sort=${params.sort}&categoryId=${params.categoryId}`,
   PRODUCTS_DETAIL: (productId?: string) => `${API_BASE}/products/${productId}`,
-  PRODUCTS_OPTIONS: (productId?: string) => `${API_BASE_KAKAO}/products/${productId}/options`,
+  PRODUCTS_OPTIONS: (productId?: string) => `${API_BASE}/products/${productId}/options`,
 };
 
 export const RANKING_PATHS = {
