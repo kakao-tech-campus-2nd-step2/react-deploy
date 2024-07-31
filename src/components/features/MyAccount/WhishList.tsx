@@ -45,7 +45,7 @@ export const Wishlist = () => {
     <Container maxW="container.md" py={8}>
       <Spacing height={4} />
       <VStack spacing={4}>
-        {data.wishlist.map((item: WishlistItem) => (
+        {data.contents.map((item: WishlistItem) => (
           <Fragment key={item.id}>
             <Box
               borderRadius="md"

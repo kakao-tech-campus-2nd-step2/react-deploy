@@ -21,7 +21,7 @@ describe('API 테스트', () => {
     const params = { categoryId: '2920', pageToken: '1', maxResults: 10 };
     const products = await getProducts(params);
 
-    expect(products.products).toEqual(PRODUCTS_MOCK_DATA.content);
+    expect(products.contents).toEqual(PRODUCTS_MOCK_DATA.content);
 
     expect(products.nextPageToken).toBeUndefined();
 
