@@ -1,4 +1,4 @@
-import type { CategoryData, OrderData, ProductData, ProductOptionsData } from '@/types';
+import type { CategoryData, ProductData, ProductOptionsData } from '@/types';
 
 export type RegisterUserRequest = {
   email: string;
@@ -42,24 +42,13 @@ export type OrderListRequestParams = {
 };
 
 export type PaginationResponseData<T> = {
-  products: T[];
+  contents: T[];
   nextPageToken?: string;
   pageInfo: {
     totalResults: number;
     resultsPerPage: number;
   };
 };
-
-export type PaginationRawResponse<T> = {
-  content: T[];
-  number: number;
-  totalElements: number;
-  size: number;
-  last: boolean;
-};
-
-export type ProductsResponseRawData = PaginationRawResponse<ProductData>;
-export type OrdersResponseRawData = PaginationRawResponse<OrderData>;
 
 export type ProductDetailRequestParams = {
   productId: string;
