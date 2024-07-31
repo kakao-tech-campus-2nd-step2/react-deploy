@@ -28,7 +28,7 @@ export const LoginPage = () => {
   const afterGetToken = (authToken: string) => {
     authSessionStorage.set(authToken);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+    const redirectUrl = queryParams.get('redirect') ?? `${process.env.PUBLIC_URL}/`;
     return window.location.replace(redirectUrl);
   };
 
