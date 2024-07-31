@@ -6,6 +6,7 @@ import { URLS } from '@/api';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import { apiSessionStorage, authSessionStorage } from '@/utils/storage';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -13,6 +14,13 @@ export const Header = () => {
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
+  };
+
+  const handleApiChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const url = e.target.value;
+    apiSessionStorage.set(url);
+    authSessionStorage.set('');
+    window.location.reload();
   };
 
   return (
@@ -25,7 +33,11 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
-          <Select placeholder="벡엔드 API" defaultValue={URLS[0].url}>
+          <Select
+            placeholder="벡엔드 API"
+            value={apiSessionStorage.get()}
+            onChange={handleApiChange}
+          >
             {URLS.map((info) => (
               <option key={info.id} value={info.url}>
                 {info.name}
