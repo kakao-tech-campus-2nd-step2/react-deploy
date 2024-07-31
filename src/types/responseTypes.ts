@@ -2,9 +2,9 @@ import { ProductData, MessageCardTemplateData, ThemeData, CategoryData } from '.
 
 export type CategoriesResponse = CategoryData[];
 
-// export interface RankingProductsResponse {
-//   products: ProductData[];
-// }
+export interface RankingProductsResponse {
+  products: ProductData[];
+}
 
 export interface WishProduct {
   id: number;

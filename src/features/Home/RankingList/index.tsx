@@ -3,10 +3,7 @@ import styled from '@emotion/styled';
 import { Grid, Button, GoodsItem, StatusHandler } from '@components/common';
 import useToggle from '@hooks/useToggle';
 import { useFilter } from '@context/filter/useFilter';
-import { useQuery } from '@tanstack/react-query';
-import { RankingProductsResponse } from '@internalTypes/responseTypes';
-import { getRankingProducts } from '@apis/ranking';
-import { AxiosError } from 'axios';
+import { useGetRankingProducts } from '@apis/ranking/useGetRankingProducts';
 
 const INITIAL_DISPLAY_COUNT = 6;
 const GRID_GAP = 14;
@@ -15,10 +12,9 @@ const GRID_COLUMNS = 6;
 export default function RankingList() {
   const [showAll, toggleShowAll] = useToggle(false);
   const { selectedTarget, selectedWish } = useFilter();
-
-  const { isLoading, isError, error, data } = useQuery<RankingProductsResponse, AxiosError>({
-    queryKey: ['rankingProducts', selectedTarget, selectedWish],
-    queryFn: () => getRankingProducts({ targetType: selectedTarget, rankType: selectedWish }),
+  const { isLoading, isError, error, data } = useGetRankingProducts({
+    targetType: selectedTarget,
+    rankType: selectedWish,
   });
 
   const displayedProducts = showAll ? data?.products : data?.products.slice(0, INITIAL_DISPLAY_COUNT);
