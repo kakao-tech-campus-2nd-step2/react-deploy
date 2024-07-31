@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { ProductOptionsRequest } from '@internalTypes/requestTypes';
 import { ProductOptionResponse } from '@internalTypes/responseTypes';
+import { ProductOptionsRequest } from '@internalTypes/requestTypes';
+
 import { AxiosError } from 'axios';
 import axiosInstance from '@apis/instance';
 import { PRODUCTS_PATHS } from '@apis/path';

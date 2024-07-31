@@ -40,6 +40,13 @@ export interface PointUpdateRequest {
   point: number;
 }
 
+export interface GetProductsRequest {
+  page: number;
+  size: number;
+  sort: string;
+  categoryId: number;
+}
+
 export interface ProductOrderRequest {
   productId: number;
   productOptionId: number;

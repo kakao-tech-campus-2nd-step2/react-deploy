@@ -1,3 +1,5 @@
+import { GetProductsRequest } from '@internalTypes/requestTypes';
+
 const API_BASE_KAKAO = 'api/v1';
 const API_BASE = '/api';
 
@@ -11,6 +13,8 @@ export const MEMBERS_PATHS = {
 };
 
 export const PRODUCTS_PATHS = {
+  PRODUCTS: (params: GetProductsRequest) =>
+    `${API_BASE}/products?page=${params.page}&size=${params.size}&sort=${params.sort}&categoryId=${params.categoryId}`,
   PRODUCTS_DETAIL: (productId?: string) => `${API_BASE_KAKAO}/products/${productId}/detail`,
   PRODUCTS_OPTIONS: (productId?: string) => `${API_BASE_KAKAO}/products/${productId}/options`,
 };

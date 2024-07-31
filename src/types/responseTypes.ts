@@ -2,9 +2,9 @@ import { ProductData, MessageCardTemplateData, ThemeData, CategoryData } from '.
 
 export type CategoriesResponse = CategoryData[];
 
-export interface RankingProductsResponse {
-  products: ProductData[];
-}
+// export interface RankingProductsResponse {
+//   products: ProductData[];
+// }
 
 export interface WishProduct {
   id: number;
@@ -47,15 +47,6 @@ export interface AddWishResponse {
 
 export interface ThemesResponse {
   themes: ThemeData[];
-}
-
-export interface ThemeProductsResponse {
-  products: ProductData[];
-  nextPageToken: string | null;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
-  };
 }
 
 export interface ProductDetailResponse {
@@ -108,13 +99,13 @@ export interface MessageCardTemplatesResponse {
   templates: MessageCardTemplateData[];
 }
 
-export interface MyAccountInfoResponse {
-  id: number;
-  name: string;
-  birthday?: string;
-  profileImageURL: string;
-  point: number;
-}
+// export interface MyAccountInfoResponse {
+//   id: number;
+//   name: string;
+//   birthday?: string;
+//   profileImageURL: string;
+//   point: number;
+// }
 
 export interface MyAccountWishProductsResponse {
   products: ProductData[];
@@ -125,6 +116,37 @@ export interface MyAccountWishProductsResponse {
   };
 }
 
+// Member
 export interface MemberResponse {
   access_token: string;
+}
+
+// products
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface Pageable {
+  offset: number;
+  sort: Sort;
+  paged: boolean;
+  pageSize: number;
+  pageNumber: number;
+  unpaged: boolean;
+}
+
+export interface GetProductsResponse {
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: ProductData[];
+  number: number;
+  sort: Sort;
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  pageable: Pageable;
+  empty: boolean;
 }

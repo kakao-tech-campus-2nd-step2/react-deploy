@@ -24,7 +24,7 @@ export type ProductData = {
   name: string;
   price: number;
   imageUrl: string;
-  categoryId: number;
+  category: Omit<CategoryData, 'color'>;
 };
 
 export type ProductOptionsData = {

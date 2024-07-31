@@ -1,25 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { GoodsItem, Grid, CenteredContainer, StatusHandler } from '@components/common';
 import { Link, useParams } from 'react-router-dom';
-import useGoodsItemListQuery from '@hooks/useGoodsItemListQuery';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
-import { ThemeProductsRequest } from '@internalTypes/requestTypes';
 import { getDynamicPath } from '@utils/getDynamicPath';
 import { ROUTE_PATH } from '@routes/path';
+import { useGetProducts } from '@apis/products/hooks/useGetProducts';
 
 const GRID_GAP = 14;
 const GRID_COLUMNS = 4;
-const MAX_RESULTS = 20;
+const MAX_SIZE = 10;
 
 export default function GoodsItemList() {
-  const { themeKey } = useParams<Pick<ThemeProductsRequest, 'themeKey'>>();
-  const { products, isLoading, isError, error, fetchNextPage, isFetchingNextPage, hasNextPage } = useGoodsItemListQuery(
-    { themeKey, rowsPerPage: MAX_RESULTS },
-  );
+  const { categoryId } = useParams<{ categoryId: string }>();
+  const {
+    data: products,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useGetProducts({
+    categoryId: Number(categoryId),
+    size: MAX_SIZE,
+    sort: 'name,asc',
+  });
   const ref = useInfiniteScroll({ condition: hasNextPage && !isFetchingNextPage, fetchNextPage });
 
-  const isEmpty = products.length === 0;
+  const isEmpty = products?.pages[0].content.length === 0;
 
   return (
     <GoodsItemListContainer>
@@ -32,12 +41,12 @@ export default function GoodsItemList() {
           isFetchingNextPage={isFetchingNextPage}
         >
           <Grid gap={GRID_GAP} columns={GRID_COLUMNS}>
-            {products.map((product) => (
+            {products?.pages[0].content.map((product) => (
               <Link key={product.id} to={getDynamicPath(ROUTE_PATH.PRODUCT, { productId: product.id.toString() })}>
                 <GoodsItem
-                  imageSrc={product.imageURL}
-                  amount={product.price.basicPrice}
-                  subtitle={product.brandInfo.name}
+                  imageSrc={product.imageUrl}
+                  amount={product.price}
+                  subtitle={product.category.name}
                   title={product.name}
                 />
               </Link>
