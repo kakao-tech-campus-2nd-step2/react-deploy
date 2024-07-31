@@ -30,7 +30,7 @@ export type ProductRequestParams = {
 };
 
 export type CreateOrderRequestParams = {
-  optionId: string;
+  optionId: string | number;
   quantity: number;
   message: string;
 };

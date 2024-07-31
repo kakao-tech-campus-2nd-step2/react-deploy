@@ -143,11 +143,11 @@ export const deleteFromWishlist = async (productId: number): Promise<void> => {
   }
 };
 
-export const createOrder = async (order: CreateOrderRequestParams) => {
+export const createOrder = async (order: CreateOrderRequestParams): Promise<OrderData> => {
   try {
-    const response = await fetchInstance.post<OrderData>('/api/orders', order);
+    const response = await fetchInstance.post('/api/orders', order);
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error('주문하기에 실패했습니다.');
   }

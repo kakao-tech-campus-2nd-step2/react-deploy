@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
+import { useMutation } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { createOrder } from '@/api/utils';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -16,6 +18,11 @@ type Props = {
 
 export const OrderForm = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
+  const createOrderMutation = useMutation({
+    mutationFn: createOrder,
+    onSuccess: () => alert('주문이 완료되었습니다.'),
+    onError: () => alert('주문에 실패했습니다.'),
+  });
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -36,8 +43,11 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log('values', values);
-    alert('주문이 완료되었습니다.');
+    createOrderMutation.mutate({
+      optionId: values.productId,
+      message: values.messageCardTextMessage,
+      quantity: values.productQuantity,
+    });
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
