@@ -24,7 +24,7 @@ export const Image = ({
   const [isLoad, setIsLoad] = useState(false);
 
   return (
-    <div css={backgroundStyle(isLazy, isLoad)}>
+    <div css={backgroundStyle(isLazy, isLoad, width)}>
       <img
         css={imageStyle(isLoad, ratio, radius, width, isLazy)}
         alt={alt}
