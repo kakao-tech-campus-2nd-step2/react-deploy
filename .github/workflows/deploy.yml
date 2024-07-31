@@ -32,7 +32,9 @@ jobs:
         run: npm i
 
       - name: Build
-        run: npm run build
+        run: |
+          npm run build
+          cp ./build/index.html ./build/404.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
