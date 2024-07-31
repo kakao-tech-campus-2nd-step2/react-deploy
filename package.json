@@ -5,7 +5,7 @@
   "homepage": "https://jasper200207.github.io/react-deploy/",
   "scripts": {
     "start": "craco start",
-    "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
+    "start:mock": "cross-env REACT_APP_RUN_MSW=true cross-env PUBLIC_URL=/ npm run start",
     "build": "craco build",
     "test": "craco test --watchAll",
     "test:mock": "cross-env REACT_APP_RUN_MSW=true npm run test",
