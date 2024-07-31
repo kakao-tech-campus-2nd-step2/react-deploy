@@ -10,7 +10,7 @@ export interface User {
 export const getUsersPath = () => `${BASE_URL}/api/users`;
 export const getUserPath = (id: string) => `${BASE_URL}/api/users/${id}`;
 
-export const getLogin = async (id: string, password: string) => {
+export const login = async (id: string, password: string) => {
     try{
         const response = await axios.post(getUserPath(id), {
             password,
@@ -22,7 +22,7 @@ export const getLogin = async (id: string, password: string) => {
     }
 }
 
-export const getSignUp = async (id: string, password: string) => {
+export const signUp = async (id: string, password: string) => {
     try{
         const response = await axios.post(getUsersPath(), {
             id,
