@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button, Input, useDisclosure } from '@chakra-ui/react';
@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import { login } from '@/api/services/auth/login';
-import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
 import { useLoginSuccess } from '@/pages/LoginPage/hooks/handleLoginSuccess';
 import { LoginFields, LoginSchema } from '@/schema/index';
 
@@ -22,8 +21,9 @@ export const LoginForm = () => {
   const { mutate, status } = useMutation({
     mutationFn: login,
     onSuccess: (data) => handleLoginSuccess(data),
-    onError: () => {
-      setAlertMessage(API_ERROR_MESSAGES.UNKNOWN_ERROR);
+    onError: (error) => {
+      setAlertMessage(error.message);
+      onOpen();
     },
   });
 
@@ -36,13 +36,10 @@ export const LoginForm = () => {
     },
   });
 
-  useEffect(() => {
-    if (alertMessage) {
-      onOpen();
-    } else {
-      onClose();
-    }
-  }, [alertMessage, onClose, onOpen]);
+  const handleCloseAlert = () => {
+    onClose();
+    setAlertMessage('');
+  };
 
   const handleSubmit = form.handleSubmit(
     () => mutate(form.getValues()),
@@ -51,6 +48,7 @@ export const LoginForm = () => {
         Object.values(errors).flatMap((error) => error.message)[0] || '';
 
       setAlertMessage(errorMessages);
+      onOpen();
     }
   );
 
@@ -79,7 +77,11 @@ export const LoginForm = () => {
         로그인
       </Button>
       {isOpen && (
-        <Alert message={alertMessage} isOpen={isOpen} onClose={onClose} />
+        <Alert
+          message={alertMessage}
+          isOpen={isOpen}
+          onClose={handleCloseAlert}
+        />
       )}
     </form>
   );

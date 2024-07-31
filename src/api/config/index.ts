@@ -25,7 +25,7 @@ AUTHROIZATION_API.interceptors.request.use(
   (request) => {
     const authInfo = authLocalStorage.get();
     if (authInfo) {
-      request.headers.Authorization = `Bearer ${authInfo.token}`;
+      request.headers.Authorization = `Bearer ${authInfo.accessToken}`;
     }
     return request;
   },

@@ -1,6 +1,5 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { LoginResponse } from '@/api/services/auth/login';
 import { authLocalStorage } from '@/utils/storage';
 
 import { UpDownDots } from '@/components/Loading/UpDownDots';
@@ -13,16 +12,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
 
-  const updateAuthInfo = useCallback((authToken?: LoginResponse) => {
+  const updateAuthInfo = useCallback((authToken?: AuthInfo) => {
     if (!authToken) {
       setAuthInfo(undefined);
       return;
     }
 
     setAuthInfo({
-      email: authToken.email,
-      name: getUsernameFromEmail(authToken.email),
-      token: authToken.token,
+      name: authToken.name,
+      accessToken: authToken.accessToken,
     });
   }, []);
 
@@ -47,9 +45,3 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
-
-function getUsernameFromEmail(email: string) {
-  const index = email.indexOf('@');
-
-  return email.slice(0, index);
-}

@@ -1,4 +1,4 @@
-import { LoginResponse } from '@/api/services/auth/login';
+import { AuthInfo } from '@/provider/auth/AuthContext';
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   const storageKey = `${key}`;
@@ -25,5 +25,5 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 export const authLocalStorage = initStorage('authInfo', localStorage);
 
 interface StorageKey {
-  authInfo?: LoginResponse;
+  authInfo?: AuthInfo;
 }
