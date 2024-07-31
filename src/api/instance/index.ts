@@ -4,13 +4,15 @@ import axios from 'axios';
 
 import { authSessionStorage, serverTypeSessionStorage } from '@/utils/storage';
 
-export const BASE_URL = {
-  mock: 'https://mock.example.com',
-  안재영: 'https://안재영.example.com',
-  유보민: 'https://유보민.example.com',
-  서지우: 'https://서지우.example.com',
-  강명덕: 'https://강명덕.example.com',
+export const BASE_URL_LIST = {
+  mock: 'https://api.example.com/',
+  안재영: 'https://AN.example.com',
+  유보민: 'https://U.example.com',
+  서지우: 'https://S.example.com',
+  강명덕: 'http://43.203.210.66:8080',
 } as const;
+
+export type BaseURL = keyof typeof BASE_URL_LIST;
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
@@ -26,9 +28,11 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-const serverType: keyof typeof BASE_URL = serverTypeSessionStorage.get() || 'mock';
+const serverType: BaseURL = serverTypeSessionStorage.get() || 'mock';
 
-const baseURL = BASE_URL[serverType];
+const baseURL = BASE_URL_LIST[serverType];
+
+export const BASE_URL = BASE_URL_LIST[serverType];
 
 export const fetchInstance = initInstance({
   baseURL,

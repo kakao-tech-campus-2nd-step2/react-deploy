@@ -2,18 +2,22 @@ import { useEffect, useState } from 'react';
 
 import { serverTypeSessionStorage } from '@/utils/storage';
 
-import type { BASE_URL } from '../api/instance/index';
+import type { BaseURL } from '../api/instance/index';
 
 export const useServer = () => {
-  const [server, setServer] = useState<keyof typeof BASE_URL>('mock');
+  const [server, setServer] = useState<BaseURL>('mock');
 
   useEffect(() => {
     const serverType = serverTypeSessionStorage.get();
 
-    if (serverType) setServer(serverType as keyof typeof BASE_URL);
+    if (serverType) setServer(serverType as BaseURL);
   }, []);
 
-  const chageServer = (serverType: keyof typeof BASE_URL) => {
+  // useEffect(() => {
+  //   if (server) serverTypeSessionStorage.set(server);
+  // }, [server]);
+
+  const chageServer = (serverType: BaseURL) => {
     setServer(serverType);
     serverTypeSessionStorage.set(serverType);
   };

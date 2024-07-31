@@ -5,10 +5,12 @@ import ReactDOM from 'react-dom/client';
 
 import App from '@/App';
 
+import { serverTypeSessionStorage } from './utils/storage';
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 async function deferRender() {
-  if (process.env.REACT_APP_RUN_MSW === 'true') {
+  if (serverTypeSessionStorage.get() === 'mock') {
     const { worker } = await import('./mocks/browser');
     await worker.start();
   }
