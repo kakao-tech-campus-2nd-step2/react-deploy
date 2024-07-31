@@ -1,6 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
+import { authSessionStorage } from '@/utils/storage';
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
@@ -12,6 +13,19 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
       ...config.headers,
     },
   });
+
+  instance.interceptors.request.use(
+    (config) => {
+      const token = authSessionStorage.get();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    },
+  );
 
   return instance;
 };

@@ -3,8 +3,7 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { IconButton, Input, useNumberInput } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import { BASE_URL } from '@/api/instance';
-import { authSessionStorage } from '@/utils/storage';
+import { addWish } from '@/api/wish';
 
 type Props = {
   name: string;
@@ -41,22 +40,18 @@ export const CountOptionItem = ({
   const wishhandler = async () => {
     setIsChecked((prev) => !prev);
     try {
-      const response = await fetch(`${BASE_URL}/api/wishes`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authSessionStorage.get()}`,
-        },
-        body: JSON.stringify({ productId }),
-      });
-      if (response.status === 201) {
+      const success = await addWish(productId);
+      if (success) {
         alert('관심 등록 완료');
       } else {
         alert('관심 등록 실패');
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('관심 등록 중 오류가 발생했습니다.');
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('알 수 없는 오류가 발생했습니다.');
+      }
     }
   };
 

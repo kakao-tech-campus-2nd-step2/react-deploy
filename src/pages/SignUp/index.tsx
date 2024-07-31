@@ -8,7 +8,7 @@ import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineText
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
-import { BASE_URL } from '@/api/instance';
+import { register } from '@/api/auth';
 
 export const SignUpPage = () => {
   const [id, setId] = useState('');
@@ -22,31 +22,17 @@ export const SignUpPage = () => {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/members/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: id,
-          password: password,
-        }),
-      });
+      const data = await register(id, password);
+      authSessionStorage.set(data.token);
 
-      if (response.status === 201) {
-        const data = await response.json();
-        authSessionStorage.set(data.token);
-
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-        window.location.replace(redirectUrl);
-      } else if (response.status === 400) {
-        alert('입력값이 올바르지 않습니다.\n 다시 시도해주세요.');
-      } else {
-        alert('회원가입에 실패했습니다.');
-      }
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      window.location.replace(redirectUrl);
     } catch (error) {
-      console.error('Error:', error);
-      alert('회원가입 중 오류가 발생했습니다.');
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('알 수 없는 오류가 발생했습니다.');
+      }
     }
   };
 

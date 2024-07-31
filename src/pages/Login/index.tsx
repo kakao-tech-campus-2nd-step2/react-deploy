@@ -9,7 +9,7 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 import { RouterPath } from '@/routes/path';
-import { BASE_URL } from '@/api/instance';
+import { login } from '@/api/auth';
 
 export const LoginPage = () => {
   const [id, setId] = useState('');
@@ -24,31 +24,21 @@ export const LoginPage = () => {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/members/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: id,
-          password: password,
-        }),
-      });
+      const data = await login(id, password);
+      authSessionStorage.set(data.token);
 
-      if (response.status === 200) {
-        const data = await response.json();
-        authSessionStorage.set(data.token);
-
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-        window.location.replace(redirectUrl);
-      } else if (response.status === 403) {
-        alert('아이디 또는 비밀번호가 잘못되었습니다.');
-      } else {
-        alert('로그인에 실패했습니다.');
-      }
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      window.location.replace(redirectUrl);
     } catch (error) {
-      console.error('Error:', error);
-      alert('로그인 중 오류가 발생했습니다.');
+      if (error instanceof Error) {
+        if (error.message === '아이디 또는 비밀번호가 잘못되었습니다.') {
+          alert('아이디 또는 비밀번호가 잘못되었습니다.');
+        } else {
+          alert('로그인에 실패했습니다.');
+        }
+      } else {
+        alert('알 수 없는 오류가 발생했습니다.');
+      }
     }
   };
 

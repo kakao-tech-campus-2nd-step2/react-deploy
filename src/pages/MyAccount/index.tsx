@@ -6,6 +6,7 @@ import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 import { Container, VStack, Box, CloseButton, Text } from '@chakra-ui/react';
+import { getWishList, removeWish } from '@/api/wish';
 
 type WishItem = {
   id: number;
@@ -20,12 +21,7 @@ export const MyAccountPage = () => {
   useEffect(() => {
     const fetchWishList = async () => {
       try {
-        const response = await fetch('/api/wishes', {
-          headers: {
-            Authorization: `Bearer ${authSessionStorage.get()}`,
-          },
-        });
-        const data = await response.json();
+        const data = await getWishList();
         setWishList(data);
       } catch (error) {
         console.error('Error fetching wish list:', error);
@@ -44,13 +40,8 @@ export const MyAccountPage = () => {
 
   const handleRemoveWish = async (wishId: number) => {
     try {
-      const response = await fetch(`/api/wishes/${wishId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${authSessionStorage.get()}`,
-        },
-      });
-      if (response.status === 204) {
+      const success = await removeWish(wishId);
+      if (success) {
         setWishList((prev) => prev.filter((item) => item.id !== wishId));
       } else {
         alert('관심 상품 삭제 실패');
