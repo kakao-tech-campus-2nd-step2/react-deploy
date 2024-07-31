@@ -106,11 +106,11 @@ export const URLS: URL[] = [
   {
     id: 1,
     name: '이풍헌',
-    url: 'http://15.165.74.97:8080',
+    url: 'https://do-free.duckdns.org/canyos',
   },
   {
     id: 2,
     name: '정지민',
-    url: 'http://43.203.200.130:8080',
+    url: 'https://do-free.duckdns.org/stopmin',
   },
 ];
