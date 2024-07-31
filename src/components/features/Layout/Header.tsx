@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { fetchInstance } from '@/api/instance';
+import { fetchInstance, queryClient } from '@/api/instance';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -17,7 +17,10 @@ const BACKEND_URLS: { [key: string]: string } = {
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
-  const [selectedOption, setSelectedOption] = useState('백엔드 API 선택');
+  const [selectedName, setSelectedName] = useState(() => {
+    const currentBaseUrl = fetchInstance.defaults.baseURL;
+    return Object.keys(BACKEND_URLS).find((key) => BACKEND_URLS[key] === currentBaseUrl);
+  });
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
@@ -25,9 +28,11 @@ export const Header = () => {
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
-    setSelectedOption(selectedValue);
+    setSelectedName(selectedValue);
     fetchInstance.defaults.baseURL = BACKEND_URLS[selectedValue];
-    console.log(fetchInstance.defaults.baseURL);
+    queryClient.invalidateQueries().then(() => {
+      navigate(RouterPath.home);
+    });
   };
 
   return (
@@ -40,7 +45,7 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
-          <Select onChange={handleSelectChange} value={selectedOption}>
+          <Select onChange={handleSelectChange} value={selectedName}>
             {Object.keys(BACKEND_URLS).map((name) => (
               <option key={name} value={name}>
                 {name}
