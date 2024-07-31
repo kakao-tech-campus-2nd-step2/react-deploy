@@ -16,29 +16,13 @@ export interface WishProduct {
   };
 }
 
-// export interface GetWishesResponse {
-//   content: WishProduct[];
-//   pageable: {
-//     sort: {
-//       sorted: boolean;
-//       unsorted: boolean;
-//       empty: boolean;
-//     };
-//     pageNumber: number;
-//     pageSize: number;
-//     offset: number;
-//     unpaged: boolean;
-//     paged: boolean;
-//   };
-//   totalPages: number;
-//   totalElements: number;
-//   last: boolean;
-//   number: number;
-//   size: number;
-//   numberOfElements: number;
-//   first: boolean;
-//   empty: boolean;
-// }
+export interface OrderResponse {
+  id: number;
+  optionId: number;
+  quantity: number;
+  orderDateTime: string;
+  message: string;
+}
 
 export interface Wish {
   wishId: number;
@@ -97,14 +81,6 @@ export type ProductOptionResponse = ProductOption[];
 export interface MessageCardTemplatesResponse {
   templates: MessageCardTemplateData[];
 }
-
-// export interface MyAccountInfoResponse {
-//   id: number;
-//   name: string;
-//   birthday?: string;
-//   profileImageURL: string;
-//   point: number;
-// }
 
 export interface MyAccountWishProductsResponse {
   products: ProductData[];

@@ -23,7 +23,7 @@ export default function QuantitySelector({ quantity, setValue }: QuantitySelecto
   const input = getInputProps({ 'data-testid': 'option-input' });
 
   useEffect(() => {
-    setValue('count', valueAsNumber);
+    setValue('quantity', valueAsNumber);
   }, [valueAsNumber, setValue]);
 
   const handleIncrement = () => {

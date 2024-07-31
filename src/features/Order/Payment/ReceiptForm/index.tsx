@@ -1,19 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Checkbox, Select, Input } from '@chakra-ui/react';
 import { Button } from '@components/common';
 import { useFormContext } from 'react-hook-form';
-import { OrderDataFormValues } from '@/pages/Order';
+import { OrderDataFormValues } from '@pages/Order';
+import { useNavigate } from 'react-router-dom';
+import { useSessionStorage } from '@hooks/useSessionStorage';
+import { ROUTE_PATH } from '@routes/path';
+import { useOrders } from '@apis/orders/useOrders';
 import { validatePayment } from './validation';
 
+const SUCCESS_ORDER = '주문이 완료되었습니다.';
+const FAIL_ORDER = '주문이 실패하였습니다.';
+
 export default function ReceiptForm() {
+  const [storedValue, setValue] = useSessionStorage('orderHistory', '');
+  const navigate = useNavigate();
   const { register, watch, handleSubmit } = useFormContext<OrderDataFormValues>();
   const { hasCashReceipt } = watch();
+  const { mutate } = useOrders();
 
   const onSubmit = (data: OrderDataFormValues) => {
     const errorMessage = validatePayment(data.message, data.hasCashReceipt, data.cashReceiptNumber);
     if (errorMessage) return alert(errorMessage);
-    return alert('주문이 완료되었습니다.');
+
+    const { optionId, quantity } = JSON.parse(storedValue);
+
+    mutate(
+      { message: data.message, optionId, quantity },
+      {
+        onSuccess: () => {
+          alert(SUCCESS_ORDER);
+          navigate(ROUTE_PATH.HOME);
+        },
+        onError: () => alert(FAIL_ORDER),
+      },
+    );
   };
 
   return (

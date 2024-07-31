@@ -8,18 +8,18 @@ const IMAGE_SIZE = 86;
 export default function Gift() {
   const data = sessionStorage.getItem('orderHistory');
   const parsedData = data ? JSON.parse(data) : null;
-  const productId = parsedData?.id;
-  const count = parsedData?.count;
+  const productId = parsedData?.productId;
+  const quantity = parsedData?.quantity;
 
   const { data: productDetailData } = useGetProductsDetail({ productId });
 
   return (
     <GiftContainer>
-      <Image src={productDetailData?.detail.imageURL} maxW={IMAGE_SIZE} mr={4} />
+      <Image src={productDetailData?.imageUrl} maxW={IMAGE_SIZE} mr={4} />
       <div>
-        <GiftName>{productDetailData?.detail.brandInfo.name}</GiftName>
+        <GiftName>{productDetailData?.category.name}</GiftName>
         <GiftInfo>
-          {productDetailData?.detail.name} X {count}개
+          {productDetailData?.name} X {quantity}개
         </GiftInfo>
       </div>
     </GiftContainer>

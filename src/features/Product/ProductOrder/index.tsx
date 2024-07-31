@@ -7,10 +7,9 @@ import { useAuth } from '@context/auth/useAuth';
 import { Button } from '@components/common';
 import { useGetProductsOption } from '@apis/products/hooks/useGetProductsOption';
 import OptionItem from './OptionItem';
-import QuantitySelector from './OptionItem/QuantitySelector';
 
 export interface QuantityValues {
-  count: number;
+  quantity: number;
 }
 
 export default function ProductOrder() {
@@ -20,14 +19,14 @@ export default function ProductOrder() {
   const navigate = useNavigate();
   const { watch, setValue } = useForm<QuantityValues>({
     defaultValues: {
-      count: 1,
+      quantity: 1,
     },
   });
 
   const handleOrderClick = () => {
-    const data = { count: watch('count') };
-    if (productId) {
-      const orderHistory = { id: Number(productId), count: data.count };
+    const data = { quantity: watch('quantity') };
+    if (productOption) {
+      const orderHistory = { productId: Number(productId), optionId: productOption[0].id, quantity: data.quantity };
       sessionStorage.setItem('orderHistory', JSON.stringify(orderHistory));
       const targetPath = isAuthenticated ? ROUTE_PATH.ORDER : ROUTE_PATH.LOGIN;
       navigate(targetPath);
@@ -41,7 +40,6 @@ export default function ProductOrder() {
           <OptionItem key={option.id} name={option.name} quantity={option.quantity} setValue={setValue} />
         ))}
       </OptionsContainer>
-
       <div>
         <TotalAmount>
           <dl>

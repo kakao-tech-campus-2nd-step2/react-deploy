@@ -29,3 +29,7 @@ export const WISH_PATHS = {
   ADD_WISH: `${API_BASE}/wishes`,
   DELETE_WISH: `${API_BASE}/wishes`,
 };
+
+export const ORDER_PATHS = {
+  ORDERS: `${API_BASE}/orders`,
+};
