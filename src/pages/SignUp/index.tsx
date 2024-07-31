@@ -8,6 +8,7 @@ import { signUp } from '@/api/hooks/useGetUser';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
 export default () => {
@@ -22,7 +23,7 @@ export default () => {
     signUp(data.id, data.password).then((result) => {
       if (result) {
         alert('회원가입이 완료되었습니다.');
-        navigate('/login', { replace: true });
+        navigate(getDynamicPath.login(), { replace: true });
       } else {
         alert('회원가입에 실패했습니다.');
       }

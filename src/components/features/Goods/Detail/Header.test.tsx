@@ -5,7 +5,7 @@ import { queryClient } from '@/api/instance';
 
 import { GoodsDetailHeader } from './Header';
 
-test('render GoodsDetailHeader', async () => {
+it('should render the GoodsDetailHeader', async () => {
   const productId = 3245119;
   render(
     <QueryClientProvider client={queryClient}>
