@@ -14,9 +14,7 @@ export const PaymentSection = ({
 }: {
   orderHistory: OrderHistory;
 }) => {
-  const { data: productDetail } = useProductDetail({
-    productId: orderHistory.productId,
-  });
+  const { data: productDetail } = useProductDetail(orderHistory.productId);
 
   const totalPrice = productDetail.price * orderHistory.productQuantity;
 

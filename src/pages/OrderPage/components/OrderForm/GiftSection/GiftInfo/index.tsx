@@ -8,9 +8,7 @@ import { Image } from '@/components/ui/Image/Default';
 import { Container } from '@/components/ui/Layout/Container';
 
 export const GiftInfo = ({ orderHistory }: { orderHistory: OrderHistory }) => {
-  const { data: productDetail } = useProductDetail({
-    productId: orderHistory.productId,
-  });
+  const { data: productDetail } = useProductDetail(orderHistory.productId);
 
   return (
     <Container flexDirection="column" gap="1rem" css={{ padding: '1rem' }}>
