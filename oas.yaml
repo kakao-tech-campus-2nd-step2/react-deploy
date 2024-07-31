@@ -1,0 +1,462 @@
+openapi: 3.0.1
+info:
+  title: 카카오 선물하기 API
+  description: 카카오 선물하기 서비스의 Rest API 명세입니다.
+  version: 1.0.0
+
+servers:
+  - url: https://api.example.com
+
+paths:
+  /category:
+    get:
+      summary: 모든 카테고리 가져오기
+      description: 모든 카테고리 목록을 가져옵니다.
+      responses:
+        '200':
+          description: 카테고리 목록.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryData'
+        '500':
+          description: 서버 내부 오류
+
+  /products:
+    get:
+      summary: 카테고리별 제품 가져오기
+      description: 카테고리별 제품 목록을 가져옵니다.
+      parameters:
+        - in: query
+          name: size
+          schema:
+            type: integer
+            example: 10
+          required: true
+          description: 페이지당 제품 수
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: 페이지 번호
+        - in: query
+          name: sort
+          schema:
+            type: string
+            example: "price,asc"
+          required: false
+          description: 정렬 기준 (property,(asc|desc)). 기본 정렬 순서는 오름차순입니다.
+        - in: query
+          name: categoryId
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: 카테고리 ID
+      responses:
+        '200':
+          description: 카테고리별 제품 목록.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryProductsResponse'
+        '500':
+          description: 서버 내부 오류
+
+  /products/{productId}:
+    get:
+      summary: 제품 상세 정보 가져오기
+      description: 특정 제품의 상세 정보를 ID로 가져옵니다.
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: 제품 ID
+      responses:
+        '200':
+          description: 제품 상세 정보.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductData'
+        '404':
+          description: 제품을 찾을 수 없음
+        '500':
+          description: 서버 내부 오류
+
+  /order:
+    post:
+      summary: 주문하기
+      description: 특정 제품을 주문합니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                  example: 1
+              required:
+                - productId
+      responses:
+        '204':
+          description: 주문이 성공적으로 처리됨, 내용 없음.
+        '400':
+          description: 잘못된 요청, 유효하지 않은 productId.
+        '500':
+          description: 서버 내부 오류
+
+  /members/login:
+    post:
+      summary: 로그인
+      description: 이메일과 비밀번호로 로그인합니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "password123"
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "jwt-token"
+        '401':
+          description: 인증 실패, 유효하지 않은 자격 증명
+        '500':
+          description: 서버 내부 오류
+
+  /members/register:
+    post:
+      summary: 회원가입
+      description: 이메일과 비밀번호로 새 사용자를 등록합니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "password123"
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: 회원가입 성공
+        '400':
+          description: 잘못된 요청, 유효하지 않은 입력
+        '500':
+          description: 서버 내부 오류
+
+  /wishes:
+    get:
+      summary: 좋아요한 제품 가져오기
+      description: 사용자가 좋아요한 제품 목록을 가져옵니다.
+      responses:
+        '200':
+          description: 좋아요한 제품 목록.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WishedProductsResponse'
+        '500':
+          description: 서버 내부 오류
+
+    post:
+      summary: 제품을 위시리스트에 추가하기
+      description: 사용자의 위시리스트에 제품을 추가합니다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                  example: 1
+              required:
+                - productId
+      responses:
+        '201':
+          description: 위시리스트 항목이 성공적으로 추가됨.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  wishId:
+                    type: integer
+                    example: 1
+                  productId:
+                    type: integer
+                    example: 1
+        '400':
+          description: 잘못된 요청, 유효하지 않은 productId.
+        '500':
+          description: 서버 내부 오류
+
+  /wishes/{wishId}:
+    delete:
+      summary: 위시리스트에서 제품 제거하기
+      description: 사용자의 위시리스트에서 제품을 제거합니다.
+      parameters:
+        - in: path
+          name: wishId
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: 위시리스트 항목 ID
+      responses:
+        '204':
+          description: 위시리스트 항목이 성공적으로 제거됨, 내용 없음.
+        '404':
+          description: 위시리스트 항목을 찾을 수 없음.
+        '500':
+          description: 서버 내부 오류
+
+components:
+  schemas:
+    ProductData:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "샘플 제품"
+        imageUrl:
+          type: string
+          example: "http://example.com/image.jpg"
+        price:
+          type: number
+          format: float
+          example: 19.99
+        categoryId:
+          type: integer
+          example: 1
+      required:
+        - id
+        - name
+        - imageUrl
+        - price
+        - categoryId
+
+    WishData:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        product:
+          $ref: '#/components/schemas/ProductData'
+      required:
+        - id
+        - product
+
+    CategoryData:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "샘플 카테고리"
+        color:
+          type: string
+          example: "#FFFFFF"
+        imageUrl:
+          type: string
+          example: "http://example.com/image.jpg"
+        description:
+          type: string
+          example: "이것은 샘플 카테고리 설명입니다."
+      required:
+        - id
+        - name
+        - color
+        - imageUrl
+        - description
+
+    MessageCardTemplateData:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        defaultTextMessage:
+          type: string
+          example: "기본 메시지 텍스트"
+        thumbURL:
+          type: string
+          example: "http://example.com/thumb.jpg"
+        imageURL:
+          type: string
+          example: "http://example.com/image.jpg"
+
+    MyAccountInfoData:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+      required:
+        - id
+
+    CategoryProductsResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductData'
+        pageable:
+          type: object
+          properties:
+            sort:
+              type: object
+              properties:
+                sorted:
+                  type: boolean
+                  example: true
+                unsorted:
+                  type: boolean
+                  example: false
+                empty:
+                  type: boolean
+                  example: false
+            pageNumber:
+              type: integer
+              example: 1
+            pageSize:
+              type: integer
+              example: 10
+            offset:
+              type: integer
+              example: 0
+            unpaged:
+              type: boolean
+              example: false
+            paged:
+              type: boolean
+              example: true
+        totalPages:
+          type: integer
+          example: 5
+        totalElements:
+          type: integer
+          example: 50
+        last:
+          type: boolean
+          example: false
+        number:
+          type: integer
+          example: 1
+        size:
+          type: integer
+          example: 10
+        numberOfElements:
+          type: integer
+          example: 10
+        first:
+          type: boolean
+          example: true
+        empty:
+          type: boolean
+          example: false
+
+    WishedProductsResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/WishData'
+        pageable:
+          type: object
+          properties:
+            sort:
+              type: object
+              properties:
+                sorted:
+                  type: boolean
+                  example: true
+                unsorted:
+                  type: boolean
+                  example: false
+                empty:
+                  type: boolean
+                  example: false
+            pageNumber:
+              type: integer
+              example: 1
+            pageSize:
+              type: integer
+              example: 10
+            offset:
+              type: integer
+              example: 0
+            unpaged:
+              type: boolean
+              example: false
+            paged:
+              type: boolean
+              example: true
+        totalPages:
+          type: integer
+          example: 5
+        totalElements:
+          type: integer
+          example: 50
+        last:
+          type: boolean
+          example: false
+        number:
+          type: integer
+          example: 1
+        size:
+          type: integer
+          example: 10
+        numberOfElements:
+          type: integer
+          example: 10
+        first:
+          type: boolean
+          example: true
+        empty:
+          type: boolean
+          example: false
