@@ -29,6 +29,12 @@ export type ProductRequestParams = {
   maxResults?: number;
 };
 
+export type CreateOrderRequestParams = {
+  optionId: string;
+  quantity: number;
+  message: string;
+};
+
 export type OrderListRequestParams = {
   page: number;
   size: number;

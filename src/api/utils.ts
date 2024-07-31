@@ -20,6 +20,7 @@ import type {
 } from '@/api/types';
 import type { OrderListRequestParams } from '@/api/types';
 import type { OrderData, ProductData } from '@/types';
+import { CreateOrderRequestParams } from '@/api/types';
 
 export const registerUser = async ({ email, password }: RegisterUserRequest) => {
   try {
@@ -125,9 +126,10 @@ export const deleteFromWishlist = async (productId: number): Promise<void> => {
   }
 };
 
-export const createOrder = async (order: OrderData) => {
+export const createOrder = async (order: CreateOrderRequestParams) => {
   try {
     const response = await fetchInstance.post<OrderData>('/api/orders', order);
+
     return response.data;
   } catch (error) {
     throw new Error('주문하기에 실패했습니다.');
