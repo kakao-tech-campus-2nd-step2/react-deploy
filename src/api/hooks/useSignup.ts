@@ -9,7 +9,7 @@ export type RegisterRequestParams = {
 
 export type RegisterResponseData = {
   email: string;
-  token: string;
+  accessToken: string;
 };
 
 const registerPath = `${BASE_URL}/api/members/register`;

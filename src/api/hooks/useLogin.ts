@@ -9,7 +9,7 @@ export type LoginRequestParams = {
 
 export type LoginResponseData = {
   email: string;
-  token: string;
+  accessToken: string;
 };
 
 const loginPath = `${BASE_URL}/api/members/login`;

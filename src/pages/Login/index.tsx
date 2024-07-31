@@ -11,7 +11,7 @@ import { UnderlineTextField } from "@/components/common/Form/Input/UnderlineText
 import { Spacing } from "@/components/common/layouts/Spacing";
 import { getDynamicPath } from "@/routes/path";
 import { breakpoints } from "@/styles/variants";
-import { authSessionStorage } from "@/utils/storage";
+import { authSessionStorage, userIdSessionStorage } from "@/utils/storage";
 
 export const LoginPage = () => {
   const [id, setId] = useState("");
@@ -38,8 +38,10 @@ export const LoginPage = () => {
     login(
       { email: id, password },
       {
-        onSuccess: () => {
-          authSessionStorage.set(id);
+        onSuccess: (data) => {
+          console.log(data);
+          authSessionStorage.set(data.accessToken);
+          userIdSessionStorage.set(data.email);
           const redirectUrl = queryParams.get("redirect") ?? `${window.location.origin}/`;
           return window.location.replace(redirectUrl);
         },
