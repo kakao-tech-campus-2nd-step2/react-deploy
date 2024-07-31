@@ -1,6 +1,6 @@
 import type { UseAxiosMutationResult } from '@/api';
 import { useAxiosMutation } from '@/api';
-import { vercelApiWithAuth } from '@/api/axiosInstance';
+import { sessionStorageApiWithAuth } from '@/api/axiosInstance';
 import type { DeleteWishesRequestBody } from '@/api/type';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -15,7 +15,7 @@ function useDeleteWishes(): UseAxiosMutationResult<void, DeleteWishesRequestBody
     {
       method: 'DELETE',
     },
-    vercelApiWithAuth(token),
+    sessionStorageApiWithAuth(token),
     [['wishes']],
     getDeleteWishesPath,
   );

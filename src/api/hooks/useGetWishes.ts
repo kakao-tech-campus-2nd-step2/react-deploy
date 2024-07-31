@@ -1,6 +1,6 @@
 import type { UseAxiosQueryWithPageResult } from '@/api';
 import { useAxiosQueryWithPage } from '@/api';
-import { vercelApiWithAuth } from '@/api/axiosInstance';
+import { sessionStorageApiWithAuth } from '@/api/axiosInstance';
 import type { GetWishesResponseBody } from '@/api/type';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -26,7 +26,7 @@ function useGetWishes({
     },
     ['wishes'],
     (lastPage) => (!lastPage.last ? (lastPage.number + 1).toString() : undefined),
-    vercelApiWithAuth(token),
+    sessionStorageApiWithAuth(token),
   );
 }
 

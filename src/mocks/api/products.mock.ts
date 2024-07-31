@@ -1,28 +1,29 @@
 import { rest } from 'msw';
 
-import { VERCEL_API_URL } from '@/api/axiosInstance';
 import { getProductsPath } from '@/api/hooks/useGetProducts';
 import { getProductsDetailPath } from '@/api/hooks/useGetProductsDetail';
 import { getProductsOptionPath } from '@/api/hooks/useGetProductsOption';
 import type { ProductData } from '@/api/type';
+
+const MOCK_API_URL = 'http://dummy.api';
 
 export function getProductsById(id: number): ProductData | undefined {
   return PRODUCTS_MOCK_DATA.content.find((product) => product.id === id);
 }
 
 export const productsMockHandler = [
-  rest.get(VERCEL_API_URL + getProductsPath({ categoryId: '2920' }), (_req, res, ctx) => {
+  rest.get(MOCK_API_URL + getProductsPath({ categoryId: '2920' }), (_req, res, ctx) => {
     return res(ctx.json(PRODUCTS_MOCK_DATA));
   }),
-  rest.get(VERCEL_API_URL + getProductsPath({ categoryId: '2930' }), (_req, res, ctx) => {
+  rest.get(MOCK_API_URL + getProductsPath({ categoryId: '2930' }), (_req, res, ctx) => {
     return res(ctx.json(PRODUCTS_MOCK_DATA));
   }),
-  rest.get(VERCEL_API_URL + getProductsDetailPath(':productsId'), (_req, res, ctx) => {
+  rest.get(MOCK_API_URL + getProductsDetailPath(':productsId'), (_req, res, ctx) => {
     const productId = Number(_req.url.pathname.split('/').pop());
 
     return res(ctx.json(PRODUCTS_MOCK_DATA.content.find((product) => product.id === productId)));
   }),
-  rest.get(VERCEL_API_URL + getProductsOptionPath(':productsId'), (_req, res, ctx) => {
+  rest.get(MOCK_API_URL + getProductsOptionPath(':productsId'), (_req, res, ctx) => {
     return res(
       ctx.json([
         {

@@ -1,13 +1,14 @@
 import { LiveStorage } from '@mswjs/storage';
 import { rest } from 'msw';
 
-import { VERCEL_API_URL } from '@/api/axiosInstance';
 import { getDeleteWishesPath } from '@/api/hooks/useDeleteWishes';
 import { getWishesPath } from '@/api/hooks/useGetWishes';
 import { getPostWishesPath } from '@/api/hooks/usePostWishes';
 import type { ProductData, WishesData } from '@/api/type';
 import { getProductsById } from '@/mocks/api/products.mock';
 import { checkToken } from '@/mocks/api/user.mock';
+
+const MOCK_API_URL = 'http://dummy.api';
 
 type Wishes = {
   [key: string]: WishesData[];
@@ -58,7 +59,7 @@ const getWishes = (userId: string) => {
 };
 
 export const wishesMockHandler = [
-  rest.post(VERCEL_API_URL + getPostWishesPath(), (req, res, ctx) => {
+  rest.post(MOCK_API_URL + getPostWishesPath(), (req, res, ctx) => {
     const token = req.headers.get('authorization') || '';
 
     if (checkToken(token)) {
@@ -80,7 +81,7 @@ export const wishesMockHandler = [
       return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
   }),
-  rest.get(VERCEL_API_URL + getWishesPath({}), (req, res, ctx) => {
+  rest.get(MOCK_API_URL + getWishesPath({}), (req, res, ctx) => {
     const token = req.headers.get('authorization') || '';
 
     if (checkToken(token)) {
@@ -101,7 +102,7 @@ export const wishesMockHandler = [
       return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
   }),
-  rest.delete(VERCEL_API_URL + getDeleteWishesPath(), (req, res, ctx) => {
+  rest.delete(MOCK_API_URL + getDeleteWishesPath(), (req, res, ctx) => {
     const token = req.headers.get('authorization') || '';
     const { wishId } = req.params as { wishId: string };
 

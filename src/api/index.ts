@@ -18,13 +18,13 @@ import {
 } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import { vercelApi } from '@/api/axiosInstance';
+import { sessionStorageApi } from '@/api/axiosInstance';
 
 export function useAxiosQuery<T>(
   axiosOptions: AxiosRequestConfig,
   keys: string[],
   queryOptions?: Omit<UseQueryOptions<T>, 'queryKey' | 'queryFn'>,
-  axiosInstance: AxiosInstance = vercelApi,
+  axiosInstance: AxiosInstance = sessionStorageApi(),
 ): UseQueryResult<T> {
   return useQuery({
     queryKey: keys,
@@ -38,7 +38,7 @@ export function useAxiosQueryWithPage<T>(
   axiosOptions: AxiosRequestConfig,
   keys: string[],
   getNextPageParam: (lastPage: T) => string | undefined,
-  axiosInstance: AxiosInstance = vercelApi,
+  axiosInstance: AxiosInstance = sessionStorageApi(),
   queryOptions?: Omit<
     UseInfiniteQueryOptions<InfiniteData<T>>,
     'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
@@ -60,7 +60,7 @@ export function useAxiosQueryWithPage<T>(
 export type UseAxiosMutationResult<T, U> = UseMutationResult<T, Error, U, unknown>;
 export function useAxiosMutation<T, U>(
   axiosOptions: AxiosRequestConfig,
-  axiosInstance: AxiosInstance = vercelApi,
+  axiosInstance: AxiosInstance = sessionStorageApi(),
   refetchQueryKeys?: string[][],
   urlFn?: (body: U) => string,
   mutationOptions?: Omit<UseMutationOptions<T, Error, U>, 'mutationFn'>,

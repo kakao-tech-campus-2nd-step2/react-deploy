@@ -1,9 +1,10 @@
 import { LiveStorage } from '@mswjs/storage';
 import { rest } from 'msw';
 
-import { VERCEL_API_URL } from '@/api/axiosInstance';
 import { getRegisterPath } from '@/api/hooks/usePostRegister';
 import type { PostLoginRequestBody, PostRegisterRequestBody } from '@/api/type';
+
+const MOCK_API_URL = 'http://dummy.api';
 
 type User = {
   id: number;
@@ -59,7 +60,7 @@ export const checkToken = (token: string): boolean => {
 };
 
 export const userMockHandler = [
-  rest.post(VERCEL_API_URL + getRegisterPath(), (req, res, ctx) => {
+  rest.post(MOCK_API_URL + getRegisterPath(), (req, res, ctx) => {
     const { email, password } = req.body as PostRegisterRequestBody;
 
     try {
@@ -73,7 +74,7 @@ export const userMockHandler = [
       }
     }
   }),
-  rest.post(VERCEL_API_URL + '/api/login', (req, res, ctx) => {
+  rest.post(MOCK_API_URL + '/api/login', (req, res, ctx) => {
     const { email, password } = req.body as PostLoginRequestBody;
 
     try {

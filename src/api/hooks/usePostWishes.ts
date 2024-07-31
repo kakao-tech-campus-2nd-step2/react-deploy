@@ -1,6 +1,6 @@
 import type { UseAxiosMutationResult } from '@/api';
 import { useAxiosMutation } from '@/api';
-import { vercelApiWithAuth } from '@/api/axiosInstance';
+import { sessionStorageApiWithAuth } from '@/api/axiosInstance';
 import type { PostWishesRequestBody, PostWishesResponseBody } from '@/api/type';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -16,7 +16,7 @@ function usePostWishes(): UseAxiosMutationResult<PostWishesResponseBody, PostWis
       method: 'POST',
       url: getPostWishesPath(),
     },
-    vercelApiWithAuth(token),
+    sessionStorageApiWithAuth(token),
     [['wishes']],
   );
 }
