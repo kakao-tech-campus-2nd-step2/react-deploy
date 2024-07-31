@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 async function deferRender() {
   if (process.env.REACT_APP_RUN_MSW === 'true') {
-    const { worker } = await import('./src/mocks/browser');
+    const { worker } = await import('./mocks/browser');
     await worker.start();
   }
 
