@@ -2,7 +2,7 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://jasper200207.duckdns.org/",
+  "homepage": "https://jasper200207.gihub.io/react-deploy",
   "scripts": {
     "start": "cross-env HTTPS=true craco start",
     "start:mock": "cross-env REACT_APP_RUN_MSW=true cross-env PUBLIC_URL=/ craco start",
