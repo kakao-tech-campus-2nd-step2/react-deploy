@@ -6,13 +6,13 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useValidateEmail } from '@/hooks/useValidateEmail';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
-  const [email, setEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
+  const { email, isEmailValid, handleEmailChange } = useValidateEmail();
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
@@ -20,16 +20,6 @@ export const SignUpPage = () => {
 
   const handleLogoClick = () => {
     navigate(RouterPath.home);
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const validateEmail = (value: string) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(value);
-    };
-
-    setEmail(e.target.value);
-    setIsEmailValid(validateEmail(email)); // 이메일 형식 검사
   };
 
   const handleConfirm = async () => {

@@ -6,12 +6,13 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useValidateEmail } from '@/hooks/useValidateEmail';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const { email, isEmailValid, handleEmailChange } = useValidateEmail();
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
@@ -20,6 +21,9 @@ export const LoginPage = () => {
   const handleConfirm = () => {
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
+      return;
+    } else if (!isEmailValid) {
+      alert('이메일을 바르게 입력해주세요.');
       return;
     }
 
@@ -44,8 +48,9 @@ export const LoginPage = () => {
           type="email"
           placeholder="이메일"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleEmailChange}
         />
+        {!isEmailValid && <ErrorText>이메일 형식으로 입력해주세요.</ErrorText>}
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -97,4 +102,10 @@ const SignUpButton = styled.p`
   font-size: 12px;
   color: #191919;
   cursor: pointer;
+`;
+
+const ErrorText = styled.p`
+  color: #7d7d7d;
+  font-size: 12px;
+  margin-top: 5px;
 `;
