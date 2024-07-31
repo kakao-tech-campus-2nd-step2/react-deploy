@@ -18,7 +18,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
   const [selectedName, setSelectedName] = useState(() => {
-    const currentBaseUrl = fetchInstance.defaults.baseURL;
+    const currentBaseUrl = sessionStorage.getItem('baseUrl');
     return Object.keys(BACKEND_URLS).find((key) => BACKEND_URLS[key] === currentBaseUrl);
   });
 
@@ -29,9 +29,10 @@ export const Header = () => {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
     setSelectedName(selectedValue);
-    fetchInstance.defaults.baseURL = BACKEND_URLS[selectedValue];
     queryClient.invalidateQueries().then(() => {
       navigate(RouterPath.home);
+      fetchInstance.defaults.baseURL = BACKEND_URLS[selectedValue];
+      sessionStorage.setItem('baseUrl', BACKEND_URLS[selectedValue]);
     });
   };
 
