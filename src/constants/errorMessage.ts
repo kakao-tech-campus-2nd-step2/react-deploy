@@ -7,6 +7,7 @@ export const API_ERROR_MESSAGES = {
   NETWORK_ERROR:
     '네트워크 연결에 문제가 발생했습니다. 네트워크 상태를 확인하고 다시 시도해주세요.',
   UNKNOWN_ERROR: '예기치 않은 오류가 발생했습니다. 관리자에게 문의해주세요.',
+  AUTH_ERROR: '로그인을 다시해주세요.',
 };
 
 export const RENDER_ERROR_MESSAGES = {
