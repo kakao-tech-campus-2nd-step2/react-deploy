@@ -1,6 +1,8 @@
+import { Select } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { URLS } from '@/api';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -23,6 +25,13 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <Select placeholder="벡엔드 API" defaultValue={URLS[0].url}>
+            {URLS.map((info) => (
+              <option key={info.id} value={info.url}>
+                {info.name}
+              </option>
+            ))}
+          </Select>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,7 +58,10 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+`;
 
 const LinkButton = styled.p`
   align-items: center;
@@ -57,4 +69,7 @@ const LinkButton = styled.p`
   color: #000;
   text-decoration: none;
   cursor: pointer;
+  min-width: 60px;
+  display: flex;
+  justify-content: center;
 `;

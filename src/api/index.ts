@@ -86,3 +86,31 @@ export function useAxiosMutation<T, U>(
     ...(mutationOptions || {}),
   });
 }
+
+type URL = {
+  id: number;
+  name: string;
+  url: string;
+};
+
+export const URLS: URL[] = [
+  ...(process.env.REACT_APP_RUN_MSW
+    ? [
+        {
+          id: 0,
+          name: 'MSW',
+          url: 'http://dummy.api',
+        },
+      ]
+    : []),
+  {
+    id: 1,
+    name: '이풍헌',
+    url: 'http://15.165.74.97:8080',
+  },
+  {
+    id: 2,
+    name: '정지민',
+    url: 'http://43.203.200.130:8080',
+  },
+];
