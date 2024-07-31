@@ -1,15 +1,14 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { GetWishesRequest } from '@internalTypes/requestTypes';
 import { GetWishesResponse } from '@internalTypes/responseTypes';
+import axiosInstance from '@apis/instance';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { WISH_PATHS } from '@apis/path';
 
 const getWishes = async (params: GetWishesRequest): Promise<GetWishesResponse> => {
-  const { page, size, sort } = params;
-  const res: AxiosResponse<GetWishesResponse> = await axios.get(WISH_PATHS.GET_WISH, {
-    params: { page, size, sort },
+  const res: AxiosResponse<GetWishesResponse> = await axiosInstance.get(WISH_PATHS.GET_WISH(params), {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
     },
   });
   return res.data;

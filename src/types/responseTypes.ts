@@ -16,27 +16,50 @@ export interface WishProduct {
   };
 }
 
+// export interface GetWishesResponse {
+//   content: WishProduct[];
+//   pageable: {
+//     sort: {
+//       sorted: boolean;
+//       unsorted: boolean;
+//       empty: boolean;
+//     };
+//     pageNumber: number;
+//     pageSize: number;
+//     offset: number;
+//     unpaged: boolean;
+//     paged: boolean;
+//   };
+//   totalPages: number;
+//   totalElements: number;
+//   last: boolean;
+//   number: number;
+//   size: number;
+//   numberOfElements: number;
+//   first: boolean;
+//   empty: boolean;
+// }
+
+export interface Wish {
+  wishId: number;
+  productId: number;
+  productName: string;
+  productPrice: number;
+  productImageUrl: string;
+  category: Omit<CategoryData, 'color'>;
+}
+
 export interface GetWishesResponse {
-  content: WishProduct[];
-  pageable: {
-    sort: {
-      sorted: boolean;
-      unsorted: boolean;
-      empty: boolean;
-    };
-    pageNumber: number;
-    pageSize: number;
-    offset: number;
-    unpaged: boolean;
-    paged: boolean;
-  };
   totalPages: number;
   totalElements: number;
-  last: boolean;
-  number: number;
   size: number;
-  numberOfElements: number;
+  content: Wish[];
+  number: number;
+  sort: Sort;
   first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  pageable: Pageable;
   empty: boolean;
 }
 

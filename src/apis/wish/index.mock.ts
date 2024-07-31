@@ -4,26 +4,21 @@ import { WISH_PATHS } from '@apis/path';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const wishMockHandler = [
-  rest.get(`${BASE_URL}${WISH_PATHS}`, (req, res, ctx) => {
-    const page = req.url.searchParams.get('page');
-    const size = req.url.searchParams.get('size');
-    const sort = req.url.searchParams.get('sort');
+  rest.get(`${BASE_URL}${WISH_PATHS.GET_WISH({ page: 0, size: 10, sort: 'createdDate,desc' })}`, (_, res, ctx) =>
+    res(ctx.json(WISHES_MOCK_DATA)),
+  ),
+  // rest.delete(`${BASE_URL}${WISH_PATHS}/:wishId`, (req, res, ctx) => {
+  //   const wishId = req.params.wishId as string;
+  //   const wishIdNumber = Array.isArray(wishId) ? parseInt(wishId[0], 10) : parseInt(wishId, 10);
 
-    return res(ctx.status(200), ctx.json(WISHES_MOCK_DATA));
-  }),
-  rest.delete(`${BASE_URL}${WISH_PATHS}/:wishId`, (req, res, ctx) => {
-    const wishId = req.params.wishId as string;
-    const wishIdNumber = Array.isArray(wishId) ? parseInt(wishId[0], 10) : parseInt(wishId, 10);
-
-    WISHES_MOCK_DATA = {
-      ...WISHES_MOCK_DATA,
-      content: WISHES_MOCK_DATA.content.filter((item) => item.id !== wishIdNumber),
-    };
-    return res(ctx.status(200));
-  }),
-  rest.post(`${BASE_URL}${WISH_PATHS}`, (req, res, ctx) => {
+  //   WISHES_MOCK_DATA = {
+  //     ...WISHES_MOCK_DATA,
+  //     content: WISHES_MOCK_DATA.content.filter((item) => item.id !== wishIdNumber),
+  //   };
+  //   return res(ctx.status(200));
+  // }),
+  rest.post(`${BASE_URL}${WISH_PATHS.ADD_WISH}`, (req, res, ctx) => {
     const newWishId = Date.now();
-
     WISHES_MOCK_DATA = {
       ...WISHES_MOCK_DATA,
       content: [

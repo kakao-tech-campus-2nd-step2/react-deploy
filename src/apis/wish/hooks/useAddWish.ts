@@ -8,7 +8,7 @@ import { useMutation, UseMutationResult } from '@tanstack/react-query';
 const addWish = async (request: AddWishRequest): Promise<AddWishResponse> => {
   const res = await axiosInstance.post(WISH_PATHS.ADD_WISH, request, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
     },
   });
   return res.data;

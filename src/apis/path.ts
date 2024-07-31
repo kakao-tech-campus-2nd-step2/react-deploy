@@ -1,6 +1,6 @@
-import { GetProductsRequest } from '@internalTypes/requestTypes';
+import { GetProductsRequest, GetWishesRequest } from '@internalTypes/requestTypes';
 
-const API_BASE_KAKAO = 'api/v1';
+const API_BASE_KAKAO = '/api/v1';
 const API_BASE = '/api';
 
 export const CATEGORIES_PATHS = {
@@ -24,7 +24,8 @@ export const RANKING_PATHS = {
 };
 
 export const WISH_PATHS = {
+  GET_WISH: (params: GetWishesRequest) =>
+    `${API_BASE}/wishes?page=${params.page}&size=${params.size}&sort=${params.sort}`,
   ADD_WISH: `${API_BASE}/wishes`,
-  GET_WISH: `${API_BASE}/wishes`,
   DELETE_WISH: `${API_BASE}/wishes`,
 };

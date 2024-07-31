@@ -3,14 +3,20 @@ import styled from '@emotion/styled';
 import useDeleteWish from '@apis/wish/hooks/useDeleteWish';
 
 export interface WishListItemProps {
-  id: number;
-  image: string;
-  name: string;
-  price: number;
+  wishId: number;
+  productImageUrl: string;
+  productName: string;
+  productPrice: number;
   onDelete: () => void;
 }
 
-export default function WishListItem({ id, image, name, price, onDelete }: WishListItemProps) {
+export default function WishListItem({
+  wishId,
+  productImageUrl,
+  productName,
+  productPrice,
+  onDelete,
+}: WishListItemProps) {
   const { mutate: deleteWish } = useDeleteWish({
     onSuccess: () => {
       onDelete();
@@ -21,7 +27,7 @@ export default function WishListItem({ id, image, name, price, onDelete }: WishL
   });
 
   const handleDelete = () => {
-    deleteWish({ wishId: id });
+    deleteWish({ wishId });
   };
 
   return (
@@ -29,11 +35,11 @@ export default function WishListItem({ id, image, name, price, onDelete }: WishL
       <InnerContainer>
         <WishListDetail>
           <ImageContainer>
-            <img src={image} alt="product" />
+            <img src={productImageUrl} alt="product" />
           </ImageContainer>
           <div>
-            <Name>{name}</Name>
-            <Price>{price}원</Price>
+            <Name>{productName}</Name>
+            <Price>{productPrice}원</Price>
           </div>
         </WishListDetail>
         <button onClick={handleDelete}>삭제하기</button>
