@@ -11,6 +11,7 @@ interface AuthProviderProps {
 export default function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();
   const [authToken, setAuthToken] = useSessionStorage('authToken', '');
+  const [userEmail, setUserEmail] = useSessionStorage('email', '');
   const [isAuthenticated, setIsAuthenticated] = useState(!!authToken);
 
   useEffect(() => {
@@ -18,8 +19,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   }, [authToken]);
 
   const login = useCallback(
-    (accessToken: string) => {
+    (email: string, accessToken: string) => {
       setAuthToken(accessToken);
+      setUserEmail(email);
     },
     [setAuthToken],
   );
@@ -34,8 +36,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       isAuthenticated,
       login,
       logout,
+      userEmail,
     }),
-    [isAuthenticated, login, logout],
+    [isAuthenticated, login, logout, userEmail],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

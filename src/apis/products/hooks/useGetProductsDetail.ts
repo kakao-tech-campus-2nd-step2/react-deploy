@@ -7,7 +7,6 @@ import { PRODUCTS_PATHS } from '@apis/path';
 
 const getProductsDetail = async (params: ProductDetailRequest): Promise<ProductDetailResponse> => {
   const res = await axiosInstance.get<ProductDetailResponse>(PRODUCTS_PATHS.PRODUCTS_DETAIL(params.productId));
-
   return res.data;
 };
 

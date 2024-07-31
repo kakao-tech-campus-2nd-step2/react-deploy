@@ -7,7 +7,6 @@ import { AxiosError } from 'axios';
 
 const getProducts = async (params: GetProductsRequest): Promise<GetProductsResponse> => {
   const res = await axiosInstance.get(PRODUCTS_PATHS.PRODUCTS(params));
-
   return res.data;
 };
 

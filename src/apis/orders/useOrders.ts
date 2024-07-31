@@ -11,7 +11,6 @@ const postOrders = async ({ optionId, quantity, message }: OrderRequest): Promis
     quantity,
     message,
   });
-
   return res.data;
 };
 

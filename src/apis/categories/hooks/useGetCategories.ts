@@ -6,7 +6,6 @@ import { CATEGORIES_PATHS } from '@apis/path';
 
 const getCategories = async (): Promise<CategoriesResponse> => {
   const res = await axiosInstance.get<CategoriesResponse>(CATEGORIES_PATHS.CATEGORIES);
-
   return res.data;
 };
 

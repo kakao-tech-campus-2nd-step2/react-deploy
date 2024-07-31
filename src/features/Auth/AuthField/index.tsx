@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { ROUTE_PATH } from '@routes/path';
 import { Button } from '@components/common';
 import { Link } from 'react-router-dom';
 import AuthForm from '../AuthForm';
@@ -25,7 +26,7 @@ export default function AuthField({ isSignUp }: AuthFieldProps) {
         isSignUp={
           !isSignUp && (
             <SignUpContainer>
-              <Link to="/sign-up">회원가입</Link>
+              <Link to={ROUTE_PATH.SIGN_UP}>회원가입</Link>
             </SignUpContainer>
           )
         }
