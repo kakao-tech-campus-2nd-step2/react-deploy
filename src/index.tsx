@@ -15,7 +15,7 @@ async function deferRender() {
     await browserWorker.start();
   }
 
-  if (apiSessionStorage.get() === '' || !apiSessionStorage.get()) {
+  if (apiSessionStorage.get() === '') {
     apiSessionStorage.set(URLS[0].url);
   }
 
