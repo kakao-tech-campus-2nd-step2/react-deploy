@@ -1,28 +1,35 @@
+import { Dispatch, SetStateAction, useState } from 'react';
+
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { IconButton, Input, Text, useNumberInput } from '@chakra-ui/react';
 
-import { ProductData } from '@/types/productType';
+import { Option } from '@/types/productType';
 
 import { Card } from '@/components/Card';
 import { Container } from '@/components/ui/Layout/Container';
 
 type QuantityInputProps = {
-  productDetail: ProductData;
-  quantity: number;
-  onChangeQuantity: (newQuantity: number) => void;
+  optionDetail: Option;
+  setTotalQuantity: Dispatch<SetStateAction<number>>;
 };
 
 export const QuantityInput = ({
-  productDetail,
-  quantity,
-  onChangeQuantity,
+  optionDetail,
+  setTotalQuantity,
 }: QuantityInputProps) => {
+  const [quantity, setQuantity] = useState(0);
+
+  const onChangeQuantity = (newQuantity: number) => {
+    setQuantity(newQuantity);
+    setTotalQuantity((pre) => pre + (newQuantity - quantity));
+  };
+
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
     useNumberInput({
       step: 1,
       defaultValue: quantity,
-      min: 1,
-      max: 100,
+      min: 0,
+      max: optionDetail.quantity,
       onChange: (valueAsNumber) => {
         onChangeQuantity(Number(valueAsNumber));
       },
@@ -34,7 +41,7 @@ export const QuantityInput = ({
 
   return (
     <Card flexDirection="column" gap="0.5rem" css={{ padding: '1rem' }}>
-      <Text as="b">{productDetail.name}</Text>
+      <Text as="b">{optionDetail.name}</Text>
       <Container flexDirection="row" gap="0.5rem">
         <IconButton
           aria-label="Decrease Quantity"

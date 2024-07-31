@@ -1,25 +1,33 @@
+import { AxiosError } from 'axios';
+
 import { BACKEND_API } from '@/api/config';
-import { getProductOptionsPath } from '@/api/services/path';
-import { ProductDetailRequestParams } from '@/api/services/productDetail';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
-import { ProductOptionsData } from '@/types/productType';
+import { Option } from '@/types/productType';
 
-export interface ProductOptionsRequestParams
-  extends ProductDetailRequestParams {}
+type ProductOptionsRequestParams = {
+  productId: number;
+};
 
-type ProductOptionsResponse = ProductOptionsData[];
+type ProductOptionsResponse = {
+  optionCount: number;
+  options: Option[];
+};
 
 export const fetchProductOptions = async ({
   productId,
 }: ProductOptionsRequestParams) => {
   try {
     const response = await BACKEND_API.get<ProductOptionsResponse>(
-      getProductOptionsPath(productId.toString())
+      `/api/products/${productId}/options`
     );
-    return response.data;
+    return response.data.options;
   } catch (error) {
-    if (error instanceof Error) {
-      throw error;
+    if (error instanceof AxiosError) {
+      const { response } = error;
+
+      if (response?.status === 404) {
+        throw new Error(response?.data.detail);
+      }
     }
 
     throw new Error(API_ERROR_MESSAGES.UNKNOWN_ERROR);

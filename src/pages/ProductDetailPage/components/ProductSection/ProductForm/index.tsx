@@ -1,10 +1,9 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDisclosure } from '@chakra-ui/react';
 
-import { useProductDetail } from '@/api/hooks/useProductDetail';
-import { ProductDetailRequestParams } from '@/api/services/productDetail';
-import { useTotalPrice } from '@/pages/ProductDetailPage/hooks/useTotalPrice';
+import { useProductOptions } from '@/api/hooks/useProductOptions';
 import { useAuth } from '@/provider/auth/useAuth';
 import { ROUTER_PATH } from '@/routes/path';
 import { OrderHistory } from '@/types/orderType';
@@ -19,11 +18,14 @@ import { TotalPriceCallout } from './TotalPriceCallout';
 import { WishButton } from './WishButton';
 import { containerStyle, submitButton } from './style';
 
-type ProductFormProps = ProductDetailRequestParams;
+type ProductFormProps = {
+  productId: number;
+  price: number;
+};
 
-export const ProductForm = ({ productId }: ProductFormProps) => {
-  const { data, error } = useProductDetail({ productId });
-  const { totalPrice, quantity, updateQuantity } = useTotalPrice(productId);
+export const ProductForm = ({ productId, price }: ProductFormProps) => {
+  const { data: options, error } = useProductOptions(productId);
+  const [totalQuantity, setTotalQuantity] = useState(0);
 
   const navigate = useNavigate();
   const { authInfo } = useAuth();
@@ -41,7 +43,7 @@ export const ProductForm = ({ productId }: ProductFormProps) => {
 
     const state: OrderHistory = {
       productId,
-      productQuantity: quantity,
+      productQuantity: totalQuantity,
     };
 
     navigate(ROUTER_PATH.ORDER, { state });
@@ -53,13 +55,15 @@ export const ProductForm = ({ productId }: ProductFormProps) => {
       justifyContent="space-between"
       css={containerStyle}
     >
-      <QuantityInput
-        productDetail={data}
-        quantity={quantity}
-        onChangeQuantity={updateQuantity}
-      />
+      {options.map((option) => (
+        <QuantityInput
+          key={option.id}
+          optionDetail={option}
+          setTotalQuantity={setTotalQuantity}
+        />
+      ))}
       <Container flexDirection="column" gap="1rem">
-        <TotalPriceCallout totalPrice={totalPrice} />
+        <TotalPriceCallout totalPrice={totalQuantity * price} />
         <Container gap="0.5rem">
           <WishButton productId={productId} />
           <Button theme="black" onClick={onClick} css={submitButton}>

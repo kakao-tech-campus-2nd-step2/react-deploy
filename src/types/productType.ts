@@ -5,9 +5,8 @@ export type ProductData = {
   imageUrl: string;
 };
 
-export type ProductOptionsData = {
+export type Option = {
   id: number;
   name: string;
   quantity: number;
-  productId: number;
 };

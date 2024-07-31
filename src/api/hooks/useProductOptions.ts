@@ -1,13 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import {
-  ProductOptionsRequestParams,
-  fetchProductOptions,
-} from '@/api/services/productOptions';
+import { fetchProductOptions } from '@/api/services/productOptions';
 
-export const useProductOptions = ({
-  productId,
-}: ProductOptionsRequestParams) => {
+export const useProductOptions = (productId: number) => {
   return useSuspenseQuery({
     queryKey: ['product', 'options', productId],
     queryFn: () => fetchProductOptions({ productId }),

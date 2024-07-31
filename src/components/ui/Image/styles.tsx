@@ -50,11 +50,13 @@ export const imageStyle = (
 export const backgroundStyle = (isLazy: boolean, isLoad: boolean) => {
   if (!isLazy || isLoad) {
     return css({
+      width: '100%',
       animation: 'none',
     });
   }
 
   return css({
+    width: '100%',
     animation: `${pulse} 2s ease infinite`,
     backgroundColor: colors.gray[300],
   });

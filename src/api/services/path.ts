@@ -2,9 +2,6 @@ import { WishListRequestParams } from './wish/types';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-export const getProductOptionsPath = (productId: string) =>
-  `${baseURL}/api/products/${productId}/options`;
-
 export const getLoginPath = () => `${baseURL}/api/members/login`;
 export const getRegisterPath = () => `${baseURL}/api/members/register`;
 

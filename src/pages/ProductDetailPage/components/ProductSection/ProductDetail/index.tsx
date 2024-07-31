@@ -1,27 +1,26 @@
 import { Divider, Text } from '@chakra-ui/react';
 
-import { useProductDetail } from '@/api/hooks/useProductDetail';
-import { ProductDetailRequestParams } from '@/api/services/productDetail';
+import { ProductData } from '@/types/productType';
 
-import { OneTextContainer } from '@/components/OneTextContainer';
 import { Image } from '@/components/ui/Image/Default';
 import { Container } from '@/components/ui/Layout/Container';
 
 import { containerStyle } from './styles';
 
-type ProductDetailProps = ProductDetailRequestParams;
+type ProductDetailProps = {
+  productDetail: ProductData;
+};
 
-export const ProductDetail = ({ productId }: ProductDetailProps) => {
-  const { data: productDetail, error } = useProductDetail({ productId });
-
-  if (error) {
-    return <OneTextContainer>{error.message}</OneTextContainer>;
-  }
-
+export const ProductDetail = ({ productDetail }: ProductDetailProps) => {
   return (
     <Container gap="2rem" css={containerStyle}>
       <Image src={productDetail.imageUrl} ratio="square" />
-      <Container flexDirection="column" gap="2rem" css={{ paddingTop: '1rem' }}>
+      <Container
+        flexDirection="column"
+        gap="2rem"
+        maxWidth="20rem"
+        css={{ paddingTop: '1rem' }}
+      >
         <Container flexDirection="column" gap="1rem">
           <Text fontSize="2xl" data-testid="product-detail-name">
             {productDetail.name}

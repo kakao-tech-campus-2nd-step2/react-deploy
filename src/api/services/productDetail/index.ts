@@ -2,9 +2,9 @@ import { BACKEND_API } from '@/api/config';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
 import { ProductData } from '@/types/productType';
 
-export interface ProductDetailRequestParams {
+type ProductDetailRequestParams = {
   productId: number;
-}
+};
 
 export type ProductDetailResponse = ProductData;
 
