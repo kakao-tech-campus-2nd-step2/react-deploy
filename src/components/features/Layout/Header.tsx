@@ -18,6 +18,10 @@ export const Header = () => {
   const ApiList = ['김은선', '박준석', '이도훈', '안재민'];
   const ApiListAscending = ApiList.sort();
 
+  const handleApiOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    localStorage.setItem('apiOption', e.target.value);
+  };
+
   const handleLogin = () => {
     navigate(getDynamicPath.login());
   };
@@ -48,7 +52,7 @@ export const Header = () => {
           </NavBar>
         </NavBarWrapper>
         <ApiSelectorWrapper>
-          <ApiSelector defaultValue={ApiListAscending[0]}>
+          <ApiSelector onChange={handleApiOption} defaultValue="default">
             <option value="default" disabled>
               API 선택
             </option>
