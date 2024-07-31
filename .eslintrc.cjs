@@ -17,7 +17,6 @@ module.exports = {
     {
       env: {
         node: true,
-        jest: true,
       },
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
@@ -28,12 +27,6 @@ module.exports = {
       files: ['**/*.stories.*', '**/*.test.*'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
-      },
-    },
-    {
-      files: ['tests/**/*'],
-      env: {
-        jest: true,
       },
     },
   ],
