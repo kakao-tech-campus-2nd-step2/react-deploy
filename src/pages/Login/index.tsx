@@ -15,6 +15,7 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  //TODO: 반환받은 email로 저장하도록 수정
   const onSuccess = () => {
     alert('로그인이 완료되었습니다.');
     authSessionStorage.set(email);

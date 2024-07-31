@@ -7,7 +7,7 @@ interface PostWishlistRequestParams {
 }
 
 export interface PostWishlistResponseData {
-  id: 1;
+  id: 1; //TODO: 해당 부분 명세서상 삭제
   productId: 1;
 }
 

@@ -65,7 +65,7 @@ export const getWishlist = async ({
 export const useGetWishlist = ({
   page = 0,
   size = 10,
-  sort = 'createdDate',
+  sort = 'createdDate', //TODO: crateDate -> createdDate,desc 로 변경
 }: {
   page?: number;
   size?: number;

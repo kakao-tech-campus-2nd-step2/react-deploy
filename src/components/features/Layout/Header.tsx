@@ -23,6 +23,12 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <select>
+            <option value="">서버 선택하기</option>
+            <option>김김김</option>
+            <option>이이이</option>
+            <option>박박박</option>
+          </select>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,7 +55,10 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
 
 const LinkButton = styled.p`
   align-items: center;

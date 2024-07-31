@@ -16,6 +16,8 @@ export const JoinPage = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
+  //TODO: 에러 처리 추가하기
+
   const onSuccess = () => {
     alert('회원가입이 완료되었습니다.');
     authSessionStorage.set(email);
@@ -25,6 +27,7 @@ export const JoinPage = () => {
     alert('회원가입에 실패했습니다.');
   };
 
+  //TODO: mutate 인자로 변경하기
   const { mutate: postUserJoin, isPending: isJoinPending } = usePostUserJoin({
     onSuccess,
     onError,
