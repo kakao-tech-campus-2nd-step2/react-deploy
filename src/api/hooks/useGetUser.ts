@@ -15,11 +15,7 @@ export const getLogin = async (id: string, password: string) => {
         const response = await axios.post(getUserPath(id), {
             password,
         });
-        if (Math.floor(response.status/100) === 2) {
-            return true;
-        } else {
-            return false;
-        }
+        return !axios.isAxiosError(response)
     } catch (e) {
         console.error(e);
         return false;
@@ -33,11 +29,7 @@ export const getSignUp = async (id: string, password: string) => {
             password,
         });
         
-        if (Math.floor(response.status/100) === 2) {
-            return true;
-        } else {
-            return false;
-        }
+        return !axios.isAxiosError(response) 
     } catch (e) {
         console.error(e);
         return false;

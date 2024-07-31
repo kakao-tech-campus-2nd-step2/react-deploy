@@ -40,9 +40,7 @@ export const addWishlist = async (productId: number, userId: string) => {
             productId,
             userId,
         });
-        if(Math.floor(response.status/100) === 2)
-            return true;
-        return false;
+        return !axios.isAxiosError(response);
     } catch (e) {
         console.error(e);
         return false;
@@ -51,11 +49,11 @@ export const addWishlist = async (productId: number, userId: string) => {
 export const deleteWishlist = async (wishId: string) => {
     try{
         const response = await axios.delete(deleteWishlistPath(wishId));
-        if(Math.floor(response.status/100) === 2){
-            queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-            return true;
+        if(axios.isAxiosError(response)) {
+            return false;
         }
-        return false;
+        queryClient.invalidateQueries({ queryKey: ['wishlist'] });
+        return true;
     } catch (e) {
         console.error(e);
         return false;
