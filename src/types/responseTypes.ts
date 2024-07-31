@@ -50,36 +50,16 @@ export interface ThemesResponse {
 }
 
 export interface ProductDetailResponse {
-  detail: {
-    brandInfo: {
-      id: number;
-      name: string;
-      imageURL: string;
-    };
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: {
     id: number;
-    imageURL: string;
-    isAccessableProductPage: boolean;
     name: string;
-    price: {
-      basicPrice: number;
-      discountRate: number;
-      sellingPrice: number;
-    };
-    productDescription: {
-      displayImage: string;
-    };
-    productDetailInfo: {
-      announcements: [];
-      terms: [];
-    };
-    review: {
-      averageRating: number;
-      totalReviewCount: number;
-    };
-    wish: {
-      isWished: boolean;
-      wishCount: number;
-    };
+    color: string;
+    imageUrl: string;
+    description: string;
   };
 }
 

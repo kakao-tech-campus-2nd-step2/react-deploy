@@ -5,7 +5,7 @@ import { CenteredContainer } from '@components/common';
 import ProductInfo from '@features/Product/ProductInfo';
 import { ROUTE_PATH } from '@routes/path';
 import useRedirectIfNoParam from '@hooks/useRedirectIfNoParam';
-import ProductOrder from '@features/Product/ProductOrder';
+// import ProductOrder from '@features/Product/ProductOrder';
 import useProductData from './hooks/useProductData';
 
 export default function Product() {
@@ -17,14 +17,14 @@ export default function Product() {
       <CenteredContainer maxWidth="lg">
         <InnerContainer>
           <ProductInfo
-            name={productDetailData?.detail.name}
-            image={productDetailData?.detail.imageURL}
-            price={productDetailData?.detail.price.basicPrice}
+            name={productDetailData?.name}
+            image={productDetailData?.imageUrl}
+            price={productDetailData?.price}
           />
-          <ProductOrder
+          {/* <ProductOrder
             name={productDetailData?.detail.name}
             giftOrderLimit={productOptionData?.options.giftOrderLimit}
-          />
+          /> */}
         </InnerContainer>
       </CenteredContainer>
     </Layout>

@@ -10,10 +10,7 @@ export const productsMockHandler = [
   ),
   rest.get(`${BASE_URL}${PRODUCTS_PATHS.PRODUCTS_DETAIL(':productId')}`, (req, res, ctx) => {
     const { productId } = req.params;
-    if (productId === '3245119') {
-      return res(ctx.json(PRODUCTS_MOCK_DATA));
-    }
-    return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
+    return res(ctx.json(PRODUCTS_MOCK_DATA.content.find((data) => productId === String(data.id))));
   }),
   rest.get(`${BASE_URL}${PRODUCTS_PATHS.PRODUCTS_OPTIONS(':productId')}`, (req, res, ctx) => {
     const { productId } = req.params;
@@ -53,7 +50,7 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl: 'https://st.kakaocdn.net/product/gift/product/20200513102805_4867c1e4a7ae43b5825e9ae14e2830e3.png',
       price: 100000,
       category: {
-        id: 1,
+        id: 2263833,
         name: '카테고리 이름',
         imageUrl: 'https://st.kakaocdn.net/product/gift/product/20200513102805_4867c1e4a7ae43b5825e9ae14e2830e3.png',
         description: '설명',
