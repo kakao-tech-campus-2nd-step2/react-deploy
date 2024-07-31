@@ -25,7 +25,8 @@ export const LoginForm = ({
     },
   });
 
-  const handleLogin = () => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (email.trim().length === 0 || password.trim().length === 0) {
       alert('이메일과 비밀번호 모두 입력해주세요.');
       return;
@@ -34,7 +35,7 @@ export const LoginForm = ({
   };
 
   return (
-    <form>
+    <form onSubmit={handleLogin}>
       <UnderlineTextField placeholder="이메일" value={email} onChange={setEmail} />
       <Spacing />
       <UnderlineTextField
@@ -49,9 +50,7 @@ export const LoginForm = ({
           sm: 60,
         }}
       />
-      <Button type="button" onClick={handleLogin}>
-        로그인
-      </Button>
+      <Button type="submit">로그인</Button>
     </form>
   );
 };

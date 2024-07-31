@@ -42,7 +42,8 @@ export const EnrollForm = ({
     },
   });
 
-  const handleEnroll = async () => {
+  const handleEnroll = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!isValidEmail(email) || !isValidPassword(password)) {
       alert('적절한 이메일과 비밀번호를 입력해주세요');
       return;
@@ -52,7 +53,7 @@ export const EnrollForm = ({
   };
 
   return (
-    <form>
+    <form onSubmit={handleEnroll}>
       <GrayLabel>
         회원가입을 위한 이메일을 입력해 주세요.
         <Checkmark data-testid="emailValidation" show={email !== ''}>
@@ -79,9 +80,7 @@ export const EnrollForm = ({
           sm: 60,
         }}
       />
-      <Button type="button" onClick={handleEnroll}>
-        회원가입
-      </Button>
+      <Button type="submit">회원가입</Button>
     </form>
   );
 };
