@@ -38,7 +38,7 @@ export default function ProductOrder() {
     <ProductOrderContainer>
       <OptionsContainer>
         {productOption?.map((option) => (
-          <OptionItem name={option.name} quantity={option.quantity} setValue={setValue} />
+          <OptionItem key={option.id} name={option.name} quantity={option.quantity} setValue={setValue} />
         ))}
       </OptionsContainer>
 

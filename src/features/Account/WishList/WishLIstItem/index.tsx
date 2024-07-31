@@ -17,17 +17,20 @@ export default function WishListItem({
   productPrice,
   onDelete,
 }: WishListItemProps) {
-  const { mutate: deleteWish } = useDeleteWish({
-    onSuccess: () => {
-      onDelete();
-    },
-    onError: (error) => {
-      console.error('Failed to delete wish item', error);
-    },
-  });
+  const { mutate } = useDeleteWish();
 
   const handleDelete = () => {
-    deleteWish({ wishId });
+    mutate(
+      { wishId },
+      {
+        onSuccess: () => {
+          onDelete();
+        },
+        onError: (error) => {
+          console.error('Failed to delete wish item', error);
+        },
+      },
+    );
   };
 
   return (
