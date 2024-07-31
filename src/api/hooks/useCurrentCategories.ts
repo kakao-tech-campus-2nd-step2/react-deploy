@@ -13,7 +13,7 @@ export const useCurrentCategory = (categoryId: number) => {
   const currentCaterogy = data?.find((category) => category.id === categoryId);
 
   if (!currentCaterogy) {
-    throw new Error(RENDER_ERROR_MESSAGES.THEME_NOT_FOUND);
+    throw new Error(RENDER_ERROR_MESSAGES.CATEGORY_NOT_FOUND);
   }
 
   return { currentCaterogy, status, error };

@@ -5,15 +5,15 @@ import { Container } from '@/components/ui/Layout/Container';
 
 import { containerStyle, imageStyle, titleStyle } from './styles';
 
-type ThemeCategoryItemProps = {
+type CategoryItemProps = {
   label: string;
   imageURL?: string;
 };
 
-export const ThemeCategoryItem = ({
+export const CategoryItem = ({
   label,
   imageURL = DEFAULT_IMAGE_URL,
-}: ThemeCategoryItemProps) => {
+}: CategoryItemProps) => {
   return (
     <Container
       flexDirection="column"

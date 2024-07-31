@@ -9,10 +9,10 @@ import { UpDownDots } from '@/components/Loading/UpDownDots';
 import { OneTextContainer } from '@/components/OneTextContainer';
 import { Grid } from '@/components/ui/Layout/Grid';
 
-import { ThemeCategoryItem } from './ThemeCategoryItem';
+import { CategoryItem } from './CategoryItem';
 import { gridStyle, itemContainerStyle } from './styles';
 
-export const ThemeCategorySection = () => {
+export const CategorySection = () => {
   const { data: categories, status, error } = useCategories();
 
   if (error) {
@@ -39,7 +39,7 @@ export const ThemeCategorySection = () => {
             to={getDynamicPath.category(id)}
             css={itemContainerStyle}
           >
-            <ThemeCategoryItem label={name} imageURL={imageUrl} />
+            <CategoryItem label={name} imageURL={imageUrl} />
           </Link>
         ))}
       </Grid>

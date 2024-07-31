@@ -17,8 +17,8 @@ export type ProductsResponse = {
 
 export type ProductsResponseRaw = {
   content: ProductData[];
-  number: number;
-  totalElements: number;
+  page: number;
   size: number;
-  last: boolean;
+  totalPages: number;
+  totalElements: number;
 };

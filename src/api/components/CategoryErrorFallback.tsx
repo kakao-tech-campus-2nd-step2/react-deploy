@@ -10,11 +10,11 @@ type ErrorFallbackProps = {
   error: AxiosError;
 };
 
-export const ThemeErrorFallback = ({ error }: ErrorFallbackProps) => {
+export const CategoryErrorFallback = ({ error }: ErrorFallbackProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error.message === RENDER_ERROR_MESSAGES.THEME_NOT_FOUND) {
+    if (error.message === RENDER_ERROR_MESSAGES.CATEGORY_NOT_FOUND) {
       navigate(ROUTER_PATH.HOME);
     }
   }, [error, navigate]);

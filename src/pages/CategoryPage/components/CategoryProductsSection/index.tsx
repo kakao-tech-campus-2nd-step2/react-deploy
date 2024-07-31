@@ -52,11 +52,11 @@ export const CategoryProductsSection = ({
         }}
         css={gridStyle}
       >
-        {categoryProducts.map(({ id, imageUrl, name, price }, index) => {
+        {categoryProducts.map(({ productId, imageUrl, name, price }, index) => {
           return (
             <Link
-              key={id}
-              to={`/products/${id}`}
+              key={productId}
+              to={`/products/${productId}`}
               ref={categoryProducts.length === index + 1 ? ref : undefined}
             >
               <GoodsItem

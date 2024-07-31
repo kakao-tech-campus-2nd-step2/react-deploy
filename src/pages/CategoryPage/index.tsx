@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { ThemeErrorFallback } from '@/api/components/ThemeErrorFallback';
+import { CategoryErrorFallback } from '@/api/components/CategoryErrorFallback';
 import BaseLayout from '@/layouts/BaseLayout';
 import { ROUTER_PATH } from '@/routes/path';
 
@@ -22,7 +22,7 @@ export const CategoryPage = () => {
 
   return (
     <BaseLayout>
-      <ErrorBoundary FallbackComponent={ThemeErrorFallback}>
+      <ErrorBoundary FallbackComponent={CategoryErrorFallback}>
         <Suspense fallback={<Skeleton width="100vw" height="13rem" />}>
           <CategoryHeroSection categoryId={Number(categoryId)} />
         </Suspense>

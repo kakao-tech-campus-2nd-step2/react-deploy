@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { fetchThemeProduct } from '@/api/services/themeProduct';
-import { ProductsRequestParams } from '@/api/services/themeProduct/types';
+import { fetchCategoryProducts } from '@/api/services/categoryProducts';
+import { ProductsRequestParams } from '@/api/services/categoryProducts/types';
 
 type ProductsParams = Pick<
   ProductsRequestParams,
@@ -10,13 +10,13 @@ type ProductsParams = Pick<
 
 export const useProducts = ({
   categoryId,
-  maxResults = 20,
+  maxResults = 10,
   initPageToken,
 }: ProductsParams) => {
   const { data, status, error, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['products', categoryId, maxResults, initPageToken],
     queryFn: ({ pageParam = initPageToken }) =>
-      fetchThemeProduct({ categoryId, pageToken: pageParam, maxResults }),
+      fetchCategoryProducts({ categoryId, pageToken: pageParam, maxResults }),
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,
   });
