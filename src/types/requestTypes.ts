@@ -14,7 +14,7 @@ export interface GetWishesRequest {
 }
 
 export interface AddWishRequest {
-  productId: number;
+  productId?: number;
 }
 
 export interface ThemeProductsRequest {

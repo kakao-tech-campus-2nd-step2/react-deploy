@@ -14,6 +14,5 @@ const addWish = async (request: AddWishRequest): Promise<AddWishResponse> => {
   return res.data;
 };
 
-export default function useAddWishMutation(): UseMutationResult<AddWishResponse, AxiosError, AddWishRequest> {
-  return useMutation({ mutationFn: (productId: AddWishRequest) => addWish(productId) });
-}
+export const useAddWishMutation = (): UseMutationResult<AddWishResponse, AxiosError, AddWishRequest> =>
+  useMutation({ mutationFn: (request: AddWishRequest) => addWish(request) });

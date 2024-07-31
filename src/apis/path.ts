@@ -23,11 +23,6 @@ export const RANKING_PATHS = {
   PRODUCTS: `${API_BASE_KAKAO}/ranking/products`,
 };
 
-export const THEME_PATHS = {
-  THEMES: `${API_BASE_KAKAO}/themes`,
-  THEME_PRODUCTS: (themeKey?: string) => `${API_BASE}/themes/${themeKey}/products`,
-};
-
 export const WISH_PATHS = {
   ADD_WISH: `${API_BASE}/wishes`,
   GET_WISH: `${API_BASE}/wishes`,
