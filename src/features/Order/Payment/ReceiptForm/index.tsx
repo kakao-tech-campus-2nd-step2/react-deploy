@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { Checkbox, Select, Input } from '@chakra-ui/react';
 import { Button } from '@components/common';
@@ -20,14 +20,10 @@ export default function ReceiptForm() {
   const { hasCashReceipt } = watch();
   const { mutate } = useOrders();
 
-  const onSubmit = (data: OrderDataFormValues) => {
-    const errorMessage = validatePayment(data.message, data.hasCashReceipt, data.cashReceiptNumber);
-    if (errorMessage) return alert(errorMessage);
-
+  const handleOrders = (message: string) => {
     const { optionId, quantity } = JSON.parse(storedValue);
-
     mutate(
-      { message: data.message, optionId, quantity },
+      { message, optionId, quantity },
       {
         onSuccess: () => {
           alert(SUCCESS_ORDER);
@@ -36,6 +32,12 @@ export default function ReceiptForm() {
         onError: () => alert(FAIL_ORDER),
       },
     );
+  };
+
+  const onSubmit = (data: OrderDataFormValues) => {
+    const errorMessage = validatePayment(data.message, data.hasCashReceipt, data.cashReceiptNumber);
+    if (errorMessage) return alert(errorMessage);
+    handleOrders(data.message);
   };
 
   return (
