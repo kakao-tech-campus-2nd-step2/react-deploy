@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "tests"],
+  "include": ["src", "tests", "index.tsx"],
   "exclude": ["node_modules", "build", "public"]
 }
