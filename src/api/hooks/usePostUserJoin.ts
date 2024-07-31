@@ -14,21 +14,9 @@ export const postUserJoin = async (userInput: UserAccountInput) => {
   return response.data;
 };
 
-export const usePostUserJoin = ({
-  onSuccess,
-  onError,
-}: {
-  onSuccess?: (
-    data: unknown,
-    variables: UserAccountInput,
-    context: unknown,
-  ) => Promise<unknown> | void;
-  onError?: (error: Error, variables: UserAccountInput, context: unknown) => void;
-}) => {
+export const usePostUserJoin = () => {
   return useMutation({
     mutationKey: [getPostUserJoinPath()],
     mutationFn: (userInput: UserAccountInput) => postUserJoin(userInput),
-    onSuccess,
-    onError,
   });
 };

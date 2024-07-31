@@ -27,11 +27,7 @@ export const JoinPage = () => {
     alert('회원가입에 실패했습니다.');
   };
 
-  //TODO: mutate 인자로 변경하기
-  const { mutate: postUserJoin, isPending: isJoinPending } = usePostUserJoin({
-    onSuccess,
-    onError,
-  });
+  const { mutate: postUserJoin, isPending: isJoinPending } = usePostUserJoin();
 
   const handleConfirm = () => {
     if (!email || !password || !passwordConfirm) {
@@ -44,7 +40,7 @@ export const JoinPage = () => {
       return;
     }
 
-    postUserJoin({ email, password });
+    postUserJoin({ email, password }, { onSuccess, onError });
   };
 
   return (

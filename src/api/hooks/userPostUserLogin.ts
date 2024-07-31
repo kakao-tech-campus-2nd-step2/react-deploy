@@ -14,19 +14,9 @@ export const postUserLogin = async (userInput: UserAccountInput) => {
   return response.data;
 };
 
-export const usePostUserLogin = ({
-  onSuccess,
-}: {
-  //TODO: onSuccess mutate 의 인자로 변경하기
-  onSuccess?: (
-    data: unknown,
-    variables: UserAccountInput,
-    context: unknown,
-  ) => Promise<unknown> | void;
-}) => {
+export const usePostUserLogin = () => {
   return useMutation({
     mutationKey: [getPostUserLoginPath()],
     mutationFn: (userInput: UserAccountInput) => postUserLogin(userInput),
-    onSuccess,
   });
 };

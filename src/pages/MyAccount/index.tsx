@@ -30,7 +30,6 @@ export const MyAccountPage = () => {
   const { totalPages } = wishlistData;
 
   const handleLogout = () => {
-    //TODO: 토큰 로직 전부 리프레시 없이 동작하도록 수정
     authSessionStorage.set(undefined);
 
     const redirectURL = `${window.location.origin}${RouterPath.home}`;

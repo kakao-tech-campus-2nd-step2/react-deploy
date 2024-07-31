@@ -22,7 +22,7 @@ export const LoginPage = () => {
     navigate('/');
   };
 
-  const { mutate: postUserLogin } = usePostUserLogin({ onSuccess });
+  const { mutate: postUserLogin } = usePostUserLogin();
 
   const handleConfirm = () => {
     if (!email || !password) {
@@ -30,7 +30,7 @@ export const LoginPage = () => {
       return;
     }
 
-    postUserLogin({ email, password });
+    postUserLogin({ email, password }, { onSuccess });
   };
 
   return (
