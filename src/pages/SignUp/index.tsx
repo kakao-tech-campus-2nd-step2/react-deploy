@@ -6,7 +6,7 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
+import { userSignUp } from '@/api/hooks/useSignUp';
 
 export const SignUp = () => {
   const [formState, setFormState] = useState({
@@ -14,10 +14,10 @@ export const SignUp = () => {
     password: '',
     passwordConfirm: '',
   });
-
+  const { mutate } = userSignUp();
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormState((prev) => ({
+    setFormState(prev => ({
       ...prev,
       [name]: value,
     }));
@@ -35,8 +35,12 @@ export const SignUp = () => {
       return;
     }
 
-    authSessionStorage.set(formState.username);
-    return window.location.replace(`${window.location.origin}/`);
+    const SignUpInfo = {
+      email: username,
+      password: password,
+    };
+
+    mutate(SignUpInfo);
   };
 
   return (
