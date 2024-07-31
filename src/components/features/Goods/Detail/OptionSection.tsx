@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { useCallback, useMemo, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -11,6 +12,8 @@ import { usePostWishlist } from '@/api/hooks/useWishlist';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import { breakpoints } from '@/styles/variants';
+import type { ProductOptionsData } from '@/types';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
@@ -20,7 +23,17 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+
+  const [selectedOption, setSelectedOption] = useState<ProductOptionsData | null>(null);
   const [countAsString, setCountAsString] = useState('1');
+
+  useEffect(() => {
+    if (options && options.length > 0) {
+      setSelectedOption(options[0]);
+      setCountAsString('1');
+    }
+  }, [options]);
+
   const totalPrice = useMemo(() => {
     return detail?.price * Number(countAsString) || 0;
   }, [detail, countAsString]);
@@ -72,9 +85,26 @@ export const OptionSection = ({ productId }: Props) => {
     );
   }, [authInfo, navigate, postWishlist, productId]);
 
+  const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const selectedIndex = event.target.selectedIndex;
+    const option = options[selectedIndex];
+    setSelectedOption(option);
+    setCountAsString('1');
+  };
+
   return (
     <Wrapper>
-      <CountOptionItem name={options?.[0]?.name} value={countAsString} onChange={setCountAsString} />
+      <SelectWrapper>
+        {selectedOption && (
+          <CountOptionItem
+            selectOptions={options}
+            value={countAsString}
+            onChange={setCountAsString}
+            maxValues={selectedOption.quantity}
+            onOptionChange={handleOptionChange}
+          />
+        )}
+      </SelectWrapper>
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
@@ -119,5 +149,15 @@ const PricingWrapper = styled.div`
   & span {
     font-size: 20px;
     letter-spacing: -0.02em;
+  }
+`;
+
+const SelectWrapper = styled.article`
+  width: 100%;
+  max-width: 300px;
+  padding: 16px 16px 60px;
+
+  @media screen and (min-width: ${breakpoints.sm}) {
+    padding: 32px 32px 80px;
   }
 `;

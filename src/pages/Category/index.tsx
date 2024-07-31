@@ -7,6 +7,8 @@ import { RouterPath } from '@/routes/path';
 
 export const CategoryPage = () => {
   const { categoryId = '' } = useParams<{ categoryId: string }>();
+  // 현재 url에서 categoryid를 추출함
+  
   const { isRender, currentTheme } = useCurrentCategory({ categoryId });
 
   if (!isRender) return null;
