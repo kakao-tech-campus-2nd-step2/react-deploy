@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from 'react';
 import { BASE_URL } from '@/constants/URI';
 
 type ApiInfo = {
-  url: string;
+  url: string | undefined;
 };
 
 type ApiContextData = {
