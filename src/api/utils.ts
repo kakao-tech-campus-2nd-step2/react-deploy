@@ -19,8 +19,9 @@ import type {
   RegisterUserResponse,
 } from '@/api/types';
 import type { OrderListRequestParams } from '@/api/types';
+import type { CreateOrderRequestParams } from '@/api/types';
+import type { WishlistItem } from '@/components/features/MyAccount/WhishList';
 import type { OrderData, ProductData } from '@/types';
-import { CreateOrderRequestParams } from '@/api/types';
 
 export const registerUser = async ({ email, password }: RegisterUserRequest) => {
   try {
@@ -102,7 +103,7 @@ export const addToWishlist = async (productId: string) => {
 
 export const getWishlist = async (page: number, size: number) => {
   try {
-    const response = await fetchInstance.get(`/api/wishes`, {
+    const response = await fetchInstance.get<PaginationRawResponse<WishlistItem>>(`/api/wishes`, {
       params: {
         page,
         size,
@@ -110,7 +111,16 @@ export const getWishlist = async (page: number, size: number) => {
       },
     });
 
-    return response.data;
+    const data = response.data;
+
+    return {
+      wishlist: data.content,
+      nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
+      pageInfo: {
+        totalResults: data.totalElements,
+        resultsPerPage: data.size,
+      },
+    };
   } catch (error) {
     throw new Error('위시 리스트 조회에 실패했습니다.');
   }

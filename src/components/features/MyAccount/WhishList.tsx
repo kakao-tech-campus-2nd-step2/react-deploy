@@ -20,7 +20,7 @@ export interface WishlistItem {
 export const Wishlist = () => {
   const page = 0;
   const size = 10;
-  const { data: wishlist } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['wishlist', page, size],
     queryFn: () => getWishlist(page, size),
   });
@@ -45,7 +45,7 @@ export const Wishlist = () => {
     <Container maxW="container.md" py={8}>
       <Spacing height={4} />
       <VStack spacing={4}>
-        {wishlist.content.map((item: WishlistItem) => (
+        {data.wishlist.map((item: WishlistItem) => (
           <Fragment key={item.id}>
             <Box
               borderRadius="md"
