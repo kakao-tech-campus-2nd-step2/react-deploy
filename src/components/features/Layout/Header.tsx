@@ -19,7 +19,7 @@ export const Header = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper borderBottom={location.pathname === RouterPath.wish}>
       <Container flexDirection="row" alignItems="center" justifyContent="space-between">
         <LogoWrapper>
           <Link to={RouterPath.home}>
@@ -57,7 +57,7 @@ export const Header = () => {
 
 export const HEADER_HEIGHT = '74px';
 
-export const Wrapper = styled.header`
+const Wrapper = styled.header<{ borderBottom: boolean }>`
   position: fixed;
   z-index: 9999;
   width: 100%;
@@ -65,6 +65,8 @@ export const Wrapper = styled.header`
   height: ${HEADER_HEIGHT};
   background-color: #fff;
   padding: 0 16px;
+
+  border-bottom: ${({ borderBottom }) => (borderBottom ? '1px solid #ededed' : 'none')};
 `;
 
 const LogoWrapper = styled.div`
