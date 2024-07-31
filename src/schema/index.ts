@@ -41,6 +41,7 @@ export const OrderSchema = z
 export const AuthErrorMessage = {
   emailRequired: '이메일을 입력해주세요.',
   emailInvalid: '이메일 형식으로 입력해주세요.',
+  nameRequired: '이름을 입력해주세요.',
   passwordRequired: '비밀번호를 입력해주세요.',
 };
 export const LoginSchema = z.object({
@@ -54,5 +55,14 @@ export const LoginSchema = z.object({
 });
 export type LoginFields = z.infer<typeof LoginSchema>;
 
-export const RegisterSchema = LoginSchema;
+export const RegisterSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: AuthErrorMessage.emailRequired })
+    .regex(/^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, {
+      message: AuthErrorMessage.emailInvalid,
+    }),
+  name: z.string().min(1, { message: AuthErrorMessage.nameRequired }),
+  password: z.string().min(1, { message: AuthErrorMessage.passwordRequired }),
+});
 export type RegisterFields = z.infer<typeof RegisterSchema>;

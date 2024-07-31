@@ -1,22 +1,32 @@
+import { AxiosError } from 'axios';
+
 import { BACKEND_API } from '@/api/config';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
 
-import { LoginRequestBody, LoginResponse } from './login';
+export type RegisterRequestBody = {
+  email: string;
+  name: string;
+  password: string;
+};
 
-export type RegisterRequestBody = LoginRequestBody;
-export type RegisterResposne = LoginResponse;
-
-export const register = async ({ email, password }: RegisterRequestBody) => {
+export const register = async ({
+  email,
+  name,
+  password,
+}: RegisterRequestBody) => {
   try {
-    const response = await BACKEND_API.post<RegisterResposne>(
-      '/api/members/register',
-      { email, password }
-    );
-
-    return response.data;
+    await BACKEND_API.post('/api/members/register', {
+      email,
+      name,
+      password,
+    });
   } catch (error) {
-    if (error instanceof Error) {
-      throw error;
+    if (error instanceof AxiosError) {
+      const { response } = error;
+
+      if (response?.status === 400) {
+        throw new Error(response.data.detail);
+      }
     }
 
     throw new Error(API_ERROR_MESSAGES.UNKNOWN_ERROR);
