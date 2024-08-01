@@ -35,10 +35,10 @@ type ProductsResponseRawData = {
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
-  params.append('sort', 'name,asc');
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
+  params.append('categoryId', categoryId);
+  params.append('sort', 'id,asc');
 
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
