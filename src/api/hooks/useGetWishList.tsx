@@ -1,9 +1,12 @@
-import type { InfiniteData, UseInfiniteQueryResult} from '@tanstack/react-query';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import type {
+  InfiniteData,
+  UseInfiniteQueryResult,
+} from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-import type { ProductData } from '@/types';
+import type { ProductData } from "@/types";
 
-import { BASE_URL, fetchInstance } from '../instance';
+import { BASE_URL, fetchInstance } from "../instance";
 
 type RequestParams = {
   pageToken?: string;
@@ -52,15 +55,19 @@ type WishListResponseRawData = {
 export const getWishListPath = ({ pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('sort', 'createdDate,desc');
-  if (pageToken) params.append('page', pageToken);
-  if (maxResults) params.append('size', maxResults.toString());
+  params.append("sort", "createdDate,desc");
+  if (pageToken) params.append("page", pageToken);
+  if (maxResults) params.append("size", maxResults.toString());
 
   return `${BASE_URL}/api/wishes?${params.toString()}`;
 };
 
-export const getWishList = async (params: RequestParams): Promise<WishListResponseData> => {
-  const response = await fetchInstance.get<WishListResponseRawData>(getWishListPath(params));
+export const getWishList = async (
+  params: RequestParams
+): Promise<WishListResponseData> => {
+  const response = await fetchInstance.get<WishListResponseRawData>(
+    getWishListPath(params)
+  );
   const data = response.data;
 
   return {
@@ -68,7 +75,8 @@ export const getWishList = async (params: RequestParams): Promise<WishListRespon
       id: item.id,
       product: item.product,
     })),
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
+    nextPageToken:
+      data.last === false ? (data.number + 1).toString() : undefined,
     pageInfo: {
       totalResults: data.totalElements,
       resultsPerPage: data.size,
@@ -76,13 +84,13 @@ export const getWishList = async (params: RequestParams): Promise<WishListRespon
   };
 };
 
-type Params = Pick<RequestParams, 'maxResults'> & { initPageToken?: string };
+type Params = Pick<RequestParams, "maxResults"> & { initPageToken?: string };
 export const useGetWishList = ({
   maxResults = 20,
   initPageToken,
 }: Params): UseInfiniteQueryResult<InfiniteData<WishListResponseData>> => {
   return useInfiniteQuery({
-    queryKey: ['wishes', { maxResults }],
+    queryKey: ["wishes", { maxResults }],
     queryFn: async ({ pageParam = initPageToken }) => {
       return getWishList({ pageToken: pageParam, maxResults });
     },

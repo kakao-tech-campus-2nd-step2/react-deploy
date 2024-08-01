@@ -1,14 +1,14 @@
-import { QueryClient } from '@tanstack/react-query';
-import type { AxiosInstance, AxiosRequestConfig } from 'axios';
-import axios from 'axios';
+import { QueryClient } from "@tanstack/react-query";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
     ...config,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       ...config.headers,
     },
   });
@@ -16,11 +16,17 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
+export const BASE_URL = "http://54.180.245.166:8080";
 // TODO: 추후 서버 API 주소 변경 필요
+
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: "http://54.180.245.166:8080",
 });
+
+export const updateFetchInstance = (baseUrl: string) => {
+  fetchInstance.defaults.baseURL = baseUrl;
+  console.log(fetchInstance.defaults.baseURL);
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {

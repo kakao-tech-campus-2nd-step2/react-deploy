@@ -1,81 +1,20 @@
-import { Center } from '@chakra-ui/react';
-import styled from '@emotion/styled';
-import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Button } from "@/components/common/Button";
+import styled from "@emotion/styled";
+import KAKAO_LOGO from "@/assets/kakao_logo.svg";
 
-import KAKAO_LOGO from '@/assets/kakao_logo.svg';
-import { Button } from '@/components/common/Button';
-import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
-
-export const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
-
-  const handleLogin = async () => {
-    if (!email || !password) {
-      alert('이메일과 비밀번호를 입력해주세요.');
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/members/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.status === 200) {
-        const data = await response.json();
-        authSessionStorage.set(data.token);
-
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-
-        window.location.replace(redirectUrl);
-      } else {
-        const err = await response.json();
-        alert(`로그인 실패: ${err.message}`);
-      }
-    } catch (error) {
-      console.error('로그인 중 에러 발생:', error);
-    }
+export const KakaoLogin = () => {
+  const Rest_api_key = "0554f7c2eaba28fbf805032da1e0b14d";
+  const redirect_uri = "http://localhost:3000/login"; //Redirect URI
+  // oauth 요청 URL
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+  const handleLogin = () => {
+    window.location.href = kakaoURL;
   };
-
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField
-          placeholder="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Spacing />
-        <UnderlineTextField
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
-        <Button onClick={handleLogin}>로그인</Button>
-        <br />
-        <Center>
-          <Link to="/join">
-            <div>회원가입</div>
-          </Link>
-        </Center>
+        <Button onClick={handleLogin}>카카오 로그인</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -99,9 +38,4 @@ const FormWrapper = styled.article`
   width: 100%;
   max-width: 580px;
   padding: 16px;
-
-  @media screen and (min-width: ${breakpoints.sm}) {
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    padding: 60px 52px;
-  }
 `;

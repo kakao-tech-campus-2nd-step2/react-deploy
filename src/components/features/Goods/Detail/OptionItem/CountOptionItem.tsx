@@ -1,6 +1,6 @@
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { IconButton, Input, useNumberInput } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { IconButton, Input, useNumberInput } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 
 type Props = {
   name: string;
@@ -17,27 +17,35 @@ export const CountOptionItem = ({
   value,
   onChange,
 }: Props) => {
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
-    step: 1,
-    min: minValues,
-    max: maxValues,
-    defaultValue: value,
-    onChange: (valueAsString) => {
-      onChange(valueAsString);
-    },
-  });
+  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
+    useNumberInput({
+      step: 1,
+      min: minValues,
+      max: maxValues,
+      defaultValue: value,
+      onChange: (valueAsString) => {
+        onChange(valueAsString);
+      },
+    });
 
   const increment = getIncrementButtonProps();
   const decrement = getDecrementButtonProps();
   const input = getInputProps();
-
   return (
     <Wrapper>
       <Title>{name}</Title>
       <InputWrapper>
-        <IconButton {...decrement} aria-label="수량 1개 감소" icon={<MinusIcon />} />
+        <IconButton
+          {...decrement}
+          aria-label="수량 1개 감소"
+          icon={<MinusIcon />}
+        />
         <Input {...input} />
-        <IconButton {...increment} aria-label="수량 1개 추가" icon={<AddIcon />} />
+        <IconButton
+          {...increment}
+          aria-label="수량 1개 추가"
+          icon={<AddIcon />}
+        />
       </InputWrapper>
     </Wrapper>
   );
