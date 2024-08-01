@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
 import { GetWishesRequest } from '@internalTypes/requestTypes';
 import { GetWishesResponse } from '@internalTypes/responseTypes';
 import axiosInstance from '@apis/instance';

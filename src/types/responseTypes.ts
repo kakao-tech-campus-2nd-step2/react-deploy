@@ -82,6 +82,14 @@ export interface MessageCardTemplatesResponse {
   templates: MessageCardTemplateData[];
 }
 
+export interface MyAccountInfoResponse {
+  id: number;
+  name: string;
+  birthday?: string;
+  profileImageURL: string;
+  point: number;
+}
+
 export interface MyAccountWishProductsResponse {
   products: ProductData[];
   nextPageToken: string | null;
