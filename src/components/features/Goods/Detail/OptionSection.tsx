@@ -126,6 +126,7 @@ export const OptionSection = ({ productId }: Props) => {
 };
 
 const Wrapper = styled.div`
+  margin-top: 30px;
   width: 100%;
   padding: 24px;
   display: flex;
