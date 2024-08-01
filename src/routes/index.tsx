@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
 import CategoryAddPage from '@/pages/Category/CategoryAddPage'; 
+import CategoryEditPage from '@/pages/Category/CategoryEditPage';
 import FavoritesPage from '@/pages/FavoritesPage'; 
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: RouterPath.addCategory, 
         element: <CategoryAddPage />,
+      },
+      {
+        path: RouterPath.editCategory, // 새로운 카테고리 수정 경로
+        element: <CategoryEditPage />,
       },
       {
         path: RouterPath.productsDetail,

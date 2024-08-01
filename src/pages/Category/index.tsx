@@ -1,4 +1,4 @@
-import { Navigate, useNavigate,useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import { CategoryHeroSection } from '@/components/features/Category/CategoryHeroSection';
 import { CategoryProductsSection } from '@/components/features/Category/CategoryProductsSection';
@@ -17,14 +17,19 @@ export const CategoryPage = () => {
   }
 
   const handleAddCategoryClick = () => {
-    navigate(RouterPath.addCategory); 
+    navigate(RouterPath.addCategory);
+  };
+
+  const handleEditCategoryClick = () => {
+    navigate(RouterPath.editCategory.replace(':categoryId', categoryId));
   };
 
   return (
     <>
       <CategoryHeroSection categoryId={categoryId} />
       <CategoryProductsSection categoryId={categoryId} />
-      <button onClick={handleAddCategoryClick}>카테고리 추가</button> 
+      <button onClick={handleAddCategoryClick}>카테고리 추가</button>
+      <button onClick={handleEditCategoryClick}>카테고리 수정</button>
     </>
   );
 };
