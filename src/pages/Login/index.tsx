@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
+import type { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { login } from '@/api/hooks/login'; 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -9,26 +11,31 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
+
 export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
+  
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      const { token } = await login(id, password);
+      alert('로그인 성공!');
+      authSessionStorage.set(token);
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    alert('로그인 성공!');
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      window.location.replace(redirectUrl);
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      alert(`로그인 실패: ${axiosError.response?.data?.message || axiosError.message}`);
+    }
   };
 
   const handleSignUp = () => {
