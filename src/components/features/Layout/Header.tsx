@@ -1,3 +1,4 @@
+import { Select } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,7 +9,6 @@ import { getDynamicPath, RouterPath } from '@/routes/path';
 import { type Server } from '@/types';
 
 const servers: Server[] = [
-  { name: 'API 선택', url: 'https://api.server0.com' },
   { name: '권도윤', url: 'https://api.server1.com' },
   { name: '배규민', url: 'https://api.server2.com' },
   { name: '석혜원', url: 'https://api.server3.com' },
@@ -43,13 +43,13 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
-          <Select value={selectedServer.name} onChange={handleServerChange}>
+          <StyledSelect placeholder='백엔드 선택' value={selectedServer.name} onChange={handleServerChange}>
             {servers.map(server => (
               <option key={server.name} value={server.name}>
                 {server.name}
               </option>
             ))}
-          </Select>
+          </StyledSelect>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -76,15 +76,16 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
+
 const RightWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 20px;
 `;
 
-const Select = styled.select`
-  margin-right: 16px;
-  font-size: 14px;
-  padding: 4px;
+const StyledSelect = styled(Select)`
+  flex-grow: 1;
+  max-width: 200px; 
 `;
 
 const LinkButton = styled.p`
@@ -93,4 +94,6 @@ const LinkButton = styled.p`
   color: #000;
   text-decoration: none;
   cursor: pointer;
+  white-space: nowrap; 
 `;
+
