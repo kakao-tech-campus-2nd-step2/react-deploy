@@ -1,6 +1,7 @@
+import { Box, Button, Center, Heading,Input, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
-import { useAddCategory } from '@/api/hooks/AddCategory'; // 올바른 경로로 설정
+import { useAddCategory } from '@/api/hooks/AddCategory'; 
 
 const CategoryAddPage: React.FC = () => {
   const [name, setName] = useState<string>('');
@@ -19,47 +20,36 @@ const CategoryAddPage: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-      }}
-    >
-      <h1>카테고리 추가</h1>
-      <input
-        placeholder="이름"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={{ width: '100%', marginBottom: '16px' }}
-      />
-      <input
-        placeholder="색상"
-        value={color}
-        onChange={(e) => setColor(e.target.value)}
-        style={{ width: '100%', marginBottom: '16px' }}
-      />
-      <input
-        placeholder="이미지 URL"
-        value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
-        style={{ width: '100%', marginBottom: '16px' }}
-      />
-      <input
-        placeholder="설명"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        style={{ width: '100%', marginBottom: '16px' }}
-      />
-      <button
-        onClick={handleAddCategory}
-        style={{ width: '100%', padding: '8px 16px', backgroundColor: 'blue', color: 'white' }}
-      >
-        카테고리 추가
-      </button>
-    </div>
+    <Center height="100vh">
+      <Box>
+        <VStack spacing={4}>
+          <Heading size="lg">카테고리 추가</Heading>
+          <Input
+            placeholder="이름"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            placeholder="색상"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+          />
+          <Input
+            placeholder="이미지 URL"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+          />
+          <Input
+            placeholder="설명"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <Button backgroundColor="#FEE500" color="black" onClick={handleAddCategory}>
+            카테고리 추가
+          </Button>
+        </VStack>
+      </Box>
+    </Center>
   );
 };
 

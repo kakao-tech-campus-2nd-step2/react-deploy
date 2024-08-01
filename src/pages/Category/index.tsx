@@ -1,3 +1,4 @@
+import { Button,  Center, HStack } from '@chakra-ui/react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import { useDeleteCategory } from '@/api/hooks/useDeleteCategory';
@@ -36,9 +37,19 @@ export const CategoryPage = () => {
     <>
       <CategoryHeroSection categoryId={categoryId} />
       <CategoryProductsSection categoryId={categoryId} />
-      <button onClick={handleAddCategoryClick}>카테고리 추가</button>
-      <button onClick={handleEditCategoryClick}>카테고리 수정</button>
-      <button onClick={handleDeleteCategoryClick} style={{ backgroundColor: 'red', color: 'white' }}>카테고리 삭제</button>
+      <Center height="100vh">
+        <HStack spacing={4}>
+          <Button colorScheme="blue" onClick={handleAddCategoryClick}>
+            카테고리 추가
+          </Button>
+          <Button colorScheme="yellow" onClick={handleEditCategoryClick}>
+            카테고리 수정
+          </Button>
+          <Button colorScheme="red" onClick={handleDeleteCategoryClick}>
+            카테고리 삭제
+          </Button>
+        </HStack>
+      </Center>
     </>
   );
 };
