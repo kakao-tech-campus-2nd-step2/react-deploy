@@ -1,14 +1,14 @@
 import { OrderResponse } from '@internalTypes/responseTypes';
 import { OrderRequest } from '@internalTypes/requestTypes';
 import { ORDER_PATHS } from '@apis/path';
-import initInstance from '@apis/instance';
+import { initInstance } from '@apis/instance';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { useAPI } from '@context/api/useAPI';
 
-const ordersInstance = initInstance(process.env.REACT_APP_EUN_KYOUNG_BASE_URL);
-
-const postOrders = async ({ optionId, quantity, message }: OrderRequest): Promise<OrderResponse> => {
-  const res = await ordersInstance.post(
+const postOrders = async ({ optionId, quantity, message }: OrderRequest, baseURL: string): Promise<OrderResponse> => {
+  const instance = initInstance(baseURL);
+  const res = await instance.post(
     ORDER_PATHS.ORDERS,
     {
       optionId,
@@ -24,7 +24,10 @@ const postOrders = async ({ optionId, quantity, message }: OrderRequest): Promis
   return res.data;
 };
 
-export const useOrders = (): UseMutationResult<OrderResponse, AxiosError, OrderRequest> =>
-  useMutation<OrderResponse, AxiosError, OrderRequest>({
-    mutationFn: ({ optionId, quantity, message }: OrderRequest) => postOrders({ optionId, quantity, message }),
+export const useOrders = (): UseMutationResult<OrderResponse, AxiosError, OrderRequest> => {
+  const { baseURL } = useAPI();
+
+  return useMutation<OrderResponse, AxiosError, OrderRequest>({
+    mutationFn: ({ optionId, quantity, message }: OrderRequest) => postOrders({ optionId, quantity, message }, baseURL),
   });
+};

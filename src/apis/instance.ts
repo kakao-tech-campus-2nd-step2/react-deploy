@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { ERROR } from '@utils/constants/message';
+import { useAPI } from '@context/api/useAPI';
 import { QueryClient } from '@tanstack/react-query';
 
 const statusMessages: { [key: number]: string } = {
@@ -12,7 +13,7 @@ const statusMessages: { [key: number]: string } = {
   500: ERROR.SERVER_ERROR,
 };
 
-const initInstance = (baseURL?: string): AxiosInstance => {
+export const initInstance = (baseURL: string): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
     baseURL,
@@ -37,5 +38,3 @@ const initInstance = (baseURL?: string): AxiosInstance => {
 };
 
 export const queryClient = new QueryClient();
-
-export default initInstance;
