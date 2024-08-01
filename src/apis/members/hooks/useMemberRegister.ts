@@ -5,7 +5,7 @@ import { UserInfoData } from '@internalTypes/dataTypes';
 import { MemberResponse } from '@internalTypes/responseTypes';
 import { MEMBERS_PATHS } from '@apis/path';
 
-const registerInstance = initInstance(process.env.REACT_APP_EUN_KYOUNG_BASE_URL);
+const registerInstance = initInstance(process.env.REACT_APP_JEONG_HOON_BASE_URL);
 
 const postMemberRegister = async ({ email, password }: UserInfoData): Promise<MemberResponse> => {
   const res = await registerInstance.post(MEMBERS_PATHS.REGISTER, {
