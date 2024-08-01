@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { BASE_URL, fetchInstance } from '@/api/instance';
@@ -14,48 +14,44 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get('token');
+    if (token) {
+      authSessionStorage.set({ token: token });
+      window.location.replace('/');
+    }
+  }, [searchParams]);
 
   const handleConfirm = async () => {
-    const registerData = authSessionStorage.get();
-    if (registerData) {
-      if (email !== registerData.email) {
-        alert('존재하지 않는 이메일입니다.');
-      } else if (password !== registerData.password) {
-        alert('존재하지 않는 비밀번호입니다.');
-      }
-    } else {
-      alert('회원 정보를 찾을 수 없습니다.');
+    try {
+      const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
+        email: email,
+        password: password,
+      });
+      const data = await response.data;
+      authSessionStorage.set({ token: data.token, email: email });
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      return window.location.replace(redirectUrl);
+    } catch (error) {
+      console.error('Failed sign in', error);
+      alert('로그인 중 오류가 발생했습니다.');
     }
-    if (registerData && email === registerData.email && password === registerData.password)
-      try {
-        const response = await fetchInstance.post(
-          `${BASE_URL}/api/members/login`,
-          { email: email, password: password },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-
-        if (response.status === 200) {
-          const data = await response.data;
-          authSessionStorage.set({ token: data.token, email: data.email });
-          const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-          return window.location.replace(redirectUrl);
-        } else {
-          console.error('Unexpected response', response);
-          alert('로그인에 실패했습니다. 다시 시도해주세요.');
-        }
-      } catch (error) {
-        console.error('Failed sign in', error);
-        alert('로그인 중 오류가 발생했습니다.');
-      }
+  };
+  const handleKakaoLogin = async () => {
+    try {
+      const response = await fetchInstance.post(`${BASE_URL}/api/members/kakao`);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Failed sign in', error);
+      alert('로그인 중 오류가 발생했습니다.');
+    }
   };
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
         <UnderlineTextField placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Spacing />
@@ -73,6 +69,13 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing
+          height={{
+            initial: 20,
+            sm: 20,
+          }}
+        />
+        <Button onClick={handleKakaoLogin}>카카오계정 로그인</Button>
       </FormWrapper>
       <CustomButton onClick={() => window.location.replace('/signUp')}>회원가입</CustomButton>
     </Wrapper>
@@ -100,7 +103,7 @@ const FormWrapper = styled.article`
 
   @media screen and (min-width: ${breakpoints.sm}) {
     border: 1px solid rgba(0, 0, 0, 0.12);
-    padding: 60px 52px;
+    padding: 60px 52px 40px;
   }
 `;
 

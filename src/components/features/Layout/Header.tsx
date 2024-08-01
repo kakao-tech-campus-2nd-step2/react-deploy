@@ -21,7 +21,10 @@ export const Header = () => {
         </Link>
         <RightWrapper>
           {authInfo ? (
-            <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
+            <>
+              <LinkButton onClick={() => navigate(RouterPath.orderList)}>주문 목록</LinkButton>
+              <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
+            </>
           ) : (
             <LinkButton onClick={handleLogin}>로그인</LinkButton>
           )}
@@ -46,7 +49,10 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  display: flex;
+  gap: 30px;
+`;
 
 const LinkButton = styled.p`
   align-items: center;

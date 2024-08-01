@@ -2,6 +2,7 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Hyoeunkh.gihub.io/react-deploy",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
@@ -10,7 +11,9 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write '**/*.{ts,tsx}'",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -32,6 +35,7 @@
     "@tanstack/react-query": "^5.24.1",
     "axios": "^1.6.7",
     "framer-motion": "^11.0.6",
+    "gh-pages": "^6.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.12",
@@ -54,7 +58,7 @@
     "@storybook/react-webpack5": "^7.6.17",
     "@storybook/test": "^7.6.17",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.104",

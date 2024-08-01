@@ -14,6 +14,14 @@ export type ProductData = {
   categoryId: number;
 };
 
+export type OrderListData = {
+  name: string;
+  price: number;
+  quantity: number;
+  imageUrl: string;
+  orderDateTime: string;
+};
+
 export type ProductOptionsData = {
   id: number;
   name: string;
@@ -34,6 +42,7 @@ export type GoodsDetailOptionItemData = {
 export type OrderHistory = {
   id: number;
   count: number;
+  optionId: number;
 };
 
 export type OrderFormData = {
@@ -45,6 +54,7 @@ export type OrderFormData = {
   hasCashReceipt: boolean;
   cashReceiptType?: 'PERSONAL' | 'BUSINESS';
   cashReceiptNumber?: string;
+  optionId: number;
 };
 
 export type MessageCardTemplateData = {
@@ -77,6 +87,18 @@ export type Pageable = {
 };
 export type WishlistResponse = {
   content: WishListData[];
+  pageable: Pageable;
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+};
+export type OrderlistResponse = {
+  content: OrderListData[];
   pageable: Pageable;
   totalPages: number;
   totalElements: number;

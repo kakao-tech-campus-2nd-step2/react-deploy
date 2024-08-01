@@ -6,6 +6,7 @@ import { GoodsInfo } from './GoodsInfo';
 import { OrderFormMessageCard } from './MessageCard';
 import { OrderFormOrderInfo } from './OrderInfo';
 
+import { useOrder } from '@/api/hooks/useOrder';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -15,7 +16,7 @@ type Props = {
 };
 
 export const OrderForm = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
+  const { id, count, optionId } = orderHistory;
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -24,9 +25,13 @@ export const OrderForm = ({ orderHistory }: Props) => {
       senderId: 0,
       receiverId: 0,
       hasCashReceipt: false,
+      messageCardTextMessage: '',
+      optionId: optionId,
     },
   });
   const { handleSubmit } = methods;
+
+  const { mutate: postOrder } = useOrder();
 
   const handleForm = (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
@@ -36,8 +41,22 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log('values', values);
-    alert('주문이 완료되었습니다.');
+    postOrder(
+      {
+        productId: id,
+        optionId: values.optionId,
+        quantity: values.productQuantity,
+        message: values.messageCardTextMessage,
+      },
+      {
+        onSuccess: () => {
+          alert('주문이 완료되었습니다.');
+        },
+        onError: (error) => {
+          console.error('Error:', error);
+        },
+      },
+    );
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수

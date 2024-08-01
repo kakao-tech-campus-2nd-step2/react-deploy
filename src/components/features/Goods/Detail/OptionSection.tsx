@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { VscHeart } from 'react-icons/vsc';
 import { useNavigate } from 'react-router-dom';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
+import { OptionSelect } from './OptionItem/OptionSelect';
 
 import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
@@ -18,6 +20,11 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+
+  const methods = useForm();
+  const { watch } = methods;
+
+  const option = watch('optionSelect');
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -39,6 +46,7 @@ export const OptionSection = ({ productId }: Props) => {
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
+      optionId: option.id,
     });
 
     navigate(RouterPath.order);
@@ -61,22 +69,25 @@ export const OptionSection = ({ productId }: Props) => {
     });
   };
   return (
-    <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
-      <BottomWrapper>
-        <PricingWrapper>
-          총 결제 금액 <span>{totalPrice}원</span>
-        </PricingWrapper>
-        <ButtonWrapper>
-          <CustomButton onClick={handleWishClick}>
-            <VscHeart size={30} />
-          </CustomButton>
-          <Button theme="black" size="large" onClick={handleClick}>
-            나에게 선물하기
-          </Button>
-        </ButtonWrapper>
-      </BottomWrapper>
-    </Wrapper>
+    <FormProvider {...methods}>
+      <Wrapper>
+        <OptionSelect options={options} />
+        <CountOptionItem name={option?.name} value={countAsString} onChange={setCountAsString} />
+        <BottomWrapper>
+          <PricingWrapper>
+            총 결제 금액 <span>{totalPrice}원</span>
+          </PricingWrapper>
+          <ButtonWrapper>
+            <CustomButton onClick={handleWishClick}>
+              <VscHeart size={30} />
+            </CustomButton>
+            <Button theme="black" size="large" onClick={handleClick}>
+              나에게 선물하기
+            </Button>
+          </ButtonWrapper>
+        </BottomWrapper>
+      </Wrapper>
+    </FormProvider>
   );
 };
 

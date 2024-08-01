@@ -3,16 +3,16 @@ import { type InfiniteData, useInfiniteQuery, type UseInfiniteQueryResult } from
 import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
 
-import type { ProductData } from '@/types';
+import type { OrderListData } from '@/types';
+import { authSessionStorage } from '@/utils/storage';
 
 type RequestParams = {
-  categoryId: string;
   pageToken?: string;
   maxResults?: number;
 };
 
-type ProductsResponseData = {
-  products: ProductData[];
+type OrderListsResponseData = {
+  products: OrderListData[];
   nextPageToken?: string;
   pageInfo: {
     totalResults: number;
@@ -20,29 +20,31 @@ type ProductsResponseData = {
   };
 };
 
-type ProductsResponseRawData = {
-  content: ProductData[];
+type OrderListsResponseRawData = {
+  content: OrderListData[];
   number: number;
   totalElements: number;
   size: number;
   last: boolean;
 };
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+export const getOrderListPath = ({ pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
-  params.append('sort', 'name,asc');
-  params.append('categoryId', categoryId);
+  params.append('sort', 'orderDateTime,desc');
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `${BASE_URL}/api/orders?${params.toString()}`;
 };
 
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+export const getOrderLists = async (params: RequestParams): Promise<OrderListsResponseData> => {
+  const response = await fetchInstance.get<OrderListsResponseRawData>(getOrderListPath(params), {
+    headers: {
+      Authorization: `Bearer ${authSessionStorage.get()?.token}`,
+    },
+  });
   const data = response.data;
-
   return {
     products: data.content,
     nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
@@ -53,16 +55,15 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
   };
 };
 
-type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
-export const useGetProducts = ({
-  categoryId,
-  maxResults = 20,
+type Params = Pick<RequestParams, 'maxResults'> & { initPageToken?: string };
+export const useGetOrderList = ({
+  maxResults = 10,
   initPageToken,
-}: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
+}: Params): UseInfiniteQueryResult<InfiniteData<OrderListsResponseData>> => {
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
+    queryKey: ['orderLists', maxResults, initPageToken],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+      return getOrderLists({ pageToken: pageParam, maxResults });
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,
