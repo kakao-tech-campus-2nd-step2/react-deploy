@@ -35,6 +35,11 @@ export const SignUp = () => {
       return;
     }
 
+    if (password.length < 4) {
+      alert('비밀번호는 4자 이상이어야 합니다.');
+      return;
+    }
+
     const SignUpInfo = {
       email: username,
       password: password,
@@ -52,6 +57,7 @@ export const SignUp = () => {
         <UnderlineTextField
           name="username"
           placeholder="이름"
+          type="email"
           value={formState.username}
           onChange={handleInputChange}
         />

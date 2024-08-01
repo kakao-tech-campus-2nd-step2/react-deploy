@@ -11,12 +11,12 @@ const SignUpPath = `${BASE_URL}/api/members/register`;
 
 const SignUp = async (SignInfo: SignInfoType) => {
   const response = await fetchInstance.post(SignUpPath, SignInfo);
-  return response.data;
+  return response;
 };
 
 export const userSignUp = () =>
   useMutation({
-    mutationFn: (SignInfo: SignInfoType) => SignUp(SignInfo),
+    mutationFn: async (SignInfo: SignInfoType) => await SignUp(SignInfo),
     onSuccess: () => {
       alert('회원가입이 완료되었습니다.');
       window.location.replace(`${window.location.origin}/`);

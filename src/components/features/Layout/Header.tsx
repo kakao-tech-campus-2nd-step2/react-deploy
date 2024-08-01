@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { updateInstanceBaseURL } from '@/api/instance';
 
 export const backendAPI: { [key: string]: string } = {
-  backend_1: 'http://54.180.230.218:8080',
+  backend_1: 'http://43.203.126.125:8080',
   backend_2: 'www.backend2.com',
   backend_3: 'www.backend3.com',
   backend_4: 'www.backend4.com',
