@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { currentUrlStorage, tokenStorage } from '@utils/storage';
 import { AuthenticatedRequestURLs } from '@constants/RequestURLs';
 import { StatusCodes } from 'http-status-codes';
@@ -26,6 +26,17 @@ axiosInstance.interceptors.request.use((config) => {
 
   return config;
 });
+
+axiosInstance.interceptors.response.use(
+  (config) => (config),
+  (error) => {
+    if (!isAxiosError(error)) return error;
+
+    if (error.response?.status === StatusCodes.UNAUTHORIZED) {
+      window.location.href = '/login';
+    }
+  },
+);
 
 type RequestPath = { [key: string]: string };
 

@@ -38,7 +38,7 @@ function LoginForm() {
         return;
       }
 
-      if (e.response?.status === StatusCodes.FORBIDDEN) {
+      if (e.response?.status === StatusCodes.BAD_REQUEST) {
         alert('아이디나 비밀번호가 일치하지 않습니다.');
       }
     }
