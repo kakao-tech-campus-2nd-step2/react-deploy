@@ -1,12 +1,12 @@
-import styled from '@emotion/styled';
-import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import styled from "@emotion/styled";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 
-import { Button } from '@/components/common/Button';
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { useAuth } from '@/provider/Auth';
-import { RouterPath } from '@/routes/path';
-import { authSessionStorage } from '@/utils/storage';
+import { Button } from "@/components/common/Button";
+import { Spacing } from "@/components/common/layouts/Spacing";
+import { useAuth } from "@/provider/Auth";
+import { RouterPath } from "@/routes/path";
+import { authSessionStorage } from "@/utils/storage";
 
 export interface WishItem {
   id: number;
@@ -48,38 +48,44 @@ export const MyAccountPage = () => {
     async (page: number) => {
       if (!authInfo) return; // authInfo가 없으면 반환
       try {
-        const response = await axios.get(`/api/wishes?page=${page}&size=${pageSize}`, {
-          headers: {
-            Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
-          },
-        });
+        const response = await axios.get(
+          `/api/members/wishes?page=${page}&size=${pageSize}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
+            },
+          }
+        );
         console.log(response.data);
         setWishes(response.data.content);
         setTotalPages(response.data.totalPages);
       } catch (error) {
-        console.error('Failed to fetch wishes', error);
+        console.error("Failed to fetch wishes", error);
       }
     },
-    [authInfo, pageSize],
+    [authInfo, pageSize]
   );
 
   const fetchOrders = useCallback(
     async (page: number) => {
       if (!authInfo) return; // authInfo가 없으면 반환
       try {
-        const response = await axios.get(`/api/orders?page=${page}&size=${pageSize}`, {
-          headers: {
-            Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
-          },
-        });
+        const response = await axios.get(
+          `/api/orders?page=${page}&size=${pageSize}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
+            },
+          }
+        );
         console.log(response.data);
         setOrders(response.data.orders);
         setHasNextOrderPage(response.data.hasNext);
       } catch (error) {
-        console.error('Failed to fetch orders', error);
+        console.error("Failed to fetch orders", error);
       }
     },
-    [authInfo, pageSize],
+    [authInfo, pageSize]
   );
   const deleteWish = async (wishId: number) => {
     if (!authInfo) return; // authInfo가 없으면 반환
@@ -92,7 +98,7 @@ export const MyAccountPage = () => {
       // 삭제 후 wishes 업데이트
       setWishes(wishes.filter((wish) => wish.id !== wishId));
     } catch (error) {
-      console.error('Failed to delete wish', error);
+      console.error("Failed to delete wish", error);
     }
   };
 
@@ -109,7 +115,7 @@ export const MyAccountPage = () => {
         theme="darkGray"
         onClick={handleLogout}
         style={{
-          maxWidth: '200px',
+          maxWidth: "200px",
         }}
       >
         로그아웃
@@ -160,7 +166,9 @@ export const MyAccountPage = () => {
           </OrderList>
           <Pagination>
             {hasNextOrderPage && (
-              <PageButton onClick={() => setCurrentPage(currentPage + 1)}>다음</PageButton>
+              <PageButton onClick={() => setCurrentPage(currentPage + 1)}>
+                다음
+              </PageButton>
             )}
           </Pagination>
         </Section>
@@ -274,8 +282,8 @@ const PageButton = styled.button<{ active?: boolean }>`
   height: 40px;
   font-size: 16px;
   border-radius: 10px;
-  background-color: ${({ active }) => (active ? '#333' : '#f5f5f5')};
-  color: ${({ active }) => (active ? '#fff' : '#000')};
+  background-color: ${({ active }) => (active ? "#333" : "#f5f5f5")};
+  color: ${({ active }) => (active ? "#fff" : "#000")};
   cursor: pointer;
 
   &:hover {
