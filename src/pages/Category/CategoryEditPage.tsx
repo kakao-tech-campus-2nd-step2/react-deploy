@@ -5,6 +5,7 @@ import { useUpdateCategory } from '@/api/hooks/useUpdateCategory';
 import { fetchInstance } from '@/api/instance';
 
 interface Category {
+  id: string;
   name: string;
   color: string;
   imageUrl: string;
@@ -13,7 +14,7 @@ interface Category {
 
 const CategoryEditPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
-  const [category, setCategory] = useState<Category>({ name: '', color: '', imageUrl: '', description: '' });
+  const [category, setCategory] = useState<Category | null>(null);
   const { mutate: updateCategory } = useUpdateCategory();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,8 +24,13 @@ const CategoryEditPage: React.FC = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await fetchInstance.get<Category>(`/api/categories/${categoryId}`);
-        setCategory(response.data);
+        const response = await fetchInstance.get<Category[]>(`/api/categories`);
+        const currentCategory = response.data.find(cat => cat.id.toString() === categoryId);
+        if (currentCategory) {
+          setCategory(currentCategory);
+        } else {
+          setError('Category not found');
+        }
       } catch (err) {
         setError('Failed to fetch category');
       } finally {
@@ -36,7 +42,7 @@ const CategoryEditPage: React.FC = () => {
   }, [categoryId]);
 
   const handleUpdateCategory = () => {
-    if (!categoryId) return;
+    if (!category || !categoryId) return;
     updateCategory({ categoryId, category });
   };
 
@@ -46,6 +52,10 @@ const CategoryEditPage: React.FC = () => {
 
   if (error) {
     return <div>{error}</div>;
+  }
+
+  if (!category) {
+    return <div>Category not found</div>;
   }
 
   return (

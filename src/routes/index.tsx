@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <CategoryAddPage />,
       },
       {
-        path: RouterPath.editCategory, // 새로운 카테고리 수정 경로
+        path: RouterPath.editCategory, 
         element: <CategoryEditPage />,
       },
       {
