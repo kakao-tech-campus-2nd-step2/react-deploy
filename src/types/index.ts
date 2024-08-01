@@ -11,14 +11,18 @@ export type ProductData = {
   name: string;
   price: number;
   imageUrl: string;
-  categoryId: number;
+};
+
+export type ProductDetailData = {
+  name: string;
+  price: number;
+  imageUrl: string;
 };
 
 export type ProductOptionsData = {
   id: number;
   name: string;
   quantity: number;
-  productId: number;
 };
 
 export type GoodsDetailOptionItemData = {
