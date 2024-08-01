@@ -8,7 +8,9 @@
     "build": "craco build",
     "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -90,5 +92,5 @@
   "overrides": {
     "react-refresh": "0.11.0"
   },
-  "homepage": "https://diwoni.github.io/react-deploy"
+  "homepage": "https://diwoni.github.io/"
 }
