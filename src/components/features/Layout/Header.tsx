@@ -25,13 +25,13 @@ export const Header = () => {
         newBaseURL = 'http://3.35.17.43:8080';
         break;
       case 'option2':
-        newBaseURL = 'http://localhost:3000/';
+        newBaseURL = 'http://3.37.208.221:8080';
         break;
       case 'option3':
-        newBaseURL = 'http://localhost:3000/';
+        newBaseURL = 'http://3.36.122.221:8080';
         break;
       case 'option4':
-        newBaseURL = 'http://localhost:3000/';
+        newBaseURL = 'http://13.124.49.189:8080';
         break;
       default:
         newBaseURL = '';
@@ -87,6 +87,7 @@ const RightWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 260px;
 `;
 
 const LinkButton = styled.p`
