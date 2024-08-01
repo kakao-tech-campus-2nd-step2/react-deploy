@@ -83,6 +83,8 @@ export type OrderFormData = {
   cashReceiptNumber: string;
   hasCashReceipt: boolean;
   cashReceiptType: CashReceiptType;
+  usePoint: boolean;
+  pointAmount: number;
 };
 
 export type CashReceiptType = typeof CashReceiptOptions[string];

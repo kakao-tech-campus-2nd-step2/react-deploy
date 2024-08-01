@@ -6,3 +6,5 @@ export enum CashReceiptOptions {
   PERSONAL = 'PERSONAL',
   BUSINESS = 'BUSINESS',
 }
+
+export const MIN_USABLE_POINT = 10_000;

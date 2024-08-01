@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+import { MIN_USABLE_POINT } from '@constants/index';
 
 export const ERROR_NOT_DEFINED = 0;
 
@@ -14,4 +15,8 @@ export const FormErrorMessages = {
   MESSAGE_CARD_EMPTY: '메시지 카드를 작성해주세요',
   RECEIPT_NUMBER_NOT_NUMERIC: '숫자만 입력 가능합니다',
   RECEIPT_NUMBER_REQUIRED: '현금영수증 번호를 입력해주세요',
+  POINT_MORE_THAN_AVAILABLE: '사용 가능한 포인트를 초과했어요.',
+  POINT_VALUE_ERROR: '잘못된 포인트 값입니다.',
+  POINT_LESS_THAN_MIN: `포인트는 ${MIN_USABLE_POINT} 이상부터 사용 가능합니다.`,
+  POINT_REQUIRED: '사용할 포인트를 입력해주세요.',
 };
