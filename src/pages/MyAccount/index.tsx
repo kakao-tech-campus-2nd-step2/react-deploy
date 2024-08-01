@@ -90,7 +90,7 @@ export const MyAccountPage = () => {
   const deleteWish = async (wishId: number) => {
     if (!authInfo) return; // authInfo가 없으면 반환
     try {
-      await axios.delete(`/api/wishes/${wishId}`, {
+      await axios.delete(`/api/members/wishes/${wishId}`, {
         headers: {
           Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
         },
