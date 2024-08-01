@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -12,12 +13,18 @@ import { type InterestItem } from '@/types';
 import { authSessionStorage, orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
+import { OptionSelector } from './OptionItem/OptionSelector';
 
 type Props = ProductDetailRequestParams;
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+  
+  const methods = useForm();
+  const { watch } = methods;
+
+  const watchedOption = watch('optionSelect');
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -39,6 +46,7 @@ export const OptionSection = ({ productId }: Props) => {
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
+      optionId: watchedOption.id,
     });
 
     navigate(RouterPath.order);
@@ -72,8 +80,6 @@ export const OptionSection = ({ productId }: Props) => {
         }
       });
 
-      /* API 명세 확정나면 수정 필요한 부분들  */
-
       // 관심 상품 등록 성공 (201)
       if (response.status === 201) {
         alert('관심 상품으로 등록 성공하였습니다.');
@@ -94,59 +100,74 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   return (
-    <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
-      <BottomWrapper>
-        <PricingWrapper>
-          총 결제 금액 <span>{totalPrice}원</span>
-        </PricingWrapper>
-        <ButtonWrapper>
-          <Button theme="black" size="small" onClick={handleInterestClick} >
-            관심 상품 추가
-          </Button>
-          <Button theme="black" size="large" onClick={handleClick}>
-            나에게 선물하기
-          </Button>
-        </ButtonWrapper>
-      </BottomWrapper>
-    </Wrapper>
+    <FormProvider {...methods}>
+      <Wrapper>
+        <OptionSelectorWrapper>
+          <OptionSelector options={options} />
+        </OptionSelectorWrapper>
+        <CountOptionItem name={watchedOption?.name} value={countAsString} onChange={setCountAsString} />
+        <BottomWrapper>
+          <PricingWrapper>
+            <span>총 결제 금액</span>
+            <Price>{totalPrice}원</Price>
+          </PricingWrapper>
+          <ButtonWrapper>
+            <Button theme="black" size="small" onClick={handleInterestClick}>
+              관심 상품 추가
+            </Button>
+            <Button theme="black" size="large" onClick={handleClick}>
+              나에게 선물하기
+            </Button>
+          </ButtonWrapper>
+        </BottomWrapper>
+      </Wrapper>
+    </FormProvider>
   );
 };
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 30px 12px 30px 30px;
-  height: 100%;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 24px;
+  background-color: #fafafa; 
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const OptionSelectorWrapper = styled.div`
+  margin-bottom: 16px;
+  background-color: #fafafa; 
+  border: 1px solid #e0e0e0; 
+  border-radius: 4px; 
+  padding: 8px;
 `;
 
 const BottomWrapper = styled.div`
-  padding: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 const PricingWrapper = styled.div`
-  margin-bottom: 20px;
-  padding: 18px 20px;
+  padding: 16px;
   border-radius: 4px;
-  background-color: #f5f5f5;
+  background-color: #ffffff; 
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e0e0e0; 
+`;
 
-  font-size: 14px;
+const Price = styled.span`
+  font-size: 20px;
   font-weight: 700;
-  line-height: 14px;
-  color: #111;
-
-  & span {
-    font-size: 20px;
-    letter-spacing: -0.02em;
-  }
+  color: #333;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 `;
