@@ -15,18 +15,24 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 
   return instance;
 };
-
-export const BASE_URL = 'https://api.example.com';
+export const BASE_URL = 'http://52.78.246.142:8080';
+// export const BASE_URL = 'https://api.example.com';
 // TODO: 추후 서버 API 주소 변경 필요
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: BASE_URL,
+  headers: {
+    'Access-Control-Allow-Origin': `http://localhost:3000`,
+    'Access-Control-Allow-Credentials': 'true',
+  },
 });
 
 export const fetchInstanceWithAuth = (token?: string) =>
   initInstance({
-    baseURL: 'https://api.example.com',
+    baseURL: BASE_URL,
     headers: {
       Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': `http://localhost:3000`,
+      'Access-Control-Allow-Credentials': 'true',
     },
   });
 
