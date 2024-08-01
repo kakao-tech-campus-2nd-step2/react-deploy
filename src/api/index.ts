@@ -113,4 +113,14 @@ export const URLS: URL[] = [
     name: '정지민',
     url: 'https://do-free.duckdns.org/stopmin',
   },
+  {
+    id: 3,
+    name: '김건호',
+    url: 'https://do-free.duckdns.org/amm0124',
+  },
+  {
+    id: 4,
+    name: '정진택',
+    url: 'https://do-free.duckdns.org/jjt4515',
+  },
 ];
