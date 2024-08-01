@@ -26,6 +26,8 @@ export const LoginPage = () => {
     try {
       const token = await login(email, password);
 
+      sessionStorage.setItem('authEmail', email);
+      sessionStorage.setItem('authToken', token);
       authSessionStorage.set(token);
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;

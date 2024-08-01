@@ -12,6 +12,7 @@ export const MyAccountPage = () => {
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
+    sessionStorage.removeItem('authEmail');
 
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
