@@ -10,8 +10,7 @@ export type UserRequestData = {
 type Props = UserRequestData;
 
 export type UserResponseData = {
-  email: string;
-  token: string;
+  access_token: string;
 };
 
 export const getUserLoginPath = () => `${BASE_URL}/api/members/login`;
