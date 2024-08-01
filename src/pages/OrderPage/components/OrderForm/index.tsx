@@ -4,10 +4,9 @@ import { useForm } from 'react-hook-form';
 import { Divider, useDisclosure } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod';
 
 import { order } from '@/api/services/order';
-import { OrderSchema } from '@/schema/index';
+import { OrderField, OrderSchema } from '@/schema/index';
 import { OrderHistory } from '@/types/orderType';
 
 import { Content } from '@/components/Content';
@@ -20,8 +19,6 @@ import { PaymentSection } from './PaymentSection';
 type OrderFormProps = {
   orderHistory: OrderHistory;
 };
-
-type OrderField = z.infer<typeof OrderSchema>;
 
 export const OrderForm = ({ orderHistory }: OrderFormProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -7,7 +7,8 @@ import { OrderHistory } from '@/types/orderType';
 export const useOrderHistory = () => {
   const [orderHistory, setOrderHistory] = useState<OrderHistory>({
     productId: 1,
-    productQuantity: 1,
+    optionId: 1,
+    quantity: 1,
   });
   const location = useLocation();
   const navigate = useNavigate();

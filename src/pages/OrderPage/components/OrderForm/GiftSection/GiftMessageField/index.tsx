@@ -2,14 +2,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { Textarea } from '@chakra-ui/react';
 
-import { OrderForm } from '@/pages/OrderPage/hooks/useOrderForm';
+import { OrderField } from '@/schema/index';
 
 import { FormField } from '@/components/ui/Form';
 
 import { textAreaContainerStyle, textLengthStyle } from './styles';
 
 export const GiftMessageField = () => {
-  const { control } = useFormContext<OrderForm>();
+  const { control } = useFormContext<OrderField>();
 
   return (
     <FormField

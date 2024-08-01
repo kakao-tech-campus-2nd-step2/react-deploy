@@ -3,13 +3,13 @@ import { useFormContext } from 'react-hook-form';
 
 import { Checkbox, Input, Select } from '@chakra-ui/react';
 
-import { OrderForm } from '@/pages/OrderPage/hooks/useOrderForm';
+import { OrderField } from '@/schema/index';
 
 import { FormField } from '@/components/ui/Form';
 import { Container } from '@/components/ui/Layout/Container';
 
 export const CashCheckFields = () => {
-  const { control, watch, setValue } = useFormContext<OrderForm>();
+  const { control, watch, setValue } = useFormContext<OrderField>();
   const cashCheck = watch('isCashChecked');
 
   useEffect(() => {

@@ -33,6 +33,7 @@ export const OrderSchema = z
       }
     }
   });
+export type OrderField = z.infer<typeof OrderSchema>;
 
 export const AuthErrorMessage = {
   emailRequired: '이메일을 입력해주세요.',
