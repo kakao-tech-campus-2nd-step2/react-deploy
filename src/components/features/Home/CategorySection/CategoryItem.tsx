@@ -30,15 +30,13 @@ const Wrapper = styled.div`
 
 const CategoryImage = styled(Image)`
   width: 100%;
-  height: 100%;
   max-width: 50px;
-  max-height: 50px;
-
+  height: 50px;
   border-radius: 18px;
 
   @media screen and (min-width: ${breakpoints.sm}) {
     max-width: 90px;
-    max-height: 90px;
+    height: 90px;
     border-radius: 32px;
   }
 `;
