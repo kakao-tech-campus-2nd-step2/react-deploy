@@ -14,14 +14,14 @@ export const getProductOptionsPath = (productId: string) =>
 
 export const getProductOptions = async (params: ProductDetailRequestParams) => {
   const response = await fetchInstance.get<ProductOptionsResponseData>(
-    getProductOptionsPath(params.productId),
+    getProductOptionsPath(params.product_id),
   );
   return response.data;
 };
 
-export const useGetProductOptions = ({ productId }: Props) => {
+export const useGetProductOptions = ({ product_id }: Props) => {
   return useSuspenseQuery({
-    queryKey: [getProductOptionsPath(productId)],
-    queryFn: () => getProductOptions({ productId }),
+    queryKey: [getProductOptionsPath(product_id)],
+    queryFn: () => getProductOptions({ product_id }),
   });
 };
