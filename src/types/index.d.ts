@@ -87,6 +87,11 @@ export type OrderFormData = {
   pointAmount: number;
 };
 
+export interface JWTTokenHeader {
+  alg: string;
+  typ: string;
+}
+
 export type CashReceiptType = typeof CashReceiptOptions[string];
 
 export type CategoryRepository = { [key: number]: CategoryData };
