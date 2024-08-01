@@ -10,6 +10,7 @@ type Wish = {
   id: number;
   product_id: number;
   product_name: string;
+  product_price: number;
   image_url: string;
 };
 

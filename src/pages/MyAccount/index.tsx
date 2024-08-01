@@ -49,6 +49,7 @@ export const MyAccountPage = () => {
                       <img src={item.image_url} alt={item.product_name} width={70} />
                       <div>
                         <p>이름: {item.product_name}</p>
+                        <p>가격: {item.product_price}</p>
                       </div>
                       <Button size="small" theme="darkGray" style={{ maxWidth: '100px' }}>
                         삭제
