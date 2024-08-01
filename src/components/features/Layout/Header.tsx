@@ -18,7 +18,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
   const [selectedName, setSelectedName] = useState(() => {
-    const currentBaseUrl = sessionStorage.getItem('baseUrl') || fetchInstance.defaults.baseURL;
+    const currentBaseUrl = fetchInstance.defaults.baseURL;
     return Object.keys(BACKEND_URLS).find((key) => BACKEND_URLS[key] === currentBaseUrl);
   });
 
@@ -30,9 +30,9 @@ export const Header = () => {
     const selectedValue = event.target.value;
     setSelectedName(selectedValue);
     queryClient.invalidateQueries().then(() => {
-      navigate(RouterPath.home);
       fetchInstance.defaults.baseURL = BACKEND_URLS[selectedValue];
       sessionStorage.setItem('baseUrl', BACKEND_URLS[selectedValue]);
+      navigate(RouterPath.home);
     });
   };
 
