@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { BASE_URL, fetchInstance } from '../instance';
+import { authSessionStorage } from '@/utils/storage';
 
 export interface LoginInfoType {
   email: string;
@@ -17,8 +18,11 @@ const Login = async (LoginInfo: LoginInfoType) => {
 export const userLogin = (redirect: string) =>
   useMutation({
     mutationFn: (LoginInfo: LoginInfoType) => Login(LoginInfo),
-    onSuccess: () => {
+    onSuccess: data => {
       alert('로그인이 완료되었습니다.');
+
+      sessionStorage.setItem('email', data.email);
+      authSessionStorage.set(data.token);
       const redirectUrl = redirect;
       window.location.replace(redirectUrl);
     },

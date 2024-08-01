@@ -13,6 +13,7 @@ export const AuthContext = createContext<AuthInfo | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const currentAuthToken = authSessionStorage.get();
+  const currentName = sessionStorage.getItem('email');
   const [isReady, setIsReady] = useState(!currentAuthToken);
 
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (currentAuthToken) {
       setAuthInfo({
         id: currentAuthToken, // TODO: 임시로 로그인 페이지에서 입력한 이름을 ID, token, name으로 사용
-        name: currentAuthToken,
+        name: currentName || '',
         token: currentAuthToken,
       });
       setIsReady(true);

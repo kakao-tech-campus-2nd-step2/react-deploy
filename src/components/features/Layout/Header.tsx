@@ -30,6 +30,8 @@ export const Header = () => {
     setSelectedAPI(newAPI);
     updateInstanceBaseURL(newAPI);
     localStorage.setItem('selectedAPI', newAPI);
+    sessionStorage.clear();
+    window.location.replace('/');
   };
 
   useEffect(() => {
