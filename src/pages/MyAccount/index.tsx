@@ -1,12 +1,12 @@
-import styled from '@emotion/styled';
-import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import styled from "@emotion/styled";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 
-import { Button } from '@/components/common/Button';
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { useAuth } from '@/provider/Auth';
-import { RouterPath } from '@/routes/path';
-import { authSessionStorage } from '@/utils/storage';
+import { Button } from "@/components/common/Button";
+import { Spacing } from "@/components/common/layouts/Spacing";
+import { useAuth } from "@/provider/Auth";
+import { RouterPath } from "@/routes/path";
+import { authSessionStorage } from "@/utils/storage";
 
 export interface WishItem {
   id: number;
@@ -33,9 +33,10 @@ export const MyAccountPage = () => {
   const authInfo = useAuth();
   const [wishes, setWishes] = useState<WishItem[]>([]);
   const [orders, setOrders] = useState<OrderItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [currentOrderPage, setCurrentOrderPage] = useState(0);
   const [hasNextOrderPage, setHasNextOrderPage] = useState(false);
+  const [currentWishPage, setCurrentWishPage] = useState(0);
+  const [totalWishPages, setTotalWishPages] = useState(0);
   const pageSize = 5;
 
   const handleLogout = () => {
@@ -46,60 +47,67 @@ export const MyAccountPage = () => {
 
   const fetchWishes = useCallback(
     async (page: number) => {
-      if (!authInfo) return; // authInfo가 없으면 반환
+      if (!authInfo) return;
       try {
-        const response = await axios.get(`/api/wishes?page=${page}&size=${pageSize}`, {
-          headers: {
-            Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
-          },
-        });
-        console.log(response.data);
+        const response = await axios.get(
+          `/api/members/wishes?page=${page}&size=${pageSize}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authInfo.token}`,
+            },
+          }
+        );
         setWishes(response.data.content);
-        setTotalPages(response.data.totalPages);
+        setTotalWishPages(response.data.totalPages);
       } catch (error) {
-        console.error('Failed to fetch wishes', error);
+        console.error("Failed to fetch wishes", error);
       }
     },
-    [authInfo, pageSize],
+    [authInfo, pageSize]
   );
 
   const fetchOrders = useCallback(
     async (page: number) => {
-      if (!authInfo) return; // authInfo가 없으면 반환
+      if (!authInfo) return;
       try {
-        const response = await axios.get(`/api/orders?page=${page}&size=${pageSize}`, {
-          headers: {
-            Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
-          },
-        });
-        console.log(response.data);
+        const response = await axios.get(
+          `/api/orders?page=${page}&size=${pageSize}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authInfo.token}`,
+            },
+          }
+        );
         setOrders(response.data.orders);
         setHasNextOrderPage(response.data.hasNext);
       } catch (error) {
-        console.error('Failed to fetch orders', error);
+        console.error("Failed to fetch orders", error);
       }
     },
-    [authInfo, pageSize],
+    [authInfo, pageSize]
   );
+
   const deleteWish = async (wishId: number) => {
-    if (!authInfo) return; // authInfo가 없으면 반환
+    if (!authInfo) return;
     try {
-      await axios.delete(`/api/wishes/${wishId}`, {
+      await axios.delete(`/api/members/wishes/${wishId}`, {
         headers: {
-          Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
+          Authorization: `Bearer ${authInfo.token}`,
         },
       });
-      // 삭제 후 wishes 업데이트
       setWishes(wishes.filter((wish) => wish.id !== wishId));
     } catch (error) {
-      console.error('Failed to delete wish', error);
+      console.error("Failed to delete wish", error);
     }
   };
 
   useEffect(() => {
-    fetchWishes(currentPage);
-    fetchOrders(currentPage);
-  }, [fetchWishes, fetchOrders, currentPage]);
+    fetchWishes(currentWishPage);
+  }, [fetchWishes, currentWishPage]);
+
+  useEffect(() => {
+    fetchOrders(currentOrderPage);
+  }, [fetchOrders, currentOrderPage]);
 
   return (
     <Wrapper>
@@ -109,7 +117,7 @@ export const MyAccountPage = () => {
         theme="darkGray"
         onClick={handleLogout}
         style={{
-          maxWidth: '200px',
+          maxWidth: "200px",
         }}
       >
         로그아웃
@@ -131,11 +139,11 @@ export const MyAccountPage = () => {
             ))}
           </WishList>
           <Pagination>
-            {Array.from({ length: totalPages }, (_, index) => (
+            {Array.from({ length: totalWishPages }, (_, index) => (
               <PageButton
                 key={index}
-                onClick={() => setCurrentPage(index)}
-                active={index === currentPage}
+                onClick={() => setCurrentWishPage(index)}
+                active={index === currentWishPage}
               >
                 {index + 1}
               </PageButton>
@@ -159,9 +167,20 @@ export const MyAccountPage = () => {
             ))}
           </OrderList>
           <Pagination>
-            {hasNextOrderPage && (
-              <PageButton onClick={() => setCurrentPage(currentPage + 1)}>다음</PageButton>
-            )}
+            <PageButton
+              onClick={() =>
+                setCurrentOrderPage((prev) => Math.max(prev - 1, 0))
+              }
+              disabled={currentOrderPage === 0}
+            >
+              이전
+            </PageButton>
+            <PageButton
+              onClick={() => setCurrentOrderPage((prev) => prev + 1)}
+              disabled={!hasNextOrderPage}
+            >
+              다음
+            </PageButton>
           </Pagination>
         </Section>
       </ContentWrapper>
@@ -274,11 +293,16 @@ const PageButton = styled.button<{ active?: boolean }>`
   height: 40px;
   font-size: 16px;
   border-radius: 10px;
-  background-color: ${({ active }) => (active ? '#333' : '#f5f5f5')};
-  color: ${({ active }) => (active ? '#fff' : '#000')};
+  background-color: ${({ active }) => (active ? "#333" : "#f5f5f5")};
+  color: ${({ active }) => (active ? "#fff" : "#000")};
   cursor: pointer;
 
   &:hover {
     background-color: #000;
+  }
+
+  &:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
   }
 `;

@@ -1,22 +1,29 @@
-import { rest } from 'msw';
+import { rest } from "msw";
 
-import type { WishItem } from '@/pages/MyAccount';
+import type { WishItem } from "@/pages/MyAccount";
+import { PRODUCTS_MOCK_DATA } from "./products.mock";
 
 const wishesDatabase: WishItem[] = []; // WishItem 형식으로 변경
 let nextId = 1;
-
 export const interestHandlers = [
   // 관심 목록에 추가
-  rest.post('/api/wishes', (req, res, ctx) => {
-    const newWish = req.body as WishItem;
+  rest.post("/api/members/wishes/products/:productId", (req, res, ctx) => {
+    const { productId } = req.params;
+    const product = PRODUCTS_MOCK_DATA.content.find(
+      (item) => item.id === Number(productId)
+    );
 
-    // 유효성 검사
-    if (!newWish.product || !newWish.product.id) {
-      return res(ctx.status(400), ctx.json({ message: 'Invalid input' }));
+    // 유효성 검사: productId에 해당하는 상품이 존재하는지 확인
+    if (!product) {
+      console.log(productId);
+      return res(ctx.status(404), ctx.json({ message: "Product not found" }));
     }
 
-    // 새로운 위시 추가
-    newWish.id = nextId++; // 고유 ID 할당
+    const newWish = {
+      id: nextId++, // 고유 ID 할당
+      product,
+    };
+
     wishesDatabase.push(newWish);
     console.log(newWish);
 
@@ -24,9 +31,9 @@ export const interestHandlers = [
   }),
 
   // 관심 목록 리스트 불러오기
-  rest.get('/api/wishes', (req, res, ctx) => {
-    const page = parseInt(req.url.searchParams.get('page') || '0');
-    const size = parseInt(req.url.searchParams.get('size') || '10');
+  rest.get("/api/members/wishes", (req, res, ctx) => {
+    const page = parseInt(req.url.searchParams.get("page") || "0");
+    const size = parseInt(req.url.searchParams.get("size") || "10");
     const totalElements = wishesDatabase.length;
     const totalPages = Math.ceil(totalElements / size);
 
@@ -58,16 +65,19 @@ export const interestHandlers = [
         numberOfElements: content.length,
         first: page === 0,
         empty: content.length === 0,
-      }),
+      })
     );
   }),
+
   // 위시 삭제 핸들러 추가
-  rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
+  rest.delete("/api/members/wishes/:wishId", (req, res, ctx) => {
     const { wishId } = req.params;
-    const wishIndex = wishesDatabase.findIndex((wish) => wish.id === Number(wishId));
+    const wishIndex = wishesDatabase.findIndex(
+      (wish) => wish.id === Number(wishId)
+    );
 
     if (wishIndex === -1) {
-      return res(ctx.status(404), ctx.json({ message: 'Wish not found' }));
+      return res(ctx.status(404), ctx.json({ message: "Wish not found" }));
     }
 
     wishesDatabase.splice(wishIndex, 1); // 위시 삭제
