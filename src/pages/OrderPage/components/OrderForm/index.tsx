@@ -39,6 +39,7 @@ export const OrderForm = ({ orderHistory }: OrderFormProps) => {
       gitfMessage: '',
       isCashChecked: false,
       cashReceiptNumber: '',
+      point: '',
     },
   });
 
