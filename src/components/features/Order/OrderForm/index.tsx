@@ -10,12 +10,15 @@ import { GoodsInfo } from './GoodsInfo';
 import { OrderFormMessageCard } from './MessageCard';
 import { OrderFormOrderInfo } from './OrderInfo';
 
+import { userOrder } from '@/api/hooks/useOrder';
+
 type Props = {
   orderHistory: OrderHistory;
 };
 
 export const OrderForm = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
+  const { mutate } = userOrder();
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -35,9 +38,14 @@ export const OrderForm = ({ orderHistory }: Props) => {
       alert(errorMessage);
       return;
     }
+    const orderInfo = {
+      optionId: values.productId,
+      quantity: values.productQuantity,
+      message: values.messageCardTextMessage,
+    };
+    mutate(orderInfo);
 
     console.log('values', values);
-    alert('주문이 완료되었습니다.');
   };
 
   const preventEnterKeySubmission = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -62,9 +70,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
   );
 };
 
-export const validateOrderForm = (
-  values: OrderFormData,
-): { errorMessage?: string; isValid: boolean } => {
+export const validateOrderForm = (values: OrderFormData): { errorMessage?: string; isValid: boolean } => {
   if (values.hasCashReceipt) {
     if (!values.cashReceiptNumber) {
       return {
