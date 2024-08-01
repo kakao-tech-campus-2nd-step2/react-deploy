@@ -1,16 +1,24 @@
+import { Input } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import { apiBaseURLSessionStorage } from '@/utils/storage';
 
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const [baseURL, setBaseURL] = useState('mock server');
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
+  };
+  const handleChangeBaseURL = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBaseURL(e.target.value);
+    apiBaseURLSessionStorage.set(e.target.value);
   };
 
   return (
@@ -23,6 +31,11 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <Input
+            placeholder="서버 URL을 입력해주세요"
+            value={baseURL}
+            onChange={(e) => handleChangeBaseURL(e)}
+          />
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,11 +62,16 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
 
 const LinkButton = styled.p`
   align-items: center;
   font-size: 14px;
+  width: 70px;
   color: #000;
   text-decoration: none;
   cursor: pointer;
