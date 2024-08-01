@@ -16,10 +16,10 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'http://ec2-43-201-37-186.ap-northeast-2.compute.amazonaws.com:8080';
+export const BASE_URL = 'http://13.124.139.110:8080';
 
 export const fetchInstance = initInstance({
-  baseURL: 'http://ec2-43-201-37-186.ap-northeast-2.compute.amazonaws.com:8080',
+  baseURL: 'http://13.124.139.110:8080',
 });
 
 export const queryClient = new QueryClient({

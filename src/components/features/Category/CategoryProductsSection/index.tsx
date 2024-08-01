@@ -11,21 +11,20 @@ import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
 type Props = {
-  categoryId: string;
+  category_id: string;
 };
 
-export const CategoryProductsSection = ({ categoryId }: Props) => {
-  const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+export const CategoryProductsSection = ({ category_id }: Props) => {
+  const { data, isError, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetProducts({
-      categoryId,
+      category_id,
     });
 
   if (isLoading) return <LoadingView />;
   if (isError) return <TextView>에러가 발생했습니다.</TextView>;
-  if (!data) return <></>;
-  if (data.pages[0].products.length <= 0) return <TextView>상품이 없어요.</TextView>;
+  console.log('data: ' + JSON.stringify(data));
 
-  const flattenGoodsList = data.pages.map((page) => page?.products ?? []).flat();
+  const flattenGoodsList = data?.pages.flatMap((page) => page?.products || []) || [];
 
   return (
     <Wrapper>
@@ -37,17 +36,24 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
           }}
           gap={16}
         >
-          {flattenGoodsList.map(({ id, imageUrl, name, price }) => (
-            <Link key={id} to={getDynamicPath.productsDetail(id)}>
-              <DefaultGoodsItems
-                key={id}
-                imageSrc={imageUrl}
-                title={name}
-                amount={price}
-                subtitle={''}
-              />
-            </Link>
-          ))}
+          {flattenGoodsList.length > 0 ? (
+            flattenGoodsList.map((product) => {
+              // Log the product details to the console
+              console.log('Product:' + JSON.stringify(product));
+
+              return (
+                <Link key={product.id} to={getDynamicPath.productsDetail(product.id)}>
+                  <DefaultGoodsItems
+                    imageSrc={product.imageUrl}
+                    name={product.name}
+                    price={parseInt(product.price, 10)}
+                  />
+                </Link>
+              );
+            })
+          ) : (
+            <TextView>No products found for this category.</TextView>
+          )}
         </Grid>
         {hasNextPage && (
           <VisibilityLoader

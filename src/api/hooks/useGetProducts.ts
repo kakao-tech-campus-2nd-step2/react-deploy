@@ -4,71 +4,83 @@ import {
   type UseInfiniteQueryResult,
 } from '@tanstack/react-query';
 
-import type { ProductData } from '@/types';
-
 import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
 
-type RequestParams = {
-  categoryId: string;
-  pageToken?: string;
-  maxResults?: number;
-};
-
-type ProductsResponseData = {
-  products: ProductData[];
-  nextPageToken?: string;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  imageUrl: string;
+  category: {
+    id: number;
+    name: string;
+    color: string;
+    description: string;
+    image_url: string;
   };
-};
+}
 
-type ProductsResponseRawData = {
-  content: ProductData[];
-  number: number;
-  totalElements: number;
-  size: number;
-  last: boolean;
-};
+interface ProductsResponseRawData {
+  total_page: number;
+  content: Product[];
+}
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+interface ProductsResponseData {
+  products: Product[];
+  currentPage: number;
+  totalPages: number;
+}
+
+interface Params {
+  category_id: string;
+  initPageToken?: string;
+}
+
+export const getProductsPath = ({
+  category_id,
+  pageToken,
+}: {
+  category_id: string;
+  pageToken: string;
+}) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
-  params.append('sort', 'name,asc');
-  if (pageToken) params.append('page', pageToken);
-  if (maxResults) params.append('size', maxResults.toString());
+  params.append('categoryId', category_id);
+  params.append('page', pageToken);
 
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
 
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
+export const getProducts = async (params: {
+  category_id: string;
+  pageToken: string;
+}): Promise<ProductsResponseData> => {
   const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
   const data = response.data;
-
+  console.log('데이터: ' + JSON.stringify(data));
   return {
     products: data.content,
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
-    pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
-    },
+    currentPage: parseInt(params.pageToken, 10) || 1,
+    totalPages: data.total_page || 1,
   };
 };
 
-type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
 export const useGetProducts = ({
-  categoryId,
-  maxResults = 20,
-  initPageToken,
+  category_id,
+  initPageToken = '1',
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
+    queryKey: ['products', category_id, initPageToken],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+      const data = await getProducts({ category_id, pageToken: pageParam });
+      console.log('useGetProducts fetched data:' + JSON.stringify(data));
+      return data;
     },
     initialPageParam: initPageToken,
-    getNextPageParam: (lastPage) => lastPage.nextPageToken,
+    getNextPageParam: (lastPage, _) => {
+      const nextPage = lastPage.currentPage + 1;
+      return nextPage <= lastPage.totalPages ? nextPage.toString() : undefined;
+    },
   });
 };
