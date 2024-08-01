@@ -16,14 +16,14 @@ const mockProducts: Record<string, ProductData> = {
     name: 'Premium T-Shirt',
     price: 29.99,
     imageUrl: 'https://example.com/tshirt.jpg',
-    categoryId: 1,
+    category_id: 1,
   },
   '2': {
     id: 2,
     name: 'Comfortable Jeans',
     price: 59.99,
     imageUrl: 'https://example.com/jeans.jpg',
-    categoryId: 2,
+    category_id: 2,
   },
   // Add more mock products as needed
 };
