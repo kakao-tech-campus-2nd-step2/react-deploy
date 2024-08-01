@@ -10,7 +10,7 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { useValidateEmail } from '@/hooks/useValidateEmail';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
+import { authSessionStorage, emailSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
   const { email, isEmailValid, handleEmailChange } = useValidateEmail();
@@ -33,6 +33,7 @@ export const LoginPage = () => {
       {
         onSuccess: ({ token }) => {
           authSessionStorage.set(token); // 세션에 토큰 저장
+          emailSessionStorage.set(email); // 세션에 이메일도 저장
 
           const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
           navigate(redirectUrl);

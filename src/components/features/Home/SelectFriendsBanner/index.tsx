@@ -19,7 +19,7 @@ export const SelectFriendsBanner = () => {
           }}
         />
         <Text>
-          {authInfo?.name}님
+          {authInfo?.email}님
           <br />
           선물 받을 친구를 선택해주세요.
         </Text>

@@ -8,6 +8,7 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 
     return JSON.parse(value as string);
   };
+
   const set = (value: StorageKey[T]) => {
     if (value == undefined || value == null) {
       return storage.removeItem(storageKey);
@@ -22,9 +23,11 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 };
 
 export const authSessionStorage = initStorage('authToken', sessionStorage);
+export const emailSessionStorage = initStorage('email', sessionStorage);
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
 
 interface StorageKey {
   authToken?: string;
+  email?: string;
   orderHistory?: OrderHistory;
 }

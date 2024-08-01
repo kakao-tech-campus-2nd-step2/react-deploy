@@ -12,7 +12,7 @@ export const Wish = () => {
   return (
     <Wrapper>
       <HeadingText>
-        {authInfo?.name}님의
+        {authInfo?.email}님의
         <br />
         위시리스트
       </HeadingText>
