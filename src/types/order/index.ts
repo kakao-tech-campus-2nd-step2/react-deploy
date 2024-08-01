@@ -12,4 +12,6 @@ export type OrderFormData = {
   hasCashReceipt: boolean;
   cashReceiptType?: 'PERSONAL' | 'BUSINESS';
   cashReceiptNumber?: string;
+  usePoint: boolean;
+  pointAmount: number;
 };
