@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { useRegister } from '@/api/hooks/useRegister';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -9,13 +10,12 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { useValidateEmail } from '@/hooks/useValidateEmail';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
   const { email, isEmailValid, handleEmailChange } = useValidateEmail();
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-
+  const mutation = useRegister();
   const navigate = useNavigate();
 
   const handleConfirm = async () => {
@@ -27,18 +27,21 @@ export const SignUpPage = () => {
       return;
     }
 
-    try {
-      // TODO: 실제 회원가입 API 호출
+    mutation.mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          alert('회원가입되었습니다.');
 
-      // 임시 회원가입 처리
-      authSessionStorage.set(email);
-
-      const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
-      navigate(redirectUrl);
-    } catch (error) {
-      console.error('failed to sign up:', error);
-      alert('회원가입을 다시 시도해주세요.');
-    }
+          const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
+          navigate(redirectUrl);
+        },
+        onError: (error) => {
+          console.error('failed to sign up:', error);
+          alert('회원가입을 다시 시도해주세요.');
+        },
+      },
+    );
   };
 
   return (
