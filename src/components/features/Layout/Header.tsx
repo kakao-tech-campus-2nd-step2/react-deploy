@@ -3,15 +3,21 @@ import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Container } from '@/components/common/layouts/Container';
+import { useApi } from '@/provider/Api';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 
 export const Header = () => {
   const navigate = useNavigate();
   const { authInfo } = useAuth();
+  const { setApiInfo } = useApi();
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
+  };
+
+  const handleApiChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setApiInfo(event.target.value); // 선택된 value로 setApiInfo 호출
   };
 
   return (
@@ -24,7 +30,7 @@ export const Header = () => {
           />
         </Link>
         <Box display="flex" justifyContent="space-between" gap="2rem" alignItems="center">
-          <Select placeholder="API 선택" minWidth="7rem">
+          <Select placeholder="API 선택" onChange={handleApiChange} minWidth="7rem">
             <option value="1">이상희</option>
             <option value="2">장우석</option>
             <option value="3">정수현</option>
