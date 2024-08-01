@@ -1,4 +1,8 @@
+import { Suspense } from 'react';
+
 import BaseLayout from '@/layouts/BaseLayout';
+
+import { UpDownDots } from '@/components/Loading/UpDownDots';
 
 import { OrderForm } from './components/OrderForm';
 import { useOrderHistory } from './hooks/useOrderHistory';
@@ -8,7 +12,9 @@ export const OrderPage = () => {
 
   return (
     <BaseLayout>
-      <OrderForm orderHistory={orderHistory} />
+      <Suspense fallback={<UpDownDots />}>
+        <OrderForm orderHistory={orderHistory} />
+      </Suspense>
     </BaseLayout>
   );
 };

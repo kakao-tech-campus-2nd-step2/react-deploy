@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button, Input, useDisclosure } from '@chakra-ui/react';
+import {
+  AbsoluteCenter,
+  Box,
+  Button,
+  Divider,
+  Input,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
@@ -11,6 +18,7 @@ import { LoginFields, LoginSchema } from '@/schema/index';
 
 import { Alert } from '@/components/ui/Dialog/Alert';
 
+import { KakaoLoginButton } from './KakaoLoginButton';
 import { buttonStyle, formContainerStyle } from './styles';
 
 export const LoginForm = () => {
@@ -76,6 +84,13 @@ export const LoginForm = () => {
       >
         로그인
       </Button>
+      <Box position="relative" paddingY="6">
+        <Divider />
+        <AbsoluteCenter bg="white" px="4" color="GrayText">
+          또는
+        </AbsoluteCenter>
+      </Box>
+      <KakaoLoginButton />
       {isOpen && (
         <Alert
           message={alertMessage}

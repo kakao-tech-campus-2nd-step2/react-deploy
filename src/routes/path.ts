@@ -6,6 +6,7 @@ export const ROUTER_PATH = {
   MY_ACCOUNT: '/my-account',
   PRODUCTSDETAIL: '/products/:productId',
   ORDER: '/order',
+  KAKAO_REDIRECT: '/redirection',
   NOT_FOUND: '*',
 };
 

@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { CategoryPage } from '@/pages/CategoryPage';
 import { HomePage } from '@/pages/HomePage';
+import { KakaoLoginRedirectionPage } from '@/pages/KakaoRedirectPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { MyAccountPage } from '@/pages/MyAccountPage';
 import NotFound from '@/pages/NotFound';
@@ -32,6 +33,10 @@ export const Router = () => {
           <Route
             path={ROUTER_PATH.PRODUCTSDETAIL}
             element={<ProductsDetailPage />}
+          />
+          <Route
+            path={ROUTER_PATH.KAKAO_REDIRECT}
+            element={<KakaoLoginRedirectionPage />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
