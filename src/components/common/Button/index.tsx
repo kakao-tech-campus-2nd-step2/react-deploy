@@ -14,7 +14,7 @@ export const Button: React.FC<Props> = ({ ...props }: Props) => {
 const Wrapper = styled.button<Pick<Props, 'theme' | 'size'>>(
   {
     width: '100%',
-    borderRadius: '4px',
+    borderRadius: '8px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
