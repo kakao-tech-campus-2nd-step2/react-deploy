@@ -92,6 +92,20 @@ export interface JWTTokenHeader {
   typ: string;
 }
 
+export interface ProductFormInputData {
+  name: string;
+  price: number;
+  imageUrl: string;
+  categoryId: number;
+}
+
+export interface CategoryFormInputData {
+  name: string;
+  color: string;
+  imageUrl: string;
+  description: string;
+}
+
 export type CashReceiptType = typeof CashReceiptOptions[string];
 
 export type CategoryRepository = { [key: number]: CategoryData };

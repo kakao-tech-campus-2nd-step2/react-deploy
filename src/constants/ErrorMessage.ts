@@ -19,4 +19,5 @@ export const FormErrorMessages = {
   POINT_VALUE_ERROR: '잘못된 포인트 값입니다.',
   POINT_LESS_THAN_MIN: `포인트는 ${MIN_USABLE_POINT} 이상부터 사용 가능합니다.`,
   POINT_REQUIRED: '사용할 포인트를 입력해주세요.',
+  ADDITION_NAME_REQUIRED: '이름을 입력해주세요.',
 };
