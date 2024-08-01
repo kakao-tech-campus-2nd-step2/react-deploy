@@ -5,6 +5,7 @@ import { CategoryPage } from '@/pages/Category';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
+import { RedirectionPage } from '@/pages/Login/Redirection';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
 import { RegisterPage } from '@/pages/Register';
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
     path: RouterPath.register,
     element: <RegisterPage />,
   },
+  { path: RouterPath.redirect, element: <RedirectionPage /> },
 ]);
 
 export const Routes = () => {
