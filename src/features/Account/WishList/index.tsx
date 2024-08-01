@@ -5,7 +5,7 @@ import { CenteredContainer } from '@components/common';
 import WishListItem from './WishLIstItem';
 
 export default function WishList() {
-  const { data, refetch } = useGetWishes({ page: 0, size: 10, sort: 'createdDate,desc' });
+  const { data, refetch } = useGetWishes({ page: 0, size: 10, sort: 'asc' });
 
   return (
     <CenteredContainer maxWidth="md">

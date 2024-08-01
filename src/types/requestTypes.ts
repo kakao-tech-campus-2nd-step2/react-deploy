@@ -34,7 +34,7 @@ export interface ProductDetailRequest {
 }
 
 export interface ProductOptionsRequest {
-  productId: string;
+  productId?: string;
 }
 
 export interface MyAccountWishProductsRequest {

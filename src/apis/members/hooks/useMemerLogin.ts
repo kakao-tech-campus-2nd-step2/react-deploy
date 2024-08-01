@@ -5,10 +5,10 @@ import { UserInfoData } from '@internalTypes/dataTypes';
 import { MemberResponse } from '@internalTypes/responseTypes';
 import { MEMBERS_PATHS } from '@apis/path';
 
-const loginInstance = initInstance(process.env.REACT_APP_JEONG_HOON_BASE_URL);
+const loginInstance = initInstance(process.env.REACT_APP_EUN_KYOUNG_BASE_URL);
 
 const postMemberLogin = async ({ email, password }: UserInfoData): Promise<MemberResponse> => {
-  const res = await loginInstance.post(MEMBERS_PATHS.REGISTER, {
+  const res = await loginInstance.post(MEMBERS_PATHS.LOGIN, {
     email,
     password,
   });

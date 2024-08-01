@@ -25,7 +25,8 @@ export default function useAuthForm() {
   const handleSignUp = () => {
     registerMutate(userInfo, {
       onSuccess: (data) => {
-        login(userInfo.email, data.access_token);
+        console.info(data);
+        login(userInfo.email, data.token);
         navigate(ROUTE_PATH.HOME);
       },
       onError: (error) => {
@@ -37,7 +38,8 @@ export default function useAuthForm() {
   const handleLogin = () => {
     loginMutate(userInfo, {
       onSuccess: (data) => {
-        login(userInfo.email, data.access_token);
+        console.info(data);
+        login(userInfo.email, data.token);
         navigate(ROUTE_PATH.HOME);
       },
       onError: (error) => {

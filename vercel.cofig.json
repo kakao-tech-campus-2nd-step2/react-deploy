@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "http://react-deploy-git-step2-kang-kibongs-projects.vercel.app//$1"
-    }
-  ]
-}

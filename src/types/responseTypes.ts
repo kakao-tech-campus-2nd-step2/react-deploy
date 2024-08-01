@@ -101,7 +101,7 @@ export interface MyAccountWishProductsResponse {
 
 // Member
 export interface MemberResponse {
-  access_token: string;
+  token: string;
 }
 
 // products

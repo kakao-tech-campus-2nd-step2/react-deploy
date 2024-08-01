@@ -1,12 +1,14 @@
 import { GetProductsRequest } from '@internalTypes/requestTypes';
 import { GetProductsResponse } from '@internalTypes/responseTypes';
-import axiosInstance from '@apis/instance';
+import initInstance from '@apis/instance';
 import { PRODUCTS_PATHS } from '@apis/path';
 import { InfiniteData, useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+const productsInstance = initInstance(process.env.REACT_APP_EUN_KYOUNG_BASE_URL);
+
 const getProducts = async (params: GetProductsRequest): Promise<GetProductsResponse> => {
-  const res = await axiosInstance.get(PRODUCTS_PATHS.PRODUCTS(params));
+  const res = await productsInstance.get(PRODUCTS_PATHS.PRODUCTS(params));
   return res.data;
 };
 
