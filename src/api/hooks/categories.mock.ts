@@ -4,7 +4,7 @@ import { getCategoriesPath } from './useGetCategorys';
 
 export const categoriesMockHandler = [
   rest.get(getCategoriesPath(), (_, res, ctx) => {
-    return res(ctx.json(CATEGORIES_RESPONSE_DATA));
+    return res(ctx.status(200), ctx.json(CATEGORIES_RESPONSE_DATA));
   }),
 ];
 
