@@ -1,52 +1,32 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
-import { useLogin } from '@/api/hooks/useLogin';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
-import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { breakpoints } from '@/styles/variants';
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { mutate: login } = useLogin();
-
-  const handleConfirm = () => {
-    if (!email || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
+  const loginHandler = async () => {
+    try {
+      const response = await fetchInstance.get(`${BASE_URL}/api/auth/kakao`);
+      const kakaoAuthUrl = response.headers.location;
+      console.log(kakaoAuthUrl);
+      if (kakaoAuthUrl) {
+        window.location.href = kakaoAuthUrl;
+      } else {
+        alert('카카오 로그인 URL을 가져오는 중 오류가 발생했습니다.');
+      }
+    } catch (error) {
+      console.error('Failed to fetch Kakao login URL:', error);
+      alert('카카오 로그인 URL을 가져오는 중 오류가 발생했습니다.');
     }
-
-    login({ email, password });
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
-      <FormWrapper>
-        <UnderlineTextField
-          placeholder="이름"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Spacing />
-        <UnderlineTextField
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
-        <Button onClick={handleConfirm}>로그인</Button>
-      </FormWrapper>
+      <Button onClick={loginHandler} style={{ width: '300px' }}>
+        카카오 로그인
+      </Button>
     </Wrapper>
   );
 };
@@ -63,15 +43,4 @@ const Wrapper = styled.div`
 const Logo = styled.img`
   width: 88px;
   color: #333;
-`;
-
-const FormWrapper = styled.article`
-  width: 100%;
-  max-width: 580px;
-  padding: 16px;
-
-  @media screen and (min-width: ${breakpoints.sm}) {
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    padding: 60px 52px;
-  }
 `;
