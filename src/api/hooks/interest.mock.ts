@@ -2,12 +2,14 @@ import { rest } from 'msw';
 
 import { type InterestItem } from '@/types';
 
+import { BASE_URL } from '../instance';
+
 const interestDatabase: InterestItem[] = [];
 let nextId = 1;
 
 export const interestHandlers = [
   // 관심 상품 목록에 등록
-  rest.post('/api/wishes', (req, res, ctx) => {
+  rest.post(`${BASE_URL}/api/wishes`, (req, res, ctx) => {
     const newInterest = req.body as InterestItem;
 
     if (!newInterest.productId) {
@@ -18,14 +20,11 @@ export const interestHandlers = [
     newInterest.productId = nextId++;
     interestDatabase.push(newInterest);
 
-    // 디버깅용 로그
-    console.log(interestDatabase);
-
     return res(ctx.status(201), ctx.json(newInterest));
   }),
 
   // 관심 상품 목록 조회
-  rest.get('/api/wishes', (req, res, ctx) => {
+  rest.get(`${BASE_URL}/api/wishes`, (req, res, ctx) => {
     const page = parseInt(req.url.searchParams.get('page') || '0');
     const size = parseInt(req.url.searchParams.get('size') || '10');
     const totalItems = interestDatabase.length;
@@ -52,9 +51,9 @@ export const interestHandlers = [
   }),
 
   // 관심 상품 목록에서 삭제
-  rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
-    const { wishId } = req.params;
-    const interestIndex = interestDatabase.findIndex((interest) => interest.productId === Number(wishId));
+  rest.delete(`${BASE_URL}/api/wishes:productId`, (req, res, ctx) => {
+    const { productId } = req.params;
+    const interestIndex = interestDatabase.findIndex((interest) => interest.productId === Number(productId));
 
     if (interestIndex === -1) {
       return res(ctx.status(404), ctx.json({ message: 'Interest Not found' }));
