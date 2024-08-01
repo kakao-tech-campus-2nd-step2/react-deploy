@@ -61,7 +61,7 @@ type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken
 export const useGetProducts = ({
   categoryId,
   maxResults = 20,
-  initPageToken,
+  initPageToken = '0',
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   const baseURL = useAPIBaseURL()[0];
   return useInfiniteQuery({
