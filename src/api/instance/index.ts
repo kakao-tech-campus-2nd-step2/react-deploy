@@ -9,7 +9,7 @@ export const BASE_URL_LIST = {
   강명덕: 'http://43.203.210.66:8080',
   유보민: 'http://52.78.56.132:8080',
   안재영: 'https://AN.example.com',
-  서지우: 'https://S.example.com',
+  서지우: 'http://43.203.40.120:8080',
 } as const;
 
 export type BaseURL = keyof typeof BASE_URL_LIST;
