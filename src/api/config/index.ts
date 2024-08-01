@@ -14,13 +14,14 @@ const config = {
   KG: import.meta.env.VITE_API_KG,
 };
 const currentAPI = apiLocalStorage.get();
+export const currentBaseURL = currentAPI ? config[currentAPI] : BASE_URL;
 
 export const BACKEND_API = initInstance({
-  baseURL: currentAPI ? config[currentAPI] : BASE_URL,
+  baseURL: currentBaseURL,
 });
 
 export const AUTHROIZATION_API = initInstance({
-  baseURL: currentAPI ? config[currentAPI] : BASE_URL,
+  baseURL: currentBaseURL,
   withCredentials: true,
 });
 

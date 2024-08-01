@@ -19,7 +19,7 @@ export const kakaoLogin = async ({
 }: KakaoLoginRequstParam): Promise<LoginResponse> => {
   try {
     const response = await BACKEND_API.get<KakaoLoginResponseRaw>(
-      `/api/oauth/kakao/login/callback?code=${code}`
+      `/api/oauth/kakao/login/callback?code=${code}&redirect-url=${import.meta.env.VITE_REDIRECT_URL}`
     );
 
     const accessToken = response.headers.authorization;
