@@ -1,9 +1,10 @@
 import { rest } from 'msw';
 
+import { BASE_URL } from '../instance';
 import { getCategoriesPath } from './useGetCategorys';
 
 export const categoriesMockHandler = [
-  rest.get(getCategoriesPath(), (_, res, ctx) => {
+  rest.get(getCategoriesPath(BASE_URL), (_, res, ctx) => {
     return res(ctx.json(CATEGORIES_RESPONSE_DATA));
   }),
 ];

@@ -1,18 +1,18 @@
 import axios from "axios";
 
-import { BASE_URL } from "../instance";
+import { fetchInstance } from "../instance";
 
 export interface User {
     id: string;
     password: string;
 }
 
-export const getUsersPath = () => `${BASE_URL}/api/users`;
-export const getUserPath = (id: string) => `${BASE_URL}/api/users/${id}`;
+export const getUsersPath = (baseURL?: string) => `${baseURL ?? ''}/api/users`;
+export const getUserPath = (id: string, baseURL?: string) => `${baseURL ?? ''}/api/users/${id}`;
 
 export const login = async (id: string, password: string) => {
     try{
-        const response = await axios.post(getUserPath(id), {
+        const response = await fetchInstance().post(getUserPath(id), {
             password,
         });
         return !axios.isAxiosError(response)
@@ -24,7 +24,7 @@ export const login = async (id: string, password: string) => {
 
 export const signUp = async (id: string, password: string) => {
     try{
-        const response = await axios.post(getUsersPath(), {
+        const response = await fetchInstance().post(getUsersPath(), {
             id,
             password,
         });

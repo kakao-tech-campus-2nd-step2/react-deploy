@@ -1,9 +1,10 @@
 import { rest } from 'msw';
 
+import { BASE_URL } from '../instance';
 import { getUserPath, getUsersPath } from './useGetUser';
 
 export const usersMockHandler = [
-  rest.post(getUsersPath(), async (req, res, ctx) => {
+  rest.post(getUsersPath(BASE_URL), async (req, res, ctx) => {
     try{
         const { id, password } = await req.json();
         if (!id || !password) {
@@ -15,7 +16,7 @@ export const usersMockHandler = [
         return res(ctx.status(400));
     }
   }),
-  rest.post(getUserPath(':id'), async (req, res, ctx) => {
+  rest.post(getUserPath(':id', BASE_URL), async (req, res, ctx) => {
     try {
     const { id } = req.params;
       const { password } = await req.json();

@@ -3,7 +3,7 @@ import axios from "axios";
 
 import type { ProductData } from "@/types";
 
-import { BASE_URL, fetchInstance, queryClient } from "../instance";
+import { fetchInstance, queryClient } from "../instance";
 
 interface RequestParams {
     userId?: string;
@@ -19,9 +19,9 @@ export interface WishResponseData {
     userId: string;
 }
 
-export const postWishlistPath = () => `${BASE_URL}/api/wishes`;
-export const deleteWishlistPath = (wishId: string) => `${BASE_URL}/api/wishes/${wishId}`;
-export const getWishlistPath = ({userId, page, size, sort}: RequestParams) => {
+export const postWishlistPath = (baseURL?: string) => `${baseURL ?? ''}/api/wishes`;
+export const deleteWishlistPath = (wishId: string, baseURL?: string) => `${baseURL ?? ''}/api/wishes/${wishId}`;
+export const getWishlistPath = ({userId, page, size, sort}: RequestParams, baseURL?: string) => {
     const params = new URLSearchParams();
 
     if(userId) params.append('userId', userId);
@@ -29,14 +29,14 @@ export const getWishlistPath = ({userId, page, size, sort}: RequestParams) => {
     if(size) params.append('size', size.toString());
     if(sort) params.append('sort', sort);
 
-    if(params.size === 0) return `${BASE_URL}/api/wishes`;
+    if(params.size === 0) return `${baseURL ?? ''}/api/wishes`;
 
-    return `${BASE_URL}/api/wishes?${params.toString()}`;
+    return `${baseURL ?? ''}/api/wishes?${params.toString()}`;
 } 
 
 export const addWishlist = async (productId: number, userId: string) => {
     try{
-        const response = await axios.post(postWishlistPath(), {
+        const response = await fetchInstance().post(postWishlistPath(), {
             productId,
             userId,
         });
@@ -48,7 +48,7 @@ export const addWishlist = async (productId: number, userId: string) => {
 }
 export const deleteWishlist = async (wishId: string) => {
     try{
-        const response = await axios.delete(deleteWishlistPath(wishId));
+        const response = await fetchInstance().delete(deleteWishlistPath(wishId));
         if(axios.isAxiosError(response)) {
             return false;
         }
@@ -61,7 +61,7 @@ export const deleteWishlist = async (wishId: string) => {
 }
 
 const getWishlist = async (params: RequestParams) => {
-    const response = await fetchInstance.get<WishResponseData[]>(getWishlistPath(params));
+    const response = await fetchInstance().get<WishResponseData[]>(getWishlistPath(params));
     return response.data;
 }
 export const useGetWishlist = (params: RequestParams) => 
