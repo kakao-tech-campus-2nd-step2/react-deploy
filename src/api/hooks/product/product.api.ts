@@ -43,6 +43,7 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
 
+// TODO: 노션 보고 수정 (page 관련)
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
   const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
   const data = response.data;
