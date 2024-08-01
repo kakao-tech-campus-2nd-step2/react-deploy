@@ -7,7 +7,7 @@ export type CategoryData = {
 };
 
 export type ProductData = {
-  id: number;
+  productId: number;
   name: string;
   price: number;
   imageUrl: string;
@@ -18,8 +18,12 @@ export type ProductOptionsData = {
   id: number;
   name: string;
   quantity: number;
-  productId: number;
 };
+
+export type ProductOptionsDatas = {
+  optionCount: number;
+  options: ProductOptionsData[];
+}
 
 export type GoodsDetailOptionItemData = {
   key: string;
@@ -34,6 +38,8 @@ export type GoodsDetailOptionItemData = {
 export type OrderHistory = {
   id: number;
   count: number;
+  optionId: number;
+  optionName: string;
 };
 
 export type OrderFormData = {
@@ -53,3 +59,11 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export type WishListData = {
+  wishId: number;
+  productId: number;
+  productName: string;
+  price: number;
+  imageUrl: string;
+}
