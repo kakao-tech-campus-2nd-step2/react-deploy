@@ -6,6 +6,7 @@ import CategoryAddPage from '@/pages/Category/CategoryAddPage';
 import CategoryEditPage from '@/pages/Category/CategoryEditPage';
 import FavoritesPage from '@/pages/FavoritesPage'; 
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
+import ProductEditPage from '@/pages/Goods/Detail/ProductEditPage';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: RouterPath.editCategory, 
         element: <CategoryEditPage />,
+      },
+      {
+        path: RouterPath.editProduct, // 수정 페이지 라우트 추가
+        element: <ProductEditPage />,
       },
       {
         path: RouterPath.productsDetail,

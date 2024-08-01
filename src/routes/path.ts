@@ -6,6 +6,7 @@ export const RouterPath = {
   editCategory: '/category/edit/:categoryId',
   myAccount: '/my-account',
   productsDetail: '/products/:productId',
+  editProduct: '/products/edit/:productId',
   order: '/order',
   login: '/login',
   signUp: '/signUp',
