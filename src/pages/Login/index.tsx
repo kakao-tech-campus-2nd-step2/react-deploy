@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { useLogin } from '@/api/hooks/useMembers';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -15,7 +16,7 @@ export const LoginPage = () => {
   const { email, isEmailValid, handleEmailChange } = useValidateEmail();
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-
+  const mutation = useLogin();
   const navigate = useNavigate();
 
   const handleConfirm = () => {
@@ -27,13 +28,21 @@ export const LoginPage = () => {
       return;
     }
 
-    // TODO: API 연동
+    mutation.mutate(
+      { email, password },
+      {
+        onSuccess: ({ token }) => {
+          authSessionStorage.set(token); // 세션에 토큰 저장
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(email);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    window.location.replace(redirectUrl);
+          const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
+          navigate(redirectUrl);
+        },
+        onError: (error) => {
+          console.error('failed to login:', error);
+          alert('아이디와 비밀번호를 확인해주세요.');
+        },
+      },
+    );
   };
 
   return (
