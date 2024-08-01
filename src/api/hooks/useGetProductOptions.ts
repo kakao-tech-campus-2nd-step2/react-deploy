@@ -7,9 +7,11 @@ import type { ProductDetailRequestParams } from './useGetProductDetail';
 
 type Props = ProductDetailRequestParams;
 
-export type ProductOptionsResponseData = ProductOptionsData[];
+export type ProductOptionsResponseData = {
+  options: ProductOptionsData[];
+};
 
-export const getProductOptionsPath = (productId: string) => `${BASE_URL}/api/options//${productId}`;
+export const getProductOptionsPath = (productId: string) => `${BASE_URL}/api/options/${productId}`;
 
 export const getProductOptions = async (params: ProductDetailRequestParams) => {
   const response = await fetchInstance.get<ProductOptionsResponseData>(
