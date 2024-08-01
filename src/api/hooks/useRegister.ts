@@ -1,6 +1,6 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
-import { BASE_URL, fetchInstance } from '../instance';
+import { fetchInstance } from '../instance';
 
 type RequestParams = {
   email: string;
@@ -12,12 +12,12 @@ type ResponseData = {
 };
 
 const postRegister = async (params: RequestParams): Promise<ResponseData> => {
-  const response = await fetchInstance.post(`${BASE_URL}/api/members/register`, params);
+  const response = await fetchInstance.post(`/api/members/register`, params);
   const { token } = response.data;
   const status = response.status;
 
   console.log('HTTP status: ', status);
-  console.log('token: ', token); // test
+  // console.log('token: ', token); // test
 
   return token;
 };
