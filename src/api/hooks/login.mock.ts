@@ -30,3 +30,25 @@ export const loginMockHandler = [
     );
   }),
 ];
+
+export const kakaoLoginMockHandler = [
+  rest.get(`${BASE_URL}/api/oauth2/kakao`, (req, res, ctx) => {
+    const code = req.url.searchParams.get('code');
+    
+    if (code === 'exampleCode') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          token: 'example-token', 
+        })
+      );
+    }
+
+    return res(
+      ctx.status(400),
+      ctx.json({
+        message: 'Invalid code',
+      })
+    );
+  }),
+];
