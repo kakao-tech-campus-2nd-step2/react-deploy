@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Divider, useDisclosure } from '@chakra-ui/react';
@@ -25,7 +25,10 @@ export const OrderForm = ({ orderHistory }: OrderFormProps) => {
   const [alertMessage, setAlertMessage] = useState('');
   const { mutate, status } = useMutation({
     mutationFn: order,
-    onSuccess: () => setAlertMessage('주문이 완료되었습니다.'),
+    onSuccess: () => {
+      setAlertMessage('주문이 완료되었습니다.');
+      onOpen();
+    },
     onError: (error) => setAlertMessage(error.message),
   });
 
@@ -45,6 +48,7 @@ export const OrderForm = ({ orderHistory }: OrderFormProps) => {
       optionId: orderHistory.optionId,
       quantity: orderHistory.quantity,
       message: form.getValues('gitfMessage'),
+      point: 0,
     };
 
     mutate(orderResponse);
@@ -55,21 +59,13 @@ export const OrderForm = ({ orderHistory }: OrderFormProps) => {
       Object.values(errors).flatMap((error) => error.message)[0] || '';
 
     setAlertMessage(errorMessages);
+    onOpen();
   });
 
-  useEffect(() => {
-    if (alertMessage) {
-      onOpen();
-    } else {
-      onClose();
-    }
-  }, [alertMessage, onClose, onOpen]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setAlertMessage('');
-    }
-  }, [setAlertMessage, isOpen]);
+  const handleCloseAlert = () => {
+    onClose();
+    setAlertMessage('');
+  };
 
   return (
     <Form {...form}>
@@ -86,7 +82,11 @@ export const OrderForm = ({ orderHistory }: OrderFormProps) => {
         </Content>
       </form>
       {isOpen && (
-        <Alert message={alertMessage} isOpen={isOpen} onClose={onClose} />
+        <Alert
+          message={alertMessage}
+          isOpen={isOpen}
+          onClose={handleCloseAlert}
+        />
       )}
     </Form>
   );

@@ -8,6 +8,7 @@ type OrderRequestBody = {
   optionId: number;
   quantity: number;
   message: string;
+  point: number;
 };
 
 export const order = async ({
@@ -15,6 +16,7 @@ export const order = async ({
   optionId,
   quantity,
   message,
+  point,
 }: OrderRequestBody) => {
   try {
     await AUTHROIZATION_API.post('/api/orders', {
@@ -22,6 +24,7 @@ export const order = async ({
       optionId,
       quantity,
       message,
+      point,
     });
   } catch (error) {
     if (error instanceof AxiosError) {
