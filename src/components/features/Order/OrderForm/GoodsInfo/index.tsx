@@ -12,7 +12,7 @@ type Props = {
 };
 export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
-  const { data: detail } = useGetProductDetail({ product_id: id.toString() });
+  const { data: detail } = useGetProductDetail({ productId: id.toString() });
 
   return (
     <Wrapper>

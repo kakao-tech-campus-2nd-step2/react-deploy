@@ -16,9 +16,9 @@ import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
 
-export const OptionSection = ({ product_id }: Props) => {
-  const { data: detail } = useGetProductDetail({ product_id });
-  const { data: options } = useGetProductOptions({ product_id });
+export const OptionSection = ({ productId }: Props) => {
+  const { data: detail } = useGetProductDetail({ productId });
+  const { data: options } = useGetProductOptions({ productId });
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -38,7 +38,7 @@ export const OptionSection = ({ product_id }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(product_id),
+      id: parseInt(productId),
       count: parseInt(countAsString),
     });
 
