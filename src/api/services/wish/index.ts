@@ -1,12 +1,6 @@
 import { AxiosError } from 'axios';
 
 import { AUTHROIZATION_API } from '@/api/config';
-import {
-  getWishAddPath,
-  getWishDeletePath,
-  getWishListPath,
-} from '@/api/services/path';
-import { Wish } from '@/types/wishType';
 
 import {
   WishListRequestParams,
@@ -14,36 +8,27 @@ import {
   WishListResponseRaw,
 } from './types';
 
-export type WishRequestBody = {
+type WishRequestBody = {
   productId: number;
 };
-export type WishResponse = Wish;
+
 export const addWish = async ({ productId }: WishRequestBody) => {
   try {
-    const response = await AUTHROIZATION_API.post<WishResponse>(
-      getWishAddPath(),
-      { productId }
-    );
+    const response = await AUTHROIZATION_API.post('/api/wishes', {
+      productId,
+    });
 
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       const res = error.response;
 
-      if (res?.status === 401) {
-        throw new Error('로그인 후 시도해주세요.');
+      if (res?.status === 400 || res?.status === 404) {
+        throw new Error(res.data.detail);
       }
 
-      if (res?.status === 404) {
-        throw new Error('해당 상품을 위시 리스트에 추가할 수 없습니다.');
-      }
-
-      if (res?.status === 400) {
-        if (res.statusText === 'Duplicate Product') {
-          throw new Error('이미 위시 리스트에 추가된 상품입니다.');
-        }
-
-        throw new Error('잘못된 요청 입니다. 다시 시도해주세요.');
+      if (res?.status === 403) {
+        throw new Error('로그인 후 이용해주세요.');
       }
     }
 
@@ -63,7 +48,9 @@ export const fetchWishList = async (
     return {
       wishList: data.content,
       nextPageToken:
-        data.last === false ? (data.number + 1).toString() : undefined,
+        data.page !== data.totalPages - 1
+          ? (data.page + 1).toString()
+          : undefined,
       pageInfo: {
         totalResults: data.totalElements,
         resultsPerPage: data.size,
@@ -77,14 +64,26 @@ export const fetchWishList = async (
 export type DeleteWishRequestParams = {
   wishId: number;
 };
-export type DeleteWishResponse = string;
 
-export const deleteWishItem = async (params: DeleteWishRequestParams) => {
+export const deleteWishItem = async ({ wishId }: DeleteWishRequestParams) => {
   try {
-    await AUTHROIZATION_API.delete<DeleteWishResponse>(
-      getWishDeletePath(params.wishId.toString())
-    );
+    await AUTHROIZATION_API.delete(`/api/wishes/${wishId}`);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      if (response?.status === 400 || response?.status === 404) {
+        throw new Error(response.data.detail);
+      }
+    }
     throw new Error('위시 상품을 삭제하는 데 실패했습니다.');
   }
+};
+
+const getWishListPath = ({ pageToken, maxResults }: WishListRequestParams) => {
+  const params = new URLSearchParams();
+
+  if (pageToken) params.append('page', pageToken);
+  if (maxResults) params.append('size', maxResults.toString());
+
+  return `/api/wishes?${params.toString()}`;
 };

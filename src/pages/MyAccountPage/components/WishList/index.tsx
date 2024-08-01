@@ -23,13 +23,17 @@ export const WishList = () => {
     onSuccess: () => {
       setAlertMessage('위시 상품이 삭제되었습니다.');
       onOpen();
-      refetch();
     },
     onError: (e) => {
       setAlertMessage(e.message);
       onOpen();
     },
   });
+
+  const handleCloseAlert = () => {
+    onClose();
+    refetch();
+  };
 
   const onClickDeleteButton = (wishId: number) => {
     mutate({ wishId });
@@ -55,22 +59,26 @@ export const WishList = () => {
       css={{ width: '70vw', paddingBottom: '10rem' }}
     >
       {wishList.map((wish) => (
-        <Card key={wish.id} gap="1rem" css={{ padding: '1rem' }}>
-          <Image src={wish.product.imageUrl} ratio="square" width="6rem" />
+        <Card key={wish.wishId} gap="1rem" css={{ padding: '1rem' }}>
+          <Image src={wish.imageUrl} ratio="square" width="6rem" />
           <Container flexDirection="column">
-            <Text css={{ fontWeight: 500 }}>{wish.product.name}</Text>
-            <Text>{wish.product.price} 원</Text>
+            <Text css={{ fontWeight: 500 }}>{wish.productName}</Text>
+            <Text>{wish.price} 원</Text>
           </Container>
           <IconButton
             variant="outline"
             aria-label="Delete wish item"
             icon={<DeleteIcon />}
-            onClick={() => onClickDeleteButton(wish.id)}
+            onClick={() => onClickDeleteButton(wish.wishId)}
           />
         </Card>
       ))}
       {isOpen && (
-        <Alert message={alertMessage} isOpen={isOpen} onClose={onClose} />
+        <Alert
+          message={alertMessage}
+          isOpen={isOpen}
+          onClose={handleCloseAlert}
+        />
       )}
     </Container>
   );
