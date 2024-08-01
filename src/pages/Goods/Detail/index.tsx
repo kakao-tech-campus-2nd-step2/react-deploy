@@ -16,6 +16,10 @@ export const GoodsDetailPage = () => {
     navigate(`/products/edit/${productId}`);
   };
 
+  const handleAddProductClick = () => {
+    navigate(`/products/add`);
+  };
+
   return (
     <>
       <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
@@ -25,6 +29,9 @@ export const GoodsDetailPage = () => {
             <VStack spacing={4}>
               <Button colorScheme="blue" onClick={handleEditProductClick}>
                 상품 수정
+              </Button>
+              <Button colorScheme="green" onClick={handleAddProductClick}>
+                상품 추가
               </Button>
             </VStack>
           </Center>
