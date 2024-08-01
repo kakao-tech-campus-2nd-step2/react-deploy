@@ -16,7 +16,7 @@ const GreetingTitle = styled.h1`
 `;
 
 function MyPage() {
-  const { isLoggedIn, setIsLoggedIn, username } = useContext(LoginContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
   const navigate = useNavigate();
 
   const onLogoutClick = useCallback(() => {
@@ -43,8 +43,7 @@ function MyPage() {
           alignItems="center"
         >
           <GreetingTitle>
-            {username}
-            님 안녕하세요!
+            회원님 안녕하세요!
           </GreetingTitle>
           <div css={css`
             height: 64px;

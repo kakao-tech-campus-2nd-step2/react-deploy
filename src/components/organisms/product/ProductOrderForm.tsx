@@ -43,6 +43,8 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
       hasCashReceipt: false,
       cashReceiptType: CashReceiptOptions.PERSONAL,
       cashReceiptNumber: '',
+      usePoint: true,
+      pointAmount: 0,
     },
   });
 
@@ -53,6 +55,7 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
       optionId: orderHistory.option.id,
       message: data.messageCardTextMessage as string,
       quantity: orderHistory.quantity,
+      point: 0,
     };
     alert(`${orderBody.optionId}번 상품의 주문이 완료되었습니다.`);
   }, [orderHistory]);

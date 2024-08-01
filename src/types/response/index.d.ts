@@ -28,6 +28,10 @@ export interface PagedProductReponse {
   empty: boolean;
 }
 
+export interface PointResponse {
+  point: number;
+}
+
 export interface CategoryProductsResponse extends PagedProductReponse {
   content: ProductData[];
 }

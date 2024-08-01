@@ -6,4 +6,5 @@ export const QueryKeys = {
   PRODUCT_DETAILS: 'productDetails',
   PRODUCTS: 'products',
   PRODUCT_OPTIONS: 'productOptions',
+  POINT: 'point',
 };

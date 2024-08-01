@@ -2,19 +2,16 @@ import {
   createContext, ReactNode, useEffect, useMemo, useState,
 } from 'react';
 import { tokenStorage } from '@utils/storage';
+import { isJwtToken } from '@/utils';
 
 interface LoginStatus {
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
-  username: string;
-  setUsername: (username: string) => void;
 }
 
 const defaultLoginStatus: LoginStatus = {
   isLoggedIn: false,
   setIsLoggedIn: () => {},
-  username: '',
-  setUsername: () => {},
 };
 
 export const LoginContext = createContext<LoginStatus>(defaultLoginStatus);
@@ -22,8 +19,7 @@ export const LoginContext = createContext<LoginStatus>(defaultLoginStatus);
 function LoginContextProvider({ children }: { children: ReactNode }) {
   const storedToken = tokenStorage.get();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(typeof storedToken === 'string');
-  const [username, setUsername] = useState(storedToken || '');
+  const [isLoggedIn, setIsLoggedIn] = useState(isJwtToken(storedToken));
 
   useEffect(() => {
     if (!isLoggedIn) tokenStorage.set();
@@ -31,8 +27,8 @@ function LoginContextProvider({ children }: { children: ReactNode }) {
 
   // 사실 안 감싸도 똑같은데 eslint 에러가 나서 감쌌다
   const loginStatus: LoginStatus = useMemo<LoginStatus>(() => ({
-    isLoggedIn, setIsLoggedIn, username, setUsername,
-  }), [isLoggedIn, username]);
+    isLoggedIn, setIsLoggedIn,
+  }), [isLoggedIn]);
 
   return (
     <LoginContext.Provider value={loginStatus}>

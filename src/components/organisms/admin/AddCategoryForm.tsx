@@ -8,13 +8,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Button from '@components/atoms/button/Button';
-
-type ProductFormInputData = {
-  name: string;
-  price: number;
-  imageUrl: string;
-  categoryId: number;
-};
+import NameAdditionForm from '@components/organisms/admin/NameAdditionForm';
+import { ProductFormInputData } from '@/types';
 
 function AddProductForm() {
   const {
@@ -30,15 +25,7 @@ function AddProductForm() {
   return (
     <Box width="400px" mx="auto" mt="50px">
       <form onSubmit={handleSubmit(handleSubmitClick)}>
-        <FormControl isInvalid={!!errors.name} mb="4">
-          <FormLabel htmlFor="name">상품 이름</FormLabel>
-          <Input
-            id="name"
-            placeholder="상품명"
-            {...register('name', { required: '상품명을 입력하세요' })}
-          />
-          {errors.name && <Text color="red" fontSize="sm">{errors.name.message}</Text>}
-        </FormControl>
+        <NameAdditionForm additionType="category" register={register} errors={errors} />
 
         <FormControl isInvalid={!!errors.price} mb="4">
           <FormLabel htmlFor="price">가격</FormLabel>

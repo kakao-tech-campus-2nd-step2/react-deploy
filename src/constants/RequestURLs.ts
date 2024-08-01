@@ -13,6 +13,7 @@ const endpoints = {
   WISHES: '/wishes',
   DELETE_WISHES: '/wishes/:wishId',
   DELETE_CATEGORY: '/category/:categoryId',
+  POINT: '/point',
 };
 
 type RequestURLKey = keyof typeof endpoints;
@@ -29,4 +30,5 @@ export default RequestURLs;
 export const AuthenticatedRequestURLs = {
   [RequestURLs.WISHES]: true,
   [RequestURLs.DELETE_WISHES]: true,
+  [RequestURLs.POINT]: true,
 };

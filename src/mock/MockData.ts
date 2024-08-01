@@ -1,4 +1,7 @@
 const MockData = {
+  MOCK_POINT: {
+    point: 100000,
+  },
   MOCK_OPTIONS: [
     {
       id: 1,

@@ -15,7 +15,7 @@ import { LoginContext } from '@/providers/LoginContextProvider';
 
 function LoginForm() {
   const navigate = useNavigate();
-  const { setIsLoggedIn, setUsername } = useContext(LoginContext);
+  const { setIsLoggedIn } = useContext(LoginContext);
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -29,7 +29,6 @@ function LoginForm() {
         password: passwordRef.current.value,
       }, 'login');
       setIsLoggedIn(true);
-      setUsername(authResult.email);
       tokenStorage.set(authResult.token);
       navigate(-1);
     } catch (e) {
@@ -43,7 +42,7 @@ function LoginForm() {
         alert('아이디나 비밀번호가 일치하지 않습니다.');
       }
     }
-  }, [navigate, setIsLoggedIn, setUsername]);
+  }, [navigate, setIsLoggedIn]);
 
   return (
     <AuthFormContainer>

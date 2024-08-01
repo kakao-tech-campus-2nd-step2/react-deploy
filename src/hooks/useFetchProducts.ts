@@ -30,7 +30,6 @@ function useFetchProducts({ productType, itemsPerPage, sort }: UseFetchProductsP
         params,
       },
     );
-    console.log(url);
 
     return productType === 'ordered'
       ? response.data as OrderedProductsResponse

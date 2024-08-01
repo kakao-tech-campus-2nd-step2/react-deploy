@@ -83,7 +83,28 @@ export type OrderFormData = {
   cashReceiptNumber: string;
   hasCashReceipt: boolean;
   cashReceiptType: CashReceiptType;
+  usePoint: boolean;
+  pointAmount: number;
 };
+
+export interface JWTTokenHeader {
+  alg: string;
+  typ: string;
+}
+
+export interface ProductFormInputData {
+  name: string;
+  price: number;
+  imageUrl: string;
+  categoryId: number;
+}
+
+export interface CategoryFormInputData {
+  name: string;
+  color: string;
+  imageUrl: string;
+  description: string;
+}
 
 export type CashReceiptType = typeof CashReceiptOptions[string];
 
