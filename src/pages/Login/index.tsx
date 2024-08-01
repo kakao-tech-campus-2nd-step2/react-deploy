@@ -24,10 +24,9 @@ export const LoginPage = () => {
     }
 
     try {
-      const data = await login(email, password);
+      const token = await login(email, password);
 
-      sessionStorage.setItem('authEmail', data.email);
-      authSessionStorage.set(data.token);
+      authSessionStorage.set(token);
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       window.location.replace(redirectUrl);

@@ -11,6 +11,13 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
       'Content-Type': 'application/json',
       ...config.headers,
     },
+    transformResponse: [(data, headers) => {
+      if (headers['content-type']?.includes('text/plain')) {
+        return data;
+      }
+
+      return JSON.parse(data);
+    }],
   });
 
   return instance;
