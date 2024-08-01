@@ -16,11 +16,21 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
+// 기본 API URL
 export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
-export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
-});
+
+// 엔지니어별 API URL
+export const apiUrls: Record<string, string> = {
+  안승환: '',
+  오승규: '',
+  이세진: '',
+  조준환: ''
+};
+
+export const createFetchInstance = (engineer: string): AxiosInstance => {
+  const baseURL = apiUrls[engineer] || BASE_URL; 
+  return initInstance({ baseURL });
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {
