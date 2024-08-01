@@ -1,4 +1,5 @@
 export type OrderHistory = {
   productId: number;
-  productQuantity: number;
+  optionId: number;
+  quantity: number;
 };

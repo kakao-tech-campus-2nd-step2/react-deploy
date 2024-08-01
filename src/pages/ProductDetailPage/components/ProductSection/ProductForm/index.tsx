@@ -3,18 +3,16 @@ import { useNavigate } from 'react-router-dom';
 
 import { useDisclosure } from '@chakra-ui/react';
 
-import { useProductOptions } from '@/api/hooks/useProductOptions';
 import { useAuth } from '@/provider/auth/useAuth';
 import { ROUTER_PATH } from '@/routes/path';
 import { OrderHistory } from '@/types/orderType';
 
-import { OneTextContainer } from '@/components/OneTextContainer';
 import { Button } from '@/components/ui/Button';
 import { Alert } from '@/components/ui/Dialog/Alert';
 import { Confirm } from '@/components/ui/Dialog/Confirm';
 import { Container } from '@/components/ui/Layout/Container';
 
-import { QuantityInput } from './QuantityInput';
+import { OptionSection } from './OptionSection';
 import { TotalPriceCallout } from './TotalPriceCallout';
 import { WishButton } from './WishButton';
 import { containerStyle, submitButton } from './style';
@@ -25,11 +23,9 @@ type ProductFormProps = {
 };
 
 export const ProductForm = ({ productId, price }: ProductFormProps) => {
-  const { data: options, error } = useProductOptions(productId);
-  const [totalQuantity, setTotalQuantity] = useState(0);
-
   const navigate = useNavigate();
   const { authInfo } = useAuth();
+
   const {
     isOpen: isConfirmOpen,
     onOpen: confirmOpen,
@@ -40,10 +36,12 @@ export const ProductForm = ({ productId, price }: ProductFormProps) => {
     onOpen: alertOpen,
     onClose: alertClose,
   } = useDisclosure();
+  const [alertMessage, setAlertMessage] = useState('');
 
-  if (error) {
-    return <OneTextContainer>{error.message}</OneTextContainer>;
-  }
+  const [optionQuantity, setOptionQuantity] = useState<{
+    [key: number]: number;
+  }>([]);
+  const totalQuantity = getTotalQuantity(optionQuantity);
 
   const onClick = () => {
     if (!authInfo) {
@@ -52,13 +50,23 @@ export const ProductForm = ({ productId, price }: ProductFormProps) => {
     }
 
     if (!totalQuantity) {
+      setAlertMessage('상품을 추가해주세요.');
+      alertOpen();
+      return;
+    }
+
+    const optionId = getSingleKeyWithValue(optionQuantity);
+
+    if (!optionId) {
+      setAlertMessage('하나의 옵션만 선택해주세요.');
       alertOpen();
       return;
     }
 
     const state: OrderHistory = {
       productId,
-      productQuantity: totalQuantity,
+      optionId,
+      quantity: totalQuantity,
     };
 
     navigate(ROUTER_PATH.ORDER, { state });
@@ -70,13 +78,10 @@ export const ProductForm = ({ productId, price }: ProductFormProps) => {
       justifyContent="space-between"
       css={containerStyle}
     >
-      {options.map((option) => (
-        <QuantityInput
-          key={option.id}
-          optionDetail={option}
-          setTotalQuantity={setTotalQuantity}
-        />
-      ))}
+      <OptionSection
+        productId={productId}
+        setOptionQuantity={setOptionQuantity}
+      />
       <Container flexDirection="column" gap="1rem">
         <TotalPriceCallout totalPrice={totalQuantity * price} />
         <Container gap="0.5rem">
@@ -93,11 +98,23 @@ export const ProductForm = ({ productId, price }: ProductFormProps) => {
         onClose={confirmClose}
         onConfirm={() => navigate(ROUTER_PATH.LOGIN)}
       />
-      <Alert
-        message="상품을 추가해주세요."
-        isOpen={isAlertOpen}
-        onClose={alertClose}
-      />
+      <Alert message={alertMessage} isOpen={isAlertOpen} onClose={alertClose} />
     </Container>
   );
+};
+
+const getTotalQuantity = (optionQuantity: { [key: number]: number }) => {
+  return Object.values(optionQuantity).reduce((total, cur) => total + cur, 0);
+};
+
+const getSingleKeyWithValue = (optionQuantity: { [key: number]: number }) => {
+  const keysWithValue = Object.keys(optionQuantity).filter(
+    (key) => optionQuantity[Number(key)] > 0
+  );
+
+  if (keysWithValue.length === 1) {
+    return Number(keysWithValue[0]);
+  }
+
+  return undefined;
 };

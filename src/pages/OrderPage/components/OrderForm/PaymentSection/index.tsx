@@ -9,14 +9,18 @@ import { Container } from '@/components/ui/Layout/Container';
 import { CashCheckFields } from './CashCheckFields';
 import { containerStyle } from './styles';
 
+type PaymentSectionProps = {
+  orderHistory: OrderHistory;
+  isLoading: boolean;
+};
+
 export const PaymentSection = ({
   orderHistory,
-}: {
-  orderHistory: OrderHistory;
-}) => {
+  isLoading,
+}: PaymentSectionProps) => {
   const { data: productDetail } = useProductDetail(orderHistory.productId);
 
-  const totalPrice = productDetail.price * orderHistory.productQuantity;
+  const totalPrice = productDetail.price * orderHistory.quantity;
 
   return (
     <Container flexDirection="column" gap="1rem" css={containerStyle}>
@@ -37,7 +41,12 @@ export const PaymentSection = ({
         </Text>
       </Container>
       <Divider marginBottom="2rem" />
-      <Button size="large" type="submit" data-testid="submit-button">
+      <Button
+        size="large"
+        type="submit"
+        data-testid="submit-button"
+        disabled={isLoading}
+      >
         {totalPrice} 결제하기
       </Button>
     </Container>

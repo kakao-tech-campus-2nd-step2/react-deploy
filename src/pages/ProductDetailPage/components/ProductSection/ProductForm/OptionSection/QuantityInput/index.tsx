@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { IconButton, Input, Text, useNumberInput } from '@chakra-ui/react';
@@ -10,18 +10,18 @@ import { Container } from '@/components/ui/Layout/Container';
 
 type QuantityInputProps = {
   optionDetail: Option;
-  setTotalQuantity: Dispatch<SetStateAction<number>>;
+  handleOptionQuantityChange: (optionId: number, quantity: number) => void;
 };
 
 export const QuantityInput = ({
   optionDetail,
-  setTotalQuantity,
+  handleOptionQuantityChange,
 }: QuantityInputProps) => {
   const [quantity, setQuantity] = useState(0);
 
   const onChangeQuantity = (newQuantity: number) => {
     setQuantity(newQuantity);
-    setTotalQuantity((pre) => pre + (newQuantity - quantity));
+    handleOptionQuantityChange(optionDetail.id, newQuantity);
   };
 
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
