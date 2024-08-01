@@ -12,6 +12,8 @@ import { Grid } from '@/components/common/layouts/Grid';
 import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
+import { userWishList } from '@/api/hooks/useGetWishList';
+
 interface ContentData {
   id: number;
   product: {
@@ -33,8 +35,7 @@ const initdata = {
         id: 1,
         name: 'Product A',
         price: 100,
-        imageUrl:
-          '	https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
+        imageUrl: '	https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
       },
     },
     {
@@ -43,14 +44,15 @@ const initdata = {
         id: 2,
         name: 'Product B',
         price: 150,
-        imageUrl:
-          '	https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
+        imageUrl: '	https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
       },
     },
   ],
 };
 
 export const WishList = () => {
+  const { data: k, isLoading: a, isError: b } = userWishList();
+  console.log(k, a, b);
   const { mutate } = useMutation({
     mutationFn: async (id: number) => {
       await fetchInstance.delete(`/api/wishes/${id}`);
@@ -80,7 +82,7 @@ export const WishList = () => {
   if (!data) return <></>;
   if (data.content.length <= 0) return <TextView>상품이 없어요.</TextView>;
 
-  const flattenGoodsList = data.content.map((page) => page ?? []).flat();
+  const flattenGoodsList = data.content.map(page => page ?? []).flat();
 
   return (
     <Wrapper>
