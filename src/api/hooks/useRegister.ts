@@ -1,7 +1,6 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
-import { BASE_URL } from '../instance';
-import { fetchInstance } from '../instance/index';
+import { BASE_URL, fetchInstance } from '../instance';
 
 type RequestParams = {
   email: string;
@@ -18,10 +17,11 @@ const postRegister = async (params: RequestParams): Promise<ResponseData> => {
   const status = response.status;
 
   console.log('HTTP status: ', status);
+  console.log('token: ', token); // test
 
   return token;
 };
 
-export const useRegister = (): UseMutationResult => {
-  return useMutation(postRegister);
+export const useRegister = (): UseMutationResult<ResponseData, Error, RequestParams> => {
+  return useMutation({ mutationFn: (params: RequestParams) => postRegister(params) });
 };
