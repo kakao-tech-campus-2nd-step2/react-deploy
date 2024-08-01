@@ -7,12 +7,12 @@ import { breakpoints } from '@/styles/variants';
 
 type Props = ProductDetailRequestParams;
 
-export const GoodsDetailHeader = ({ productId }: Props) => {
-  const { data: detail } = useGetProductDetail({ productId });
+export const GoodsDetailHeader = ({ product_id }: Props) => {
+  const { data: detail } = useGetProductDetail({ product_id });
 
   return (
     <Wrapper>
-      <GoodsImage src={detail.imageUrl} alt={detail.name} />
+      <GoodsImage src={detail.image_url} alt={detail.name} />
       <InfoWrapper>
         <Title>{detail.name}</Title>
         <Price>{detail.price}원</Price>

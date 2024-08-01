@@ -18,7 +18,7 @@ export const CategoryPage = () => {
   return (
     <>
       <CategoryHeroSection categoryId={categoryId} />
-      <CategoryProductsSection categoryId={categoryId} />
+      <CategoryProductsSection category_id={categoryId} />
     </>
   );
 };

@@ -11,13 +11,13 @@ import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
 type Props = {
-  categoryId: string;
+  category_id: string;
 };
 
-export const CategoryProductsSection = ({ categoryId }: Props) => {
+export const CategoryProductsSection = ({ category_id }: Props) => {
   const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useGetProducts({
-      categoryId,
+      category_id,
     });
 
   if (isLoading) return <LoadingView />;
@@ -37,11 +37,11 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
           }}
           gap={16}
         >
-          {flattenGoodsList.map(({ id, imageUrl, name, price }) => (
+          {flattenGoodsList.map(({ id, image_url, name, price }) => (
             <Link key={id} to={getDynamicPath.productsDetail(id)}>
               <DefaultGoodsItems
                 key={id}
-                imageSrc={imageUrl}
+                imageSrc={image_url}
                 title={name}
                 amount={price}
                 subtitle={''}

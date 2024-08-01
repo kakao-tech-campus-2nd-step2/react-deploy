@@ -8,13 +8,13 @@ import { GoodsDetail } from '@/components/features/Goods/Detail';
 import { OptionSection } from '@/components/features/Goods/Detail/OptionSection';
 
 export const GoodsDetailPage = () => {
-  const { productId = '' } = useParams<ProductDetailRequestParams>();
+  const { product_id = '' } = useParams<ProductDetailRequestParams>();
 
   return (
     <>
       <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
-        <SplitLayout sidebar={<OptionSection productId={productId} />}>
-          <GoodsDetail productId={productId} />
+        <SplitLayout sidebar={<OptionSection product_id={product_id} />}>
+          <GoodsDetail product_id={product_id} />
         </SplitLayout>
       </AsyncBoundary>
     </>

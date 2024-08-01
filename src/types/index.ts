@@ -3,14 +3,14 @@ export type CategoryData = {
   name: string;
   description: string;
   color: string;
-  imageUrl: string;
+  image_url: string;
 };
 
 export type ProductData = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
+  image_url: string;
   categoryId: number;
 };
 
@@ -28,7 +28,7 @@ export type GoodsDetailOptionItemData = {
   options: GoodsDetailOptionItemData[]; // 재귀적으로 동일한 구조를 가질 수 있음
   id?: number;
   price?: number;
-  stockQuantity: number;
+  stock_quantity: number;
 };
 
 export type OrderHistory = {
@@ -37,8 +37,8 @@ export type OrderHistory = {
 };
 
 export type OrderFormData = {
-  productId: number;
-  productQuantity: number;
+  product_id: number;
+  quantity: number;
   messageCardTextMessage: string;
   senderId: number;
   receiverId: number;

@@ -12,7 +12,7 @@ type Props = {
 };
 export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const { data: detail } = useGetProductDetail({ product_id: id.toString() });
 
   return (
     <Wrapper>
@@ -21,7 +21,7 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
       <GoodsWrapper>
         <GoodsInfoWrapper>
           <GoodsInfoImage>
-            <Image src={detail.imageUrl} width={86} ratio="square" />
+            <Image src={detail.image_url} width={86} ratio="square" />
           </GoodsInfoImage>
           <GoodsInfoTextWrapper>
             <GoodsInfoTextTitle>

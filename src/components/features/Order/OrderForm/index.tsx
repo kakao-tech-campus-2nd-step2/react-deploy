@@ -19,8 +19,8 @@ export const OrderForm = ({ orderHistory }: Props) => {
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
-      productId: id,
-      productQuantity: count,
+      product_id: id,
+      quantity: count,
       senderId: 0,
       receiverId: 0,
       hasCashReceipt: false,

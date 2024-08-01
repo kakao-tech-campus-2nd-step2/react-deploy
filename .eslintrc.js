@@ -34,6 +34,7 @@ module.exports = {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     '@typescript-eslint/consistent-type-imports': 'warn',
+    '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {

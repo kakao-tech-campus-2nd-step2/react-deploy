@@ -10,7 +10,7 @@ import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
-  categoryId: string;
+  category_id: string;
   pageToken?: string;
   maxResults?: number;
 };
@@ -32,10 +32,10 @@ type ProductsResponseRawData = {
   last: boolean;
 };
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+export const getProductsPath = ({ category_id, pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
+  params.append('categoryId', category_id);
   params.append('sort', 'name,asc');
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
@@ -57,16 +57,16 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
   };
 };
 
-type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
+type Params = Pick<RequestParams, 'maxResults' | 'category_id'> & { initPageToken?: string };
 export const useGetProducts = ({
-  categoryId,
+  category_id,
   maxResults = 20,
   initPageToken,
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
+    queryKey: ['products', category_id, maxResults, initPageToken],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+      return getProducts({ category_id, pageToken: pageParam, maxResults });
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,

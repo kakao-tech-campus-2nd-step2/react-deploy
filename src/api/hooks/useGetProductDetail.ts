@@ -5,26 +5,26 @@ import type { ProductData } from '@/types';
 import { BASE_URL, fetchInstance } from '../instance';
 
 export type ProductDetailRequestParams = {
-  productId: string;
+  product_id: string;
 };
 
 type Props = ProductDetailRequestParams;
 
 export type GoodsDetailResponseData = ProductData;
 
-export const getProductDetailPath = (productId: string) => `${BASE_URL}/api/products/${productId}`;
+export const getProductDetailPath = (product_id: string) => `${BASE_URL}/api/products/${product_id}`;
 
 export const getProductDetail = async (params: ProductDetailRequestParams) => {
   const response = await fetchInstance.get<GoodsDetailResponseData>(
-    getProductDetailPath(params.productId),
+    getProductDetailPath(params.product_id),
   );
 
   return response.data;
 };
 
-export const useGetProductDetail = ({ productId }: Props) => {
+export const useGetProductDetail = ({ product_id }: Props) => {
   return useSuspenseQuery({
-    queryKey: [getProductDetailPath(productId)],
-    queryFn: () => getProductDetail({ productId }),
+    queryKey: [getProductDetailPath(product_id)],
+    queryFn: () => getProductDetail({ product_id }),
   });
 };
