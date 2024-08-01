@@ -12,7 +12,7 @@ import { updateInstanceBaseURL } from '@/api/instance';
 export const backendAPI: { [key: string]: string } = {
   backend_1: 'http://43.203.126.125:8080',
   backend_2: 'www.backend2.com',
-  backend_3: 'www.backend3.com',
+  backend_3: 'http://43.201.19.183:8080',
   backend_4: 'www.backend4.com',
 };
 
