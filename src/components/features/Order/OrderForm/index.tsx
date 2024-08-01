@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { usePostOrder } from '@/api/hooks/usePostOrder';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -15,7 +16,8 @@ type Props = {
 };
 
 export const OrderForm = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
+  const { id, count, optionId } = orderHistory;
+  const { order } = usePostOrder();
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -28,7 +30,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
   });
   const { handleSubmit } = methods;
 
-  const handleForm = (values: OrderFormData) => {
+  const handleForm = async (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
 
     if (!isValid) {
@@ -36,7 +38,18 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log('values', values);
+    console.log('values', values.productId);
+
+    const response = await order({
+      productId: id,
+      optionId: optionId,
+      quantity: count,
+      message: values.messageCardTextMessage,
+      point: count //임시로 해놓음
+    });
+
+    console.log(response);
+
     alert('주문이 완료되었습니다.');
   };
 
