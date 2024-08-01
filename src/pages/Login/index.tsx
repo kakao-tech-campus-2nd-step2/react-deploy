@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { BASE_URL } from "@/api/instance";
@@ -15,6 +15,41 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const code = queryParams.get("code");
+    if (code) {
+      handleKaKaoAuth(code);
+    }
+  }, [queryParams]);
+
+  const handleKaKaoAuth = async (code: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/oauth/kakao`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      if (!response.ok) {
+        throw new Error("카카오 로그인에 실패했습니다.");
+      }
+
+      const data = await response.json();
+      authSessionStorage.set(data.accessToken); // 액세스 토큰을 세션 스토리지에 저장
+
+      window.location.replace(`${window.location.origin}/`);
+    } catch (error) {
+      console.error(error);
+      alert("카카오 로그인 처리 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleKaKaoLogin = () => {
+    window.location.replace(`${BASE_URL}/api/oauth/kakao`);
+  };
 
   const handleConfirm = async () => {
     if (!id || !password) {
@@ -77,7 +112,7 @@ export const LoginPage = () => {
         />
         <Button onClick={handleConfirm}>로그인</Button>
         <RegButton onClick={handleSignup}>회원가입</RegButton>
-        <Button onClick={handleConfirm}>카카오 로그인</Button>
+        <Button onClick={handleKaKaoLogin}>카카오 로그인</Button>
       </FormWrapper>
     </Wrapper>
   );
