@@ -9,12 +9,18 @@ import {
 import {
   AddWishesResponse,
   CategoryResponse,
-  LoginResponse,
+  LoginResponse, PointResponse,
   ProductDetailResponse,
   ProductOptionsResponse,
 } from '@/types/response';
 import { CategoryRepository } from '@/types';
 import { CategoryData, ProductData, ProductOption } from '@/dto';
+
+export const fetchPoint = async () => {
+  const response = await axiosInstance.get<PointResponse>(RequestURLs.POINT);
+
+  return response.data.point;
+};
 
 export const addWishProduct = async (body: AddWishesBody) => {
   const response = await axiosInstance.post<AddWishesResponse>(RequestURLs.WISHES, body);
