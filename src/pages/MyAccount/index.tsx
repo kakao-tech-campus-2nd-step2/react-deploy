@@ -37,6 +37,7 @@ export const MyAccountPage = () => {
   const [hasNextOrderPage, setHasNextOrderPage] = useState(false);
   const [currentWishPage, setCurrentWishPage] = useState(0);
   const [totalWishPages, setTotalWishPages] = useState(0);
+  const [points, setPoints] = useState(0); // 보유 포인트 상태 추가
   const pageSize = 5;
 
   const handleLogout = () => {
@@ -87,6 +88,20 @@ export const MyAccountPage = () => {
     [authInfo, pageSize]
   );
 
+  const fetchPoints = useCallback(async () => {
+    if (!authInfo) return;
+    try {
+      const response = await axios.get("/api/points", {
+        headers: {
+          Authorization: `Bearer ${authInfo.token}`,
+        },
+      });
+      setPoints(response.data.points);
+    } catch (error) {
+      console.error("Failed to fetch points", error);
+    }
+  }, [authInfo]);
+
   const deleteWish = async (wishId: number) => {
     if (!authInfo) return;
     try {
@@ -109,6 +124,10 @@ export const MyAccountPage = () => {
     fetchOrders(currentOrderPage);
   }, [fetchOrders, currentOrderPage]);
 
+  useEffect(() => {
+    fetchPoints(); // 보유 포인트 조회
+  }, [fetchPoints]);
+
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
@@ -124,6 +143,11 @@ export const MyAccountPage = () => {
       </Button>
       <Spacing height={64} />
       <ContentWrapper>
+        <Section>
+          <h2>보유 포인트</h2>
+          <p>{points}점</p> {/* 보유 포인트 표시 */}
+          <Spacing height={32} />
+        </Section>
         <Section>
           <h2>관심 목록</h2>
           <WishList>
