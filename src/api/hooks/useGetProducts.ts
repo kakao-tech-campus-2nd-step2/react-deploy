@@ -26,10 +26,31 @@ type ProductsResponseData = {
 
 type ProductsResponseRawData = {
   content: ProductData[];
-  number: number;
+  pageable: {
+    offset: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    unpaged: boolean;
+    paged: boolean;
+    pageSize: number;
+    pageNumber: number;
+  };
+  last: boolean;
+  totalPages: number;
   totalElements: number;
   size: number;
-  last: boolean;
+  number: number;
+  sort: {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+  };
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
 };
 
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
