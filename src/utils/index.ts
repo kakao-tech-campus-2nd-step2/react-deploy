@@ -20,7 +20,9 @@ export function getSizeStyles(size?: ContainerSize) {
   `;
 }
 
-export function isJwtToken(str: string) {
+export function isJwtToken(str?: string) {
+  if (!str) return false;
+
   const split = str.split('.');
 
   if (split.length < 3) return false;

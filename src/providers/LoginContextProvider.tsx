@@ -2,6 +2,7 @@ import {
   createContext, ReactNode, useEffect, useMemo, useState,
 } from 'react';
 import { tokenStorage } from '@utils/storage';
+import { isJwtToken } from '@/utils';
 
 interface LoginStatus {
   isLoggedIn: boolean;
@@ -18,7 +19,7 @@ export const LoginContext = createContext<LoginStatus>(defaultLoginStatus);
 function LoginContextProvider({ children }: { children: ReactNode }) {
   const storedToken = tokenStorage.get();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(typeof storedToken === 'string');
+  const [isLoggedIn, setIsLoggedIn] = useState(isJwtToken(storedToken));
 
   useEffect(() => {
     if (!isLoggedIn) tokenStorage.set();
