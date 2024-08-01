@@ -1,31 +1,39 @@
-import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
-import { useGetProducts } from '@/api/hooks/useGetProducts';
-import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
-import { Container } from '@/components/common/layouts/Container';
-import { Grid } from '@/components/common/layouts/Grid';
-import { LoadingView } from '@/components/common/View/LoadingView';
-import { VisibilityLoader } from '@/components/common/VisibilityLoader';
-import { getDynamicPath } from '@/routes/path';
-import { breakpoints } from '@/styles/variants';
+import { useGetProducts } from "@/api/hooks/useGetProducts";
+import { DefaultGoodsItems } from "@/components/common/GoodsItem/Default";
+import { Container } from "@/components/common/layouts/Container";
+import { Grid } from "@/components/common/layouts/Grid";
+import { LoadingView } from "@/components/common/View/LoadingView";
+import { VisibilityLoader } from "@/components/common/VisibilityLoader";
+import { getDynamicPath } from "@/routes/path";
+import { breakpoints } from "@/styles/variants";
 
 type Props = {
   categoryId: string;
 };
 
 export const CategoryProductsSection = ({ categoryId }: Props) => {
-  const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useGetProducts({
-      categoryId,
-    });
-
+  const {
+    data,
+    isError,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetProducts({
+    categoryId,
+  });
   if (isLoading) return <LoadingView />;
   if (isError) return <TextView>에러가 발생했습니다.</TextView>;
   if (!data) return <></>;
-  if (data.pages[0].products.length <= 0) return <TextView>상품이 없어요.</TextView>;
+  if (data.pages[0].products.length <= 0)
+    return <TextView>상품이 없어요.</TextView>;
 
-  const flattenGoodsList = data.pages.map((page) => page?.products ?? []).flat();
+  const flattenGoodsList = data.pages
+    .map((page) => page?.products ?? [])
+    .flat();
 
   return (
     <Wrapper>
@@ -44,7 +52,7 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
                 imageSrc={imageUrl}
                 title={name}
                 amount={price}
-                subtitle={''}
+                subtitle={""}
               />
             </Link>
           ))}
