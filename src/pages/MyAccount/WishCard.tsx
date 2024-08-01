@@ -15,8 +15,7 @@ export default ({ id, imageURL, name, price }: Props) => {
   const baseURL = useAPIBaseURL()[0];
   const deleteWish = () => {
     deleteWishlist(String(id), baseURL).then((result) => {
-      if (result) alert('관심 삭제 완료');
-      else alert('관심 삭제 실패');
+      if (!result) alert('관심 삭제 실패');
     });
   };
   return (

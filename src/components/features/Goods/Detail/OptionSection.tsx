@@ -50,7 +50,11 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   const addWish = () => {
-    if (!authInfo) return;
+    if (!authInfo) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate(getDynamicPath.login());
+      return;
+    }
     addWishlist(Number(productId), authInfo.id, baseURL).then((result) => {
       if (result) alert('관심 등록 완료');
       else alert('관심 등록 실패');

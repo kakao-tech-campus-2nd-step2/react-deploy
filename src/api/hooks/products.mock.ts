@@ -22,8 +22,9 @@ export const productsMockHandler = [
       return res(ctx.json(PRODUCTS_MOCK_DATA));
     },
   ),
-  rest.get(getProductDetailPath(':productId', BASE_URL), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+  rest.get(getProductDetailPath(':productId', BASE_URL), (req, res, ctx) => {
+    const { productId } = req.params;
+    return res(ctx.json(PRODUCTS_MOCK_DATA.content.find((product) => product.id === Number(productId))));
   }),
   rest.get(getProductOptionsPath(':productId', BASE_URL), (_, res, ctx) => {
     return res(
