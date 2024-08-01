@@ -11,11 +11,16 @@ export const getCategoriesPath = () => `/api/categories`;
 const categoriesQueryKey = [getCategoriesPath()];
 
 export const getCategories = async () => {
-  const response = await fetchInstance.get<CategoryResponseData>(getCategoriesPath());
-  // const {categoryId, name, imageUrl, description} = response.data;
-  console.log(response.data);
+  try {
+    const response = await fetchInstance.get<CategoryResponseData>(getCategoriesPath());
 
-  return response.data;
+    // console.log('Response data:', response.data);
+
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching categories:', error);
+    throw error;
+  }
 };
 
 export const useGetCategories = () =>

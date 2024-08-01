@@ -1,8 +1,8 @@
 export type CategoryData = {
-  id: number;
+  categoryId: number;
   name: string;
   description: string;
-  color: string;
+  color?: string;
   imageUrl: string;
 };
 
