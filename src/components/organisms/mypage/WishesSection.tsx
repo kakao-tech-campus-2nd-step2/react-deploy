@@ -6,6 +6,7 @@ import ProductSkeletonGrid from '@components/molecules/skeleton/ProductSkeletonG
 import WishesContent from '@components/organisms/mypage/WishesContent';
 import useFetchProducts from '@hooks/useFetchProducts';
 import Button from '@components/atoms/button/Button';
+import ErrorBoundary from '@components/atoms/boundary/ErrorBoundary';
 import { generateRandomId } from '@/utils';
 import { WishData } from '@/dto';
 
@@ -35,22 +36,24 @@ function WishesSection() {
   return (
     <Container elementSize="full-width" maxWidth={MAX_CONTENT_WIDTH} flexDirection="column">
       <Text fontSize="25px" fontWeight="bold" paddingBottom="10px">관심 상품 목록</Text>
-      {data?.pages?.map((page, index) => {
-        const key = `${wishSectionId}-${index}`;
+      <ErrorBoundary>
+        {data?.pages?.map((page, index) => {
+          const key = `${wishSectionId}-${index}`;
 
-        return (
-          <WishesContent
-            wishes={page.content as WishData[]}
-            maxColumns={5}
-            minColumns={5}
-            key={key}
-            refetch={refetch}
-          />
-        );
-      })}
-      {isFetchingNextPage ? (
-        <ProductSkeletonGrid columnsDefault={5} itemCount={5} columnsSm={2} />
-      ) : null}
+          return (
+            <WishesContent
+              wishes={page.content as WishData[]}
+              maxColumns={5}
+              minColumns={5}
+              key={key}
+              refetch={refetch}
+            />
+          );
+        })}
+        {isFetchingNextPage ? (
+          <ProductSkeletonGrid columnsDefault={5} itemCount={5} columnsSm={2} />
+        ) : null}
+      </ErrorBoundary>
       {hasNextPage ? (
         <Container elementSize="full-width" padding="20px 0" flexDirection="column">
           <Button theme="kakao" elementSize="big" text="더 불러오기" onClick={handleLoadClick} />
