@@ -12,62 +12,43 @@ import { fetchInstance } from './../instance/index';
 type RequestParams = {
   categoryId: string;
   page?: string;
-  maxResults?: number;
 };
 
 type ProductsResponseData = {
-  products: ProductData[];
-  nextPageToken?: string;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
+  data: {
+    content: ProductData[];
+    total_page: number;
   };
 };
 
-type ProductsResponseRawData = {
-  content: ProductData[];
-  number: number;
-  totalElements: number;
-  size: number;
-  last: boolean;
-};
-
-export const getProductsPath = ({ categoryId, page, maxResults }: RequestParams) => {
+export const getProductsPath = ({ categoryId, page = '1' }: RequestParams) => {
   const params = new URLSearchParams();
 
   params.append('category', categoryId);
-  if (page) params.append('page', page);
-  if (maxResults) params.append('size', maxResults.toString());
+  params.append('page', page);
 
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
-  const data = response.data;
-
-  return {
-    products: data.content,
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
-    pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
-    },
-  };
+  const response = await fetchInstance.get<ProductsResponseData>(getProductsPath(params));
+  return response.data;
 };
 
-type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
+type Params = Pick<RequestParams, 'categoryId'> & { initPageToken?: string };
 export const useGetProducts = ({
   categoryId,
-  maxResults = 20,
   initPageToken,
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
+    queryKey: ['products', categoryId],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, page: pageParam, maxResults });
+      return getProducts({ categoryId, page: pageParam });
     },
     initialPageParam: initPageToken,
-    getNextPageParam: (lastPage) => lastPage.nextPageToken,
+    getNextPageParam: (lastPage, allPages) => {
+      const currentPage = allPages.length;
+      return currentPage < lastPage.data.total_page ? (currentPage + 1).toString() : undefined;
+    },
   });
 };
