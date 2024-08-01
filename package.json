@@ -92,5 +92,5 @@
       "^axios$": "axios/dist/node/axios.cjs"
     }
   },
-  "homepage": "https://tteokbokki-master.github.io/kakao-tech-campus-frontend-project"
+  "homepage": "https://tteokbokki-master.github.io/"
 }
