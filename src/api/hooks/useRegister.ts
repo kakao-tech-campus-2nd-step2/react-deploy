@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { BASE_URL } from '../instance';
-import { fetchInstance } from '../instance/index';
+import { BASE_URL, fetchInstance } from '../instance';
 
 interface RegisterRequest {
   email: string;
@@ -9,6 +8,7 @@ interface RegisterRequest {
 }
 
 interface RegisterResponse {
+  email: string;
   token: string;
 }
 
@@ -28,8 +28,6 @@ export const useRegister = () => {
       );
 
       if (response.status === 201) {
-        const result: RegisterResponse = response.data;
-        localStorage.setItem('token', result.token);
         return { success: true };
       } else {
         setRegisterError('회원가입 실패');

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { BASE_URL } from '../instance';
-import { fetchInstance } from '../instance/index';
+import { authSessionStorage } from '@/utils/storage';
+
+import { BASE_URL, fetchInstance } from '../instance';
 
 interface LoginRequest {
   email: string;
@@ -30,8 +31,8 @@ export const useLogin = () => {
 
       if (response.status === 200) {
         const result: LoginResponse = response.data;
-        localStorage.setItem('token', result.token);
-        return { success: true, email: result.email };
+        authSessionStorage.set({ email: result.email, token: result.token });
+        return { success: true };
       } else {
         setLoginError('로그인 실패');
         return { success: false };

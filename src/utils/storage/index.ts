@@ -22,12 +22,15 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   return { get, set };
 };
 
-export const authSessionStorage = initStorage('authToken', sessionStorage);
+export const authSessionStorage = initStorage('authInfo', sessionStorage);
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
 export const serverStorage = initStorage('selectedServer', localStorage);
 
 interface StorageKey {
-  authToken?: string;
+  authInfo?: {
+    email: string;
+    token: string;
+  };
   orderHistory?: OrderHistory;
   selectedServer?: keyof typeof BASE_URLS;
 }
