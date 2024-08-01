@@ -14,6 +14,7 @@ export interface OrderRequestBody {
   optionId: number;
   quantity: number;
   message: string;
+  point: number;
 }
 
 export interface CategoryProductsRequestQuery {
