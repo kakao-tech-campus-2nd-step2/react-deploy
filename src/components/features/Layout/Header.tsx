@@ -23,6 +23,14 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <ApiSelector>
+            <option value={1}>강지훈</option>
+            <option value={2}>김기웅</option>
+            <option value={3}>김민지</option>
+            <option value={4}>박상우</option>
+            <option value={5}>배민수</option>
+            <option value={6}>송민주</option>
+          </ApiSelector>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,7 +57,13 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+`;
 
 const LinkButton = styled.p`
   align-items: center;
@@ -57,4 +71,18 @@ const LinkButton = styled.p`
   color: #000;
   text-decoration: none;
   cursor: pointer;
+`;
+
+const ApiSelector = styled.select`
+  width: 200px;
+  height: 40px;
+  border: 2px solid #444;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #888;
+  }
 `;
