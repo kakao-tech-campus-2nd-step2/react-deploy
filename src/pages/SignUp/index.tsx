@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { useGetRegister } from '@/api/hooks/useGetRegister';
+import { usePostRegister } from '@/api/hooks/usePostRegister';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -12,16 +12,20 @@ import { breakpoints } from '@/styles/variants';
 export const SignUpPage = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const [queryParams] = useSearchParams();
-    const { register } = useGetRegister();
+    const { register } = usePostRegister();
 
     const handleConfirm = async () => {
         if (!id || !password) {
             alert('이메일과 비밀번호를 입력해주세요.');
             return;
+        } else if (!name) {
+            alert('이름을 입력해주세요.')
+            return
         }
 
-        const result = await register({ email: id, password });
+        const result = await register({ name, email: id, password });
 
         if (!result) {
             const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
@@ -35,6 +39,8 @@ export const SignUpPage = () => {
         <Wrapper>
             <Logo src={KAKAO_LOGO} alt="카카고 CI" />
             <FormWrapper>
+                <UnderlineTextField placeholder="이름" value={name} onChange={(e) => setName(e.target.value)} />
+                <Spacing />
                 <UnderlineTextField placeholder="이메일" value={id} onChange={(e) => setId(e.target.value)} />
                 <Spacing />
                 <UnderlineTextField
@@ -43,7 +49,6 @@ export const SignUpPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-
                 <Spacing
                     height={{
                         initial: 40,
