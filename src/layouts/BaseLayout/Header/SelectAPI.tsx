@@ -1,12 +1,19 @@
+import { useNavigate } from 'react-router-dom';
+
 import { Select } from '@chakra-ui/react';
 
-import { apiLocalStorage } from '@/utils/storage';
+import { ROUTER_PATH } from '@/routes/path';
+import { apiLocalStorage, authLocalStorage } from '@/utils/storage';
 
 export type Api = 'KDW' | 'YSO' | 'SHJ' | 'KG';
 
 export const SelectAPI = () => {
+  const navigate = useNavigate();
+
   const handleSelectChange = (api: Api) => {
     apiLocalStorage.set(api);
+    authLocalStorage.remove();
+    navigate(ROUTER_PATH.HOME, { replace: true });
     window.location.reload();
   };
 
