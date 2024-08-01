@@ -9,13 +9,16 @@ export const getProductOptionsPath = (productId: string) =>
 
 export const getProductOptions = async (params: ProductDetailRequestParams) => {
   const response = await fetchInstance.get<ProductOptionsResponseData>(
+    // getProductOptionsPath(params.productId.toString()),
     getProductOptionsPath(params.productId),
   );
+  console.log(response.data);
   return response.data;
 };
 
 export const useGetProductOptions = ({ productId }: ProductDetailRequestParams) => {
   return useSuspenseQuery({
+    // queryKey: [getProductOptionsPath(productId.toString())],
     queryKey: [getProductOptionsPath(productId)],
     queryFn: () => getProductOptions({ productId }),
   });
