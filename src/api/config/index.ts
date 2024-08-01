@@ -1,16 +1,27 @@
 import { AxiosError } from 'axios';
 
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
-import { authLocalStorage } from '@/utils/storage';
+import { Api } from '@/layouts/BaseLayout/Header/SelectAPI';
+import { apiLocalStorage, authLocalStorage } from '@/utils/storage';
 
 import { initInstance } from './instance';
 
+const BASE_URL = import.meta.env.VITE_API_KDW;
+
+const config = {
+  KDW: import.meta.env.VITE_API_KDW,
+  YSO: import.meta.env.VITE_API_YSO,
+  SHJ: import.meta.env.VITE_API_SHJ,
+  KG: import.meta.env.VITE_API_KG,
+};
+const currentAPI: Api = apiLocalStorage.get();
+
 export const BACKEND_API = initInstance({
-  baseURL: import.meta.env.VITE_API_DAWOON,
+  baseURL: currentAPI ? config[currentAPI] : BASE_URL,
 });
 
 export const AUTHROIZATION_API = initInstance({
-  baseURL: import.meta.env.VITE_API_DAWOON,
+  baseURL: currentAPI ? config[currentAPI] : BASE_URL,
   withCredentials: true,
 });
 

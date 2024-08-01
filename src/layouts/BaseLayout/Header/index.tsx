@@ -3,8 +3,10 @@ import { colors } from '@/styles/variants/theme';
 
 import { Content } from '@/components/Content';
 import { Logo } from '@/components/Logo';
+import { Container } from '@/components/ui/Layout/Container';
 
 import { AuthButton } from './AuthButton';
+import { SelectAPI } from './SelectAPI';
 import { headerStyle } from './styles';
 
 export const Header = () => {
@@ -17,7 +19,10 @@ export const Header = () => {
       alignItems="center"
     >
       <Logo src={logo} alt="카카오 선물하기 로고" width="86" />
-      <AuthButton />
+      <Container justifyContent="flex-end" alignItems="center" gap="1rem">
+        <SelectAPI />
+        <AuthButton />
+      </Container>
     </Content>
   );
 };
