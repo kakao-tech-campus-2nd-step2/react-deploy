@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_URL } from '@/api/instance';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -11,37 +11,41 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    if (!id || !password) {
+    if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/members/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, password }),
+      // 기존: fetch 사용 → 수정: 만들어진 instance 활용
+      const response = await fetchInstance.post(`${BASE_URL}/api/members/register`, {
+        email: email,
+        password: password
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || '회원가입에 실패했습니다.');
-      }
+      // API 명세 확정 나면 수정 필요!
+      // 회원가입 성공 (200) : 반환 값 세션에 저장 후 메인 페이지로 이동
+      if (response.status === 200) {
+        const data = await response.data;
+        authSessionStorage.set({ email: data.email, token: data.token });
+        window.location.replace(`${window.location.origin}/`);        
+      } 
 
-      const data = await response.json();
-      authSessionStorage.set(data.id);
-      window.location.replace('/');
+      // 회원가입 실패 (400) : 메시지 반환
+      else if (response.status === 400) {
+        const data = await response.data;
+        console.error(data.message);
+        alert('회원가입에 실패했습니다.');
+      }
     } 
-    
     catch (error) {
-      alert(error);
+      console.error(error);
+      alert('회원가입 중 오류가 발생했습니다.');
     }
   };
 
@@ -51,8 +55,8 @@ export const SignUpPage = () => {
       <FormWrapper>
         <UnderlineTextField
           placeholder="사용할 아이디를 입력해주세요."
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Spacing />
         <UnderlineTextField
