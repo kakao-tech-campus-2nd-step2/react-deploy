@@ -8,7 +8,9 @@
     "build": "craco build",
     "test": "craco test",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -89,5 +91,6 @@
     "moduleNameMapper": {
       "^axios$": "axios/dist/node/axios.cjs"
     }
-  }
+  },
+  "homepage": "https://tteokbokki-master.github.io/kakao-tech-campus-frontend-project"
 }
