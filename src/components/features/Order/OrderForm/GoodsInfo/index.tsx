@@ -21,7 +21,7 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
       <GoodsWrapper>
         <GoodsInfoWrapper>
           <GoodsInfoImage>
-            <Image src={detail.imageUrl} width={86} ratio="square" />
+            <Image src={detail.image_url} width={86} ratio="square" />
           </GoodsInfoImage>
           <GoodsInfoTextWrapper>
             <GoodsInfoTextTitle>
