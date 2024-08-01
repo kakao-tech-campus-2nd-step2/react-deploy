@@ -4,12 +4,11 @@ import { BASE_URL } from '../instance';
 import { PRODUCTS_MOCK_DATA } from './products.mock';
 import { deleteWishlistPath, getWishlistPath, postWishlistPath, type WishResponseData } from './useGetWishlist';
 
-// TODO: 서버 로그인 방식 확인 후 request body에 userId 삭제 필요
-
 export const wishlistMockHandler = [
     rest.post(postWishlistPath(BASE_URL), async (req, res, ctx) => {
-        const { productId, userId } = await req.json();
-        if(!productId || !userId) {
+        const { productId } = await req.json();
+        const authToken = req.headers.get('Authorization')?.split(' ')[1];
+        if(!productId || !authToken) {
             return res(ctx.status(400));
         }
         const product: WishResponseData["product"] | undefined= PRODUCTS_MOCK_DATA.content.find((_product) => _product.id === productId);
@@ -20,7 +19,7 @@ export const wishlistMockHandler = [
             id: wishlistMockData.length + 1,
             product,
             createdDate: new Date(Date.now()), 
-            userId
+            user: authToken
         });
 
         return res(ctx.status(201));
@@ -38,12 +37,12 @@ export const wishlistMockHandler = [
     }),
     rest.get(getWishlistPath({}, BASE_URL), (req, res, ctx) => {
         const url = new URL(req.url);
-        const userId = url.searchParams.get('userId');
+        const authToken = req.headers.get('Authorization')?.split(' ')[1];
         const page = url.searchParams.get('page');
         const size = url.searchParams.get('size');
         const sort = url.searchParams.get('sort');
 
-        const result = wishlistMockData.filter((wish) => wish.userId === userId)
+        const result = wishlistMockData.filter((wish) => wish.user === authToken)
         if(page && size)
             result.slice(Number(page) * Number(size), Number(page) * Number(size) + Number(size));
         if(sort){
@@ -63,9 +62,9 @@ export const wishlistMockHandler = [
 ];
 
 
-const wishlistMockData: WishResponseData[] = [{
+const wishlistMockData: (WishResponseData & {user: string})[] = [{
     id: 1,
     product: PRODUCTS_MOCK_DATA.content[0],
     createdDate: new Date('2021-09-01'), 
-    userId: 'testUser',
+    user: 'testUser@test.comtoken',
 }]

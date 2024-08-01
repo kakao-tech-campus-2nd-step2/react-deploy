@@ -10,29 +10,26 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAPIBaseURL } from '@/provider/APIBaseURL';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const baseURL = useAPIBaseURL()[0];
 
   const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+    if (!email || !password) {
+      alert('이메일와 비밀번호를 입력해주세요.');
       return;
     }
 
-    login(id, password, baseURL).then((result) => {
+    login(email, password, baseURL).then((result) => {
       if (result) {
-        authSessionStorage.set(id);
-
         const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
         return window.location.replace(redirectUrl);
       } else {
-        alert('아이디와 비밀번호를 확인해주세요.');
+        alert('이메일와 비밀번호를 확인해주세요.');
         return;
       }
     });
@@ -42,7 +39,11 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"

@@ -2,6 +2,8 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import { authSessionStorage } from '@/utils/storage';
+
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
@@ -9,6 +11,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authSessionStorage.get()?.token ?? ''}`,
       ...config.headers,
     },
   });

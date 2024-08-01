@@ -1,3 +1,4 @@
+import type { AuthInfo } from '@/provider/Auth';
 import type { OrderHistory } from '@/types';
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage, defaultValue?: StorageKey[T]) => {
@@ -31,7 +32,7 @@ export const orderHistorySessionStorage = initStorage('orderHistory', sessionSto
 export const apiBaseURLSessionStorage = initStorage('apiBaseURL', sessionStorage, 'https://api.example.com');
 
 interface StorageKey {
-  authToken?: string;
+  authToken?: AuthInfo;
   orderHistory?: OrderHistory;
   apiBaseURL?: string;
 }

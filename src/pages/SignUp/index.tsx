@@ -22,7 +22,7 @@ export default () => {
   const baseURL = useAPIBaseURL()[0];
 
   const onSubmit = (data: User) => {
-    signUp(data.id, data.password, baseURL).then((result) => {
+    signUp(data.email, data.password, baseURL).then((result) => {
       if (result) {
         alert('회원가입이 완료되었습니다.');
         navigate(getDynamicPath.login('/'), { replace: true });
@@ -36,7 +36,11 @@ export default () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <Input placeholder="이름" {...register('id', { required: true })} disabled={isSubmitting} />
+        <Input
+          placeholder="이메일"
+          {...register('email', { required: true })}
+          disabled={isSubmitting}
+        />
         <Spacing />
         <Input
           type="password"

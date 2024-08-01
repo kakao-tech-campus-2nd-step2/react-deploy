@@ -6,29 +6,28 @@ import { getUserPath, getUsersPath } from './useGetUser';
 export const usersMockHandler = [
   rest.post(getUsersPath(BASE_URL), async (req, res, ctx) => {
     try{
-        const { id, password } = await req.json();
-        if (!id || !password) {
+        const { email, password } = await req.json();
+        if (!email || !password) {
             return await res(ctx.status(400));
         }
-        usersMockData.push({ id, password });
+        usersMockData.push({ email, password, token: email+'token' });
         return await res(ctx.status(201));
     } catch (error) {
         return res(ctx.status(400));
     }
   }),
-  rest.post(getUserPath(':id', BASE_URL), async (req, res, ctx) => {
+  rest.post(getUserPath(BASE_URL), async (req, res, ctx) => {
     try {
-    const { id } = req.params;
-      const { password } = await req.json();
-      if (!id || !password) {
+      const { email, password } = await req.json();
+      if (!email || !password) {
         return await res(ctx.status(400));
       }
 
-      const result = usersMockData.find((user) => user.id === id);
+      const result = usersMockData.find((user) => user.email === email);
 
       if (result && result.password === password) {
         return await res(
-          ctx.status(200)
+          ctx.status(200), ctx.set('token', result.token)
         );
       } else {
         return await res(ctx.status(404));
@@ -40,6 +39,7 @@ export const usersMockHandler = [
 ];
 
 const usersMockData = [{
-  id: 'testUser',
+  email: 'testUser@test.com',
   password: '0',
+  token: 'testUser@test.comtoken',
 }];
