@@ -1,6 +1,24 @@
 import { QueryClient } from '@tanstack/react-query';
-import type { AxiosInstance, AxiosRequestConfig } from 'axios';
-import axios from 'axios';
+import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
+
+import { serverStorage } from '@/utils/storage';
+
+export const BASE_URLS = {
+  mock: 'https://mock.example.com',
+  강명덕: 'https://api.example.com',
+  서지우: 'http://43.203.40.120:8080',
+  안재영: 'https://api.example.com',
+  유보민: 'http://52.78.56.132:8080',
+} as const;
+
+type ServerKey = keyof typeof BASE_URLS;
+
+const getBaseUrl = (): string => {
+  const selectedServer = (serverStorage.get() as ServerKey) || 'mock';
+  return BASE_URLS[selectedServer];
+};
+
+export const BASE_URL = getBaseUrl();
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
@@ -16,11 +34,15 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
-export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+export let fetchInstance = initInstance({
+  baseURL: getBaseUrl(),
 });
+
+export const resetFetchInstance = () => {
+  fetchInstance = initInstance({
+    baseURL: getBaseUrl(),
+  });
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {

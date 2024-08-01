@@ -1,16 +1,23 @@
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { BASE_URLS } from '@/api/instance';
 import { Container } from '@/components/common/layouts/Container';
+import { useServer } from '@/hooks/useServer';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const { server, changeServer } = useServer();
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
+  };
+
+  const handleChangeServer = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    changeServer(e.target.value as keyof typeof BASE_URLS);
   };
 
   return (
@@ -23,6 +30,13 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <select value={server} onChange={handleChangeServer}>
+            {Object.keys(BASE_URLS).map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,7 +63,11 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+
+const RightWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const LinkButton = styled.p`
   align-items: center;
@@ -57,4 +75,5 @@ const LinkButton = styled.p`
   color: #000;
   text-decoration: none;
   cursor: pointer;
+  margin-left: 16px;
 `;

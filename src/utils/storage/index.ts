@@ -1,3 +1,4 @@
+import type { BASE_URLS } from '@/api/instance';
 import type { OrderHistory } from '@/types';
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
@@ -23,8 +24,10 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 
 export const authSessionStorage = initStorage('authToken', sessionStorage);
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
+export const serverStorage = initStorage('selectedServer', localStorage);
 
 interface StorageKey {
   authToken?: string;
   orderHistory?: OrderHistory;
+  selectedServer?: keyof typeof BASE_URLS;
 }
