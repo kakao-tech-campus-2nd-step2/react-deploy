@@ -5,6 +5,7 @@ import { CenteredContainer, Container } from '@components/common';
 import { Link } from 'react-router-dom';
 import { ROUTE_PATH } from '@routes/path';
 import AuthLinks from './AuthLinks';
+import APISelector from './APISelector';
 
 const LOGO_ALT = 'home page logo';
 
@@ -16,7 +17,10 @@ export default function Header() {
           <Link to={ROUTE_PATH.HOME}>
             <Logo src={logo} alt={LOGO_ALT} />
           </Link>
-          <AuthLinks />
+          <Nav>
+            <APISelector />
+            <AuthLinks />
+          </Nav>
         </Container>
       </CenteredContainer>
     </HeaderContainer>
@@ -34,4 +38,8 @@ const HeaderContainer = styled.header`
 
 const Logo = styled.img`
   width: 60px;
+`;
+
+const Nav = styled.div`
+  display: flex;
 `;
