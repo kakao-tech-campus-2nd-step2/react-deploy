@@ -69,7 +69,9 @@ http://katecam-ppochaco.s3-website.ap-northeast-2.amazonaws.com/
 #### 주문하기 페이지
 
 - [x] 주문하기 form 수정하기(포인트 추가)
-- [ ] 주문 시 현재 보유한 포인트를 알려주기
+- 주문 시 현재 보유한 포인트를 알려주기
+  - [x] UI 만들기
+  - [ ] API 연결하기
 
 #### 마이 페이지
 

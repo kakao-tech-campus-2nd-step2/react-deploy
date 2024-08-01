@@ -15,6 +15,7 @@ export const OrderSchema = z
     isCashChecked: z.boolean(),
     cashReceiptType: z.enum(['개인소득공제', '사업자증빙용']).optional(),
     cashReceiptNumber: z.string(),
+    point: z.string(),
   })
   .superRefine((data, ctx) => {
     if (data.isCashChecked) {

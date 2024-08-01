@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout/Container';
 
 import { CashCheckFields } from './CashCheckFields';
+import { PointField } from './PointField';
 import { containerStyle } from './styles';
 
 type PaymentSectionProps = {
@@ -27,6 +28,8 @@ export const PaymentSection = ({
       <Text fontSize="lg" as="b">
         결제 정보
       </Text>
+      <Divider />
+      <PointField />
       <Divider />
       <CashCheckFields />
       <Divider />
