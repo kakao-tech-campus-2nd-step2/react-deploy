@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import { Divider, useDisclosure } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,8 +22,11 @@ type OrderFormProps = {
 };
 
 export const OrderForm = ({ orderHistory }: OrderFormProps) => {
+  const navigate = useNavigate();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [alertMessage, setAlertMessage] = useState('');
+
   const { mutate, status } = useMutation({
     mutationFn: order,
     onSuccess: () => {
@@ -65,7 +69,12 @@ export const OrderForm = ({ orderHistory }: OrderFormProps) => {
 
   const handleCloseAlert = () => {
     onClose();
+    const isSuccessMessage = alertMessage === '주문이 완료되었습니다.';
     setAlertMessage('');
+
+    if (isSuccessMessage) {
+      navigate(-2);
+    }
   };
 
   return (
