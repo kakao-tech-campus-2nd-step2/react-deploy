@@ -10,13 +10,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export const CountOptionItem = ({
-  name,
-  minValues = 1,
-  maxValues = 100,
-  value,
-  onChange,
-}: Props) => {
+export const CountOptionItem = ({ minValues = 1, maxValues = 100, value, onChange }: Props) => {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1,
     min: minValues,
@@ -33,7 +27,6 @@ export const CountOptionItem = ({
 
   return (
     <Wrapper>
-      <Title>{name}</Title>
       <InputWrapper>
         <IconButton {...decrement} aria-label="수량 1개 감소" icon={<MinusIcon />} />
         <Input {...input} />
@@ -48,14 +41,6 @@ const Wrapper = styled.div`
   padding: 12px 14px 16px;
   border: 1px solid #ededed;
   border-radius: 2px;
-`;
-
-const Title = styled.p`
-  font-weight: 700;
-  line-height: 22px;
-  color: #111;
-  word-wrap: break-word;
-  word-break: break-all;
 `;
 
 const InputWrapper = styled.div`
