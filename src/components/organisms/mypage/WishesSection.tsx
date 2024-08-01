@@ -23,7 +23,7 @@ function WishesSection() {
     refetch,
   } = useFetchProducts({
     productType: 'wished',
-    sort: 'name, asc',
+    sort: 'name,asc',
     itemsPerPage: MAX_RESULTS_PER_PAGE,
   });
 
