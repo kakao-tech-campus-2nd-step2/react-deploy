@@ -1,7 +1,7 @@
 const BASE_API_PATH = '/api';
 
 const endpoints = {
-  CATEGORY: '/category',
+  CATEGORY: '/categories',
   CATEGORY_PRODUCTS: '/products',
   PRODUCT_DETAILS: '/products/:productId',
   PRODUCT_OPTIONS: '/products/:productId/options',

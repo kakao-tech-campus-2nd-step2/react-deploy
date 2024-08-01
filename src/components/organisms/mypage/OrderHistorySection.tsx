@@ -6,6 +6,7 @@ import ProductSkeletonGrid from '@components/molecules/skeleton/ProductSkeletonG
 import useFetchProducts from '@hooks/useFetchProducts';
 import Button from '@components/atoms/button/Button';
 import ProductDisplaySection from '@components/organisms/product/ProductDisplaySection';
+import ErrorBoundary from '@components/atoms/boundary/ErrorBoundary';
 import { generateRandomId } from '@/utils';
 import { ProductData } from '@/dto';
 
@@ -21,7 +22,7 @@ function OrderHistorySection() {
     isFetchingNextPage,
   } = useFetchProducts({
     productType: 'ordered',
-    sort: 'name, asc',
+    sort: 'name,asc',
     itemsPerPage: MAX_RESULTS_PER_PAGE,
   });
 
@@ -34,18 +35,20 @@ function OrderHistorySection() {
   return (
     <Container elementSize="full-width" maxWidth={MAX_CONTENT_WIDTH} flexDirection="column">
       <Text fontSize="25px" fontWeight="bold" paddingBottom="10px">주문 내역</Text>
-      {data?.pages?.map((page, index) => {
-        const key = `${orderSectionId}-${index}`;
+      <ErrorBoundary>
+        {data?.pages?.map((page, index) => {
+          const key = `${orderSectionId}-${index}`;
 
-        return (
-          <ProductDisplaySection
-            products={page.content as ProductData[]}
-            maxColumns={5}
-            minColumns={2}
-            key={key}
-          />
-        );
-      })}
+          return (
+            <ProductDisplaySection
+              products={page.content as ProductData[]}
+              maxColumns={5}
+              minColumns={2}
+              key={key}
+            />
+          );
+        })}
+      </ErrorBoundary>
       {isFetchingNextPage ? (
         <ProductSkeletonGrid columnsDefault={5} itemCount={5} columnsSm={2} />
       ) : null}
