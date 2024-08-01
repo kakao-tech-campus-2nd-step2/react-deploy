@@ -26,16 +26,16 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     let newUrl = BASE_URL;
     switch (value) {
       case '1':
-        newUrl = `${BASE_URL}/lee`;
+        newUrl = process.env.REACT_APP_API_LEE;
         break;
       case '2':
-        newUrl = `${BASE_URL}/jang`;
+        newUrl = process.env.REACT_APP_API_JANG;
         break;
       case '3':
-        newUrl = `${BASE_URL}/jung`;
+        newUrl = process.env.REACT_APP_API_JUNG;
         break;
       case '4':
-        newUrl = `${BASE_URL}/tak`;
+        newUrl = process.env.REACT_APP_API_TAK;
         break;
       default:
         newUrl = BASE_URL;
