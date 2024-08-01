@@ -10,6 +10,7 @@ import { OrderHistory } from '@/types/orderType';
 
 import { OneTextContainer } from '@/components/OneTextContainer';
 import { Button } from '@/components/ui/Button';
+import { Alert } from '@/components/ui/Dialog/Alert';
 import { Confirm } from '@/components/ui/Dialog/Confirm';
 import { Container } from '@/components/ui/Layout/Container';
 
@@ -29,7 +30,16 @@ export const ProductForm = ({ productId, price }: ProductFormProps) => {
 
   const navigate = useNavigate();
   const { authInfo } = useAuth();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isConfirmOpen,
+    onOpen: confirmOpen,
+    onClose: confirmClose,
+  } = useDisclosure();
+  const {
+    isOpen: isAlertOpen,
+    onOpen: alertOpen,
+    onClose: alertClose,
+  } = useDisclosure();
 
   if (error) {
     return <OneTextContainer>{error.message}</OneTextContainer>;
@@ -37,7 +47,12 @@ export const ProductForm = ({ productId, price }: ProductFormProps) => {
 
   const onClick = () => {
     if (!authInfo) {
-      onOpen();
+      confirmOpen();
+      return;
+    }
+
+    if (!totalQuantity) {
+      alertOpen();
       return;
     }
 
@@ -74,9 +89,14 @@ export const ProductForm = ({ productId, price }: ProductFormProps) => {
       <Confirm
         message={`로그인이 필요한 메뉴입니다.
             로그인 페이지로 이동하시겠습니까?`}
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isConfirmOpen}
+        onClose={confirmClose}
         onConfirm={() => navigate(ROUTER_PATH.LOGIN)}
+      />
+      <Alert
+        message="상품을 추가해주세요."
+        isOpen={isAlertOpen}
+        onClose={alertClose}
       />
     </Container>
   );
