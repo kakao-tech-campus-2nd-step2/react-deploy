@@ -1,14 +1,14 @@
 // src/components/Header.tsx
-import { Select } from '@chakra-ui/react';
-import styled from '@emotion/styled';
-import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Select } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { URLS } from '@/api/instance';
-import { Container } from '@/components/common/layouts/Container';
-import { useBaseUrl } from '@/provider/ApiSelection';
-import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
+import { URLS } from "@/api/instance";
+import { Container } from "@/components/common/layouts/Container";
+import { useBaseUrl } from "@/provider/ApiSelection";
+import { useAuth } from "@/provider/Auth";
+import { getDynamicPath, RouterPath } from "@/routes/path";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -29,7 +29,11 @@ export const Header = () => {
 
   return (
     <Wrapper>
-      <Container flexDirection="row" alignItems="center" justifyContent="space-between">
+      <Container
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
         <Link to={RouterPath.home}>
           <Logo
             src="https://gift-s.kakaocdn.net/dn/gift/images/m640/pc_gift_logo.png"
@@ -38,7 +42,11 @@ export const Header = () => {
         </Link>
 
         <RightWrapper>
-          <ApiSelect placeholder="백엔드 서버 선택" onChange={handleSelectChange}>
+          <ApiSelect
+            placeholder="백엔드 서버 선택"
+            onChange={handleSelectChange}
+            defaultValue={URLS[0].name}
+          >
             {URLS.map((info) => (
               <option key={info.id} value={info.url}>
                 {info.name}
@@ -46,7 +54,9 @@ export const Header = () => {
             ))}
           </ApiSelect>
           {authInfo ? (
-            <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
+            <LinkButton onClick={() => navigate(RouterPath.myAccount)}>
+              내 계정
+            </LinkButton>
           ) : (
             <LinkButton onClick={handleLogin}>로그인</LinkButton>
           )}
@@ -56,7 +66,7 @@ export const Header = () => {
   );
 };
 
-export const HEADER_HEIGHT = '54px';
+export const HEADER_HEIGHT = "54px";
 
 export const Wrapper = styled.header`
   position: fixed;
