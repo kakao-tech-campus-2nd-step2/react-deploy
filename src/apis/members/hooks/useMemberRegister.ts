@@ -1,4 +1,4 @@
-import { initInstance } from '@apis/instance';
+import initInstance from '@apis/instance';
 import { AxiosError } from 'axios';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { UserInfoData } from '@internalTypes/dataTypes';

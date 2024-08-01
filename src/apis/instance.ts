@@ -12,7 +12,7 @@ const statusMessages: { [key: number]: string } = {
   500: ERROR.SERVER_ERROR,
 };
 
-export const initInstance = (baseURL?: string): AxiosInstance => {
+const initInstance = (baseURL?: string): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
     baseURL,
@@ -37,3 +37,5 @@ export const initInstance = (baseURL?: string): AxiosInstance => {
 };
 
 export const queryClient = new QueryClient();
+
+export default initInstance;
