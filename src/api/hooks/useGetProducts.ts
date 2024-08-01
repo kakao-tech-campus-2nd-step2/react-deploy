@@ -3,11 +3,10 @@ import {
   useInfiniteQuery,
   type UseInfiniteQueryResult,
 } from '@tanstack/react-query';
+import axios from 'axios';
 
+import { useBaseURL } from '@/provider/Auth/BaseUrlContext';
 import type { ProductData } from '@/types';
-
-import { BASE_URL } from '../instance';
-import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
   categoryId: string;
@@ -32,7 +31,10 @@ type ProductsResponseRawData = {
   last: boolean;
 };
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+const getProductsPath = (
+  baseURL: string, // baseURL을 매개변수로 받음
+  { categoryId, pageToken, maxResults }: RequestParams
+) => {
   const params = new URLSearchParams();
 
   params.append('categoryId', categoryId);
@@ -40,11 +42,11 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `${baseURL}/api/products?${params.toString()}`;
 };
 
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+const getProducts = async (baseURL: string, params: RequestParams): Promise<ProductsResponseData> => {
+  const response = await axios.get<ProductsResponseRawData>(getProductsPath(baseURL, params));
   const data = response.data;
 
   return {
@@ -63,10 +65,12 @@ export const useGetProducts = ({
   maxResults = 20,
   initPageToken,
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
+  const { baseURL } = useBaseURL();
+
   return useInfiniteQuery({
     queryKey: ['products', categoryId, maxResults, initPageToken],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+      return getProducts(baseURL, { categoryId, pageToken: pageParam, maxResults });
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,
