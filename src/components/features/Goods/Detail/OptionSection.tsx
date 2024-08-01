@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
-import axios from 'axios';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { type InterestItem } from '@/types';
-import { orderHistorySessionStorage } from '@/utils/storage';
+import { authSessionStorage, orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
@@ -29,7 +29,7 @@ export const OptionSection = ({ productId }: Props) => {
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다. 로그인 페이지로 이동하시겠습니까?',
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
       );
 
       if (!isConfirm) return;
@@ -50,8 +50,8 @@ export const OptionSection = ({ productId }: Props) => {
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
       );
 
-    if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      if (!isConfirm) return;
+        return navigate(getDynamicPath.login());
     };
 
     try {
@@ -65,24 +65,31 @@ export const OptionSection = ({ productId }: Props) => {
         }
       };
 
-      const response = await axios.post('/api/wishes', interestItem, {
+      const response = await fetchInstance.post(`${BASE_URL}/api/wishes`, interestItem, {
         headers: {
-          Authorization: `Bearer ${authInfo.token}`,
+          Authorization: `${authSessionStorage.get()?.token}`,
           'Content-Type': 'application/json'
         }
       });
 
+      /* API 명세 확정나면 수정 필요한 부분들  */
+
+      // 관심 상품 등록 성공 (201)
       if (response.status === 201) {
-        alert('관심 상품으로 등록되었습니다.');
+        alert('관심 상품으로 등록 성공하였습니다.');
+      }
+
+      // 관심 상품 등록 실패 (400)
+      else if (response.status === 400) {
+        alert('관심 상품으로 등록 실패하였습니다.');
+      }
+      // 상품 찾기 실패 (404)
+      else if (response.status === 404) {
+        alert('상품을 찾을 수 없습니다.');  
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          alert(error.response.data.message);
-        } else {
-          alert('알 수 없는 오류가 발생했습니다.');
-        }
-      }
+        console.error(error);
+        alert('관심 상품 등록 중 오류가 발생했습니다.');
     }
   };
 
