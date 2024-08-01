@@ -23,7 +23,7 @@ export default () => {
     signUp(data.id, data.password).then((result) => {
       if (result) {
         alert('회원가입이 완료되었습니다.');
-        navigate(getDynamicPath.login(), { replace: true });
+        navigate(getDynamicPath.login('/'), { replace: true });
       } else {
         alert('회원가입에 실패했습니다.');
       }
