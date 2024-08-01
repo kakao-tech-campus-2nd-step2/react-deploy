@@ -6,10 +6,10 @@ import { authSessionStorage, serverTypeSessionStorage } from '@/utils/storage';
 
 export const BASE_URL_LIST = {
   mock: 'https://api.example.com/',
-  안재영: 'https://AN.example.com',
-  유보민: 'https://U.example.com',
-  서지우: 'https://S.example.com',
   강명덕: 'http://43.203.210.66:8080',
+  유보민: 'http://52.78.56.132:8080',
+  안재영: 'https://AN.example.com',
+  서지우: 'https://S.example.com',
 } as const;
 
 export type BaseURL = keyof typeof BASE_URL_LIST;
@@ -46,10 +46,16 @@ export const fetchWithToken = initInstance({
   },
 });
 
-fetchWithToken.interceptors.response.use(function (error) {
-  alert(JSON.stringify(error));
-  return Promise.reject(error);
-});
+fetchWithToken.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    const errorMessage = `서버 에러 : ${error.response.status}`;
+    alert(JSON.stringify(errorMessage));
+    return Promise.reject(error);
+  },
+);
 
 export const queryClient = new QueryClient({
   defaultOptions: {
