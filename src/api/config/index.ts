@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
-import { Api } from '@/layouts/BaseLayout/Header/SelectAPI';
 import { apiLocalStorage, authLocalStorage } from '@/utils/storage';
 
 import { initInstance } from './instance';
@@ -14,7 +13,7 @@ const config = {
   SHJ: import.meta.env.VITE_API_SHJ,
   KG: import.meta.env.VITE_API_KG,
 };
-const currentAPI: Api = apiLocalStorage.get();
+const currentAPI = apiLocalStorage.get();
 
 export const BACKEND_API = initInstance({
   baseURL: currentAPI ? config[currentAPI] : BASE_URL,

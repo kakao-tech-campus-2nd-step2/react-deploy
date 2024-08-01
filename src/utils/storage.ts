@@ -1,4 +1,4 @@
-import { APIName } from '@/layouts/BaseLayout/Header/SelectAPI';
+import { Api } from '@/layouts/BaseLayout/Header/SelectAPI';
 import { AuthInfo } from '@/provider/auth/AuthContext';
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
@@ -28,5 +28,5 @@ export const apiLocalStorage = initStorage('apiName', localStorage);
 
 interface StorageKey {
   authInfo?: AuthInfo;
-  apiName?: APIName;
+  apiName?: Api;
 }
