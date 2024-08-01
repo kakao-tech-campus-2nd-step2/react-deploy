@@ -1,5 +1,21 @@
 import { rest } from 'msw';
 
+interface WishlistItem {
+  id: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
+}
+
+const getPagedData = (page: number, size: number) => {
+  const start = page * size;
+  const end = start + size;
+  return WISHLIST_MOCK_DATA.content.slice(start, end);
+};
+
 export const wishlistMockHandler = [
   rest.get('/api/wishes', async (req, res, ctx) => {
     const token = req.headers.get('Authorization');
@@ -8,7 +24,44 @@ export const wishlistMockHandler = [
       return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
 
-    return res(ctx.status(200), ctx.json(WISHLIST_MOCK_DATA));
+    const page = parseInt(req.url.searchParams.get('page') || '0', 10);
+    const size = parseInt(req.url.searchParams.get('size') || '10', 10);
+
+    const pagedContent = getPagedData(page, size);
+    const totalElements = WISHLIST_MOCK_DATA.content.length;
+    const totalPages = Math.ceil(totalElements / size);
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        content: pagedContent.map((item) => ({
+          id: item.id,
+          name: item.product.name,
+          price: item.product.price,
+          imageUrl: item.product.imageUrl,
+        })),
+        pageable: {
+          sort: {
+            sorted: true,
+            unsorted: false,
+            empty: false,
+          },
+          pageNumber: page,
+          pageSize: size,
+          offset: page * size,
+          unpaged: false,
+          paged: true,
+        },
+        totalPages,
+        totalElements,
+        last: page + 1 === totalPages,
+        number: page,
+        size: size,
+        numberOfElements: pagedContent.length,
+        first: page === 0,
+        empty: pagedContent.length === 0,
+      })
+    );
   }),
   rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
     const { wishId } = req.params;
@@ -21,7 +74,31 @@ export const wishlistMockHandler = [
   }),
 ];
 
-const WISHLIST_MOCK_DATA = {
+interface WishlistMockData {
+  content: WishlistItem[];
+  pageable: {
+    sort: {
+      sorted: boolean;
+      unsorted: boolean;
+      empty: boolean;
+    };
+    pageNumber: number;
+    pageSize: number;
+    offset: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+}
+
+const WISHLIST_MOCK_DATA: WishlistMockData = {
   content: [
     {
       id: 1,
