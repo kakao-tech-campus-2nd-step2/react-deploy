@@ -36,7 +36,7 @@ export const LoginPage = () => {
           emailSessionStorage.set(email); // 세션에 이메일도 저장
 
           const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
-          navigate(redirectUrl);
+          window.location.replace(redirectUrl); // 새로고침하여 세션 스토리지 값 반영
         },
         onError: (error) => {
           console.error('failed to login:', error);
