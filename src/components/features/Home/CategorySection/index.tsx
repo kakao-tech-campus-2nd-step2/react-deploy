@@ -10,10 +10,10 @@ import { breakpoints } from '@/styles/variants';
 import { CategoryItem } from './CategoryItem';
 
 export const CategorySection = () => {
-  const { data, isLoading, isError } = useGetCategories();
+  const { categories, loading, error } = useGetCategories();
 
-  if (isLoading || isError) return null;
-  if (!data) return null;
+  if (loading || error) return null;
+  if (!categories) return null;
 
   return (
     <Wrapper>
@@ -24,11 +24,11 @@ export const CategorySection = () => {
             md: 6,
           }}
         >
-          {data.map((category) => (
+          {categories.length >= 1 ? categories.map((category) => (
             <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
               <CategoryItem image={category.imageUrl} label={category.name} />
             </Link>
-          ))}
+          )) : ''}
         </Grid>
       </Container>
     </Wrapper>
