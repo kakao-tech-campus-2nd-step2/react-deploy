@@ -1,8 +1,8 @@
 import { Box, Button, Heading, List, ListItem, Text } from '@chakra-ui/react';
-// import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useGetWishlist } from '@/api/hooks/useGetWishlist';
+import { BASE_URL } from '@/api/instance';
 import { VisibilityLoader } from '@/components/common/VisibilityLoader';
 import { useAuth } from '@/provider/Auth';
 
@@ -16,7 +16,6 @@ type WishlistItem = {
 export const Wishlist = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist({ maxResults: 10 });
   const authInfo = useAuth();
-  // const queryClient = useQueryClient(); 
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
   useEffect(() => {
@@ -27,9 +26,8 @@ export const Wishlist = () => {
   }, [data]);
 
   const handleDelete = async (wishId: number) => {
-    
     if (authInfo?.token) {
-      const response = await fetch(`/api/wishes/${wishId}`, {
+      const response = await fetch(`${BASE_URL}/api/wishes/${wishId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${authInfo.token}`,

@@ -120,6 +120,96 @@ const WISHLIST_MOCK_DATA: WishlistMockData = {
           'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
       },
     },
+    {
+      id: 3,
+      product: {
+        id: 3,
+        name: 'Product C',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 4,
+      product: {
+        id: 4,
+        name: 'Product D',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 5,
+      product: {
+        id: 5,
+        name: 'Product E',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 6,
+      product: {
+        id: 6,
+        name: 'Product F',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 7,
+      product: {
+        id: 7,
+        name: 'Product G',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 8,
+      product: {
+        id: 8,
+        name: 'Product H',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 9,
+      product: {
+        id: 9,
+        name: 'Product I',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 10,
+      product: {
+        id: 10,
+        name: 'Product J',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
+    {
+      id: 11,
+      product: {
+        id: 11,
+        name: 'Product K',
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    },
   ],
   pageable: {
     sort: {

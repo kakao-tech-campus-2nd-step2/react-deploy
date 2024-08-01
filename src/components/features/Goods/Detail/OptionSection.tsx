@@ -7,6 +7,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { BASE_URL } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -47,7 +48,7 @@ export const OptionSection = ({ productId }: Props) => {
 
   const handleAddToWishlist = async () => {
     try {
-      await fetch('/api/wishes', {
+      await fetch(`${BASE_URL}/api/wishes'`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
