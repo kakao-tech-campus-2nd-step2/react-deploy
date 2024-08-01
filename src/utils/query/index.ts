@@ -80,7 +80,7 @@ export const fetchProductDetail = async ({ productId }: { productId: string }) =
   const endpoint = replacePathParams(RequestURLs.PRODUCT_DETAILS, { productId });
   const response = await axiosInstance.get<ProductDetailResponse>(endpoint);
 
-  if (!response.data) return null;
+  if (!response.data) return {} as ProductData; // productData를 받아올 때 에러가 발생한 경우 상위에서 catch됨
 
   return response.data as ProductData;
 };
