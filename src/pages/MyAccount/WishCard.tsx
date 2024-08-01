@@ -2,6 +2,7 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { Button, Card, CardBody, CardFooter, Heading, Image, Text } from '@chakra-ui/react';
 
 import { deleteWishlist } from '@/api/hooks/useGetWishlist';
+import { useAPIBaseURL } from '@/provider/APIBaseURL';
 
 interface Props {
   id: number;
@@ -11,8 +12,9 @@ interface Props {
 }
 
 export default ({ id, imageURL, name, price }: Props) => {
+  const baseURL = useAPIBaseURL()[0];
   const deleteWish = () => {
-    deleteWishlist(String(id)).then((result) => {
+    deleteWishlist(String(id), baseURL).then((result) => {
       if (result) alert('관심 삭제 완료');
       else alert('관심 삭제 실패');
     });

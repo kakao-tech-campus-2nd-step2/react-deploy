@@ -10,6 +10,7 @@ import {
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { addWishlist } from '@/api/hooks/useGetWishlist';
 import { Button } from '@/components/common/Button';
+import { useAPIBaseURL } from '@/provider/APIBaseURL';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -21,6 +22,7 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+  const baseURL = useAPIBaseURL()[0];
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -49,7 +51,7 @@ export const OptionSection = ({ productId }: Props) => {
 
   const addWish = () => {
     if (!authInfo) return;
-    addWishlist(Number(productId), authInfo.id).then((result) => {
+    addWishlist(Number(productId), authInfo.id, baseURL).then((result) => {
       if (result) alert('관심 등록 완료');
       else alert('관심 등록 실패');
     });

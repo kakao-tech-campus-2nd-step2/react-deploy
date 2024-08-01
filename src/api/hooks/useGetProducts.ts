@@ -4,6 +4,7 @@ import {
   type UseInfiniteQueryResult,
 } from '@tanstack/react-query';
 
+import { useAPIBaseURL } from '@/provider/APIBaseURL';
 import type { ProductData } from '@/types';
 
 import { fetchInstance } from './../instance/index';
@@ -42,8 +43,8 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   return `${baseURL ?? ''}/api/products?${params.toString()}`;
 };
 
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance().get<ProductsResponseRawData>(getProductsPath(params));
+const getProducts = async (params: RequestParams, baseURL: string): Promise<ProductsResponseData> => {
+  const response = await fetchInstance(baseURL).get<ProductsResponseRawData>(getProductsPath(params));
   const data = response.data;
 
   return {
@@ -62,10 +63,11 @@ export const useGetProducts = ({
   maxResults = 20,
   initPageToken,
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
+  const baseURL = useAPIBaseURL()[0];
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
+    queryKey: ['products', categoryId, maxResults, initPageToken, baseURL],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+      return getProducts({ categoryId, pageToken: pageParam, maxResults }, baseURL);
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,

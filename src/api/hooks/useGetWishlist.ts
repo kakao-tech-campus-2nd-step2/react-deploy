@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+import { useAPIBaseURL } from "@/provider/APIBaseURL";
 import type { ProductData } from "@/types";
 
 import { fetchInstance, queryClient } from "../instance";
@@ -34,9 +35,9 @@ export const getWishlistPath = ({userId, page, size, sort}: RequestParams, baseU
     return `${baseURL ?? ''}/api/wishes?${params.toString()}`;
 } 
 
-export const addWishlist = async (productId: number, userId: string) => {
+export const addWishlist = async (productId: number, userId: string, baseURL: string) => {
     try{
-        const response = await fetchInstance().post(postWishlistPath(), {
+        const response = await fetchInstance(baseURL).post(postWishlistPath(), {
             productId,
             userId,
         });
@@ -46,9 +47,9 @@ export const addWishlist = async (productId: number, userId: string) => {
         return false;
     }
 }
-export const deleteWishlist = async (wishId: string) => {
+export const deleteWishlist = async (wishId: string, baseURL: string) => {
     try{
-        const response = await fetchInstance().delete(deleteWishlistPath(wishId));
+        const response = await fetchInstance(baseURL).delete(deleteWishlistPath(wishId));
         if(axios.isAxiosError(response)) {
             return false;
         }
@@ -60,12 +61,14 @@ export const deleteWishlist = async (wishId: string) => {
     }
 }
 
-const getWishlist = async (params: RequestParams) => {
-    const response = await fetchInstance().get<WishResponseData[]>(getWishlistPath(params));
+const getWishlist = async (params: RequestParams, baseURL: string) => {
+    const response = await fetchInstance(baseURL).get<WishResponseData[]>(getWishlistPath(params));
     return response.data;
 }
-export const useGetWishlist = (params: RequestParams) => 
-    useQuery({
+export const useGetWishlist = (params: RequestParams) => {
+    const baseURL = useAPIBaseURL()[0];
+    return useQuery({
         queryKey: ['wishlist', params],
-        queryFn: () => getWishlist(params),
+        queryFn: () => getWishlist(params, baseURL),
     }) 
+}

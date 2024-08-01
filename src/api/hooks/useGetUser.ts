@@ -10,9 +10,9 @@ export interface User {
 export const getUsersPath = (baseURL?: string) => `${baseURL ?? ''}/api/users`;
 export const getUserPath = (id: string, baseURL?: string) => `${baseURL ?? ''}/api/users/${id}`;
 
-export const login = async (id: string, password: string) => {
+export const login = async (id: string, password: string, baseURL: string) => {
     try{
-        const response = await fetchInstance().post(getUserPath(id), {
+        const response = await fetchInstance(baseURL).post(getUserPath(id), {
             password,
         });
         return !axios.isAxiosError(response)
@@ -22,9 +22,9 @@ export const login = async (id: string, password: string) => {
     }
 }
 
-export const signUp = async (id: string, password: string) => {
+export const signUp = async (id: string, password: string, baseURL: string) => {
     try{
-        const response = await fetchInstance().post(getUsersPath(), {
+        const response = await fetchInstance(baseURL).post(getUsersPath(), {
             id,
             password,
         });

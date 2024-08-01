@@ -1,24 +1,22 @@
 import { Input } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Container } from '@/components/common/layouts/Container';
+import { useAPIBaseURL } from '@/provider/APIBaseURL';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
-import { apiBaseURLSessionStorage } from '@/utils/storage';
 
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
-  const [baseURL, setBaseURL] = useState('mock server');
+  const [baseURL, setBaseURL] = useAPIBaseURL();
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
   };
   const handleChangeBaseURL = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBaseURL(e.target.value);
-    apiBaseURLSessionStorage.set(e.target.value);
   };
 
   return (

@@ -1,12 +1,13 @@
 import { rest } from 'msw';
 
+import { BASE_URL } from '../instance';
 import { PRODUCTS_MOCK_DATA } from './products.mock';
 import { deleteWishlistPath, getWishlistPath, postWishlistPath, type WishResponseData } from './useGetWishlist';
 
 // TODO: 서버 로그인 방식 확인 후 request body에 userId 삭제 필요
 
 export const wishlistMockHandler = [
-    rest.post(postWishlistPath(), async (req, res, ctx) => {
+    rest.post(postWishlistPath(BASE_URL), async (req, res, ctx) => {
         const { productId, userId } = await req.json();
         if(!productId || !userId) {
             return res(ctx.status(400));
@@ -24,7 +25,7 @@ export const wishlistMockHandler = [
 
         return res(ctx.status(201));
     }),
-    rest.delete(deleteWishlistPath(':wishId'), (req, res, ctx) => {
+    rest.delete(deleteWishlistPath(':wishId', BASE_URL), (req, res, ctx) => {
         const { wishId } = req.params;
 
         const index = wishlistMockData.findIndex((wish) => wish.id === Number(wishId));
@@ -35,7 +36,7 @@ export const wishlistMockHandler = [
         wishlistMockData.splice(index, 1);
         return res(ctx.status(204));
     }),
-    rest.get(getWishlistPath({}), (req, res, ctx) => {
+    rest.get(getWishlistPath({}, BASE_URL), (req, res, ctx) => {
         const url = new URL(req.url);
         const userId = url.searchParams.get('userId');
         const page = url.searchParams.get('page');

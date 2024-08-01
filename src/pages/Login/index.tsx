@@ -7,6 +7,7 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useAPIBaseURL } from '@/provider/APIBaseURL';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
@@ -16,6 +17,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const baseURL = useAPIBaseURL()[0];
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -23,7 +25,7 @@ export const LoginPage = () => {
       return;
     }
 
-    login(id, password).then((result) => {
+    login(id, password, baseURL).then((result) => {
       if (result) {
         authSessionStorage.set(id);
 
