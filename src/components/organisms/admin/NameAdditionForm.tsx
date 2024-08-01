@@ -1,4 +1,4 @@
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors } from 'react-hook-form';
 import {
   FormControl, FormLabel, Input, Text,
 } from '@chakra-ui/react';
