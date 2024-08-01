@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { BASE_URL } from '@/api/instance';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -11,48 +11,55 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
-    }
+    const registerUser = authSessionStorage.get();
 
-    try {
-      const response = await fetch(`${BASE_URL}/api/members/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // JSON 형식의 문자열로 변환
-        body: JSON.stringify({ id: id, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error('로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요.');
+    // 유저 데이터베이스가 있는 경우
+    if (registerUser){
+      // 로그인 시도 시, 등록된 사용자와 비교
+      if (registerUser && email === registerUser.email && password === registerUser.password) {
+        try {
+          // 기존: fetch 사용 → 수정: 만들어진 instance 활용
+          const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
+            email: email,
+            password: password,
+          });
+          
+          // 로그인 성공 (200) : 액세스 토큰을 생성하여 반환
+          if (response.status === 200) {
+            const data = await response.data;
+            authSessionStorage.set({ email: email, token: data.token });
+            const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+            return window.location.replace(redirectUrl);
+          }
+          
+          // 로그인 실패 (400) : 메시지 반환
+          else if (response.status === 400) {
+            const data = await response.data;
+            console.error(data.message);
+            alert('로그인에 실패했습니다.');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('로그인 중 오류가 발생했습니다.');
+        }
       }
-
-      const data = await response.json();
-      authSessionStorage.set(data.id);
-
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-      return window.location.replace(redirectUrl);
-    } 
-    
-    catch (error) {
-      alert(error);
+    } else {
+      // 유저 데이터베이스가 없는 경우
+      alert('알 수 없는 오류가 발생했습니다.');
     }
-  };
+  }
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="아이디" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="아이디" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
