@@ -1,8 +1,7 @@
-// src/provider/BaseUrl.js
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 
-import { BASE_URL } from '@/constants/URI';
+import { BASE_URL } from '@/api/instance';
 
 type ApiInfo = {
   url: string | undefined;

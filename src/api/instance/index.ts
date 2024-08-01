@@ -19,7 +19,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = process.env.REACT_APP_API_LEE;
+export const BASE_URL = process.env.REACT_APP_API_JANG;
 // export const BASE_URL = 'https://api.example.com';
 
 export const fetchInstance = initInstance({
