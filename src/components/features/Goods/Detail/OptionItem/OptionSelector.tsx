@@ -29,7 +29,7 @@ export const OptionSelector = ({ options }: OptionSelectorProps) => {
       name="optionId"
       control={control}
       render={({ field }) => (
-        <Select {...field} onChange={handleSelector} value={watchedOptionId || ''}>
+        <Select placeholder='옵션을 선택하세요.'{...field} onChange={handleSelector} value={watchedOptionId || ''}>
           {options.map((option: ProductOptionsData) => (
             <option key={option.id} value={option.id}>
               {option.name}

@@ -43,6 +43,11 @@ export const OptionSection = ({ productId }: Props) => {
       return navigate(getDynamicPath.login());
     }
 
+    if (!watchedOption) {
+      alert('옵션이 선택되지 않았습니다.');
+      return;
+    }
+
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
