@@ -11,7 +11,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      // 'Cross-Control-Allow-Origin': '*',
+      'Cross-Control-Allow-Origin': '*',
       ...config.headers,
     },
   });
@@ -19,7 +19,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = process.env.REACT_APP_API_KWON;
+export const BASE_URL = process.env.REACT_APP_API_LEE;
 // export const BASE_URL = 'https://api.example.com';
 
 export const fetchInstance = initInstance({
@@ -29,6 +29,7 @@ export const fetchInstance = initInstance({
 fetchInstance.interceptors.request.use((config) => {
   const token = authSessionStorage.get();
   if (token) {
+    // TODO: Bearer 부분 지워야함
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
