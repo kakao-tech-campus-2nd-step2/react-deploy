@@ -24,6 +24,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "build", "public"]
+  "include": ["src", "public"],
+//   0:0  error  Parsing error: ESLint was configured to run on `<tsconfigRootDir>/public/mockServiceWorker.js` using `parserOptions.project`: /users/chiiikawa/workspace/react-deploy/tsconfig.json
+  "exclude": ["node_modules", "build"]
 }
