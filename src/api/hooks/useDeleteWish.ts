@@ -9,7 +9,8 @@ export type WishDeleteRequestParams = {
 export const getDeleteWishPath = (wishId: string) => `${BASE_URL}/api/wishes/${wishId}`;
 
 export const deleteWish = async (params: WishDeleteRequestParams) => {
-  const response = await fetchInstanceWithAuth().delete(getDeleteWishPath(params.wishId));
+  const token = localStorage.getItem('token') ?? '';
+  const response = await fetchInstanceWithAuth(token).delete(getDeleteWishPath(params.wishId));
 
   return response.data;
 };
