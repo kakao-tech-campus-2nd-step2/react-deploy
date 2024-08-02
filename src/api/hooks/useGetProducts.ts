@@ -43,21 +43,27 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
 
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
-  const data = response.data;
+const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
+  try {
+    const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+    const data = response.data;
 
-  return {
-    products: data.content,
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
-    pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
-    },
-  };
+    return {
+      products: data.content,
+      nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
+      pageInfo: {
+        totalResults: data.totalElements,
+        resultsPerPage: data.size,
+      },
+    };
+  } catch (error) {
+    console.log(`error fetching products in category ${params.categoryId}`, error);
+    throw error;
+  }
 };
 
 type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
+
 export const useGetProducts = ({
   categoryId,
   maxResults = 20,

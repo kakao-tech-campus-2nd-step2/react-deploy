@@ -10,7 +10,7 @@ export const getCategoriesPath = () => `/api/categories`;
 
 const categoriesQueryKey = [getCategoriesPath()];
 
-export const getCategories = async () => {
+const getCategories = async () => {
   try {
     const response = await fetchInstance.get<CategoryResponseData>(getCategoriesPath());
 
