@@ -1,66 +1,43 @@
-// src/pages/Login/index.tsx
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
-import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
+import { BASE_URL } from '@/api/instance';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = async () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
+  useEffect(() => {
+    const token = document.body.textContent?.trim(); // 토큰 가져오기
+    console.log('Token:', token); // 디버깅용
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const token = urlParams.get('token'); // 디버깅용
+    if (token) {
+      console.log('sb');
+      authSessionStorage.set({ token }); // 토큰 저장
+      navigate('/'); // 홈으로 리다이렉트
+      window.location.reload();
+    } else {
+      console.log('No token found');
     }
-
-    try {
-      const response = await fetch('https://api.example.com/api/members/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: id, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        authSessionStorage.set({ email: id, token: data.token });
-
-        const redirectUrl = queryParams.get('redirect') ?? '/';
-        navigate(redirectUrl);
-        window.location.reload();
-      } else {
-        alert('로그인 실패, 아이디와 비밀번호를 다시 확인해주세요.');
-      }
-    } catch (error) {
-      console.error('로그인 요청 중 오류 발생: ', error);
-      alert('로그인 요청 중 오류가 발생하였습니다.');
-    }
+  }, [navigate]);
+  
+  const handleKakaoLogin = () => {
+    // 카카오 로그인 페이지로 리다이렉트
+    window.location.href = `${BASE_URL}/kakao/login`;
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이메일" value={id} onChange={(e) => setId(e.target.value)} />
-        <Spacing />
-        <UnderlineTextField
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Spacing height={{ initial: 40, sm: 60 }} />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={handleKakaoLogin}>카카오 로그인입니다</Button>
         <Spacing height={20} />
-        <Button onClick={() => navigate('/register')}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
