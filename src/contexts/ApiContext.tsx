@@ -7,7 +7,7 @@ interface ApiContextType {
   apiUrl: string;
   setApiUrl: (url: string) => void;
 }
-// 변경 필요!!!
+
 const defaultState: ApiContextType = {
   apiUrl: 'https://example.com',
   setApiUrl: () => {}

@@ -6,7 +6,6 @@ import { useApi } from '@/contexts/ApiContext';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 
-// 환경 변수 처리 필요!
 const backend: { [key: string]: string } = {
   backend1: 'https://example.com',
   backend2: 'https://example.com',
@@ -15,10 +14,6 @@ const backend: { [key: string]: string } = {
   backend5: 'https://example.com',
   backend6: 'https://example.com',
 };
-
-export function getEnvVariable(key: string): string {
-  return process.env[key] || backend.backend1;
-}
 
 export const Header = () => {
   const navigate = useNavigate();

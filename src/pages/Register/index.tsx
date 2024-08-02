@@ -21,9 +21,9 @@ export const RegisterPage = () => {
     }
 
     try {
-      const message = await register(email, password);
+      const response = await register(email, password);
 
-      if (message === 'User registered successfully') {
+      if (response.status === 201) {
         sessionStorage.setItem('authEmail', email);
         alert('회원가입이 완료되었습니다.');
       }

@@ -8,13 +8,6 @@ const initInstance = () => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    transformResponse: [(data, headers) => {
-      if (headers['content-type']?.includes('text/plain')) {
-        return data;
-      }
-
-      return JSON.parse(data);
-    }],
   });
 
   instance.interceptors.request.use((config) => {
@@ -25,14 +18,6 @@ const initInstance = () => {
   }, (error) => {
     return Promise.reject(error);
   });
-
-  instance.defaults.transformResponse = [(data, headers) => {
-    if (headers['content-type']?.includes('text/plain')) {
-      return data;
-    }
-
-    return JSON.parse(data);
-  }];
 
   return instance;
 };
