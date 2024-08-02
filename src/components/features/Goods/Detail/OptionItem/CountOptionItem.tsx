@@ -45,6 +45,7 @@ export const CountOptionItem = ({
 
 const Wrapper = styled.div`
   width: 100%;
+  background-color: #ffffff;
   padding: 12px 14px 16px;
   border: 1px solid #ededed;
   border-radius: 2px;
