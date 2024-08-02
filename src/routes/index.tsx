@@ -2,9 +2,9 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
-import CategoryAddPage from '@/pages/Category/CategoryAddPage'; 
+import CategoryAddPage from '@/pages/Category/CategoryAddPage';
 import CategoryEditPage from '@/pages/Category/CategoryEditPage';
-import FavoritesPage from '@/pages/FavoritesPage'; 
+import FavoritesPage from '@/pages/FavoritesPage';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import ProductAddPage from '@/pages/Goods/Detail/ProductAddPage';
 import ProductEditPage from '@/pages/Goods/Detail/ProductEditPage';
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
         element: <ProductAddPage />,
       },
       {
-        path: RouterPath.addCategory, 
+        path: RouterPath.addCategory,
         element: <CategoryAddPage />,
       },
       {
-        path: RouterPath.editCategory, 
+        path: RouterPath.editCategory,
         element: <CategoryEditPage />,
       },
       {

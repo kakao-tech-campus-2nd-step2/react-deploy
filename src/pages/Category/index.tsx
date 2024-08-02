@@ -1,4 +1,4 @@
-import { Button,  Center, HStack } from '@chakra-ui/react';
+import { Button, Center, HStack } from '@chakra-ui/react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import { useDeleteCategory } from '@/api/hooks/useDeleteCategory';

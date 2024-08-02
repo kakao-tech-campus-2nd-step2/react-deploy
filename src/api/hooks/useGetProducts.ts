@@ -34,7 +34,6 @@ type ProductsResponseRawData = {
   };
 };
 
-
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
@@ -52,7 +51,8 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
 
   return {
     products: data.content,
-    nextPageToken: data.page.number + 1 < data.page.totalPages ? (data.page.number + 1).toString() : undefined,
+    nextPageToken:
+      data.page.number + 1 < data.page.totalPages ? (data.page.number + 1).toString() : undefined,
     pageInfo: {
       totalResults: data.page.totalElements,
       resultsPerPage: data.page.size,

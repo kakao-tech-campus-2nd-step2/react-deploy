@@ -11,15 +11,19 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query'; // 추가된 부분
 import type { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 import type { WishItem } from '@/api/hooks/fetchWishList';
 import { useRemoveWish, useWishList } from '@/api/hooks/fetchWishList';
+import { useAuth } from '@/provider/Auth';
 
 const FavoritesPage = () => {
+  const authInfo = useAuth();
+  const queryClient = useQueryClient(); // 추가된 부분
   const [page, setPage] = useState(0);
-  const { data, error, isLoading } = useWishList(page);
+  const { data, error: fetchError, isLoading } = useWishList(page);
   const removeWish = useRemoveWish();
   const [wishList, setWishList] = useState<WishItem[]>([]);
   const toast = useToast();
@@ -30,33 +34,34 @@ const FavoritesPage = () => {
     }
   }, [data]);
 
-  const handleRemoveFavorite = (productId: number) => {
-    removeWish.mutate(
-      { productId },
-      {
-        onSuccess: () => {
-          setWishList((prevList) => prevList.filter((item) => item.id !== productId));
-          toast({
-            title: '성공',
-            description: '상품이 관심 목록에서 삭제되었습니다.',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
-        },
-        onError: (axiosError: AxiosError) => {
-          const message =
-            (axiosError.response?.data as { message: string })?.message || axiosError.message;
-          toast({
-            title: '오류',
-            description: `상품 삭제 중 오류가 발생했습니다: ${message}`,
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-          });
-        },
+  const handleRemoveFavorite = (wishId: number) => {
+    removeWish.mutate(wishId, {
+      onSuccess: () => {
+        setWishList((prevList) => prevList.filter((item) => item.id !== wishId));
+        toast({
+          title: '성공',
+          description: '상품이 관심 목록에서 삭제되었습니다.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
       },
-    );
+      onError: (err: Error) => {
+        const axiosError = err as AxiosError;
+        const message =
+          (axiosError.response?.data as { message: string })?.message || axiosError.message;
+        toast({
+          title: '오류',
+          description: `상품 삭제 중 오류가 발생했습니다: ${message}`,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      },
+    });
   };
 
   const handleNextPage = () => {
@@ -71,10 +76,14 @@ const FavoritesPage = () => {
     }
   };
 
+  if (!authInfo) {
+    return <Text>로그인이 필요합니다.</Text>;
+  }
+
   let content;
   if (isLoading) {
     content = <Spinner />;
-  } else if (error) {
+  } else if (fetchError) {
     content = <Text>오류가 발생했습니다.</Text>;
   } else {
     content = (
@@ -112,6 +121,7 @@ const FavoritesPage = () => {
       </>
     );
   }
+
   return (
     <Box p={5}>
       <Text fontSize="2xl" mb={4}>

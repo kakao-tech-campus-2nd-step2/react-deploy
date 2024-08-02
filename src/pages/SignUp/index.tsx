@@ -1,14 +1,14 @@
 import type { AxiosError } from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { register } from '@/api/hooks/register'; // `register` 함수 가져오기
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { authSessionStorage } from '@/utils/storage';
 
-const SignUpPage: React.FC = () => {
-  const [id, setId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
+const SignUpPage = () => {
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignUp = async () => {
     if (!id || !password || !confirmPassword) {

@@ -3,7 +3,7 @@ import type { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { login } from '@/api/hooks/login';
+import { login } from '@/api/hooks/login'; // login API 추가
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -52,7 +52,6 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,

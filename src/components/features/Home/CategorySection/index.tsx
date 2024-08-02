@@ -14,6 +14,7 @@ export const CategorySection = () => {
 
   if (isLoading || isError) return null;
   if (!data) return null;
+  console.log('Category data:', data); // 데이터 로깅
 
   return (
     <Wrapper>
@@ -24,11 +25,13 @@ export const CategorySection = () => {
             md: 6,
           }}
         >
-          {data.map((category) => (
-            <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
-              <CategoryItem image={category.imageUrl} label={category.name} />
-            </Link>
-          ))}
+          {data.map((category) =>
+            category.id ? (
+              <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
+                <CategoryItem image={category.imageUrl} label={category.name} />
+              </Link>
+            ) : null,
+          )}
         </Grid>
       </Container>
     </Wrapper>

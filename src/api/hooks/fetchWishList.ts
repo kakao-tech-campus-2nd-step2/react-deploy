@@ -1,12 +1,11 @@
 import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { AxiosError } from 'axios';
 
 import { authSessionStorage } from '@/utils/storage';
 
 import { fetchInstance } from '../instance';
 
-const getToken = () => authSessionStorage.get();
+const QUERY_KEY_WISHLIST = 'wishList';
 
 export interface WishItem {
   id: number;
@@ -24,8 +23,9 @@ interface WishListResponse {
 }
 
 const fetchWishList = async (page: number, size: number): Promise<WishListResponse> => {
-  const token = getToken();
+  const token = authSessionStorage.get();
   if (!token) throw new Error('토큰이 없습니다.');
+
   const response = await fetchInstance.get('/api/wishes', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -36,55 +36,54 @@ const fetchWishList = async (page: number, size: number): Promise<WishListRespon
       sort: 'id,desc',
     },
   });
+
   return response.data;
 };
 
 export const useWishList = (
   page: number = 0,
   size: number = 10,
-  options?: UseQueryOptions<WishListResponse, AxiosError>,
+  options?: UseQueryOptions<WishListResponse, Error>,
 ) => {
-  return useQuery<WishListResponse, AxiosError>({
-    queryKey: ['wishList', page, size],
+  return useQuery<WishListResponse, Error>({
+    queryKey: [QUERY_KEY_WISHLIST, page, size],
     queryFn: () => fetchWishList(page, size),
     ...options,
   });
 };
 
-export const useRemoveWish = (
-  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
-) => {
+export const useRemoveWish = (options?: UseMutationOptions<void, Error, number>) => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, AxiosError, { productId: number }>({
-    mutationFn: async ({ productId }) => {
-      const token = getToken();
+  return useMutation<void, Error, number>({
+    mutationFn: async (wishId: number) => {
+      const token = authSessionStorage.get();
       if (!token) throw new Error('토큰이 없습니다.');
-      return fetchInstance.delete(`/api/wishes`, {
+
+      await fetchInstance.delete('/api/wishes', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        data: { productId },
+        data: { id: wishId },
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
     },
     ...options,
   });
 };
 
-export const useAddWish = (
-  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
-) => {
+export const useAddWish = (options?: UseMutationOptions<void, Error, number>) => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, AxiosError, { productId: number }>({
-    mutationFn: ({ productId }) => {
-      const token = getToken();
+  return useMutation<void, Error, number>({
+    mutationFn: async (productId: number) => {
+      const token = authSessionStorage.get();
       if (!token) throw new Error('토큰이 없습니다.');
-      return fetchInstance.post(
-        '/api/wishes',
+
+      await fetchInstance.post(
+        `/api/wishes`,
         { productId },
         {
           headers: {
@@ -94,7 +93,7 @@ export const useAddWish = (
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
     },
     ...options,
   });
