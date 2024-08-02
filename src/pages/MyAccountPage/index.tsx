@@ -1,6 +1,7 @@
 import BaseLayout from '@/layouts/BaseLayout';
 import { useAuth } from '@/provider/auth/useAuth';
 
+import { Content } from '@/components/Content';
 import { UpDownDots } from '@/components/Loading/UpDownDots';
 import { Container } from '@/components/ui/Layout/Container';
 
@@ -18,7 +19,9 @@ export const MyAccountPage = () => {
     <BaseLayout>
       <Container flexDirection="column" alignItems="center">
         <MyAccountConent userName={authInfo.userInfo.name} />
-        <WishSection />
+        <Content maxWidth="54rem" gap="4rem">
+          <WishSection />
+        </Content>
       </Container>
     </BaseLayout>
   );

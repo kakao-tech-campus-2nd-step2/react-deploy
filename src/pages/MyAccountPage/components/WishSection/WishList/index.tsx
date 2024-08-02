@@ -57,6 +57,6 @@ export const WishList = () => {
 };
 
 const containerStyle = css({
-  maxHeight: '28em',
+  maxHeight: '26em',
   overflowY: 'scroll',
 });

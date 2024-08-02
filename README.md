@@ -73,7 +73,9 @@ http://katecam-ppochaco.s3-website.ap-northeast-2.amazonaws.com/
   - [x] UI 만들기
   - [x] API 연결하기
 
-#### 마이 페이지
+#### 주문 목록 페이지
+
+- [x] 마이페이지에 주문 목록 페이지 링크 버튼 추가하기
 
 - 주문 목록 보여주기
   - [ ] UI 만들기

@@ -1,6 +1,9 @@
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Button } from '@chakra-ui/react';
+
 import { useLogout } from '@/pages/MyAccountPage/hooks/useLogout';
 
-import { Button } from '@/components/ui/Button';
+import { Button as GrayButton } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout/Container';
 
 import { buttonStyle, countainerStyle, titleStyle } from './styles';
@@ -17,15 +20,21 @@ export const MyAccountConent = ({ userName }: { userName: string }) => {
       css={countainerStyle}
     >
       <h1 css={titleStyle}>{userName}님 안녕하세요!</h1>
-      <Button
-        size="medium"
-        theme="darkGray"
-        width="14rem"
-        onClick={handleLogout}
-        css={buttonStyle}
-      >
-        로그아웃
-      </Button>
+      <Container justifyContent="center" gap="1rem">
+        <GrayButton
+          size="medium"
+          theme="darkGray"
+          width="14rem"
+          onClick={handleLogout}
+          css={buttonStyle}
+        >
+          로그아웃
+        </GrayButton>
+        <Button variant="outline" gap="0.5rem">
+          <ExternalLinkIcon />
+          주문 내역
+        </Button>
+      </Container>
     </Container>
   );
 };
