@@ -17,12 +17,26 @@ export const usePostOrder = () => {
     const [error, setError] = useState<string | null>(null);
 
     const order = async (data: RequestBody) => {
+        const accessToken = localStorage.getItem('accessToken');
+
+        if (!accessToken) {
+            return 'No authorization token found';
+        }
+
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.post(`${baseURL}/api/orders`, data);
+            const response = await axios.post(
+                `${baseURL}/api/orders`,
+                data,
+                {
+                    headers: {
+                        'Authorization': accessToken
+                    }
+                }
+            );
             setLoading(false);
-            return response.data;
+            return response.data.status;
         } catch (err) {
             setLoading(false);
             let errorMessage = 'An unexpected error occurred';

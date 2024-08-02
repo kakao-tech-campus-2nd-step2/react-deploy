@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 import { usePostOrder } from '@/api/hooks/usePostOrder';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -18,6 +19,9 @@ type Props = {
 export const OrderForm = ({ orderHistory }: Props) => {
   const { id, count, optionId } = orderHistory;
   const { order } = usePostOrder();
+
+  const [usePoint, setUsePoint] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -38,19 +42,20 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log('values', values.productId);
-
     const response = await order({
       productId: id,
       optionId: optionId,
-      quantity: count,
+      quantity: totalPrice,
       message: values.messageCardTextMessage,
-      point: count //임시로 해놓음
+      point: usePoint
     });
 
-    console.log(response);
-
-    alert('주문이 완료되었습니다.');
+    if (response === 200) {
+      alert('주문이 완료되었습니다.');
+      window.location.assign('/my-account');
+    } else {
+      alert(response);
+    }
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
@@ -64,7 +69,13 @@ export const OrderForm = ({ orderHistory }: Props) => {
   return (
     <FormProvider {...methods}>
       <form action="" onSubmit={handleSubmit(handleForm)} onKeyDown={preventEnterKeySubmission}>
-        <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} />}>
+        <SplitLayout sidebar={<OrderFormOrderInfo
+          orderHistory={orderHistory}
+          totalPrice={totalPrice}
+          usePoint={usePoint}
+          setUsePoint={setUsePoint}
+          setTotalPrice={setTotalPrice}
+        />}>
           <Wrapper>
             <OrderFormMessageCard />
             <Spacing height={8} backgroundColor="#ededed" />
