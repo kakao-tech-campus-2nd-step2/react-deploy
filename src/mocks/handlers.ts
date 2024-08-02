@@ -4,7 +4,7 @@ import { categoriesMockHandler } from '@/api/hooks/categories.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
 
 //가상 데이터베이스
-const userDatabase: { email: string; password: string }[] = [
+export const userDatabase: { email: string; password: string }[] = [
   { email: 'server1@example.com', password: 'password1' },
   { email: 'server2@example.com', password: 'password2' },
   { email: 'server3@example.com', password: 'password3' },

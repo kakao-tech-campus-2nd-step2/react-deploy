@@ -17,7 +17,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 };
 
 export const getBaseUrl = (): string => {
-  const selectedServer = sessionStorage.getItem('selevtedServer');
+  const selectedServer = sessionStorage.getItem('selectedServer');
   switch (selectedServer) {
     case 'server1':
       return 'http://bgmsound.kro.kr:8080';
@@ -32,10 +32,10 @@ export const getBaseUrl = (): string => {
   }
 };
 
-export const BASE_URL = getBaseUrl();
+export const BASE_URL = 'http://localhost:3000'; // api확정시 수정
 
 export let fetchInstance = initInstance({
-  baseURL: getBaseUrl(),
+  baseURL: BASE_URL,
 });
 
 export const queryClient = new QueryClient({

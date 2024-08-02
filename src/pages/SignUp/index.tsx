@@ -32,6 +32,8 @@ export const SignUpPage = () => {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log('회원가입 요청2:', { email, password });
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || '회원가입 실패!');

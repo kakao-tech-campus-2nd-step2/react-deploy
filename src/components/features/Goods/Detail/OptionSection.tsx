@@ -1,6 +1,8 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Select } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useMemo, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useAddToWishlist } from '@/api/hooks/useAddToWishlist';
@@ -16,19 +18,37 @@ import { orderHistorySessionStorage } from '@/utils/storage';
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
+type OptionType = {
+  id: number;
+  name: string;
+  //나중에 추가하기
+};
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
-  const { data: options } = useGetProductOptions({ productId });
+  const { data: options = [], error } = useGetProductOptions({ productId });
   const { addToWishlist } = useAddToWishlist();
 
   const [countAsString, setCountAsString] = useState('1');
+  const { control, setValue, watch } = useForm({
+    defaultValues: {
+      optionId: '',
+      optionSelect: [] as OptionType[],
+    },
+  });
+
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+
+  useMemo(() => {
+    if (options.length > 0) {
+      setValue('optionSelect', [options[0]] as OptionType[]);
+    }
+  }, [options, setValue]);
 
   const handleClick = () => {
     if (!authInfo) {
@@ -66,9 +86,84 @@ export const OptionSection = ({ productId }: Props) => {
     });
   };
 
+  const addOption = async (option: OptionType) => {
+    try {
+      const response = await axios.post(`/api/products/${productId}/options`, option);
+      setValue('optionSelect', [...(watch('optionSelect') || []), response.data]);
+    } catch (err) {
+      console.error((err as Error).message);
+    }
+  };
+
+  const updateOption = async (optionId: number, updatedOption: OptionType) => {
+    try {
+      await axios.put(`/api/products/${productId}/options/${optionId}`, updatedOption);
+      setValue(
+        'optionSelect',
+        (watch('optionSelect') || []).map((opt: OptionType) =>
+          opt.id === optionId ? updatedOption : opt,
+        ),
+      );
+    } catch (err) {
+      console.error((err as Error).message);
+    }
+  };
+
+  const deleteOption = async (optionId: number) => {
+    try {
+      await axios.delete(`/api/products/${productId}/options/${optionId}`);
+      setValue(
+        'optionSelect',
+        (watch('optionSelect') || []).filter((opt: OptionType) => opt.id !== optionId),
+      );
+    } catch (err) {
+      console.error((err as Error).message);
+    }
+  };
+  const handleSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOptionId = e.target.value;
+    const selectedOption =
+      options.find((opt: OptionType) => opt.id === parseInt(selectedOptionId, 10)) || null;
+
+    setValue('optionId', selectedOptionId);
+    setValue('optionSelect', selectedOption ? [selectedOption] : []);
+  };
+
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <Controller
+        name="optionId"
+        control={control}
+        render={({ field }) => (
+          <Select {...field} onChange={handleSelector} value={field.value || ''}>
+            {options.map((option: OptionType) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </Select>
+        )}
+      />
+      <CountOptionItem
+        name={watch('optionSelect')[0]?.name || '옵션 이름'}
+        value={countAsString}
+        onChange={setCountAsString}
+        productId={productId}
+      />
+
+      {error && <p>Error: {error.message}</p>}
+      <Button onClick={() => addOption({ id: Date.now(), name: 'New Option' })}>옵션 추가</Button>
+      <ul>
+        {watch('optionSelect')?.map((option: OptionType) => (
+          <li key={option.id}>
+            {option.name}
+            <Button onClick={() => updateOption(option.id, { ...option, name: 'Updated Option' })}>
+              수정
+            </Button>
+            <Button onClick={() => deleteOption(option.id)}>삭제</Button>
+          </li>
+        ))}
+      </ul>
       <BottomWrapper>
         <Button colorScheme="blue" onClick={handleInterestClick}>
           관심 등록

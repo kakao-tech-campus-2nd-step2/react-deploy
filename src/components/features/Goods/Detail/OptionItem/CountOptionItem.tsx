@@ -8,6 +8,7 @@ type Props = {
   maxValues?: number;
   value: string;
   onChange: (value: string) => void;
+  productId: string;
 };
 
 export const CountOptionItem = ({
@@ -16,6 +17,7 @@ export const CountOptionItem = ({
   maxValues = 100,
   value,
   onChange,
+  //productId,
 }: Props) => {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1,

@@ -2,7 +2,7 @@ import { Box, Select } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { updateFetchInstance } from '@/api/instance';
+import { updateFetchInstance } from '@/api/instance'; // Import the function
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -18,8 +18,8 @@ export const Header = () => {
   const handleServerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedServer = event.target.value;
     sessionStorage.setItem('selectedServer', selectedServer);
-    updateFetchInstance();
-    window.location.reload();
+    updateFetchInstance(); // Update the fetch instance
+    window.location.reload(); // Reload the page to apply changes
   };
 
   return (
