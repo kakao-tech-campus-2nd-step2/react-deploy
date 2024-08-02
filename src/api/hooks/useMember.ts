@@ -8,13 +8,14 @@ type MembersParams = Pick<MembersRequestParams, 'size'> & {
 };
 
 export const useMember = ({ size = 10, initPageToken }: MembersParams) => {
-  const { data, status, error, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ['products', size, initPageToken],
-    queryFn: ({ pageParam = initPageToken }) =>
-      fetchMembers({ page: pageParam }),
-    initialPageParam: initPageToken,
-    getNextPageParam: (lastPage) => lastPage.nextPageToken,
-  });
+  const { data, status, error, fetchNextPage, hasNextPage, refetch } =
+    useInfiniteQuery({
+      queryKey: ['products', size, initPageToken],
+      queryFn: ({ pageParam = initPageToken }) =>
+        fetchMembers({ page: pageParam }),
+      initialPageParam: initPageToken,
+      getNextPageParam: (lastPage) => lastPage.nextPageToken,
+    });
 
   const members = data?.pages.flatMap((page) => page.members);
 
@@ -24,5 +25,6 @@ export const useMember = ({ size = 10, initPageToken }: MembersParams) => {
     error,
     fetchNextPage,
     hasNextPage,
+    refetch,
   };
 };

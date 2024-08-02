@@ -53,3 +53,25 @@ const getMembersPath = ({ page, size }: MembersRequestParams) => {
 
   return `/api/admin/members?${params.toString()}`;
 };
+
+type AddPointRequest = {
+  memberId: number;
+  depositPoint: number;
+};
+
+export const addPoint = async ({ memberId, depositPoint }: AddPointRequest) => {
+  try {
+    await AUTHROIZATION_API.patch(`/api/admin/members/${memberId}/point`, {
+      depositPoint,
+    });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+
+      if (response?.status === 400) {
+        throw new Error(response.data.detail);
+      }
+    }
+    throw new Error(API_ERROR_MESSAGES.UNKNOWN_ERROR);
+  }
+};

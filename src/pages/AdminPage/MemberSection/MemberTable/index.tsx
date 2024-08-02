@@ -14,8 +14,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { AddPointModal } from './AddPointModal';
-
 type Member = {
   id: number;
   email: string;
@@ -25,9 +23,10 @@ type Member = {
 
 type MemberTablePrps = {
   members: Member[];
+  columns: ColumnDef<Member>[];
 };
 
-export const MemberTable = ({ members }: MemberTablePrps) => {
+export const MemberTable = ({ members, columns }: MemberTablePrps) => {
   const table = useReactTable({
     data: members,
     columns,
@@ -68,26 +67,3 @@ export const MemberTable = ({ members }: MemberTablePrps) => {
     </TableContainer>
   );
 };
-
-const columns: ColumnDef<Member>[] = [
-  {
-    header: '이메일',
-    accessorKey: 'email',
-    cell: ({ row }) => <div>{row.getValue('email')}</div>,
-  },
-  {
-    header: '이름',
-    accessorKey: 'name',
-    cell: ({ row }) => <div>{row.getValue('name')}</div>,
-  },
-  {
-    header: '보유 포인트',
-    accessorKey: 'point',
-    cell: ({ row }) => <div>{row.getValue('point')} P</div>,
-  },
-  {
-    header: '포인트 추가하기',
-    accessorKey: 'addPoint',
-    cell: () => <AddPointModal />,
-  },
-];
