@@ -12,6 +12,12 @@ export type ProductData = {
   price: number;
   imageUrl: string;
   categoryId: number;
+  options: OptionData[];
+};
+
+export type OptionData = {
+  name: string;
+  quantity: number;
 };
 
 export type ProductOptionsData = {

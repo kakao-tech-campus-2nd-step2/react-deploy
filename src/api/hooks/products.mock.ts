@@ -22,7 +22,7 @@ export const productsMockHandler = [
     },
   ),
   rest.get(getProductDetailPath(":productId"), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+    return res(ctx.json(PRODUCTS_MOCK_DATA.products[0]));
   }),
   rest.get(getProductOptionsPath(":productId"), (_, res, ctx) => {
     return res(
@@ -45,13 +45,19 @@ export const productsMockHandler = [
 ];
 
 const PRODUCTS_MOCK_DATA = {
-  content: [
+  products: [
     {
       id: 3245119,
       name: "[단독각인] 피렌체 1221 에디션 오드코롱 50ml (13종 택1)",
       imageUrl:
         "https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png",
       price: 145000,
+      options: [
+        {
+          name: "Option A",
+          quantity: 10000,
+        },
+      ],
     },
     {
       id: 2263833,
@@ -82,8 +88,5 @@ const PRODUCTS_MOCK_DATA = {
       price: 133000,
     },
   ],
-  number: 0,
-  totalElements: 5,
-  size: 10,
-  last: true,
+  hasNext: false,
 };

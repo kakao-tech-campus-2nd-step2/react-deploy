@@ -13,30 +13,19 @@ type RequestParams = {
   categoryId: string;
   pageToken?: string;
   maxResults?: number;
+  sort?: string;
 };
 
 type ProductsResponseData = {
   products: ProductData[];
-  nextPageToken?: string;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
-  };
+  hasNext: boolean;
 };
 
-type ProductsResponseRawData = {
-  content: ProductData[];
-  number: number;
-  totalElements: number;
-  size: number;
-  last: boolean;
-};
-
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+export const getProductsPath = ({ categoryId, pageToken, maxResults, sort }: RequestParams) => {
   const params = new URLSearchParams();
 
   params.append("categoryId", categoryId);
-  params.append("sort", "name,asc");
+  if (sort) params.append("sort", sort);
   if (pageToken) params.append("page", pageToken);
   if (maxResults) params.append("size", maxResults.toString());
 
@@ -44,20 +33,17 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+  const response = await fetchInstance.get<ProductsResponseData>(getProductsPath(params));
   const data = response.data;
 
   return {
-    products: data.content,
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
-    pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
-    },
+    products: data.products,
+    hasNext: data.hasNext,
   };
 };
 
 type Params = Pick<RequestParams, "maxResults" | "categoryId"> & { initPageToken?: string };
+
 export const useGetProducts = ({
   categoryId,
   maxResults = 20,
@@ -68,7 +54,8 @@ export const useGetProducts = ({
     queryFn: async ({ pageParam = initPageToken }) => {
       return getProducts({ categoryId, pageToken: pageParam, maxResults });
     },
-    initialPageParam: initPageToken,
-    getNextPageParam: (lastPage) => lastPage.nextPageToken,
+    initialPageParam: initPageToken ?? "0",
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNext ? (lastPage.products.length / maxResults).toString() : undefined,
   });
 };
