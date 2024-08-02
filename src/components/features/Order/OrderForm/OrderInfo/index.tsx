@@ -13,11 +13,16 @@ import { CashReceiptFields } from '../Fields/CashReceiptFields';
 type Props = {
   orderHistory: OrderHistory;
 };
+
 export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
 
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
-  const totalPrice = detail.price * count;
+  const { data: detail, isLoading, error } = useGetProductDetail({ productId: id.toString() });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !detail) return <p>Error loading product details</p>;
+
+  const totalPrice = detail ? detail.price * count : 0;
 
   return (
     <Wrapper>

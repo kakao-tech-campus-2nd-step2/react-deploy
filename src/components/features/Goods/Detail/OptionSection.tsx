@@ -17,16 +17,20 @@ import { CountOptionItem } from './OptionItem/CountOptionItem';
 type Props = ProductDetailRequestParams;
 
 export const OptionSection = ({ productId }: Props) => {
-  const { data: detail } = useGetProductDetail({ productId });
+  const { data: detail, isLoading, error } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
+    return detail ? detail.price * Number(countAsString) : 0;
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !detail) return <p>Error loading product details</p>;
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -47,7 +51,9 @@ export const OptionSection = ({ productId }: Props) => {
 
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      {options && options.length > 0 && (
+        <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      )}
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>

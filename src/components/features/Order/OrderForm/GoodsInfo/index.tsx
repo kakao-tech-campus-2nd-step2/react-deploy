@@ -10,9 +10,13 @@ import { LabelText } from '../Common/LabelText';
 type Props = {
   orderHistory: OrderHistory;
 };
+
 export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const { data: detail, isLoading, error } = useGetProductDetail({ productId: id.toString() });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !detail) return <p>Error loading product details</p>;
 
   return (
     <Wrapper>
