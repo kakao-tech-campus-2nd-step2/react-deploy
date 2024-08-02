@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -20,12 +21,12 @@ export const GoodsDetailPage = () => {
   if (!data) return null;
 
   return (
-    <>
+    <Suspense fallback={<LoadingView />}>
       <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
         <SplitLayout sidebar={<OptionSection productId={productId} />}>
           <GoodsDetail productId={productId} />
         </SplitLayout>
       </AsyncBoundary>
-    </>
+    </Suspense>
   );
 };
