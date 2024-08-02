@@ -25,10 +25,11 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
   const [optionId, setOptionId] = useState<number>(options[0].optionId);
+  const selectedOption = options.find((opt) => opt.optionId === optionId);
   const [countAsString, setCountAsString] = useState('1');
   const { isWish, handleWishClick } = useHandleWish();
 
-  console.log(optionId);
+  // console.log(optionId);
 
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
@@ -68,7 +69,7 @@ export const OptionSection = ({ productId }: Props) => {
           ))}
         </OptionSelector>
         <CountOptionItem
-          name={options[0].optionName || options[0].name}
+          name={selectedOption?.name || selectedOption?.optionName || ''}
           value={countAsString}
           onChange={setCountAsString}
         />
