@@ -1,9 +1,10 @@
-import { Container, Grid } from '@chakra-ui/react';
+import { Container } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import useGetWishes from '@/api/hooks/useGetWishes';
 import type { WishesData } from '@/api/type';
+import { Grid } from '@/components/common/layouts/Grid';
 import ListMapper from '@/components/common/ListMapper';
 import Loading from '@/components/common/Loading';
 import WishItems from '@/components/features/MyAccount/WishItems';
