@@ -18,7 +18,6 @@ export const CategoryProductsSection = ({ category_id }: Props) => {
 
   if (isLoading) return <LoadingView />;
   if (error) return <TextView>에러가 발생했습니다.</TextView>;
-  console.log('data: ' + JSON.stringify(data));
 
   return (
     <Wrapper>
