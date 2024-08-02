@@ -7,6 +7,8 @@ export const RouterPath = {
   order: '/order',
   login: '/login',
   register: '/register',
+  admin: '/admin',
+  point: '/admin/members-point',
   notFound: '*',
 };
 

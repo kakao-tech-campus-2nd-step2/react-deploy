@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import { Layout } from '@/components/features/Layout';
+import { AdminPage } from '@/pages/Admin';
+import { AdminPointPage } from '@/pages/AdminPoint';
 import { CategoryPage } from '@/pages/Category';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
@@ -62,6 +64,14 @@ const router = createBrowserRouter([
   {
     path: RouterPath.register,
     element: <SignUpPage />,
+  },
+  {
+    path: RouterPath.admin,
+    element: <AdminPage />,
+  },
+  {
+    path: RouterPath.point,
+    element: <AdminPointPage />,
   }
 ]);
 
