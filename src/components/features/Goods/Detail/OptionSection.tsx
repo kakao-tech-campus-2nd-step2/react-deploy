@@ -7,8 +7,8 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
-import { BASE_URL } from '@/api/instance';
 import { Button } from '@/components/common/Button';
+import { useApi } from '@/contexts/ApiContext';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -20,6 +20,7 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+  const { apiUrl } = useApi();
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -48,7 +49,7 @@ export const OptionSection = ({ productId }: Props) => {
 
   const handleAddToWishlist = async () => {
     try {
-      await fetch(`${BASE_URL}/api/wishes'`, {
+      await fetch(`${apiUrl}/api/wishes'`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

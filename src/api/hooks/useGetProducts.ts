@@ -6,7 +6,6 @@ import {
 
 import type { ProductData } from '@/types';
 
-import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
@@ -61,7 +60,7 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `/api/products?${params.toString()}`;
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
