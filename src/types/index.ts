@@ -12,6 +12,7 @@ export type ProductData = {
   price: number;
   imageUrl: string;
   categoryId: number;
+  description: string;
 };
 
 export type ProductOptionsData = {

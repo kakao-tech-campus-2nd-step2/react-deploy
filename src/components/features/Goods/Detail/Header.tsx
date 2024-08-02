@@ -8,7 +8,10 @@ import { breakpoints } from '@/styles/variants';
 type Props = ProductDetailRequestParams;
 
 export const GoodsDetailHeader = ({ productId }: Props) => {
-  const { data: detail } = useGetProductDetail({ productId });
+  const { data: detail, isLoading, error } = useGetProductDetail({ productId });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !detail) return <p>Error loading product details</p>; // detail이 undefined인 경우도 처리
 
   return (
     <Wrapper>
