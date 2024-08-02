@@ -17,9 +17,15 @@ export const useGetWishList = () => {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get<{ categories: WishListData[] }>(`${baseURL}/api/categories`);
-                setWishList(response.data.categories);
-                console.log(response.data);
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get<{ content: WishListData[] }>(`${baseURL}/api/wishes`,
+                    {
+                        headers: {
+                            'Authorization': accessToken
+                        }
+                    }
+                );
+                setWishList(response.data.content);
             } catch (err) {
                 let errorMessage = 'An unexpected error occurred';
                 if (axios.isAxiosError(err) && err.response) {

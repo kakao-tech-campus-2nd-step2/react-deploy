@@ -19,7 +19,6 @@ export const MyAccountPage = () => {
 
   if (loading) return <LoadingView />;
   if (error) return <TextView>에러가 발생했습니다.</TextView>;
-  if (wishList && wishList.length <= 0) return <TextView>상품이 없어요.</TextView>;
 
   const handleDeleteWish = async (productId: string) => {
     const response = await deleteWish(productId);
@@ -43,27 +42,30 @@ export const MyAccountPage = () => {
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
       <WishWrapper>
-        <WishTitle>{authInfo?.name}님의 위시리스트</WishTitle>
-        <Container>
-          <Grid
-            columns={{
-              initial: 2,
-              md: 1,
-            }}
-            gap={16}
-          >
-            {wishList ? wishList.map(({ productId, imageUrl, productName, price }) => (
-              <WishContentWrapper style={{ height: "115px" }}>
-                <img src={imageUrl} alt="" />
-                <WishInfo key={productId}>
-                  <WishProduct>{productName}</WishProduct>
-                  <WishPrice>{price}</WishPrice>
-                </WishInfo>
-                <Button onClick={() => handleDeleteWish(productId?.toString())} theme='darkGray' style={{ width: "100px", position: "absolute", right: "20px" }}>삭제</Button>
-              </WishContentWrapper>
-            )) : ''}
-          </Grid>
-        </Container>
+        {wishList && wishList.length <= 0 ? <TextView>상품이 없어요.</TextView> :
+          <>
+            <WishTitle>{authInfo?.name}님의 위시리스트</WishTitle>
+            <Container>
+              <Grid
+                columns={{
+                  initial: 2,
+                  md: 1,
+                }}
+                gap={16}
+              >
+                {wishList ? wishList.map(({ productId, imageUrl, productName, price }) => (
+                  <WishContentWrapper style={{ height: "115px" }}>
+                    <img src={imageUrl} alt="" />
+                    <WishInfo key={productId}>
+                      <WishProduct>{productName}</WishProduct>
+                      <WishPrice>{price}</WishPrice>
+                    </WishInfo>
+                    <Button onClick={() => handleDeleteWish(productId?.toString())} theme='darkGray' style={{ width: "100px", position: "absolute", right: "20px" }}>삭제</Button>
+                  </WishContentWrapper>
+                )) : ''}
+              </Grid>
+            </Container>
+          </>}
       </WishWrapper>
       <Button
         size="small"
