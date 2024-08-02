@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useWish = () => {
+export const useHandleWish = () => {
   const [isWish, setIsWish] = useState(false);
 
   const handleWishClick = () => {

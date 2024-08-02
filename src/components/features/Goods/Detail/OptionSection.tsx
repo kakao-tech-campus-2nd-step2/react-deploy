@@ -9,7 +9,7 @@ import {
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
-import { useWish } from '@/hooks/useWish';
+import { useHandleWish } from '@/hooks/useHandleWish';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -33,7 +33,7 @@ export const OptionSection = ({ productId }: Props) => {
 
   const authInfo = useAuth();
 
-  const { isWish, handleWishClick } = useWish();
+  const { isWish, handleWishClick } = useHandleWish();
 
   const handleOrderClick = () => {
     if (!authInfo) {

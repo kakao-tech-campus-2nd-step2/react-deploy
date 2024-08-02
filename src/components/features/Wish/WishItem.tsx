@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 import { Image } from '@/components/common/Image';
-import { useWish } from '@/hooks/useWish';
+import { useHandleWish } from '@/hooks/useHandleWish';
 
 type Props = {
   name: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const WishItem = ({ name, imageURL, price }: Props) => {
-  const { isWish, handleWishClick } = useWish();
+  const { isWish, handleWishClick } = useHandleWish();
 
   const handleWishItemClick = () => {
     // 상품 상세 페이지로 이동
