@@ -50,7 +50,7 @@ export const MyAccountPage = () => {
       if (!authInfo) return;
       try {
         const response = await axios.get(
-          `/api/members/wishes?page=${page}&size=${pageSize}`,
+          `/api/wishes?page=${page}&size=${pageSize}`,
           {
             headers: {
               Authorization: `Bearer ${authInfo.token}`,
@@ -90,7 +90,7 @@ export const MyAccountPage = () => {
   const deleteWish = async (wishId: number) => {
     if (!authInfo) return;
     try {
-      await axios.delete(`/api/members/wishes/${wishId}`, {
+      await axios.delete(`/api/wishes/${wishId}`, {
         headers: {
           Authorization: `Bearer ${authInfo.token}`,
         },
