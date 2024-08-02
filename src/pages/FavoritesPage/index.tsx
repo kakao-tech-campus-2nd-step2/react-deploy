@@ -27,12 +27,15 @@ const FavoritesPage = () => {
     }
   }, [data]);
 
-  const handleRemoveFavorite = (id: number) => {
-    removeWish.mutate(id, {
-      onSuccess: () => {
-        setWishList((prevList) => prevList.filter((item) => item.id !== id));
+  const handleRemoveFavorite = (productId: number) => {
+    removeWish.mutate(
+      { productId },
+      {
+        onSuccess: () => {
+          setWishList((prevList) => prevList.filter((item) => item.id !== productId));
+        },
       },
-    });
+    );
   };
 
   const handleNextPage = () => {

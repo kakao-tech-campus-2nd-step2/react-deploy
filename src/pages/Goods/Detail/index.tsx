@@ -37,7 +37,27 @@ export const GoodsDetailPage = () => {
       });
     },
   });
-  const { mutate: removeWish } = useRemoveWish();
+  const { mutate: removeWish } = useRemoveWish({
+    onSuccess: () => {
+      toast({
+        title: '성공',
+        description: '관심 상품에서 제거되었습니다.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{ message: string }>;
+      toast({
+        title: '오류',
+        description: `관심 상품 제거 중 오류가 발생했습니다: ${axiosError.response?.data?.message || axiosError.message}`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+  });
 
   const handleEditProductClick = () => {
     navigate(`/products/edit/${productId}`);
@@ -54,11 +74,11 @@ export const GoodsDetailPage = () => {
   };
 
   const handleAddWishClick = () => {
-    addWish(parseInt(productId, 10));
+    addWish({ productId: parseInt(productId, 10) });
   };
 
   const handleRemoveWishClick = () => {
-    removeWish(parseInt(productId, 10));
+    removeWish({ productId: parseInt(productId, 10) });
   };
 
   return (

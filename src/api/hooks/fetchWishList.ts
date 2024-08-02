@@ -51,17 +51,20 @@ export const useWishList = (
   });
 };
 
-export const useRemoveWish = (options?: UseMutationOptions<void, AxiosError, number>) => {
+export const useRemoveWish = (
+  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
+) => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, AxiosError, number>({
-    mutationFn: async (wishId: number) => {
+  return useMutation<void, AxiosError, { productId: number }>({
+    mutationFn: async ({ productId }) => {
       const token = getToken();
       if (!token) throw new Error('토큰이 없습니다.');
-      return fetchInstance.delete(`/api/wishes/${wishId}`, {
+      return fetchInstance.delete(`/api/wishes`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        data: { productId },
       });
     },
     onSuccess: () => {
@@ -71,11 +74,13 @@ export const useRemoveWish = (options?: UseMutationOptions<void, AxiosError, num
   });
 };
 
-export const useAddWish = (options?: UseMutationOptions<void, AxiosError, number>) => {
+export const useAddWish = (
+  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
+) => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, AxiosError, number>({
-    mutationFn: (productId: number) => {
+  return useMutation<void, AxiosError, { productId: number }>({
+    mutationFn: ({ productId }) => {
       const token = getToken();
       if (!token) throw new Error('토큰이 없습니다.');
       return fetchInstance.post(
