@@ -7,7 +7,7 @@ const endpoints = {
   PRODUCT_OPTIONS: '/products/:productId/options',
   MESSAGE_CARD_TEMPLATE: '/message-card/templates',
   MY_ACCOUNT_INFO: '/my-account/info',
-  ORDER: '/order',
+  ORDER: '/orders',
   LOGIN: '/members/login',
   REGISTER: '/members/register',
   WISHES: '/wishes',
@@ -30,5 +30,7 @@ export default RequestURLs;
 export const AuthenticatedRequestURLs = {
   [RequestURLs.WISHES]: true,
   [RequestURLs.DELETE_WISHES]: true,
+  [RequestURLs.POINT]: true,
+  [RequestURLs.ORDER]: true,
   [RequestURLs.POINT]: true,
 };
