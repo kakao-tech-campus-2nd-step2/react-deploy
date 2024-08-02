@@ -26,7 +26,7 @@ export const fetchInstance = initInstance({
   },
 });
 
-export const fetchInstanceWithAuth = (token?: string) =>
+export const fetchInstanceWithAuth = (token: string) =>
   initInstance({
     baseURL: BASE_URL,
     headers: {

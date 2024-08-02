@@ -2,9 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 
 import type { UserData, UserResponseData } from '@/types';
 
+import { APIPath } from '../apiPath';
 import { BASE_URL, fetchInstance } from '../instance';
 
-export const getRegisterPath = () => `${BASE_URL}/api/members/register`;
+export const getRegisterPath = () => `${BASE_URL}${APIPath.register}`;
 
 export const postRegister = async (req: UserData): Promise<UserResponseData> => {
   const response = await fetchInstance.post<UserResponseData>(getRegisterPath(), req);

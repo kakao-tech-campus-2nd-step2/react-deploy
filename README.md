@@ -7,3 +7,10 @@ API 명세 작성 - https://animated-equinox-902.notion.site/api-5bf622b15fa44ec
 ### STEP2
 
 깃헙 페이지 배포 - https://yimsebin.github.io/react-deploy/
+
+### STEP3
+
+- 관리자 페이지에서 사용자가 원하는 만큼 포인트 충전 가능.
+- 상품 주문 시 현재 보유한 포인트를 최대한 소진.
+
+* API 명세는 STEP1 노션에 작성함.

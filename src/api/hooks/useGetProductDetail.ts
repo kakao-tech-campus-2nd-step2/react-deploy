@@ -2,6 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import type { ProductData } from '@/types';
 
+import { getDynamicAPIPath } from '../apiPath';
 import { BASE_URL, fetchInstance } from '../instance';
 
 export type ProductDetailRequestParams = {
@@ -12,7 +13,8 @@ type Props = ProductDetailRequestParams;
 
 export type GoodsDetailResponseData = ProductData;
 
-export const getProductDetailPath = (productId: string) => `${BASE_URL}/api/products/${productId}`;
+export const getProductDetailPath = (productId: string) =>
+  `${BASE_URL}${getDynamicAPIPath.getProduct(productId)}`;
 
 export const getProductDetail = async (params: ProductDetailRequestParams) => {
   const response = await fetchInstance.get<GoodsDetailResponseData>(

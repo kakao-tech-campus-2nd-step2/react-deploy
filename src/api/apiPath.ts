@@ -3,17 +3,19 @@ export const APIPath = {
   login: '/api/members/login',
   getAllCategories: '/api/categories',
   makeProduct: '/api/products',
-  getProduct: '/api/products/:productsId',
+  getProduct: '/api/products/:productId',
   getAllProducts: '/api/products?page=:page&size=:size&sort=:sort&categoryId=:categoryId',
-  getOption: '/api/products/:productId',
+  getOption: '/api/products/:productId/options',
   putWish: '/api/wishes',
   deleteWish: '/api/wishes/:wishId',
   getAllWishes: '/api/wishes?page=:page&size=:size&sort=:sort',
   order: '/api/orders',
+  getPoint: '/api/points',
 };
 
-export const getDynamicPath = {
-  getProduct: (productsId: string) => APIPath.getProduct.replace(':productsId', productsId),
+export const getDynamicAPIPath = {
+  getProduct: (productId: string) => APIPath.getProduct.replace(':productId', productId),
+  getOption: (productId: string) => APIPath.getOption.replace(':productId', productId),
 };
 
 export const getBackendAPI = () => {
@@ -34,7 +36,7 @@ export const getBackendAPI = () => {
       url = 'http://3.38.99.100:8080';
       break;
     case '이택':
-      url = 'https://api.example.com';
+      url = 'http://52.79.57.116:8080';
       break;
     default:
       url = 'https://api.example.com';
