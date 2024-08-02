@@ -1,14 +1,16 @@
 import { useState } from 'react';
 
+import { register } from '@/api/hooks/register'; // register API 추가
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { authSessionStorage } from '@/utils/storage';
+
 const SignUpPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignUp = () => {
-    if (!id || !password || !confirmPassword) {
+  const handleSignUp = async () => {
+    if (!email || !password || !confirmPassword) {
       alert('모든 필드를 입력해주세요.');
       return;
     }
@@ -18,9 +20,15 @@ const SignUpPage = () => {
       return;
     }
 
-    alert('회원가입 성공!');
-    authSessionStorage.set(id);
-    window.location.replace('/');
+    try {
+      await register(email, password);
+      alert('회원가입 성공!');
+      authSessionStorage.set(email);
+      window.location.replace('/');
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      alert('회원가입 실패');
+    }
   };
 
   return (
@@ -43,9 +51,9 @@ const SignUpPage = () => {
         }}
       >
         <input
-          placeholder="이름"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           style={{ width: '100%', marginBottom: '16px' }}
         />
         <input
