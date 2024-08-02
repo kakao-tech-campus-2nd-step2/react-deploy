@@ -17,10 +17,17 @@ import { authSessionStorage } from '@/utils/storage';
 import { getWishListPath, useGetWishList } from '@/api/hooks/useFindWishList'; // Adjust the import path if necessary
 import { useDeleteWishList } from '@/api/hooks/useDeleteWishList'; // Import the delete hook
 import { queryClient } from '@/api/instance';
+import { useGetMyPoint } from '@/api/hooks/useGetMypoint';
 
 export const MyAccountPage = () => {
   const { authInfo } = useAuth();
   const { data, isLoading, isError, error } = useGetWishList();
+  const {
+    data: pointData,
+    isLoading: isPointLoading,
+    isError: isPointError,
+    error: pointerror,
+  } = useGetMyPoint();
   const { mutate: deleteWish } = useDeleteWishList();
   const toast = useToast();
 
@@ -65,6 +72,15 @@ export const MyAccountPage = () => {
         <Heading as="h1" size="xl">
           안녕하세요, {authInfo?.name}님!
         </Heading>
+        <Text>현재 보유하고 계신 point입니다.</Text>
+        {isPointLoading && <Spinner />}
+        {isPointError && (
+          <Alert status="error">
+            <AlertIcon />
+            <Text>{pointerror?.message}</Text>
+          </Alert>
+        )}
+        {pointData && <Text>{pointData.point}</Text>}
 
         <Button size="sm" colorScheme="teal" onClick={handleLogout}>
           로그아웃
