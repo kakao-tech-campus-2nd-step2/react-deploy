@@ -38,11 +38,13 @@ export const SignUpPage = () => {
       }
 
       const data = await response.json();
+      console.log('회원가입 성공:', data);
       authSessionStorage.set(data.token); //회원가입 성공하면 토큰저장
       alert('회원가입이 완료되었습니다.');
       //window.location.replace('/');
       navigate('/');
     } catch (error) {
+      console.error('회원가입 오류:', error);
       alert('회원가입 실패 - 체크');
     }
   };
@@ -99,7 +101,6 @@ const RegButton = styled(Button)`
   background-color: rgb(235, 235, 235);
   margin-top: 20px;
   &:hover {
-    background-color: #000;
     color: #fff;
   }
 `;

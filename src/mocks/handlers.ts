@@ -20,6 +20,7 @@ export const handlers = [
 
     //가상 데이터베이스에 사용자 정보 저장
     userDatabase.push({ email, password });
+    console.log('회원가입 사용자 정보 저장완', { email, password });
 
     //성공 응답 예제
     return res(
@@ -33,7 +34,7 @@ export const handlers = [
   // 로그인 핸들러
   rest.post('/api/members/login', (req, res, ctx) => {
     const { email, password } = req.body as { email: string; password: string };
-
+    console.log('로그인 핸들러 콘솔');
     console.log('로그인 요청 데이터:', { email, password });
 
     const loginUser = userDatabase.find(
@@ -53,7 +54,7 @@ export const handlers = [
       console.log('로그인 실패: 사용자 정보 불일치');
       //실패시
       return res(
-        ctx.status(401),
+        ctx.status(405),
         ctx.json({ message: '로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요' }),
       );
     }

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { BASE_URL } from '@/api/instance';
+//import { BASE_URL } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -25,13 +25,15 @@ export const LoginPage = () => {
     try {
       console.log('로그인 요청:', { email: id, password });
 
-      const response = await fetch(`${BASE_URL}/api/members/login`, {
+      const response = await fetch(`http://localhost:3000/api/members/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: id, password }),
       });
+
+      console.log('로그인 요청2:', { email: id, password });
 
       console.log('로그인 응답 상태:', response.status);
 
