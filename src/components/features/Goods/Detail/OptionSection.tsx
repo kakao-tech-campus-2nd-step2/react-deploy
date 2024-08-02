@@ -61,14 +61,14 @@ export const OptionSection = ({ productId }: Props) => {
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
         <ButtonBox>
-          <Button theme="darkGray" width="60px" onClick={handleWishClick}>
+          <Button theme="darkGray" width="75px" onClick={handleWishClick}>
             {isWish ? (
               <AiFillHeart style={{ color: 'rgb(241, 42, 36)', fontSize: '24px' }} />
             ) : (
               <AiOutlineHeart style={{ color: '#fff', fontSize: '24px' }} />
             )}
           </Button>
-          <Button theme="black" size="large" onClick={handleOrderClick}>
+          <Button theme="black" onClick={handleOrderClick}>
             나에게 선물하기
           </Button>
         </ButtonBox>
@@ -110,8 +110,7 @@ const PricingWrapper = styled.div`
 `;
 
 const ButtonBox = styled.div`
-  display: table;
+  display: flex;
   width: 100%;
-  table-layout: fixed;
   gap: 2px;
 `;
