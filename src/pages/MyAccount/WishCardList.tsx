@@ -13,9 +13,7 @@ import WishCard from './WishCard';
 export default () => {
   const authInfo = useAuth();
   const { data, isError, isLoading } = authInfo
-    ? useGetWishlist({
-        userId: authInfo.id,
-      })
+    ? useGetWishlist({})
     : { data: undefined, isError: false, isLoading: true };
 
   if (isLoading) return <LoadingView />;

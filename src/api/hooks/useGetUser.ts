@@ -1,31 +1,37 @@
 import axios from "axios";
 
-import { BASE_URL } from "../instance";
+import { authSessionStorage } from "@/utils/storage";
+
+import { fetchInstance } from "../instance";
 
 export interface User {
-    id: string;
+    email: string;
     password: string;
 }
 
-export const getUsersPath = () => `${BASE_URL}/api/users`;
-export const getUserPath = (id: string) => `${BASE_URL}/api/users/${id}`;
+export const getUsersPath = (baseURL?: string) => `${baseURL ?? ''}/api/members/register`;
+export const getUserPath = (baseURL?: string) => `${baseURL ?? ''}/api/members/login`;
 
-export const login = async (id: string, password: string) => {
+export const login = async (email: string, password: string, baseURL: string) => {
     try{
-        const response = await axios.post(getUserPath(id), {
+        const response = await fetchInstance(baseURL).post(getUserPath(), {
+            email,
             password,
         });
-        return !axios.isAxiosError(response)
+        if(axios.isAxiosError(response)) return false;
+        const token = response.headers.token;
+        authSessionStorage.set({email, token});
+        return true;
     } catch (e) {
         console.error(e);
         return false;
     }
 }
 
-export const signUp = async (id: string, password: string) => {
+export const signUp = async (email: string, password: string, baseURL: string) => {
     try{
-        const response = await axios.post(getUsersPath(), {
-            id,
+        const response = await fetchInstance(baseURL).post(getUsersPath(), {
+            email,
             password,
         });
         

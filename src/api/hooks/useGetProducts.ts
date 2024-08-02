@@ -4,9 +4,9 @@ import {
   type UseInfiniteQueryResult,
 } from '@tanstack/react-query';
 
+import { useAPIBaseURL } from '@/provider/APIBaseURL';
 import type { ProductData } from '@/types';
 
-import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
@@ -32,7 +32,7 @@ type ProductsResponseRawData = {
   last: boolean;
 };
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams, baseURL?: string) => {
   const params = new URLSearchParams();
 
   params.append('categoryId', categoryId);
@@ -40,11 +40,11 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `${baseURL ?? ''}/api/products?${params.toString()}`;
 };
 
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+const getProducts = async (params: RequestParams, baseURL: string): Promise<ProductsResponseData> => {
+  const response = await fetchInstance(baseURL).get<ProductsResponseRawData>(getProductsPath(params));
   const data = response.data;
 
   return {
@@ -61,12 +61,13 @@ type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken
 export const useGetProducts = ({
   categoryId,
   maxResults = 20,
-  initPageToken,
+  initPageToken = '0',
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
+  const baseURL = useAPIBaseURL()[0];
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
+    queryKey: ['products', categoryId, maxResults, initPageToken, baseURL],
     queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+      return getProducts({ categoryId, pageToken: pageParam, maxResults }, baseURL);
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,

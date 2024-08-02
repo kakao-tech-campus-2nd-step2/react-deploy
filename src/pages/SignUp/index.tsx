@@ -8,6 +8,7 @@ import { signUp } from '@/api/hooks/useGetUser';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useAPIBaseURL } from '@/provider/APIBaseURL';
 import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
@@ -18,12 +19,13 @@ export default () => {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<User>();
+  const baseURL = useAPIBaseURL()[0];
 
   const onSubmit = (data: User) => {
-    signUp(data.id, data.password).then((result) => {
+    signUp(data.email, data.password, baseURL).then((result) => {
       if (result) {
         alert('회원가입이 완료되었습니다.');
-        navigate(getDynamicPath.login(), { replace: true });
+        navigate(getDynamicPath.login('/'), { replace: true });
       } else {
         alert('회원가입에 실패했습니다.');
       }
@@ -34,7 +36,11 @@ export default () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <Input placeholder="이름" {...register('id', { required: true })} disabled={isSubmitting} />
+        <Input
+          placeholder="이메일"
+          {...register('email', { required: true })}
+          disabled={isSubmitting}
+        />
         <Spacing />
         <Input
           type="password"
