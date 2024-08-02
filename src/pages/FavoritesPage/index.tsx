@@ -12,15 +12,14 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+import type { WishItem } from '@/api/hooks/fetchWishList';
 import { useRemoveWish, useWishList } from '@/api/hooks/fetchWishList';
-import { useAuth } from '@/provider/Auth';
 
 const FavoritesPage = () => {
-  const authInfo = useAuth();
   const [page, setPage] = useState(0);
   const { data, error, isLoading } = useWishList(page);
   const removeWish = useRemoveWish();
-  const [wishList, setWishList] = useState(data?.content || []);
+  const [wishList, setWishList] = useState<WishItem[]>([]);
 
   useEffect(() => {
     if (data) {
@@ -37,7 +36,7 @@ const FavoritesPage = () => {
   };
 
   const handleNextPage = () => {
-    if (data && page < data.totalPages - 1) {
+    if (data && page < data.page.totalPages - 1) {
       setPage(page + 1);
     }
   };
@@ -47,10 +46,6 @@ const FavoritesPage = () => {
       setPage(page - 1);
     }
   };
-
-  if (!authInfo) {
-    return <Text>로그인이 필요합니다.</Text>;
-  }
 
   let content;
   if (isLoading) {
@@ -86,7 +81,7 @@ const FavoritesPage = () => {
           <Button onClick={handlePreviousPage} disabled={page === 0}>
             이전
           </Button>
-          <Button onClick={handleNextPage} disabled={data && page >= data.totalPages - 1}>
+          <Button onClick={handleNextPage} disabled={data && page >= data.page.totalPages - 1}>
             다음
           </Button>
         </Flex>

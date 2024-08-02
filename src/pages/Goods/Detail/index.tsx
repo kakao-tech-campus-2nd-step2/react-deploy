@@ -1,6 +1,8 @@
-import { Button, Center, VStack } from '@chakra-ui/react';
+import { Button, Center, useToast, VStack } from '@chakra-ui/react';
+import type { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useAddWish, useRemoveWish } from '@/api/hooks/fetchWishList';
 import { useDeleteProduct } from '@/api/hooks/useDeleteProduct';
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
@@ -12,7 +14,30 @@ import { OptionSection } from '@/components/features/Goods/Detail/OptionSection'
 export const GoodsDetailPage = () => {
   const { productId = '' } = useParams<ProductDetailRequestParams>();
   const navigate = useNavigate();
+  const toast = useToast();
   const { mutate: deleteProduct } = useDeleteProduct();
+  const { mutate: addWish } = useAddWish({
+    onSuccess: () => {
+      toast({
+        title: '성공',
+        description: '관심 상품에 추가되었습니다.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{ message: string }>;
+      toast({
+        title: '오류',
+        description: `관심 상품 추가 중 오류가 발생했습니다: ${axiosError.response?.data?.message || axiosError.message}`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+  });
+  const { mutate: removeWish } = useRemoveWish();
 
   const handleEditProductClick = () => {
     navigate(`/products/edit/${productId}`);
@@ -26,6 +51,14 @@ export const GoodsDetailPage = () => {
     if (window.confirm('정말로 이 상품을 삭제하시겠습니까?')) {
       deleteProduct(productId);
     }
+  };
+
+  const handleAddWishClick = () => {
+    addWish(parseInt(productId, 10));
+  };
+
+  const handleRemoveWishClick = () => {
+    removeWish(parseInt(productId, 10));
   };
 
   return (
@@ -43,6 +76,12 @@ export const GoodsDetailPage = () => {
               </Button>
               <Button colorScheme="red" onClick={handleDeleteProductClick}>
                 상품 삭제
+              </Button>
+              <Button colorScheme="yellow" onClick={handleAddWishClick}>
+                관심 상품 추가
+              </Button>
+              <Button colorScheme="purple" onClick={handleRemoveWishClick}>
+                관심 상품 삭제
               </Button>
             </VStack>
           </Center>
