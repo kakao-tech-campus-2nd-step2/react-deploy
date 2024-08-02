@@ -5,12 +5,13 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
 import { fetchWishlist, deleteWish } from '@/api/hooks/useWish';
 import { authSessionStorage } from '@/utils/storage';
+import { useNavigate } from 'react-router-dom';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
   const [wishList, setWishList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   const handleLogout = () => {
     authSessionStorage.set(undefined);
     window.location.replace('/');
@@ -46,6 +47,8 @@ export const MyAccountPage = () => {
 
   if (loading) return <div>Loading...</div>;
 
+  
+
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
@@ -59,6 +62,7 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <button onClick={() => navigate('/orders')}>주문 목록</button>
       <Spacing height={32} />
       <div>위시리스트</div>
       {wishList.length > 0 ? (
