@@ -7,11 +7,12 @@ export type CategoryData = {
 };
 
 export type ProductData = {
-  id: number;
+  productId: number;
   name: string;
   price: number;
   imageUrl: string;
-  categoryId: number;
+  categoryId?: number;
+  isWish: boolean;
 };
 
 export type ProductOptionsData = {

@@ -1,6 +1,9 @@
 import { useParams } from 'react-router-dom';
 
-import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
+import {
+  type ProductDetailRequestParams,
+  useGetProductDetail,
+} from '@/api/hooks/useGetProductDetail';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import { LoadingView } from '@/components/common/View/LoadingView';
@@ -9,6 +12,12 @@ import { OptionSection } from '@/components/features/Goods/Detail/OptionSection'
 
 export const GoodsDetailPage = () => {
   const { productId = '' } = useParams<ProductDetailRequestParams>();
+  // console.log('productId: ', productId);
+
+  const { data, isLoading, isError } = useGetProductDetail({ productId });
+
+  if (isLoading || isError) return null;
+  if (!data) return null;
 
   return (
     <>

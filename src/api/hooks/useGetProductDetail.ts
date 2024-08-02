@@ -15,11 +15,17 @@ export type GoodsDetailResponseData = ProductData;
 export const getProductDetailPath = (productId: string) => `${BASE_URL}/api/products/${productId}`;
 
 export const getProductDetail = async (params: ProductDetailRequestParams) => {
-  const response = await fetchInstance.get<GoodsDetailResponseData>(
-    getProductDetailPath(params.productId),
-  );
+  try {
+    const response = await fetchInstance.get<GoodsDetailResponseData>(
+      getProductDetailPath(params.productId),
+    );
 
-  return response.data;
+    // console.log('Response data:', response.data);
+    return response.data;
+  } catch (error) {
+    console.log('error fetching product detail: ', error);
+    throw error;
+  }
 };
 
 export const useGetProductDetail = ({ productId }: Props) => {
