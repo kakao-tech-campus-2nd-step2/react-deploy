@@ -70,7 +70,7 @@ export const interestHandlers = [
   }),
 
   // 위시 삭제 핸들러 추가
-  rest.delete("/api/wishes/:wishId", (req, res, ctx) => {
+  rest.delete("/api/members/wishes/:wishId", (req, res, ctx) => {
     const { wishId } = req.params;
     const wishIndex = wishesDatabase.findIndex(
       (wish) => wish.id === Number(wishId)

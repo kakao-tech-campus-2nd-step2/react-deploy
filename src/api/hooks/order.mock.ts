@@ -119,4 +119,26 @@ export const orderHandlers = [
       })
     );
   }),
+
+  // 포인트 충전 핸들러 추가
+  rest.post("/api/points", (req, res, ctx) => {
+    const { pointsToAdd } = req.body as { pointsToAdd: number };
+
+    if (pointsToAdd <= 0) {
+      return res(
+        ctx.status(400),
+        ctx.json({ message: "Invalid points value" })
+      );
+    }
+
+    userPoints += pointsToAdd;
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        message: "Points added successfully",
+        points: userPoints,
+      })
+    );
+  }),
 ];

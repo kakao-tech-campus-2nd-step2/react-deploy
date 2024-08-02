@@ -38,6 +38,7 @@ export const MyAccountPage = () => {
   const [currentWishPage, setCurrentWishPage] = useState(0);
   const [totalWishPages, setTotalWishPages] = useState(0);
   const [points, setPoints] = useState(0); // 보유 포인트 상태 추가
+  const [pointsToAdd, setPointsToAdd] = useState(0); // 충전할 포인트 상태 추가
   const pageSize = 5;
 
   const handleLogout = () => {
@@ -102,6 +103,25 @@ export const MyAccountPage = () => {
     }
   }, [authInfo]);
 
+  const addPoints = async () => {
+    if (!authInfo) return;
+    try {
+      const response = await axios.post(
+        "/api/points",
+        { pointsToAdd },
+        {
+          headers: {
+            Authorization: `Bearer ${authInfo.token}`,
+          },
+        }
+      );
+      setPoints(response.data.points);
+      setPointsToAdd(0); // Reset input value after successful addition
+    } catch (error) {
+      console.error("Failed to add points", error);
+    }
+  };
+
   const deleteWish = async (wishId: number) => {
     if (!authInfo) return;
     try {
@@ -146,6 +166,15 @@ export const MyAccountPage = () => {
         <Section>
           <h2>보유 포인트</h2>
           <p>{points}점</p> {/* 보유 포인트 표시 */}
+          <Spacing height={32} />
+          <h2>포인트 충전</h2>
+          <input
+            type="number"
+            value={pointsToAdd}
+            onChange={(e) => setPointsToAdd(Number(e.target.value))}
+            placeholder="충전할 포인트 입력"
+          />
+          <button onClick={addPoints}>충전</button>
           <Spacing height={32} />
         </Section>
         <Section>
