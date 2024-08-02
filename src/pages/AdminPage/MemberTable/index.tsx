@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableContainer,
   Tbody,
@@ -14,6 +13,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+
+import { AddPointModal } from './AddPointModal';
 
 type Member = {
   id: number;
@@ -56,7 +57,7 @@ const columns: ColumnDef<Member>[] = [
   {
     header: '포인트 추가하기',
     accessorKey: 'addPoint',
-    cell: () => <Button>추가하기</Button>,
+    cell: () => <AddPointModal />,
   },
 ];
 

@@ -88,4 +88,6 @@ http://katecam-ppochaco.s3-website.ap-northeast-2.amazonaws.com/
 
 - UI
   - [x] 사용자 table
-  - [ ] 포인트 추가 input
+  - [x] 포인트 추가 dialog
+    - button: 기본 포인트, 클릭 시 해당 포인트만큼 증가
+    - input
