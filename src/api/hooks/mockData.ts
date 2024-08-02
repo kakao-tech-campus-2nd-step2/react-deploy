@@ -1,4 +1,4 @@
-import { ProductListResponse } from './useFindWishList';
+import type { ProductListResponse } from './useFindWishList';
 
 export let mockData = {
   content: [
