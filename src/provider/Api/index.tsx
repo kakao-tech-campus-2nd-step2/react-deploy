@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 
-import { BASE_URL } from '@/api/instance';
+import { fetchInstance, setFetchInstanceBaseURL } from '@/api/instance';
 
 type ApiInfo = {
-  url: string | undefined;
+  url: string;
 };
 
 type ApiContextData = {
@@ -13,7 +13,7 @@ type ApiContextData = {
 };
 
 const defaultApiInfo: ApiInfo = {
-  url: BASE_URL,
+  url: fetchInstance.defaults.baseURL!,
 };
 
 export const ApiContext = createContext<ApiContextData | undefined>(undefined);
@@ -22,24 +22,25 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const [apiInfo, setApiInfo] = useState<ApiInfo>(defaultApiInfo);
 
   const handleApiInfo = (value: string) => {
-    let newUrl = BASE_URL;
+    let newUrl: string;
     switch (value) {
       case '1':
-        newUrl = process.env.REACT_APP_API_LEE;
+        newUrl = process.env.REACT_APP_API_LEE ?? fetchInstance.defaults.baseURL!;
         break;
       case '2':
-        newUrl = process.env.REACT_APP_API_JANG;
+        newUrl = process.env.REACT_APP_API_JANG ?? fetchInstance.defaults.baseURL!;
         break;
       case '3':
-        newUrl = process.env.REACT_APP_API_JUNG;
+        newUrl = process.env.REACT_APP_API_JUNG ?? fetchInstance.defaults.baseURL!;
         break;
       case '4':
-        newUrl = process.env.REACT_APP_API_TAK;
+        newUrl = process.env.REACT_APP_API_TAK ?? fetchInstance.defaults.baseURL!;
         break;
       default:
-        newUrl = BASE_URL;
+        newUrl = fetchInstance.defaults.baseURL!;
     }
     setApiInfo({ url: newUrl });
+    setFetchInstanceBaseURL(newUrl);
   };
 
   return (
