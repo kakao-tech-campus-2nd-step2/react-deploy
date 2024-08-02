@@ -38,11 +38,7 @@ const AddProductPage: React.FC = () => {
     <Center height="100vh">
       <VStack spacing={4}>
         <h1>상품 추가</h1>
-        <Input
-          placeholder="상품명"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Input placeholder="상품명" value={name} onChange={(e) => setName(e.target.value)} />
         <Input
           placeholder="가격"
           type="number"

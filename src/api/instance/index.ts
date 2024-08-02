@@ -2,24 +2,42 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
-const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
+import { authSessionStorage } from '@/utils/storage';
+
+export const BASE_URL = '//http://43.201.17.220:8080'; //명준
+//http://13.125.199.167:8080 준형
+//http://3.38.211.225:8080 서영
+
+const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
-    ...config,
+    ...axiosConfig,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...config.headers,
+      ...axiosConfig.headers,
     },
+  });
+
+  // 인증 토큰 설정
+  instance.interceptors.request.use((requestConfig) => {
+    const token = authSessionStorage.get(); // sessionStorage에서 토큰 가져오기
+    if (token) {
+      requestConfig.headers.Authorization = `Bearer ${token}`;
+    }
+    return requestConfig;
   });
 
   return instance;
 };
 
-export const BASE_URL = 'http://13.125.199.167:8080';
 export const fetchInstance = initInstance({
   baseURL: BASE_URL,
 });
+
+export const setBaseURL = (url: string) => {
+  fetchInstance.defaults.baseURL = url;
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {
