@@ -17,7 +17,7 @@ function useGetWishes({
   size = 10,
   sort = 'createdDate,desc',
 }: RequestParams): UseAxiosQueryWithPageResult<GetWishesResponseBody> {
-  const token = authSessionStorage.get() ?? '';
+  const token = authSessionStorage.get()?.token ?? '';
 
   return useAxiosQueryWithPage<GetWishesResponseBody>(
     {

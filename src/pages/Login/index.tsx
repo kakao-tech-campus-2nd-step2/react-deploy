@@ -25,8 +25,11 @@ export const LoginPage = () => {
   const { mutateAsync: login } = usePostLogin();
   const { mutateAsync: register } = usePostRegister();
 
-  const afterGetToken = (authToken: string) => {
-    authSessionStorage.set(authToken);
+  const afterGetToken = (authToken: string, authEmail: string) => {
+    authSessionStorage.set({
+      email: authEmail,
+      token: authToken,
+    });
 
     const redirectUrl = queryParams.get('redirect') ?? `${process.env.PUBLIC_URL}/`;
     return window.location.replace(redirectUrl);
@@ -40,7 +43,7 @@ export const LoginPage = () => {
 
     login({ email: id, password })
       .then((res: PostLoginResponseBody) => {
-        return afterGetToken(res.token);
+        return afterGetToken(res.token, res.email);
       })
       .catch((err) => {
         alert(err?.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
@@ -55,7 +58,7 @@ export const LoginPage = () => {
 
     register({ email: newId, password: newPassword })
       .then((res: PostRegisterResponseBody) => {
-        return afterGetToken(res.token);
+        return afterGetToken(res.token, res.email);
       })
       .catch((err) => {
         alert(err?.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');

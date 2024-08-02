@@ -9,7 +9,7 @@ export function getDeleteWishesPath(props?: DeleteWishesRequestBody | undefined)
 }
 
 function useDeleteWishes(): UseAxiosMutationResult<void, DeleteWishesRequestBody> {
-  const token = authSessionStorage.get() ?? '';
+  const token = authSessionStorage.get()?.token ?? '';
 
   return useAxiosMutation<void, DeleteWishesRequestBody>(
     {

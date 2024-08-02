@@ -9,7 +9,7 @@ export function getPostWishesPath(): string {
 }
 
 function usePostWishes(): UseAxiosMutationResult<PostWishesResponseBody, PostWishesRequestBody> {
-  const token = authSessionStorage.get() ?? '';
+  const token = authSessionStorage.get()?.token ?? '';
 
   return useAxiosMutation<PostWishesResponseBody, PostWishesRequestBody>(
     {

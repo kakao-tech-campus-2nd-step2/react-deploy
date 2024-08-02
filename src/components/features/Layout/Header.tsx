@@ -19,7 +19,7 @@ export const Header = () => {
   const handleApiChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const url = e.target.value;
     apiSessionStorage.set(url);
-    authSessionStorage.set('');
+    authSessionStorage.set(undefined);
     window.location.reload();
   };
 

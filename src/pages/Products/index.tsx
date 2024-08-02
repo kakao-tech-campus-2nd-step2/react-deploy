@@ -34,7 +34,7 @@ export const ProductsPage = () => {
   });
   const { mutateAsync: postWishes } = usePostWishes();
 
-  const currentAuthToken = authSessionStorage.get();
+  const currentAuthToken = authSessionStorage.get()?.token;
   const navigate = useNavigate();
   const location = useLocation();
 
