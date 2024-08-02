@@ -18,6 +18,7 @@ export type ProductData = {
 export type ProductOptionsData = {
   optionId: number;
   name: string;
+  optionName?: string; // 키 명이 다를 수 있음
   quantity: number;
   productId?: number;
 };

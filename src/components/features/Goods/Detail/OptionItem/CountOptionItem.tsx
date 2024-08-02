@@ -45,12 +45,13 @@ export const CountOptionItem = ({
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 12px 14px 16px;
+  padding: 13px 14px 16px;
   border: 1px solid #ededed;
   border-radius: 2px;
 `;
 
 const Title = styled.p`
+  font-size: 14px;
   font-weight: 700;
   line-height: 22px;
   color: #111;

@@ -17,6 +17,8 @@ const getProductOptions = async (params: ProductDetailRequestParams) => {
     const response = await fetchInstance.get<ProductOptionsResponseData>(
       getProductOptionsPath(params.productId),
     );
+
+    // console.log('product options: ', response.data);
     return response.data;
   } catch (error) {
     console.log('error fetching options: ', error);

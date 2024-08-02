@@ -22,8 +22,6 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
-  // console.log('all options: ', options);
-
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
@@ -55,7 +53,20 @@ export const OptionSection = ({ productId }: Props) => {
 
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <OptionContainer>
+        <OptionSelector>
+          {options.map((opt) => (
+            <option key={opt.optionId} value={opt.name || opt.optionName}>
+              {opt.name || opt.optionName}
+            </option>
+          ))}
+        </OptionSelector>
+        <CountOptionItem
+          name={options[0].optionName || options[0].name}
+          value={countAsString}
+          onChange={setCountAsString}
+        />
+      </OptionContainer>
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
@@ -84,6 +95,26 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const OptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+`;
+
+const OptionSelector = styled.select`
+  display: block;
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  padding: 0 42px 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 38px;
+
+  border: 1px solid #ededed;
+  border-radius: 2px;
 `;
 
 const BottomWrapper = styled.div`
