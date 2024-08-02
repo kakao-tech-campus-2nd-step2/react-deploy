@@ -1,32 +1,25 @@
-import { Select } from '@chakra-ui/react';
+import { Box, Select } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { updateFetchInstance } from '@/api/instance';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 
-const servers = [
-  { name: '백엔드 API 선택', value: '' },
-  { name: '권도윤', value: 'server1' },
-  { name: '배규민', value: 'server2' },
-  { name: '석혜원', value: 'server3' },
-  { name: '신성민', value: 'server4' },
-];
-
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
-  const [selectedServer, setSelectedServer] = useState(servers[0].value);
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
   };
 
   const handleServerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedServer(event.target.value);
-    // TODO: 서버 변경 로직 추가
+    const selectedServer = event.target.value;
+    sessionStorage.setItem('selectedServer', selectedServer);
+    updateFetchInstance();
+    window.location.reload();
   };
 
   return (
@@ -40,19 +33,16 @@ export const Header = () => {
         </Link>
         <RightWrapper>
           <SelectContainer>
-            <Select
-              value={selectedServer}
-              onChange={handleServerChange}
-              variant="outline"
-              size="sm"
-            >
-              {servers.map((server) => (
-                <option key={server.value} value={server.value}>
-                  {server.name}
-                </option>
-              ))}
-            </Select>
+            <Box ml={4}>
+              <Select placeholder="백엔드 API 선택" onChange={handleServerChange}>
+                <option value="server1">권도윤</option>
+                <option value="server2">배규민</option>
+                <option value="server3">석혜원</option>
+                <option value="server4">신성민</option>
+              </Select>
+            </Box>
           </SelectContainer>
+
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
