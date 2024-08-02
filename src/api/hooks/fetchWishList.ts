@@ -1,5 +1,6 @@
 import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+<<<<<<< HEAD
 import type { AxiosError } from 'axios';
 
 import { authSessionStorage } from '@/utils/storage';
@@ -20,10 +21,27 @@ export interface WishItem {
   name: string;
   price: number;
   imageUrl: string;
+=======
+import axios from 'axios';
+
+const API_URL = 'http://localhost:3000/api';
+const LOCAL_STORAGE_TOKEN_KEY = 'token';
+const QUERY_KEY_WISHLIST = 'wishList';
+
+export interface WishItem {
+  id: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
+>>>>>>> upstream/hehelee
 }
 
 interface WishListResponse {
   content: WishItem[];
+<<<<<<< HEAD
   page: {
 <<<<<<< HEAD
     size: number;
@@ -36,11 +54,18 @@ interface WishListResponse {
 export const getWishListPath = (page: number, size: number) =>
   `${BASE_URL}/api/wishes?page=${page}&size=${size}&sort=id,desc`;
 
+=======
+  totalPages: number;
+  totalElements: number;
+}
+
+>>>>>>> upstream/hehelee
 const fetchWishList = async (
   token: string,
   page: number,
   size: number,
 ): Promise<WishListResponse> => {
+<<<<<<< HEAD
   console.log('관심 목록 요청, 사용된 토큰:', token);
   const response = await fetchInstance.get(getWishListPath(page, size), {
     headers: {
@@ -56,12 +81,16 @@ const fetchWishList = async (page: number, size: number): Promise<WishListRespon
   const token = getToken();
   if (!token) throw new Error('토큰이 없습니다.');
   const response = await fetchInstance.get('/api/wishes', {
+=======
+  const response = await axios.get(`${API_URL}/wishes`, {
+>>>>>>> upstream/hehelee
     headers: {
       Authorization: `Bearer ${token}`,
     },
     params: {
       page,
       size,
+<<<<<<< HEAD
       sort: 'id,desc',
     },
 >>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
@@ -111,10 +140,27 @@ export const useWishList = (
     queryKey: ['wishList', page, size],
     queryFn: () => fetchWishList(page, size),
 >>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
+=======
+      sort: 'createdDate,desc',
+    },
+  });
+  return response.data;
+};
+
+export const useWishList = (
+  page: number = 0,
+  size: number = 10,
+  options?: UseQueryOptions<WishListResponse, Error>,
+) => {
+  return useQuery<WishListResponse, Error>({
+    queryKey: [QUERY_KEY_WISHLIST, page, size],
+    queryFn: () => fetchWishList(localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) || '', page, size),
+>>>>>>> upstream/hehelee
     ...options,
   });
 };
 
+<<<<<<< HEAD
 export const useRemoveWish = (
   options?: UseMutationOptions<void, AxiosError, { productId: number }>,
 ) => {
@@ -141,11 +187,27 @@ export const useRemoveWish = (
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishList'] });
+=======
+export const useRemoveWish = (options?: UseMutationOptions<void, Error, number>) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, number>({
+    mutationFn: async (wishId: number) => {
+      return axios.delete(`${API_URL}/wishes/${wishId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}`,
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
+>>>>>>> upstream/hehelee
     },
     ...options,
   });
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export const useAddWish = (options?: UseMutationOptions<void, Error, number>) => {
   const queryClient = useQueryClient();
@@ -215,5 +277,25 @@ export const useAddWish = (
 =======
 >>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
     ...options,
+=======
+export const useAddWish = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (productId: number) => {
+      return axios.post(
+        `${API_URL}/wishes`,
+        { productId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}`,
+          },
+        },
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
+    },
+>>>>>>> upstream/hehelee
   });
 };

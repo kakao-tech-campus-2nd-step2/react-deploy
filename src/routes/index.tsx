@@ -2,12 +2,17 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
+<<<<<<< HEAD
 import CategoryAddPage from '@/pages/Category/CategoryAddPage'; 
 import CategoryEditPage from '@/pages/Category/CategoryEditPage';
 import FavoritesPage from '@/pages/FavoritesPage'; 
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import ProductAddPage from '@/pages/Goods/Detail/ProductAddPage';
 import ProductEditPage from '@/pages/Goods/Detail/ProductEditPage';
+=======
+import FavoritesPage from '@/pages/FavoritesPage'; // 올바르게 import
+import { GoodsDetailPage } from '@/pages/Goods/Detail';
+>>>>>>> upstream/hehelee
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
@@ -31,6 +36,7 @@ const router = createBrowserRouter([
         element: <CategoryPage />,
       },
       {
+<<<<<<< HEAD
         path: RouterPath.addProduct,
         element: <ProductAddPage />,
       },
@@ -47,6 +53,8 @@ const router = createBrowserRouter([
         element: <ProductEditPage />,
       },
       {
+=======
+>>>>>>> upstream/hehelee
         path: RouterPath.productsDetail,
         element: <GoodsDetailPage />,
       },

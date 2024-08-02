@@ -26,6 +26,7 @@ type ProductsResponseData = {
 
 type ProductsResponseRawData = {
   content: ProductData[];
+<<<<<<< HEAD
   page: {
     size: number;
     number: number;
@@ -42,6 +43,21 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   if (maxResults) params.append('size', maxResults.toString());
   params.append('sort', 'id,desc');
   params.append('categoryId', categoryId);
+=======
+  number: number;
+  totalElements: number;
+  size: number;
+  last: boolean;
+};
+
+export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+  const params = new URLSearchParams();
+
+  params.append('categoryId', categoryId);
+  params.append('sort', 'name,asc');
+  if (pageToken) params.append('page', pageToken);
+  if (maxResults) params.append('size', maxResults.toString());
+>>>>>>> upstream/hehelee
 
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
@@ -52,10 +68,17 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
 
   return {
     products: data.content,
+<<<<<<< HEAD
     nextPageToken: data.page.number + 1 < data.page.totalPages ? (data.page.number + 1).toString() : undefined,
     pageInfo: {
       totalResults: data.page.totalElements,
       resultsPerPage: data.page.size,
+=======
+    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
+    pageInfo: {
+      totalResults: data.totalElements,
+      resultsPerPage: data.size,
+>>>>>>> upstream/hehelee
     },
   };
 };
@@ -74,4 +97,8 @@ export const useGetProducts = ({
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,
   });
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> upstream/hehelee

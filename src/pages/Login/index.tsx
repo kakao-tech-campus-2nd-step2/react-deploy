@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+<<<<<<< HEAD
 import type { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -8,6 +9,11 @@ import { login } from '@/api/hooks/auth'; // login API 추가
 =======
 import { login } from '@/api/hooks/login';
 >>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
+=======
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
+>>>>>>> upstream/hehelee
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -16,11 +22,16 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
+<<<<<<< HEAD
   const [email, setEmail] = useState('');
+=======
+  const [id, setId] = useState('');
+>>>>>>> upstream/hehelee
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
+<<<<<<< HEAD
   const handleConfirm = async () => {
 <<<<<<< HEAD
     if (!email || !password) {
@@ -54,6 +65,22 @@ export const LoginPage = () => {
       alert(`로그인 실패: ${axiosError.response?.data?.message || axiosError.message}`);
 >>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
     }
+=======
+  const handleConfirm = () => {
+    if (!id || !password) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    // TODO: API 연동
+
+    // TODO: API 연동 전까지 임시 로그인 처리
+    alert('로그인 성공!');
+    authSessionStorage.set(id);
+
+    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+    return window.location.replace(redirectUrl);
+>>>>>>> upstream/hehelee
   };
 
   const handleSignUp = () => {
@@ -64,11 +91,15 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
+<<<<<<< HEAD
         <UnderlineTextField
           placeholder="이메일"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+=======
+        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+>>>>>>> upstream/hehelee
         <Spacing />
         <UnderlineTextField
           type="password"

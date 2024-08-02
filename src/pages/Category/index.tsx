@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 import { Button,  Center, HStack } from '@chakra-ui/react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import { useDeleteCategory } from '@/api/hooks/useDeleteCategory';
+=======
+import { Navigate, useParams } from 'react-router-dom';
+
+>>>>>>> upstream/hehelee
 import { CategoryHeroSection } from '@/components/features/Category/CategoryHeroSection';
 import { CategoryProductsSection } from '@/components/features/Category/CategoryProductsSection';
 import { useCurrentCategory } from '@/hooks/useCurrentCategory';
@@ -10,8 +15,11 @@ import { RouterPath } from '@/routes/path';
 export const CategoryPage = () => {
   const { categoryId = '' } = useParams<{ categoryId: string }>();
   const { isRender, currentTheme } = useCurrentCategory({ categoryId });
+<<<<<<< HEAD
   const navigate = useNavigate();
   const { mutate: deleteCategory } = useDeleteCategory();
+=======
+>>>>>>> upstream/hehelee
 
   if (!isRender) return null;
 
@@ -19,6 +27,7 @@ export const CategoryPage = () => {
     return <Navigate to={RouterPath.notFound} />;
   }
 
+<<<<<<< HEAD
   const handleAddCategoryClick = () => {
     navigate(RouterPath.addCategory);
   };
@@ -33,10 +42,13 @@ export const CategoryPage = () => {
     }
   };
 
+=======
+>>>>>>> upstream/hehelee
   return (
     <>
       <CategoryHeroSection categoryId={categoryId} />
       <CategoryProductsSection categoryId={categoryId} />
+<<<<<<< HEAD
       <Center height="100vh">
         <HStack spacing={4}>
           <Button colorScheme="blue" onClick={handleAddCategoryClick}>
@@ -50,6 +62,8 @@ export const CategoryPage = () => {
           </Button>
         </HStack>
       </Center>
+=======
+>>>>>>> upstream/hehelee
     </>
   );
 };

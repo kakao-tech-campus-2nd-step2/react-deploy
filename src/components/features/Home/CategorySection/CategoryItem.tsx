@@ -8,6 +8,7 @@ type Props = {
   label: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
+<<<<<<< HEAD
 export const CategoryItem = ({ image, label, ...props }: Props) => {
   console.log('CategoryItem image:', image); // 이미지 로깅
   return (
@@ -17,6 +18,15 @@ export const CategoryItem = ({ image, label, ...props }: Props) => {
     </Wrapper>
   );
 };
+=======
+export const CategoryItem = ({ image, label, ...props }: Props) => (
+  <Wrapper {...props}>
+    <CategoryImage src={image} alt={label} />
+    <Label>{label}</Label>
+  </Wrapper>
+);
+
+>>>>>>> upstream/hehelee
 const Wrapper = styled.div`
   width: 100%;
   padding: 13px 0 12px;

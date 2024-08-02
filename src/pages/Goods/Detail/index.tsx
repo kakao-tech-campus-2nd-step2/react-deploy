@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import { Button, Center, useToast, VStack } from '@chakra-ui/react';
 import type { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAddWish, useRemoveWish } from '@/api/hooks/fetchWishList';
 import { useDeleteProduct } from '@/api/hooks/useDeleteProduct';
+=======
+import { useParams } from 'react-router-dom';
+
+>>>>>>> upstream/hehelee
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
@@ -13,6 +18,7 @@ import { OptionSection } from '@/components/features/Goods/Detail/OptionSection'
 
 export const GoodsDetailPage = () => {
   const { productId = '' } = useParams<ProductDetailRequestParams>();
+<<<<<<< HEAD
   const navigate = useNavigate();
   const toast = useToast();
   const { mutate: deleteProduct } = useDeleteProduct();
@@ -80,12 +86,15 @@ export const GoodsDetailPage = () => {
   const handleRemoveWishClick = () => {
     removeWish({ productId: parseInt(productId, 10) });
   };
+=======
+>>>>>>> upstream/hehelee
 
   return (
     <>
       <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
         <SplitLayout sidebar={<OptionSection productId={productId} />}>
           <GoodsDetail productId={productId} />
+<<<<<<< HEAD
           <Center mt={4}>
             <VStack spacing={4}>
               <Button colorScheme="blue" onClick={handleEditProductClick}>
@@ -105,6 +114,8 @@ export const GoodsDetailPage = () => {
               </Button>
             </VStack>
           </Center>
+=======
+>>>>>>> upstream/hehelee
         </SplitLayout>
       </AsyncBoundary>
     </>

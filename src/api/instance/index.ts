@@ -13,6 +13,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
     },
   });
 
+<<<<<<< HEAD
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -26,6 +27,15 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 export const BASE_URL = 'http://13.125.199.167:8080';
 export const fetchInstance = initInstance({
   baseURL: BASE_URL,
+=======
+  return instance;
+};
+
+export const BASE_URL = 'https://api.example.com';
+// TODO: 추후 서버 API 주소 변경 필요
+export const fetchInstance = initInstance({
+  baseURL: 'https://api.example.com',
+>>>>>>> upstream/hehelee
 });
 
 export const queryClient = new QueryClient({

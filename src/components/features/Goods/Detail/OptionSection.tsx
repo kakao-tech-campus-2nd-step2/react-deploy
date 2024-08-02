@@ -2,7 +2,14 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+<<<<<<< HEAD
 import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+=======
+import {
+  type ProductDetailRequestParams,
+  useGetProductDetail,
+} from '@/api/hooks/useGetProductDetail';
+>>>>>>> upstream/hehelee
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
@@ -26,18 +33,39 @@ export const OptionSection = ({ productId }: Props) => {
   const authInfo = useAuth();
   const handleClick = () => {
     if (!authInfo) {
+<<<<<<< HEAD
       const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
+=======
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+>>>>>>> upstream/hehelee
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());
     }
 
+<<<<<<< HEAD
     orderHistorySessionStorage.set({ id: parseInt(productId), count: parseInt(countAsString) });
+=======
+    orderHistorySessionStorage.set({
+      id: parseInt(productId),
+      count: parseInt(countAsString),
+    });
+
+>>>>>>> upstream/hehelee
     navigate(RouterPath.order);
   };
 
   return (
     <Wrapper>
+<<<<<<< HEAD
       {options && options.length > 0 && <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />}
+=======
+      {options && options.length > 0 && (
+        <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      )}
+>>>>>>> upstream/hehelee
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
@@ -70,6 +98,10 @@ const PricingWrapper = styled.div`
   background-color: #f5f5f5;
   display: flex;
   justify-content: space-between;
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/hehelee
   font-size: 14px;
   font-weight: 700;
   line-height: 14px;

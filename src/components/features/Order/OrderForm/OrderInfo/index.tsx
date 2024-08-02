@@ -1,9 +1,13 @@
 import { StarIcon } from '@chakra-ui/icons';
 import { Divider, IconButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+<<<<<<< HEAD
 import axios from 'axios'; // axios 임포트
 
 import { useAddWish } from '@/api/hooks/fetchWishList';
+=======
+
+>>>>>>> upstream/hehelee
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -16,13 +20,17 @@ import { CashReceiptFields } from '../Fields/CashReceiptFields';
 type Props = {
   orderHistory: OrderHistory;
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/hehelee
 export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
 
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
   const totalPrice = detail.price * count;
 
+<<<<<<< HEAD
   const addWish = useAddWish();
 
   const handleAddToFavorites = () => {
@@ -39,6 +47,10 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
         alert('관심 상품 추가 중 오류가 발생했습니다.');
       },
     });
+=======
+  const handleAddToFavorites = () => {
+    alert('관심 상품으로 추가되었습니다!');
+>>>>>>> upstream/hehelee
   };
 
   return (

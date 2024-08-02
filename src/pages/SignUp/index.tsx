@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { AxiosError } from 'axios';
 import React, { useState } from 'react';
 
@@ -26,6 +27,19 @@ const SignUpPage: React.FC = () => {
   const handleSignUp = async () => {
     if (!id || !password || !confirmPassword) {
 >>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
+=======
+import { useState } from 'react';
+
+import KAKAO_LOGO from '@/assets/kakao_logo.svg';
+import { authSessionStorage } from '@/utils/storage';
+const SignUpPage = () => {
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleSignUp = () => {
+    if (!id || !password || !confirmPassword) {
+>>>>>>> upstream/hehelee
       alert('모든 필드를 입력해주세요.');
       return;
     }
@@ -35,6 +49,7 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
+<<<<<<< HEAD
     try {
 <<<<<<< HEAD
       await register(email, password);
@@ -54,6 +69,11 @@ const SignUpPage: React.FC = () => {
       alert(`회원가입 실패: ${axiosError.response?.data?.message || axiosError.message}`);
 >>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
     }
+=======
+    alert('회원가입 성공!');
+    authSessionStorage.set(id);
+    window.location.replace('/');
+>>>>>>> upstream/hehelee
   };
 
   return (
@@ -76,9 +96,15 @@ const SignUpPage: React.FC = () => {
         }}
       >
         <input
+<<<<<<< HEAD
           placeholder="이메일"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+=======
+          placeholder="이름"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+>>>>>>> upstream/hehelee
           style={{ width: '100%', marginBottom: '16px' }}
         />
         <input

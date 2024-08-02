@@ -23,8 +23,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+<<<<<<< HEAD
     "types": ["jest", "@testing-library/jest-dom"],
     "typeRoots": ["./node_modules/@types"],
+=======
+    "types": ["jest", "@testing-library/jest-dom"]
+>>>>>>> upstream/hehelee
   },
   "include": [
     "src",

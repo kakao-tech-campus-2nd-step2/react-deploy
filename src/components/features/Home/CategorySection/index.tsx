@@ -14,7 +14,10 @@ export const CategorySection = () => {
 
   if (isLoading || isError) return null;
   if (!data) return null;
+<<<<<<< HEAD
   console.log('Category data:', data); // 데이터 로깅
+=======
+>>>>>>> upstream/hehelee
 
   return (
     <Wrapper>
@@ -25,6 +28,7 @@ export const CategorySection = () => {
             md: 6,
           }}
         >
+<<<<<<< HEAD
           {data.map((category) =>
             category.id ? (
               <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
@@ -32,6 +36,13 @@ export const CategorySection = () => {
               </Link>
             ) : null,
           )}
+=======
+          {data.map((category) => (
+            <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
+              <CategoryItem image={category.imageUrl} label={category.name} />
+            </Link>
+          ))}
+>>>>>>> upstream/hehelee
         </Grid>
       </Container>
     </Wrapper>

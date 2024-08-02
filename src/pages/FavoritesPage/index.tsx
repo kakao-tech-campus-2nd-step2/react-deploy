@@ -9,6 +9,7 @@ import {
   ListItem,
   Spinner,
   Text,
+<<<<<<< HEAD
   useToast,
 } from '@chakra-ui/react';
 import type { AxiosError } from 'axios';
@@ -23,6 +24,20 @@ const FavoritesPage = () => {
   const removeWish = useRemoveWish();
   const [wishList, setWishList] = useState<WishItem[]>([]);
   const toast = useToast();
+=======
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+
+import { useRemoveWish, useWishList } from '@/api/hooks/fetchWishList';
+import { useAuth } from '@/provider/Auth';
+
+const FavoritesPage = () => {
+  const authInfo = useAuth();
+  const [page, setPage] = useState(0);
+  const { data, error, isLoading } = useWishList(page);
+  const removeWish = useRemoveWish();
+  const [wishList, setWishList] = useState(data?.content || []);
+>>>>>>> upstream/hehelee
 
   useEffect(() => {
     if (data) {
@@ -30,6 +45,7 @@ const FavoritesPage = () => {
     }
   }, [data]);
 
+<<<<<<< HEAD
   const handleRemoveFavorite = (productId: number) => {
     removeWish.mutate(
       { productId },
@@ -61,6 +77,18 @@ const FavoritesPage = () => {
 
   const handleNextPage = () => {
     if (data && page < data.page.totalPages - 1) {
+=======
+  const handleRemoveFavorite = (id: number) => {
+    removeWish.mutate(id, {
+      onSuccess: () => {
+        setWishList((prevList) => prevList.filter((item) => item.id !== id));
+      },
+    });
+  };
+
+  const handleNextPage = () => {
+    if (data && page < data.totalPages - 1) {
+>>>>>>> upstream/hehelee
       setPage(page + 1);
     }
   };
@@ -71,6 +99,13 @@ const FavoritesPage = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  if (!authInfo) {
+    return <Text>로그인이 필요합니다.</Text>;
+  }
+
+>>>>>>> upstream/hehelee
   let content;
   if (isLoading) {
     content = <Spinner />;
@@ -83,12 +118,21 @@ const FavoritesPage = () => {
           {wishList.map((item) => (
             <ListItem key={item.id} p={4} borderWidth="1px" borderRadius="lg">
               <Flex align="center">
+<<<<<<< HEAD
                 <Image boxSize="100px" src={item.imageUrl} alt={item.name} mr={4} />
                 <Box flex="1">
                   <Text fontSize="lg" fontWeight="bold">
                     {item.name}
                   </Text>
                   <Text>{item.price}원</Text>
+=======
+                <Image boxSize="100px" src={item.product.imageUrl} alt={item.product.name} mr={4} />
+                <Box flex="1">
+                  <Text fontSize="lg" fontWeight="bold">
+                    {item.product.name}
+                  </Text>
+                  <Text>{item.product.price}원</Text>
+>>>>>>> upstream/hehelee
                 </Box>
                 <IconButton
                   icon={<CloseIcon />}
@@ -105,7 +149,11 @@ const FavoritesPage = () => {
           <Button onClick={handlePreviousPage} disabled={page === 0}>
             이전
           </Button>
+<<<<<<< HEAD
           <Button onClick={handleNextPage} disabled={data && page >= data.page.totalPages - 1}>
+=======
+          <Button onClick={handleNextPage} disabled={data && page >= data.totalPages - 1}>
+>>>>>>> upstream/hehelee
             다음
           </Button>
         </Flex>

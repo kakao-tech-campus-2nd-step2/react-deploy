@@ -20,7 +20,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (currentAuthToken) {
       setAuthInfo({
+<<<<<<< HEAD
         id: currentAuthToken,
+=======
+        id: currentAuthToken, // TODO: 임시로 로그인 페이지에서 입력한 이름을 ID, token, name으로 사용
+>>>>>>> upstream/hehelee
         name: currentAuthToken,
         token: currentAuthToken,
       });
