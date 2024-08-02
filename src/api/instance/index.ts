@@ -1,6 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
+import { authSessionStorage } from '@/utils/storage';
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
@@ -16,11 +17,18 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
+export let BASE_URL = 'http://3.36.86.203:8080';
+
+export const updateBaseURL = (newBaseURL: string) => {
+  BASE_URL = newBaseURL;
+  fetchInstance.defaults.baseURL = BASE_URL;
+};
+
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: BASE_URL,
 });
+
+
 
 export const queryClient = new QueryClient({
   defaultOptions: {
