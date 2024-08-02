@@ -1,4 +1,4 @@
-import { ContainerSize, JWTTokenHeader } from '@/types';
+import { ContainerSize } from '@/types';
 
 export function generateRandomId() {
   return `_${Math.random().toString(36).slice(2, 16)}`;
@@ -25,9 +25,7 @@ export function isJwtToken(str?: string) {
 
   const split = str.split('.');
 
-  if (split.length < 3) return false;
-
-  return (JSON.parse(window.btoa(split[0])) as JWTTokenHeader).typ.toUpperCase() === 'JWT';
+  return split.length === 3;
 }
 
 export function hasKey(list: Object) {
