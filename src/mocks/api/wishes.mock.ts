@@ -54,7 +54,6 @@ const deleteWishes = (userId: string, wishId: number) => {
 };
 
 const getWishes = (userId: string) => {
-  console.log(WISHES_STORAGE.getValue()[userId]);
   return WISHES_STORAGE.getValue()[userId] || [];
 };
 

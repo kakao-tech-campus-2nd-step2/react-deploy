@@ -34,7 +34,7 @@ const registerUser = (email: string, password: string) => {
       },
     ]);
 
-    const authToken = email;
+    const authToken = 'token:' + email;
     return authToken;
   }
 };
@@ -49,14 +49,14 @@ const loginUser = (email: string, password: string) => {
     throw new Error('Invalid email or password');
   }
 
-  const authToken = email;
+  const authToken = 'token:' + email;
 
   return authToken;
 };
 
 export const checkToken = (token: string): boolean => {
   const USERLIST = USER_STORAGE.getValue();
-  return !!USERLIST.find((u) => u.email === token);
+  return !!USERLIST.find((u) => 'token:' + u.email === token);
 };
 
 export const userMockHandler = [
