@@ -26,6 +26,20 @@ export const AdminPointPage = () => {
     const { membersPoint, error, loading } = useGetMembersPoint();
 
     useEffect(() => {
+        const role = localStorage.getItem('role');
+        if (role !== 'ADMIN') {
+            alert('관리자 권한이 없습니다.');
+            window.location.replace('/');
+        }
+    }, [])
+
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        if (role !== 'ADMIN') {
+            alert('관리자 권한이 없습니다.');
+            window.location.replace('/');
+        }
+
         if (membersPoint) {
             setOnesPoint(new Array(membersPoint.length).fill(0));
         }
