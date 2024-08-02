@@ -9,7 +9,9 @@ import {
   ListItem,
   Spinner,
   Text,
+  useToast,
 } from '@chakra-ui/react';
+import type { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 import type { WishItem } from '@/api/hooks/fetchWishList';
@@ -20,6 +22,7 @@ const FavoritesPage = () => {
   const { data, error, isLoading } = useWishList(page);
   const removeWish = useRemoveWish();
   const [wishList, setWishList] = useState<WishItem[]>([]);
+  const toast = useToast();
 
   useEffect(() => {
     if (data) {
@@ -33,6 +36,24 @@ const FavoritesPage = () => {
       {
         onSuccess: () => {
           setWishList((prevList) => prevList.filter((item) => item.id !== productId));
+          toast({
+            title: '성공',
+            description: '상품이 관심 목록에서 삭제되었습니다.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+        },
+        onError: (axiosError: AxiosError) => {
+          const message =
+            (axiosError.response?.data as { message: string })?.message || axiosError.message;
+          toast({
+            title: '오류',
+            description: `상품 삭제 중 오류가 발생했습니다: ${message}`,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
         },
       },
     );
