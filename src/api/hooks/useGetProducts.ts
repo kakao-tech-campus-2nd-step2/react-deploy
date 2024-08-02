@@ -26,19 +26,22 @@ type ProductsResponseData = {
 
 type ProductsResponseRawData = {
   content: ProductData[];
-  number: number;
-  totalElements: number;
-  size: number;
-  last: boolean;
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
 };
+
 
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
-  params.append('sort', 'name,asc');
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
+  params.append('sort', 'id,desc');
+  params.append('categoryId', categoryId);
 
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
@@ -49,10 +52,10 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
 
   return {
     products: data.content,
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
+    nextPageToken: data.page.number + 1 < data.page.totalPages ? (data.page.number + 1).toString() : undefined,
     pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
+      totalResults: data.page.totalElements,
+      resultsPerPage: data.page.size,
     },
   };
 };

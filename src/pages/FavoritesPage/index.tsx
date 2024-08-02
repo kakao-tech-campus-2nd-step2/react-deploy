@@ -9,18 +9,20 @@ import {
   ListItem,
   Spinner,
   Text,
+  useToast,
 } from '@chakra-ui/react';
+import type { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
+import type { WishItem } from '@/api/hooks/fetchWishList';
 import { useRemoveWish, useWishList } from '@/api/hooks/fetchWishList';
-import { useAuth } from '@/provider/Auth';
 
 const FavoritesPage = () => {
-  const authInfo = useAuth();
   const [page, setPage] = useState(0);
   const { data, error, isLoading } = useWishList(page);
   const removeWish = useRemoveWish();
-  const [wishList, setWishList] = useState(data?.content || []);
+  const [wishList, setWishList] = useState<WishItem[]>([]);
+  const toast = useToast();
 
   useEffect(() => {
     if (data) {
@@ -28,12 +30,33 @@ const FavoritesPage = () => {
     }
   }, [data]);
 
-  const handleRemoveFavorite = (id: number) => {
-    removeWish.mutate(id, {
-      onSuccess: () => {
-        setWishList((prevList) => prevList.filter((item) => item.id !== id));
+  const handleRemoveFavorite = (productId: number) => {
+    removeWish.mutate(
+      { productId },
+      {
+        onSuccess: () => {
+          setWishList((prevList) => prevList.filter((item) => item.id !== productId));
+          toast({
+            title: '성공',
+            description: '상품이 관심 목록에서 삭제되었습니다.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+        },
+        onError: (axiosError: AxiosError) => {
+          const message =
+            (axiosError.response?.data as { message: string })?.message || axiosError.message;
+          toast({
+            title: '오류',
+            description: `상품 삭제 중 오류가 발생했습니다: ${message}`,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        },
       },
-    });
+    );
   };
 
   const handleNextPage = () => {
@@ -47,10 +70,6 @@ const FavoritesPage = () => {
       setPage(page - 1);
     }
   };
-
-  if (!authInfo) {
-    return <Text>로그인이 필요합니다.</Text>;
-  }
 
   let content;
   if (isLoading) {

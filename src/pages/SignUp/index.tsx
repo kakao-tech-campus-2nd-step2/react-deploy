@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import type { AxiosError } from 'axios';
+import React, { useState } from 'react';
 
+<<<<<<< HEAD
 import { register } from '@/api/hooks/register'; // register API 추가
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { authSessionStorage } from '@/utils/storage';
@@ -11,6 +13,19 @@ const SignUpPage = () => {
 
   const handleSignUp = async () => {
     if (!email || !password || !confirmPassword) {
+=======
+import { register } from '@/api/hooks/register'; // `register` 함수 가져오기
+import KAKAO_LOGO from '@/assets/kakao_logo.svg';
+import { authSessionStorage } from '@/utils/storage';
+
+const SignUpPage: React.FC = () => {
+  const [id, setId] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+  const handleSignUp = async () => {
+    if (!id || !password || !confirmPassword) {
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
       alert('모든 필드를 입력해주세요.');
       return;
     }
@@ -21,6 +36,7 @@ const SignUpPage = () => {
     }
 
     try {
+<<<<<<< HEAD
       await register(email, password);
       alert('회원가입 성공!');
       authSessionStorage.set(email);
@@ -28,6 +44,15 @@ const SignUpPage = () => {
     } catch (error) {
       console.error('회원가입 실패:', error);
       alert('회원가입 실패');
+=======
+      await register(id, password);
+      alert('회원가입 성공!');
+      authSessionStorage.set(id);
+      window.location.replace('/');
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      alert(`회원가입 실패: ${axiosError.response?.data?.message || axiosError.message}`);
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
     }
   };
 

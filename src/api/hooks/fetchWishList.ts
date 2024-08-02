@@ -1,13 +1,19 @@
 import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import type { AxiosError } from 'axios';
 
 import { authSessionStorage } from '@/utils/storage';
 
+<<<<<<< HEAD
 import { BASE_URL, fetchInstance } from '../instance';
 import { login } from './auth';
 
 const QUERY_KEY_WISHLIST = 'wishList';
+=======
+import { fetchInstance } from '../instance';
+
+const getToken = () => authSessionStorage.get();
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
 
 export interface WishItem {
   id: number;
@@ -19,6 +25,7 @@ export interface WishItem {
 interface WishListResponse {
   content: WishItem[];
   page: {
+<<<<<<< HEAD
     size: number;
     number: number;
     totalElements: number;
@@ -39,6 +46,25 @@ const fetchWishList = async (
     headers: {
       Authorization: `Bearer ${token}`,
     },
+=======
+    totalPages: number;
+    totalElements: number;
+  };
+}
+
+const fetchWishList = async (page: number, size: number): Promise<WishListResponse> => {
+  const token = getToken();
+  if (!token) throw new Error('토큰이 없습니다.');
+  const response = await fetchInstance.get('/api/wishes', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      page,
+      size,
+      sort: 'id,desc',
+    },
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
   });
   console.log('관심 목록 응답:', response.data);
   return response.data;
@@ -71,38 +97,56 @@ const getToken = async (): Promise<string> => {
 export const useWishList = (
   page: number = 0,
   size: number = 10,
-  options?: UseQueryOptions<WishListResponse, Error>,
+  options?: UseQueryOptions<WishListResponse, AxiosError>,
 ) => {
+<<<<<<< HEAD
   return useQuery<WishListResponse, Error>({
     queryKey: [QUERY_KEY_WISHLIST, page, size],
     queryFn: async () => {
       const token = await getToken();
       return fetchWishList(token, page, size);
     },
+=======
+  return useQuery<WishListResponse, AxiosError>({
+    queryKey: ['wishList', page, size],
+    queryFn: () => fetchWishList(page, size),
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
     ...options,
   });
 };
 
-export const useRemoveWish = (options?: UseMutationOptions<void, Error, number>) => {
+export const useRemoveWish = (
+  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
+) => {
   const queryClient = useQueryClient();
 
+<<<<<<< HEAD
   return useMutation<void, Error, number>({
     mutationFn: async (wishId: number) => {
       const token = await getToken();
       console.log('관심 항목 삭제 요청, 사용된 토큰:', token);
       return fetchInstance.delete(`/api/wishes/${wishId}`, {
+=======
+  return useMutation<void, AxiosError, { productId: number }>({
+    mutationFn: async ({ productId }) => {
+      const token = getToken();
+      if (!token) throw new Error('토큰이 없습니다.');
+      return fetchInstance.delete(`/api/wishes`, {
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        data: { productId },
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
+      queryClient.invalidateQueries({ queryKey: ['wishList'] });
     },
     ...options,
   });
 };
 
+<<<<<<< HEAD
 export const useAddWish = (options?: UseMutationOptions<void, Error, number>) => {
   const queryClient = useQueryClient();
 
@@ -119,6 +163,23 @@ export const useAddWish = (options?: UseMutationOptions<void, Error, number>) =>
             headers: {
               Authorization: `Bearer ${token}`,
             },
+=======
+export const useAddWish = (
+  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, AxiosError, { productId: number }>({
+    mutationFn: ({ productId }) => {
+      const token = getToken();
+      if (!token) throw new Error('토큰이 없습니다.');
+      return fetchInstance.post(
+        '/api/wishes',
+        { productId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
           },
         );
       } catch (error) {
@@ -140,8 +201,9 @@ export const useAddWish = (options?: UseMutationOptions<void, Error, number>) =>
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
+      queryClient.invalidateQueries({ queryKey: ['wishList'] });
     },
+<<<<<<< HEAD
     onError: (error, _variables, _context) => {
       if (axios.isAxiosError(error)) {
         console.error('관심 상품 추가 중 오류 발생:', error.response?.data || error.message);
@@ -150,6 +212,8 @@ export const useAddWish = (options?: UseMutationOptions<void, Error, number>) =>
       }
       alert('관심 상품 추가 중 오류가 발생했습니다.');
     },
+=======
+>>>>>>> 9fc38c008ccc8550a44151a08744a569411c2258
     ...options,
   });
 };

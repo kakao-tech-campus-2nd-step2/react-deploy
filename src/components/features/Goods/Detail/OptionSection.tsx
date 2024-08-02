@@ -2,10 +2,7 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
@@ -29,27 +26,18 @@ export const OptionSection = ({ productId }: Props) => {
   const authInfo = useAuth();
   const handleClick = () => {
     if (!authInfo) {
-      const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
-      );
-
+      const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());
     }
 
-    orderHistorySessionStorage.set({
-      id: parseInt(productId),
-      count: parseInt(countAsString),
-    });
-
+    orderHistorySessionStorage.set({ id: parseInt(productId), count: parseInt(countAsString) });
     navigate(RouterPath.order);
   };
 
   return (
     <Wrapper>
-      {options && options.length > 0 && (
-        <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
-      )}
+      {options && options.length > 0 && <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />}
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
@@ -82,7 +70,6 @@ const PricingWrapper = styled.div`
   background-color: #f5f5f5;
   display: flex;
   justify-content: space-between;
-
   font-size: 14px;
   font-weight: 700;
   line-height: 14px;
