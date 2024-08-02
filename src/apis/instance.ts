@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { ERROR } from '@utils/constants/message';
-import { useAPI } from '@context/api/useAPI';
 import { QueryClient } from '@tanstack/react-query';
 
 const statusMessages: { [key: number]: string } = {

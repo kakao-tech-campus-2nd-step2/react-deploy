@@ -2,6 +2,10 @@ import { ProductData, MessageCardTemplateData, ThemeData, CategoryData } from '.
 
 export type CategoriesResponse = CategoryData[];
 
+export interface GetPointResponse {
+  point: number;
+}
+
 export interface RankingProductsResponse {
   products: ProductData[];
 }

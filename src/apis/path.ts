@@ -33,3 +33,7 @@ export const WISH_PATHS = {
 export const ORDER_PATHS = {
   ORDERS: `${API_BASE}/orders`,
 };
+
+export const POINT_PATHS = {
+  GET_POINT: `${API_BASE}/points`,
+};
