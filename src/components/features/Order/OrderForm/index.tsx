@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
-
+import { useNavigate } from 'react-router-dom';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -9,6 +9,7 @@ import { HEADER_HEIGHT } from '../../Layout/Header';
 import { GoodsInfo } from './GoodsInfo';
 import { OrderFormMessageCard } from './MessageCard';
 import { OrderFormOrderInfo } from './OrderInfo';
+import { BASE_URL } from '@/api/instance';
 
 type Props = {
   orderHistory: OrderHistory;
@@ -28,7 +29,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
   });
   const { handleSubmit } = methods;
 
-  const handleForm = (values: OrderFormData) => {
+  const handleForm = async (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
 
     if (!isValid) {
@@ -36,8 +37,30 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log('values', values);
-    alert('주문이 완료되었습니다.');
+    try {
+      const response = await fetch(`${BASE_URL}/api/orders`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+              optionId: values.productId, // 상품 옵션 ID
+              quantity: values.productQuantity, // 주문 수량
+              message: values.messageCardTextMessage, // 주문 메시지
+          }),
+      });
+      const navigate = useNavigate();
+      if (response.ok) {
+          const data = await response.json();
+          alert('주문이 완료되었습니다.');
+
+          // 주문 완료 후 페이지 이동
+          navigate(`/orders/${data.id}`);
+      } else {
+          alert('주문에 실패했습니다. 다시 시도해주세요.');
+      }
+  } catch (error) {
+      console.error('주문 중 오류 발생: ', error);
+      alert('주문 중 오류가 발생했습니다.');
+  }
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
