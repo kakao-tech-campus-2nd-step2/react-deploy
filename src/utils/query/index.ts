@@ -87,9 +87,9 @@ export const fetchProductDetail = async ({ productId }: { productId: string }) =
 
 export const fetchProductOptions = async ({ productId } : { productId: string }) => {
   const endpoint = replacePathParams(RequestURLs.PRODUCT_OPTIONS, { productId });
-  const response = await axiosInstance.get<ProductOptionsResponse>(endpoint); 4;
+  const response = await axiosInstance.get<ProductOptionsResponse>(endpoint);
 
-  if (!response.data) return null;
+  if (!response.data) return [];
 
   return response.data as ProductOption[];
 };

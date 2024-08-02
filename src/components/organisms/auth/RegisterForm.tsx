@@ -29,7 +29,7 @@ function RegisterForm() {
         password: passwordRef.current.value,
       }, 'register');
       setIsLoggedIn(true);
-      tokenStorage.set(authResult.token);
+      tokenStorage.set(authResult?.token);
       navigate(-1);
     } catch (e) {
       if (!isAxiosError(e)) {
