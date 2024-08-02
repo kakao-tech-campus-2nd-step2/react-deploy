@@ -8,6 +8,7 @@ export const ROUTER_PATH = {
   ORDER: '/order',
   KAKAO_REDIRECT: '/redirection',
   ADMIN: '/admin',
+  ORDER_LIST: '/order-list',
   NOT_FOUND: '*',
 };
 

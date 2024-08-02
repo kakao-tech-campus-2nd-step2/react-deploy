@@ -7,6 +7,7 @@ import { KakaoLoginRedirectionPage } from '@/pages/KakaoRedirectPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { MyAccountPage } from '@/pages/MyAccountPage';
 import NotFound from '@/pages/NotFound';
+import { OrderListPage } from '@/pages/OrderListPage';
 import { OrderPage } from '@/pages/OrderPage';
 import { ProductsDetailPage } from '@/pages/ProductDetailPage';
 import { RegisterPage } from '@/pages/RegisterPage';
@@ -43,6 +44,7 @@ export const Router = () => {
           <Route element={<AdminRoute />}>
             <Route path={ROUTER_PATH.ADMIN} element={<AdminPage />} />
           </Route>
+          <Route path={ROUTER_PATH.ORDER_LIST} element={<OrderListPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
