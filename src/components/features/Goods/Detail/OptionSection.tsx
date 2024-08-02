@@ -7,8 +7,8 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { BASE_URL } from '@/api/instance';
 import { Button } from '@/components/common/Button';
-import { useApi } from '@/contexts/ApiContext';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -20,8 +20,6 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
-  const { apiUrl } = useApi();
-
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
@@ -48,11 +46,13 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   const handleAddToWishlist = async () => {
+    const token = sessionStorage.getItem('token'); 
     try {
-      await fetch(`${apiUrl}/api/wishes'`, {
+      await fetch(`${BASE_URL}/api/wishes/${productId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ productId }),
       });

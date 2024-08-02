@@ -1,5 +1,7 @@
 import { rest } from 'msw';
 
+import { BASE_URL } from '../instance';
+
 interface WishlistItem {
   id: number;
   product: {
@@ -17,7 +19,7 @@ const getPagedData = (page: number, size: number) => {
 };
 
 export const wishlistMockHandler = [
-  rest.get('/api/wishes', async (req, res, ctx) => {
+  rest.get(`${BASE_URL}/api/wishes`, async (req, res, ctx) => {
     const token = req.headers.get('Authorization');
 
     if (!token) {
@@ -63,7 +65,7 @@ export const wishlistMockHandler = [
       })
     );
   }),
-  rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
+  rest.delete(`${BASE_URL}/api/wishes/:wishId`, (req, res, ctx) => {
     const { wishId } = req.params;
     const wishIndex = WISHLIST_MOCK_DATA.content.findIndex((item) => item.id === Number(wishId));
     if (wishIndex !== -1) {
@@ -71,6 +73,35 @@ export const wishlistMockHandler = [
       return res(ctx.status(204));
     }
     return res(ctx.status(404), ctx.json({ message: 'Wish not found' }));
+  }),
+  rest.post(`${BASE_URL}/api/wishes/:productId`, (req, res, ctx) => {
+    const { productId } = req.params;
+    const token = req.headers.get('Authorization');
+
+    if (!token) {
+      return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
+    }
+
+    const existingWish = WISHLIST_MOCK_DATA.content.find((item) => item.product.id === Number(productId));
+
+    if (existingWish) {
+      return res(ctx.status(400), ctx.json({ message: 'Product already in wishlist' }));
+    }
+
+    const newProduct = {
+      id: WISHLIST_MOCK_DATA.content.length + 1,
+      product: {
+        id: Number(productId),
+        name: `Product ${String.fromCharCode(65 + WISHLIST_MOCK_DATA.content.length)}`,
+        price: 150,
+        imageUrl:
+          'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
+      },
+    };
+
+    WISHLIST_MOCK_DATA.content.push(newProduct);
+
+    return res(ctx.status(201), ctx.json(newProduct));
   }),
 ];
 

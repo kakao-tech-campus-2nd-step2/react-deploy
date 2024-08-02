@@ -2,8 +2,8 @@ import { Box, Button, Heading, List, ListItem, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 import { useGetWishlist } from '@/api/hooks/useGetWishlist';
+import { BASE_URL } from '@/api/instance';
 import { VisibilityLoader } from '@/components/common/VisibilityLoader';
-import { useApi } from '@/contexts/ApiContext';
 import { useAuth } from '@/provider/Auth';
 
 type WishlistItem = {
@@ -16,7 +16,6 @@ type WishlistItem = {
 export const Wishlist = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist({ maxResults: 10 });
   const authInfo = useAuth();
-  const { apiUrl } = useApi();
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export const Wishlist = () => {
 
   const handleDelete = async (wishId: number) => {
     if (authInfo?.token) {
-      const response = await fetch(`${apiUrl}/api/wishes/${wishId}`, {
+      const response = await fetch(`${BASE_URL}/api/wishes/${wishId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${authInfo.token}`,

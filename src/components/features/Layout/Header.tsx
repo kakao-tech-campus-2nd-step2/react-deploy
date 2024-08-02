@@ -2,31 +2,24 @@ import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Container } from '@/components/common/layouts/Container';
-import { useApi } from '@/contexts/ApiContext';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 
 const backend: { [key: string]: string } = {
-  backend1: 'https://example.com',
-  backend2: 'https://example.com',
-  backend3: 'https://example.com',
-  backend4: 'https://example.com',
-  backend5: 'https://example.com',
-  backend6: 'https://example.com',
+  backend1: 'https://api.example.com',
+  backend2: 'https://api.example.com',
+  backend3: 'https://api.example.com',
+  backend4: 'https://api.example.com',
+  backend5: 'https://api.example.com',
+  backend6: 'https://api.example.com',
 };
 
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
-  const { apiUrl, setApiUrl } = useApi();
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
-  };
-
-  const handleApiChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('clicked: ', event.target.value);
-    setApiUrl(event.target.value);
   };
 
   return (
@@ -39,7 +32,7 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
-          <ApiSelector value={apiUrl} onChange={handleApiChange}>
+          <ApiSelector>
             <option value={backend.backend1}>강지훈</option>
             <option value={backend.backend2}>김기웅</option>
             <option value={backend.backend3}>김민지</option>

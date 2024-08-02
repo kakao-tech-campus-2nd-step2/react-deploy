@@ -15,12 +15,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const currentAuthEmail = sessionStorage.getItem('authEmail');
   const currentAuthToken = authSessionStorage.get();
 
-  const [isReady, setIsReady] = useState(!currentAuthToken);
-
-  const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(() => {
+    if (currentAuthEmail && currentAuthToken) {
+      const name = currentAuthEmail.split('@')[0];
+      return {
+        email: currentAuthEmail,
+        name: name,
+        token: currentAuthToken,
+      };
+    }
+    return undefined;
+  });
 
   useEffect(() => {
-    if (currentAuthEmail && currentAuthToken) {
+    if (currentAuthEmail && currentAuthToken && !authInfo) {
       const name = currentAuthEmail.split('@')[0];
 
       setAuthInfo({
@@ -28,9 +37,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         name: name,
         token: currentAuthToken,
       });
-      setIsReady(true);
     }
-  }, [currentAuthEmail, currentAuthToken]);
+    setIsReady(true);
+  }, [currentAuthEmail, currentAuthToken, authInfo]);
 
   if (!isReady) return <></>;
   return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;

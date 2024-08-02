@@ -6,6 +6,8 @@ import {
 
 import { useAuth } from '@/provider/Auth';
 
+import { BASE_URL } from '../instance';
+
 type WishlistItem = {
   id: number;
   name: string;
@@ -47,7 +49,7 @@ const getWishlistPath = ({ pageToken, maxResults }: RequestParams) => {
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `/api/wishes?${params.toString()}`;
+  return `${BASE_URL}/api/wishes?${params.toString()}`;
 };
 
 export const getWishlist = async (params: RequestParams, token: string): Promise<WishlistResponseData> => {
