@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { BASE_URL } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -15,19 +16,42 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      console.log('로그인 요청:', { email: id, password });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      const response = await fetch(`${BASE_URL}/api/members/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: id, password }),
+      });
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      console.log('로그인 응답 상태:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('로그인 오류 데이터:', errorData);
+        throw new Error('로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요.');
+      }
+
+      const data = await response.json();
+      console.log('로그인 성공 응답 데이터:', data);
+
+      authSessionStorage.set(data.token); //로그인 성공 시 토큰 저장
+
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      return window.location.replace(redirectUrl);
+    } catch (error) {
+      console.error('로그인 오류:', error);
+      alert(error);
+    }
   };
 
   const handleSignUp = () => {
