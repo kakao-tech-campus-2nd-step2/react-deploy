@@ -19,19 +19,24 @@ import { CountOptionItem } from './OptionItem/CountOptionItem';
 type Props = ProductDetailRequestParams;
 
 export const OptionSection = ({ productId }: Props) => {
+  const navigate = useNavigate();
+
+  const authInfo = useAuth();
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
-
+  const [optionId, setOptionId] = useState<number>(options[0].optionId);
   const [countAsString, setCountAsString] = useState('1');
+  const { isWish, handleWishClick } = useHandleWish();
+
+  console.log(optionId);
+
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
 
-  const navigate = useNavigate();
-
-  const authInfo = useAuth();
-
-  const { isWish, handleWishClick } = useHandleWish();
+  const handleOptionSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setOptionId(parseInt(e.target.value));
+  };
 
   const handleOrderClick = () => {
     if (!authInfo) {
@@ -44,7 +49,8 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(productId),
+      productId: parseInt(productId),
+      optionId: optionId,
       count: parseInt(countAsString),
     });
 
@@ -54,9 +60,9 @@ export const OptionSection = ({ productId }: Props) => {
   return (
     <Wrapper>
       <OptionContainer>
-        <OptionSelector>
+        <OptionSelector onChange={handleOptionSelect} defaultValue={optionId}>
           {options.map((opt) => (
-            <option key={opt.optionId} value={opt.name || opt.optionName}>
+            <option key={opt.optionId} value={opt.optionId}>
               {opt.name || opt.optionName}
             </option>
           ))}

@@ -15,12 +15,13 @@ type Props = {
 };
 
 export const OrderForm = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
+  const { productId, optionId, count } = orderHistory;
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
-      productId: id,
-      productQuantity: count,
+      productId: productId,
+      optionId: optionId,
+      quantity: count,
       senderId: 0,
       receiverId: 0,
       hasCashReceipt: false,
@@ -80,14 +81,14 @@ const validateOrderForm = (values: OrderFormData): { errorMessage?: string; isVa
     }
   }
 
-  if (values.messageCardTextMessage.length < 1) {
+  if (values.message.length < 1) {
     return {
       errorMessage: '메시지를 입력해주세요.',
       isValid: false,
     };
   }
 
-  if (values.messageCardTextMessage.length > 100) {
+  if (values.message.length > 100) {
     return {
       errorMessage: '메시지는 100자 이내로 입력해주세요.',
       isValid: false,

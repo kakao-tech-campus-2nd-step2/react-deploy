@@ -9,13 +9,15 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const methods = useForm<OrderFormData>({
     defaultValues: {
       productId: 1,
-      productQuantity: 1,
-      senderId: 0,
-      receiverId: 0,
+      optionId: 1,
+      quantity: 1,
       hasCashReceipt: false,
       cashReceiptType: 'PERSONAL',
       cashReceiptNumber: '',
-      messageCardTextMessage: '',
+      message: '',
+      point: 100,
+      senderId: 0,
+      receiverId: 0,
     },
   });
 
@@ -26,7 +28,7 @@ describe('OrderForm', () => {
   test('현금영수증 번호 입력 없이 제출 시 에러 메시지 표시', async () => {
     render(
       <Wrapper>
-        <OrderForm orderHistory={{ id: 1, count: 1 }} />
+        <OrderForm orderHistory={{ productId: 1, optionId: 1, count: 1 }} />
       </Wrapper>,
     );
 
@@ -41,7 +43,7 @@ describe('OrderForm', () => {
   test('현금영수증에 숫자 외의 문자가 있는 경우 에러 메시지 표시', async () => {
     render(
       <Wrapper>
-        <OrderForm orderHistory={{ id: 1, count: 1 }} />
+        <OrderForm orderHistory={{ productId: 1, optionId: 1, count: 1 }} />
       </Wrapper>,
     );
 
@@ -62,7 +64,7 @@ describe('OrderForm', () => {
   test('메시지가 없는 경우 에러 메시지 표시', async () => {
     render(
       <Wrapper>
-        <OrderForm orderHistory={{ id: 1, count: 1 }} />
+        <OrderForm orderHistory={{ productId: 1, optionId: 1, count: 1 }} />
       </Wrapper>,
     );
 
@@ -80,7 +82,7 @@ describe('OrderForm', () => {
   test('메시지 100자 초과인 경우 에러 메시지 표시', async () => {
     render(
       <Wrapper>
-        <OrderForm orderHistory={{ id: 1, count: 1 }} />
+        <OrderForm orderHistory={{ productId: 1, optionId: 1, count: 1 }} />
       </Wrapper>,
     );
 
@@ -103,7 +105,7 @@ describe('OrderForm', () => {
 
     render(
       <Wrapper>
-        <OrderForm orderHistory={{ id: 1, count: 1 }} />
+        <OrderForm orderHistory={{ productId: 1, optionId: 1, count: 1 }} />
       </Wrapper>,
     );
 
