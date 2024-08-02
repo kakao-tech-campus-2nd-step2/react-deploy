@@ -53,7 +53,6 @@ export const usePostAdminLogin = () => {
         setError(null);
         try {
             const response = await axios.post<LoginResponseBody>(`${baseURL}/api/members/login`, data);
-            console.log(response);
 
             if (response.data.role === 'ADMIN') {
                 localStorage.setItem('role', response.data.role);

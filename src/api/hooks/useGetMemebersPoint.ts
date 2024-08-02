@@ -21,7 +21,6 @@ export const useGetMembersPoint = () => {
     useEffect(() => {
         const fetchMembersPoint = async () => {
             const role = localStorage.getItem('role');
-            console.log(role)
             if (role !== 'ADMIN') {
                 alert('관리자 권한이 없습니다.');
                 window.location.replace('/');
