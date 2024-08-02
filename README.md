@@ -87,5 +87,5 @@ http://katecam-ppochaco.s3-website.ap-northeast-2.amazonaws.com/
   - [ ] 특정 사용자의 포인트 추가하기
 
 - UI
-  - [ ] 사용자 table
+  - [x] 사용자 table
   - [ ] 포인트 추가 input

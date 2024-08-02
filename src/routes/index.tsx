@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { AdminPage } from '@/pages/AdminPage';
 import { CategoryPage } from '@/pages/CategoryPage';
 import { HomePage } from '@/pages/HomePage';
 import { KakaoLoginRedirectionPage } from '@/pages/KakaoRedirectPage';
@@ -38,6 +39,7 @@ export const Router = () => {
             path={ROUTER_PATH.KAKAO_REDIRECT}
             element={<KakaoLoginRedirectionPage />}
           />
+          <Route path={ROUTER_PATH.ADMIN} element={<AdminPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
