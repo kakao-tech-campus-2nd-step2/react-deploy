@@ -20,4 +20,4 @@
 
 ## 2단계 - 배포하기
 
-- github pages를사용해서 배포한다
+- [x] github pages를사용해서 배포한다
