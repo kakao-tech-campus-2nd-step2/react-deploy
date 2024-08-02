@@ -10,7 +10,7 @@ export const OrderListPage = () => {
   return (
     <BaseLayout>
       <Content flexDirection="column" gap="1rem" maxWidth="40rem">
-        <Text as="b" fontSize="large">
+        <Text as="b" fontSize="large" paddingY="1rem">
           주문 내역
         </Text>
         <OrderListSection />
