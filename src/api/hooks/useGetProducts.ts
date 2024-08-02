@@ -48,6 +48,8 @@ const getProducts = async (params: RequestParams): Promise<ProductsResponseData>
     const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
     const data = response.data;
 
+    // console.log('getProducts response body: ', data);
+
     return {
       products: data.content,
       nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
