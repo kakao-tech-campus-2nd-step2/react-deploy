@@ -13,7 +13,7 @@ export type LoginResponse = {
   userInfo: LoginResponseRaw;
 };
 
-type LoginResponseRaw = {
+export type LoginResponseRaw = {
   name: string;
   role: 'ADMIN' | 'USER';
 };

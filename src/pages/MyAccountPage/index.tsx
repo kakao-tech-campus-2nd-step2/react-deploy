@@ -17,7 +17,7 @@ export const MyAccountPage = () => {
   return (
     <BaseLayout>
       <Container flexDirection="column" alignItems="center">
-        <MyAccountConent userName={authInfo.name} />
+        <MyAccountConent userName={authInfo.userInfo.name} />
         <WishList />
       </Container>
     </BaseLayout>

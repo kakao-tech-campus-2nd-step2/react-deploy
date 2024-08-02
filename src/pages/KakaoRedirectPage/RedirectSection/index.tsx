@@ -31,10 +31,8 @@ export const RedirectSection = ({ code }: RedirectSectionProps) => {
   }
 
   if (data) {
-    const authInfo = { accessToken: data.accessToken, name: data.name };
-
-    authLocalStorage.set(authInfo);
-    updateAuthInfo(authInfo);
+    authLocalStorage.set(data);
+    updateAuthInfo(data);
     navigate(ROUTER_PATH.HOME);
   }
 
