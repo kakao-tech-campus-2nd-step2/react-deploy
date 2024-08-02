@@ -19,7 +19,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setAuthInfo({
-      name: authToken.name,
+      userInfo: {
+        name: authToken.userInfo.name,
+        role: authToken.userInfo.role,
+      },
       accessToken: authToken.accessToken,
     });
   }, []);

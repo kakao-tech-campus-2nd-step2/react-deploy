@@ -91,3 +91,8 @@ http://katecam-ppochaco.s3-website.ap-northeast-2.amazonaws.com/
   - [x] 포인트 추가 dialog
     - button: 기본 포인트, 클릭 시 해당 포인트만큼 증가
     - input
+
+#### 사용자 권한 추가
+
+- [x] 로그인 후 제공되는 role auth info에 저장하기
+- [ ] 관리자 페이지 접근 시 권한 확인하기

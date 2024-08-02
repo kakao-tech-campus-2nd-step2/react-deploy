@@ -10,11 +10,12 @@ type LoginRequestBody = {
 
 export type LoginResponse = {
   accessToken: string;
-  name: string;
+  userInfo: LoginResponseRaw;
 };
 
 type LoginResponseRaw = {
   name: string;
+  role: 'ADMIN' | 'USER';
 };
 
 export const login = async ({
@@ -29,7 +30,7 @@ export const login = async ({
 
     const accessToken = response.headers.authorization;
 
-    return { accessToken, name: response.data.name };
+    return { accessToken, userInfo: response.data };
   } catch (error) {
     if (error instanceof AxiosError) {
       const { response } = error;
