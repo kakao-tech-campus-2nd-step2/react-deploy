@@ -22,6 +22,8 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
+  // console.log('all options: ', options);
+
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);

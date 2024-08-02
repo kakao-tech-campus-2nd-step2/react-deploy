@@ -16,10 +16,10 @@ export type ProductData = {
 };
 
 export type ProductOptionsData = {
-  id: number;
+  optionId: number;
   name: string;
   quantity: number;
-  productId: number;
+  productId?: number;
 };
 
 export type GoodsDetailOptionItemData = {
