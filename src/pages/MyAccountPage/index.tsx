@@ -5,7 +5,7 @@ import { UpDownDots } from '@/components/Loading/UpDownDots';
 import { Container } from '@/components/ui/Layout/Container';
 
 import { MyAccountConent } from './components/MyAccountContent';
-import { WishList } from './components/WishList';
+import { WishSection } from './components/WishSection';
 
 export const MyAccountPage = () => {
   const { authInfo } = useAuth();
@@ -18,7 +18,7 @@ export const MyAccountPage = () => {
     <BaseLayout>
       <Container flexDirection="column" alignItems="center">
         <MyAccountConent userName={authInfo.userInfo.name} />
-        <WishList />
+        <WishSection />
       </Container>
     </BaseLayout>
   );
