@@ -19,15 +19,19 @@ export const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
+const DO_URL = process.env.REACT_APP_DO_URL;
+const KIM_URL = process.env.REACT_APP_KIM_URL;
+const HAN_URL = process.env.REACT_APP_HAN_URL;
+
 const getBaseURL = () => {
   const selectedValue = sessionStorage.getItem('selectedValue');
   switch (selectedValue) {
     case 'dog':
-      return 'https://api.dog.example.com';
+      return DO_URL;
     case 'cat':
-      return 'https://api.cat.example.com';
+      return KIM_URL;
     case 'hamster':
-      return 'https://api.hamster.example.com';
+      return HAN_URL;
     default:
       return 'https://api.example.com';
   }
