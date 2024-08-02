@@ -1,13 +1,14 @@
 import { QueryClient } from '@tanstack/react-query';
-import type { AxiosInstance, AxiosRequestConfig } from 'axios';
-import axios from 'axios';
+import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
+
+import { apiOptionLocalStorage } from '@/utils/storage';
 
 const BASE_URL_KIM = process.env.REACT_APP_BASE_URL_KIM;
 const BASE_URL_PARK = process.env.REACT_APP_BASE_URL_PARK;
 const BASE_URL_AHN = process.env.REACT_APP_BASE_URL_AHN;
 const BASE_URL_LEE = process.env.REACT_APP_BASE_URL_LEE;
 
-const apiOption = localStorage.getItem('apiOption') || '김은선';
+const apiOption = apiOptionLocalStorage.get() || '김은선';
 
 export const BASE_URL =
   apiOption === '김은선'

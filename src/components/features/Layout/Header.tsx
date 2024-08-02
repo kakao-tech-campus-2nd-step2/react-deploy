@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import { apiOptionLocalStorage } from '@/utils/storage';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export const Header = () => {
   const ApiListAscending = ApiList.sort();
 
   const handleApiOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    localStorage.setItem('apiOption', e.target.value);
+    apiOptionLocalStorage.set(e.target.value);
   };
 
   const handleLogin = () => {
