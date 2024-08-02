@@ -10,6 +10,8 @@ export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const authInfo = useAuth();
+  // const [currentApi, setCurrentApi] = useState('');
+  const currentApi = apiOptionLocalStorage.get() || 'API 선택';
 
   const NavButtonList = [
     { name: '홈', path: RouterPath.home },
@@ -53,8 +55,8 @@ export const Header = () => {
           </NavBar>
         </NavBarWrapper>
         <ApiSelectorWrapper>
-          <ApiSelector onChange={handleApiOption} defaultValue="default">
-            <option value="default" disabled>
+          <ApiSelector onChange={handleApiOption} defaultValue={currentApi}>
+            <option value="API 선택" disabled>
               API 선택
             </option>
             {ApiListAscending.map((name) => (
