@@ -1,6 +1,5 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
-import { OrderRequestBody } from '@types/request';
 import { CategoryData, ProductOption } from '@/dto';
 import { CashReceiptOptions } from '@/constants';
 
@@ -86,11 +85,6 @@ export type OrderFormData = {
   usePoint: boolean;
   pointAmount: number;
 };
-
-export interface JWTTokenHeader {
-  alg: string;
-  typ: string;
-}
 
 export interface ProductFormInputData {
   name: string;
