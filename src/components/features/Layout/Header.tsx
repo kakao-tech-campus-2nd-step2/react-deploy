@@ -17,7 +17,7 @@ export const Header = () => {
   };
 
   const handleApiChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setApiInfo(event.target.value); // 선택된 value로 setApiInfo 호출
+    setApiInfo(event.target.value);
   };
 
   return (
