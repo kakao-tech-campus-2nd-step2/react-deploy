@@ -23,47 +23,13 @@ type Member = {
   point: number;
 };
 
-const data: Member[] = [
-  {
-    id: 1,
-    email: 'test@email.com',
-    name: '닉네임',
-    point: 5000,
-  },
-  {
-    id: 2,
-    email: 'test2@email.com',
-    name: '닉네임2',
-    point: 10000,
-  },
-];
+type MemberTablePrps = {
+  members: Member[];
+};
 
-const columns: ColumnDef<Member>[] = [
-  {
-    header: '이메일',
-    accessorKey: 'email',
-    cell: ({ row }) => <div>{row.getValue('email')}</div>,
-  },
-  {
-    header: '이름',
-    accessorKey: 'name',
-    cell: ({ row }) => <div>{row.getValue('name')}</div>,
-  },
-  {
-    header: '보유 포인트',
-    accessorKey: 'point',
-    cell: ({ row }) => <div>{row.getValue('point')} P</div>,
-  },
-  {
-    header: '포인트 추가하기',
-    accessorKey: 'addPoint',
-    cell: () => <AddPointModal />,
-  },
-];
-
-export const MemberTable = () => {
+export const MemberTable = ({ members }: MemberTablePrps) => {
   const table = useReactTable({
-    data,
+    data: members,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -102,3 +68,26 @@ export const MemberTable = () => {
     </TableContainer>
   );
 };
+
+const columns: ColumnDef<Member>[] = [
+  {
+    header: '이메일',
+    accessorKey: 'email',
+    cell: ({ row }) => <div>{row.getValue('email')}</div>,
+  },
+  {
+    header: '이름',
+    accessorKey: 'name',
+    cell: ({ row }) => <div>{row.getValue('name')}</div>,
+  },
+  {
+    header: '보유 포인트',
+    accessorKey: 'point',
+    cell: ({ row }) => <div>{row.getValue('point')} P</div>,
+  },
+  {
+    header: '포인트 추가하기',
+    accessorKey: 'addPoint',
+    cell: () => <AddPointModal />,
+  },
+];

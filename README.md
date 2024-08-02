@@ -83,7 +83,7 @@ http://katecam-ppochaco.s3-website.ap-northeast-2.amazonaws.com/
 
 - API
 
-  - [ ] 모든 사용자 정보 불러오기
+  - [x] 모든 사용자 정보 불러오기
   - [ ] 특정 사용자의 포인트 추가하기
 
 - UI

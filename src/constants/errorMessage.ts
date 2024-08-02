@@ -12,4 +12,5 @@ export const API_ERROR_MESSAGES = {
 
 export const RENDER_ERROR_MESSAGES = {
   CATEGORY_NOT_FOUND: '해당 테마가 존재하지 않습니다.',
+  FORBIDDEN_USER: '접근 권한이 없습니다.',
 };
