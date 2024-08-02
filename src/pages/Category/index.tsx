@@ -7,6 +7,7 @@ import { RouterPath } from '@/routes/path';
 
 export const CategoryPage = () => {
   const { category_id = '' } = useParams<{ category_id: string }>();
+  const categoryIdNumber = Number(category_id);
   const { isRender, currentTheme } = useCurrentCategory({ category_id });
 
   if (!isRender) return null;
@@ -18,7 +19,7 @@ export const CategoryPage = () => {
   return (
     <>
       <CategoryHeroSection category_id={category_id} />
-      <CategoryProductsSection category_id={category_id} />
+      <CategoryProductsSection category_id={categoryIdNumber} />
     </>
   );
 };
