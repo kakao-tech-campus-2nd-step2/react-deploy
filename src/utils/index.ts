@@ -27,7 +27,7 @@ export function isJwtToken(str?: string) {
 
   if (split.length < 3) return false;
 
-  return (JSON.parse(split[0]) as JWTTokenHeader).typ.toUpperCase() === 'JWT';
+  return (JSON.parse(window.btoa(split[0])) as JWTTokenHeader).typ.toUpperCase() === 'JWT';
 }
 
 export function hasKey(list: Object) {
