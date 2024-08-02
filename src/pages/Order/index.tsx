@@ -165,6 +165,16 @@ export const OrderPage = () => {
           </Flex>
         </Flex>
         <Flex w="360px" h="100%" p="5" flexDir="column" borderX="2px" borderColor="#eeeeee">
+          <Text fontSize="lg" fontWeight="700">
+            포인트 사용
+          </Text>
+          <Flex w="100%" justify="space-between" gap="5" py="5">
+            <Input type="number" placeholder="포인트 입력" />
+            <Button bg="#d8d8d8" fontWeight="400">
+              전액 사용
+            </Button>
+          </Flex>
+          <Divider opacity="1" borderColor="#eeeeee" />
           <Text fontSize="lg" fontWeight="700" py="5">
             결제 정보
           </Text>
