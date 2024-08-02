@@ -7,7 +7,7 @@ import {
 import type { ProductData } from '@/types';
 
 import { BASE_URL } from '../instance';
-import { fetchInstance } from './../instance/index';
+import { fetchWithTokenInstance } from './../instance/index';
 
 type RequestParams = {
   categoryId: string;
@@ -16,6 +16,8 @@ type RequestParams = {
 };
 
 type ProductsResponseData = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
   products: ProductData[];
   nextPageToken?: string;
   pageInfo: {
@@ -36,7 +38,7 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   const params = new URLSearchParams();
 
   params.append('categoryId', categoryId);
-  params.append('sort', 'name,asc');
+  // params.append('sort', 'name,asc');
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
@@ -44,10 +46,13 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+  const response = await fetchWithTokenInstance.get<ProductsResponseRawData>(
+    getProductsPath(params),
+  );
   const data = response.data;
 
   return {
+    data,
     products: data.content,
     nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
     pageInfo: {

@@ -2,7 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import type { ProductData } from '@/types';
 
-import { BASE_URL, fetchInstance } from '../instance';
+import { BASE_URL, fetchWithTokenInstance } from '../instance';
 
 export type ProductDetailRequestParams = {
   productId: string;
@@ -15,7 +15,7 @@ export type GoodsDetailResponseData = ProductData;
 export const getProductDetailPath = (productId: string) => `${BASE_URL}/api/products/${productId}`;
 
 export const getProductDetail = async (params: ProductDetailRequestParams) => {
-  const response = await fetchInstance.get<GoodsDetailResponseData>(
+  const response = await fetchWithTokenInstance.get<GoodsDetailResponseData>(
     getProductDetailPath(params.productId),
   );
 

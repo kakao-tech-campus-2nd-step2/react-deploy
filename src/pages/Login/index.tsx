@@ -26,15 +26,13 @@ export const LoginPage = () => {
       return;
     }
 
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
     try {
       const data = await loginMutation.mutateAsync({ email: id, password });
-      setAuthInfo({ id: data.email, name: data.email, token: data.token });
+      setAuthInfo({ id: data.access_token, name: data.access_token, token: data.access_token });
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       window.location.replace(redirectUrl);
+      console.log('회원가입 성공', data);
     } catch (error: unknown) {
       alert('로그인 실패: ' + (error as Error).message);
     }
@@ -53,6 +51,8 @@ export const LoginPage = () => {
       alert('회원가입이 완료되었습니다.');
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       window.location.replace(redirectUrl);
+
+      console.log('회원가입 성공', data);
     } catch (error: unknown) {
       alert('회원가입 실패: ' + (error as Error).message);
     }
