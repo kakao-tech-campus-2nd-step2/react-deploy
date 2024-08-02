@@ -11,6 +11,7 @@ import Paths from '@constants/Paths';
 import WishesSection from '@components/organisms/mypage/WishesSection';
 import OrderHistorySection from '@components/organisms/mypage/OrderHistorySection';
 import { LoadingSpinnerFullWidth } from '@components/atoms/LoadingSpinner';
+import ErrorBoundary from '@components/atoms/boundary/ErrorBoundary';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 const GreetingTitle = styled.h1`
@@ -63,10 +64,12 @@ function MyPage() {
             onClick={onLogoutClick}
           />
         </Container>
-        <Suspense fallback={<LoadingSpinnerFullWidth />}>
-          <WishesSection />
-          <OrderHistorySection />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingSpinnerFullWidth />}>
+            <WishesSection />
+            <OrderHistorySection />
+          </Suspense>
+        </ErrorBoundary>
       </Container>
     </Page>
   );
