@@ -7,7 +7,7 @@ const wishesDatabase: WishItem[] = []; // WishItem 형식으로 변경
 let nextId = 1;
 export const interestHandlers = [
   // 관심 목록에 추가
-  rest.post("/api/members/wishes/products/:productId", (req, res, ctx) => {
+  rest.post("/api/wishes/products/:productId", (req, res, ctx) => {
     const { productId } = req.params;
     const product = PRODUCTS_MOCK_DATA.content.find(
       (item) => item.id === Number(productId)
@@ -31,7 +31,7 @@ export const interestHandlers = [
   }),
 
   // 관심 목록 리스트 불러오기
-  rest.get("/api/members/wishes", (req, res, ctx) => {
+  rest.get("/api/wishes", (req, res, ctx) => {
     const page = parseInt(req.url.searchParams.get("page") || "0");
     const size = parseInt(req.url.searchParams.get("size") || "10");
     const totalElements = wishesDatabase.length;
@@ -70,7 +70,7 @@ export const interestHandlers = [
   }),
 
   // 위시 삭제 핸들러 추가
-  rest.delete("/api/members/wishes/:wishId", (req, res, ctx) => {
+  rest.delete("/api/wishes/:wishId", (req, res, ctx) => {
     const { wishId } = req.params;
     const wishIndex = wishesDatabase.findIndex(
       (wish) => wish.id === Number(wishId)

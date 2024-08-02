@@ -59,7 +59,7 @@ export const OptionSection = ({ productId }: Props) => {
 
     try {
       const response = await axios.post(
-        `/api/members/wishes/products/${productId}`,
+        `/api/wishes/products/${productId}`,
         {},
         {
           headers: {
