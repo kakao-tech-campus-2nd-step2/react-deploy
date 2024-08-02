@@ -20,7 +20,7 @@ export const getBaseUrl = (): string => {
   const selectedServer = sessionStorage.getItem('selevtedServer');
   switch (selectedServer) {
     case 'server1':
-      return 'http://api.server1.example.com';
+      return 'http://bgmsound.kro.kr:8080';
     case 'server2':
       return 'http://api.server2.example.com';
     case 'server3':

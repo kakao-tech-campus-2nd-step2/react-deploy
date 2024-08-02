@@ -4,7 +4,12 @@ import { categoriesMockHandler } from '@/api/hooks/categories.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
 
 //가상 데이터베이스
-const userDatabase: { email: string; password: string }[] = [];
+const userDatabase: { email: string; password: string }[] = [
+  { email: 'server1@example.com', password: 'password1' },
+  { email: 'server2@example.com', password: 'password2' },
+  { email: 'server3@example.com', password: 'password3' },
+  { email: 'server4@example.com', password: 'password4' },
+];
 
 export const handlers = [
   ...categoriesMockHandler,
@@ -20,11 +25,10 @@ export const handlers = [
 
     //가상 데이터베이스에 사용자 정보 저장
     userDatabase.push({ email, password });
-    console.log('회원가입 사용자 정보 저장완', { email, password });
 
     //성공 응답 예제
     return res(
-      ctx.status(201),
+      ctx.status(200),
       ctx.json({
         token: '가입 성공 토큰',
       }),
@@ -34,8 +38,7 @@ export const handlers = [
   // 로그인 핸들러
   rest.post('/api/members/login', (req, res, ctx) => {
     const { email, password } = req.body as { email: string; password: string };
-    console.log('로그인 핸들러 콘솔');
-    console.log('로그인 요청 데이터:', { email, password });
+    //console.log('로그인 요청 데이터:', { email, password });
 
     const loginUser = userDatabase.find(
       (user) => user.email === email && user.password === password,
@@ -43,7 +46,6 @@ export const handlers = [
 
     //성공시
     if (loginUser) {
-      console.log('로그인 성공:', loginUser);
       return res(
         ctx.status(200),
         ctx.json({
@@ -54,7 +56,7 @@ export const handlers = [
       console.log('로그인 실패: 사용자 정보 불일치');
       //실패시
       return res(
-        ctx.status(405),
+        ctx.status(400),
         ctx.json({ message: '로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요' }),
       );
     }
