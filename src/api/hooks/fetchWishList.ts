@@ -2,18 +2,17 @@ import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 
+import { authSessionStorage } from '@/utils/storage';
+
 import { fetchInstance } from '../instance';
 
-const getToken = () => localStorage.getItem('authToken');
+const getToken = () => authSessionStorage.get();
 
 export interface WishItem {
   id: number;
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-  };
+  name: string;
+  price: number;
+  imageUrl: string;
 }
 
 interface WishListResponse {
