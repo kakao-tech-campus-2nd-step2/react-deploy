@@ -23,6 +23,7 @@ export const Header = () => {
 
   const handleApiOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
     apiOptionLocalStorage.set(e.target.value);
+    window.location.reload(); // 바뀐 apiOption 반영하기 위함
   };
 
   const handleLogin = () => {
