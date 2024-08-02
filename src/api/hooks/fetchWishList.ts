@@ -33,7 +33,7 @@ const fetchWishList = async (page: number, size: number): Promise<WishListRespon
     params: {
       page,
       size,
-      sort: 'createdDate,desc',
+      sort: 'id,desc',
     },
   });
   return response.data;
