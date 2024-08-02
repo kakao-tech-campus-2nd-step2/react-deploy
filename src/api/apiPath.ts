@@ -16,4 +16,30 @@ export const getDynamicPath = {
   getProduct: (productsId: string) => APIPath.getProduct.replace(':productsId', productsId),
 };
 
-export const getBackendAPI = () => {};
+export const getBackendAPI = () => {
+  const backend = localStorage.getItem('backend');
+  let url;
+
+  switch (backend) {
+    case '김해경':
+      url = 'http://52.78.246.142:8080';
+      break;
+    case '박서현':
+      url = 'http://43.202.61.165:8080';
+      break;
+    case '윤정훈':
+      url = 'http://52.78.6.254:8080';
+      break;
+    case '이은경':
+      url = 'http://3.38.99.100:8080';
+      break;
+    case '이택':
+      url = 'https://api.example.com';
+      break;
+    default:
+      url = 'https://api.example.com';
+      break;
+  }
+
+  return url;
+};

@@ -2,6 +2,8 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import { getBackendAPI } from '../apiPath';
+
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
@@ -15,9 +17,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 
   return instance;
 };
-export const BASE_URL = 'http://52.78.246.142:8080';
-// export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
+export const BASE_URL = getBackendAPI();
 export const fetchInstance = initInstance({
   baseURL: BASE_URL,
   headers: {
