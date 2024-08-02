@@ -36,9 +36,9 @@ export const LoginPage = () => {
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카고 CI" onClick={() => window.location.assign('/')} style={{ cursor: 'pointer' }} />
       <FormWrapper>
-        <UnderlineTextField placeholder="카카오메일 아이디, 이메일, 전화번호" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="이메일" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -53,11 +53,11 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button theme='lightGray' onClick={handleConfirm}>로그인</Button>
         <OrBox>
           <OrText>또는</OrText>
         </OrBox>
-        <Button theme='lightGray' onClick={handleConfirm}>이메일로 로그인</Button>
+        <Button onClick={handleConfirm}>kakao로 로그인</Button>
         <SignUp>
           <SignUpA href='/register'>회원가입</SignUpA>
         </SignUp>
