@@ -8,6 +8,7 @@ export const RouterPath = {
   login: '/login',
   register: '/register',
   notFound: '*',
+  orders: '/orders',
 };
 
 export const getDynamicPath = {
