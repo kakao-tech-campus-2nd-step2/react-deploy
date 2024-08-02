@@ -44,7 +44,7 @@ const Label = styled.p`
   font-weight: 700;
   font-size: 13px;
   line-height: 16px;
-  color: rgba(255, 255, 255, 0.7);
+  color: black;
 
   @media screen and (min-width: ${breakpoints.sm}) {
     font-size: 20px;
@@ -54,7 +54,7 @@ const Label = styled.p`
 
 const Title = styled.h1`
   font-weight: 700;
-  color: #fff;
+  color: black;
   font-size: 18px;
   line-height: 26px;
   word-break: break-all;
