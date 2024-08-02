@@ -101,5 +101,5 @@ http://katecam-ppochaco.s3-website.ap-northeast-2.amazonaws.com/
 
 #### 페이징 처리하기
 
-- [ ] 주문 목록
+- [x] 주문 목록
 - [ ] 위시 상품
