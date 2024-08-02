@@ -58,7 +58,9 @@ const router = createBrowserRouter([
     path: RouterPath.login,
     element: <LoginPage />,
   },
-]);
+], {
+  basename: process.env.PUBLIC_URL
+});
 
 export const Routes = () => {
   return <RouterProvider router={router} />;
