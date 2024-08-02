@@ -17,7 +17,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 };
 
 export const fetchInstance = initInstance({
-  baseURL: sessionStorage.getItem('baseUrl') || process.env.REACT_APP_BACKEND_URL_KIM_TAEYUN!,
+  baseURL: sessionStorage.getItem('baseUrl') || process.env.REACT_APP_BACKEND_URL_KANG_SUMIN!,
 });
 
 fetchInstance.interceptors.request.use(
@@ -27,6 +27,15 @@ fetchInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+fetchInstance.interceptors.response.use(
+  (response) => {
+    return response.data;
   },
   (error) => {
     return Promise.reject(error);

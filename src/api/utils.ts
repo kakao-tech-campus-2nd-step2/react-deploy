@@ -30,10 +30,10 @@ export const registerUser = async ({
       email,
       password,
     });
-    const { token } = response.data.data;
+    const { token } = response.data;
     localStorage.setItem('token', token);
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw new Error('회원가입에 실패했습니다.');
   }
@@ -48,10 +48,10 @@ export const loginUser = async ({
       email,
       password,
     });
-    const { token } = response.data.data;
+    const { token } = response.data;
     localStorage.setItem('token', token);
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw new Error('로그인에 실패했습니다.');
   }
@@ -60,14 +60,14 @@ export const loginUser = async ({
 export const getCategories = async (): Promise<CategoryResponseData> => {
   const response = await fetchInstance.get(getCategoriesPath());
 
-  return response.data.data;
+  return response.data;
 };
 
 export const getProducts = async (
   params: ProductRequestParams,
 ): Promise<PaginationResponseData<ProductData>> => {
   const response = await fetchInstance.get(getProductsPath(params));
-  const data = response.data.data;
+  const data = response.data;
 
   return {
     contents: data.content,
@@ -84,7 +84,7 @@ export const getProductDetail = async (
 ): Promise<ProductDetailResponseData> => {
   const response = await fetchInstance.get(getProductDetailPath(params.productId));
 
-  return response.data.data;
+  return response.data;
 };
 
 export const getProductOptions = async (
@@ -92,14 +92,14 @@ export const getProductOptions = async (
 ): Promise<ProductOptionsResponseData> => {
   const response = await fetchInstance.get(getProductOptionsPath(params.productId));
 
-  return response.data.data;
+  return response.data;
 };
 
 export const addToWishlist = async (productId: string): Promise<AddToWishlistResponse> => {
   try {
     const response = await fetchInstance.post('/api/wishes', { productId });
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw new Error('위시 리스트 추가에 실패했습니다.');
   }
@@ -118,7 +118,7 @@ export const getWishlist = async (
       },
     });
 
-    const data = response.data.data;
+    const data = response.data;
 
     return {
       contents: data.content,
@@ -137,7 +137,7 @@ export const deleteFromWishlist = async (productId: number): Promise<void> => {
   try {
     const response = await fetchInstance.delete(`/api/wishes/${productId}`);
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw new Error('위시 리스트 삭제에 실패했습니다.');
   }
@@ -147,7 +147,7 @@ export const createOrder = async (order: CreateOrderRequestParams): Promise<Orde
   try {
     const response = await fetchInstance.post('/api/orders', order);
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw new Error('주문하기에 실패했습니다.');
   }
@@ -162,7 +162,7 @@ export const getOrderList = async (
     const response = await fetchInstance.get('/api/orders', {
       params: params,
     });
-    const data = response.data.data;
+    const data = response.data;
 
     return {
       contents: data.content,
