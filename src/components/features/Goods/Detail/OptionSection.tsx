@@ -46,7 +46,7 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   const handleAddToWishlist = async () => {
-    const token = sessionStorage.getItem('token'); 
+    const token = sessionStorage.getItem('token');
     try {
       await fetch(`${BASE_URL}/api/wishes/${productId}`, {
         method: 'POST',

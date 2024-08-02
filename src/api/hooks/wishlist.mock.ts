@@ -62,7 +62,7 @@ export const wishlistMockHandler = [
         numberOfElements: pagedContent.length,
         first: page === 0,
         empty: pagedContent.length === 0,
-      })
+      }),
     );
   }),
   rest.delete(`${BASE_URL}/api/wishes/:wishId`, (req, res, ctx) => {
@@ -82,7 +82,9 @@ export const wishlistMockHandler = [
       return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
 
-    const existingWish = WISHLIST_MOCK_DATA.content.find((item) => item.product.id === Number(productId));
+    const existingWish = WISHLIST_MOCK_DATA.content.find(
+      (item) => item.product.id === Number(productId),
+    );
 
     if (existingWish) {
       return res(ctx.status(400), ctx.json({ message: 'Product already in wishlist' }));

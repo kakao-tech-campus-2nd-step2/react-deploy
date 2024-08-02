@@ -52,7 +52,10 @@ const getWishlistPath = ({ pageToken, maxResults }: RequestParams) => {
   return `${BASE_URL}/api/wishes?${params.toString()}`;
 };
 
-export const getWishlist = async (params: RequestParams, token: string): Promise<WishlistResponseData> => {
+export const getWishlist = async (
+  params: RequestParams,
+  token: string,
+): Promise<WishlistResponseData> => {
   const url = getWishlistPath(params);
 
   const response = await fetch(url, {
@@ -70,7 +73,10 @@ export const getWishlist = async (params: RequestParams, token: string): Promise
 export const useGetWishlist = ({
   maxResults = 10,
   initPageToken,
-}: { maxResults?: number; initPageToken?: string }): UseInfiniteQueryResult<InfiniteData<WishlistResponseData>> => {
+}: {
+  maxResults?: number;
+  initPageToken?: string;
+}): UseInfiniteQueryResult<InfiniteData<WishlistResponseData>> => {
   const authInfo = useAuth();
 
   return useInfiniteQuery({

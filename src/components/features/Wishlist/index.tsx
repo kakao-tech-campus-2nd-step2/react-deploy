@@ -14,7 +14,9 @@ type WishlistItem = {
 };
 
 export const Wishlist = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist({ maxResults: 10 });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist({
+    maxResults: 10,
+  });
   const authInfo = useAuth();
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
@@ -51,7 +53,7 @@ export const Wishlist = () => {
           <Text fontSize="17px">관심 상품이 없습니다.</Text>
         ) : (
           <List spacing={3}>
-            {wishlist.map((item) => 
+            {wishlist.map((item) => (
               <ListItem key={item.id} p={2} borderWidth={1} borderRadius="md">
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box display="flex" alignItems="center" gap="30px">
@@ -66,7 +68,7 @@ export const Wishlist = () => {
                   <Button onClick={() => handleDelete(item.id)}>삭제</Button>
                 </Box>
               </ListItem>
-            )}
+            ))}
           </List>
         )}
         {hasNextPage && (
