@@ -15,7 +15,14 @@ export type Params = Pick<ProductRequestParams, 'maxResults' | 'categoryId'> & {
 };
 
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: ProductRequestParams) => {
-  return `${fetchInstance.defaults.baseURL}/api/products/categories/${categoryId}?page=${pageToken ? pageToken : 0}&${maxResults ? `size=${maxResults}&` : ''}sort=price,asc`;
+    const params = new URLSearchParams();
+
+    params.append('page', pageToken || '0');
+    params.append('sort', 'price,asc');
+
+    if (maxResults) params.append('size', String(maxResults));
+
+    return `${fetchInstance.defaults.baseURL}/api/products/categories/${categoryId}?${params.toString()}`;
 };
 
 export const useGetProducts = ({
