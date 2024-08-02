@@ -1,15 +1,19 @@
 import logo from '@/assets/logo.png';
+import { useAuth } from '@/provider/auth/useAuth';
 import { colors } from '@/styles/variants/theme';
 
 import { Content } from '@/components/Content';
 import { Logo } from '@/components/Logo';
 import { Container } from '@/components/ui/Layout/Container';
 
+import { AdminButton } from './AdminButton';
 import { AuthButton } from './AuthButton';
 import { SelectAPI } from './SelectAPI';
 import { headerStyle } from './styles';
 
 export const Header = () => {
+  const { authInfo } = useAuth();
+
   return (
     <Content
       css={headerStyle}
@@ -22,6 +26,7 @@ export const Header = () => {
       <Container justifyContent="flex-end" alignItems="center" gap="1rem">
         <SelectAPI />
         <AuthButton />
+        {authInfo?.userInfo.role === 'ADMIN' && <AdminButton />}
       </Container>
     </Content>
   );
