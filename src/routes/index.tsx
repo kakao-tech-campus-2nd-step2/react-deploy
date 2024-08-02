@@ -12,6 +12,7 @@ import { ProductsDetailPage } from '@/pages/ProductDetailPage';
 import { RegisterPage } from '@/pages/RegisterPage';
 import { AuthProvider } from '@/provider/auth/AuthProvider';
 
+import { AdminRoute } from './components/AdminRoute';
 import { AuthRoute } from './components/AuthRoute';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ROUTER_PATH } from './path';
@@ -39,7 +40,9 @@ export const Router = () => {
             path={ROUTER_PATH.KAKAO_REDIRECT}
             element={<KakaoLoginRedirectionPage />}
           />
-          <Route path={ROUTER_PATH.ADMIN} element={<AdminPage />} />
+          <Route element={<AdminRoute />}>
+            <Route path={ROUTER_PATH.ADMIN} element={<AdminPage />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
