@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import type { AxiosError } from 'axios';
+import axios from 'axios';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +9,6 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
-import { fetchInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { useBackend } from '@/provider/Auth/Backend';
@@ -45,6 +45,11 @@ export const OptionSection = ({ productId }: Props) => {
       return;
     }
 
+    if (!authInfo || !authInfo.token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
     console.log('Attempting to add to wishlist:', {
       productId: parseInt(productId),
       quantity: Number(countAsString),
@@ -52,19 +57,20 @@ export const OptionSection = ({ productId }: Props) => {
     });
 
     try {
-      const response = await fetchInstance(backendUrl).post(
-        '/api/wishes',
+      const response = await axios.post(
+        `${backendUrl}/api/wishes`,
         { productId: parseInt(productId), quantity: Number(countAsString) },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authInfo.token}`,
+            'Content-Type': 'application/json',
           },
         },
       );
 
       console.log('API response:', response);
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         alert('관심 등록 완료');
       } else {
         alert('관심 등록 실패');
