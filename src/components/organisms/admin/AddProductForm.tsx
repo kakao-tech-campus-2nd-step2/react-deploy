@@ -1,66 +1,66 @@
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  FormControl,
-  FormLabel,
-  Input,
   Box,
-  Text,
 } from '@chakra-ui/react';
 import Button from '@components/atoms/button/Button';
-import NameAdditionForm from '@components/organisms/admin/NameAdditionForm';
-import { CategoryFormInputData } from '@/types';
+import FormTextInput from '@components/molecules/FormTextInput';
+import { ProductFormInputData } from '@/types';
 
-function AddCategoryForm() {
+function AddProductForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CategoryFormInputData>();
+  } = useForm<ProductFormInputData>();
 
-  const handleSubmitClick = useCallback((data: CategoryFormInputData) => {
-    alert(`${data.name}을(를) 상품 목록에 추가했습니다.`);
+  const handleSubmitClick = useCallback((data: ProductFormInputData) => {
+    alert(`${data.name}을(를) 카테고리 목록에 추가했습니다.`);
   }, []);
 
   return (
     <Box width="400px" mx="auto" mt="50px">
       <form onSubmit={handleSubmit(handleSubmitClick)}>
-        <NameAdditionForm additionType="product" register={register} errors={errors} />
+        <FormTextInput<ProductFormInputData>
+          register={register}
+          errors={errors}
+          fieldKey="name"
+          options={{
+            required: '이름을 입력하세요.',
+          }}
+          fieldLabel="상품 이름"
+        />
 
-        <FormControl isInvalid={!!errors.color} mb="4">
-          <FormLabel htmlFor="color">배너 배경 색상</FormLabel>
-          <Input
-            id="color"
-            placeholder="16진수 또는 rgba"
-            {...register('color', { required: '색상을 입력하세요' })}
-          />
-          {errors.color && <Text color="red.500" fontSize="sm">{errors.color.message}</Text>}
-        </FormControl>
+        <FormTextInput<ProductFormInputData>
+          register={register}
+          errors={errors}
+          fieldKey="price"
+          options={{ required: '가격을 입력하세요', valueAsNumber: true }}
+          fieldLabel="가격(숫자)"
+        />
 
-        <FormControl isInvalid={!!errors.imageUrl} mb="4">
-          <FormLabel htmlFor="imageUrl">이미지 URL</FormLabel>
-          <Input
-            id="imageUrl"
-            placeholder="카테고리 이미지 URL"
-            {...register('imageUrl', { required: '이미지 url을 입력하세요' })}
-          />
-          {errors.imageUrl && <Text color="red.500" fontSize="sm">{errors.imageUrl.message}</Text>}
-        </FormControl>
+        <FormTextInput<ProductFormInputData>
+          register={register}
+          errors={errors}
+          fieldKey="imageUrl"
+          options={{
+            required: '이미지 URL을 입력하세요.',
+          }}
+          fieldLabel="이미지 URL"
+        />
 
-        <FormControl isInvalid={!!errors.description} mb="4">
-          <FormLabel htmlFor="description">설명</FormLabel>
-          <Input
-            id="description"
-            placeholder="설명을 입력하세요"
-            {...register('description', { required: '설명을 입력하세요' })}
-          />
-          {errors.description && <Text color="red.500" fontSize="sm">{errors.description.message}</Text>}
-        </FormControl>
+        <FormTextInput<ProductFormInputData>
+          register={register}
+          errors={errors}
+          fieldKey="categoryId"
+          options={{ required: '카테고리 ID를 입력하세요', valueAsNumber: true }}
+          fieldLabel="카테고리 ID"
+        />
 
-        <Button theme="kakao" type="submit" text="테마 추가" elementSize="responsive" />
+        <Button theme="kakao" type="submit" text="상품 추가" elementSize="responsive" />
       </form>
     </Box>
   );
 }
 
-export default AddCategoryForm;
+export default AddProductForm;

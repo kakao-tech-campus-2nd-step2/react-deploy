@@ -5,8 +5,8 @@ import Button from '@components/atoms/button/Button';
 import { MAX_CONTENT_WIDTH } from '@styles/size';
 import Modal from '@components/atoms/modal/Modal';
 import { useState } from 'react';
-import AddCategoryForm from '@components/organisms/admin/AddCategoryForm';
-import AddProductForm from '@components/organisms/admin/AddProductForm';
+import AddCategoryForm from '@components/organisms/admin/AddProductForm';
+import AddProductForm from '@components/organisms/admin/AddCategoryForm';
 import CategoryContextProvider from '@/providers/CategoryContextProvider';
 
 function AdminPage() {
