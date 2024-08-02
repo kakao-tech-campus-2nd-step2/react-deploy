@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { usePostWish } from '@/api/hooks/useWish';
+import { usePostWish } from '@/api/hooks/wish/usePostWish';
 
 export const useHandleWish = () => {
   const [isWish, setIsWish] = useState(false);
