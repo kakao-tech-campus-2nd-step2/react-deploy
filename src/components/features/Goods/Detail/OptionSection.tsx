@@ -60,11 +60,15 @@ export const OptionSection = ({ productId }: Props) => {
     <Wrapper>
       <SelectWrapper>
         <Select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-          {options.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.name}
-            </option>
-          ))}
+          {options.length > 0 ? (
+            options.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))
+          ) : (
+            <option value="">옵션이 없습니다</option>
+          )}
         </Select>
         <CountOptionItem name="수량 선택" value={count} onChange={setCount} />
       </SelectWrapper>
