@@ -6,7 +6,7 @@ import { CategoryName, CategorySubtitle, CategoryTitle } from './Banner.styles';
 import { CategoryContext } from '@/providers/CategoryContextProvider';
 
 interface BannerProps {
-  categoryId: string;
+  categoryId: number;
 }
 
 function Banner({ categoryId }: BannerProps) {

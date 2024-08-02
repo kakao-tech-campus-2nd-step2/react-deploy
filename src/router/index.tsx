@@ -7,6 +7,7 @@ import MyPage from '@pages/MyPage';
 import ProductDetailsPage from '@pages/ProductDetailsPage';
 import ProductOrderPage from '@pages/ProductOrderPage';
 import RegisterPage from '@pages/RegisterPage';
+import AdminPage from '@pages/admin/AdminPage';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: Paths.REGISTER_PAGE,
     element: <RegisterPage />,
+  },
+  {
+    path: Paths.ADMIN_PAGE,
+    element: <AdminPage />,
   },
 ]);
 

@@ -9,7 +9,11 @@ import FetchStatusBoundary
   from '@components/atoms/boundary/FetchStatusBoundary';
 import { CategoryContext } from '@/providers/CategoryContextProvider';
 
-function CategorySection() {
+interface CategorySectionProps {
+  displayDeleteButton?: boolean;
+}
+
+function CategorySection({ displayDeleteButton }: CategorySectionProps) {
   const { categories, fetchStatus } = useContext(CategoryContext);
 
   return (
@@ -21,11 +25,15 @@ function CategorySection() {
       >
         <FetchStatusBoundary fetchStatus={fetchStatus}>
           <ResponsiveGrid columnsDefault={6} columnsMd={4} gap={0}>
-            {Object.keys(categories).map((themeKey, i) => {
+            {Object.keys(categories).map((categoryId, i) => {
               const key = `$gift-theme-${i}`;
 
               return (
-                <MainCategoryItem categoryId={themeKey} key={key} />
+                <MainCategoryItem
+                  categoryId={parseInt(categoryId, 10)}
+                  key={key}
+                  displayDeleteButton={displayDeleteButton}
+                />
               );
             })}
           </ResponsiveGrid>

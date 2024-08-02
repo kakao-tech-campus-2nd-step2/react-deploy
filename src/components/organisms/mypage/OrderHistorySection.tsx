@@ -3,25 +3,24 @@ import Container from '@components/atoms/container/Container';
 import { MAX_CONTENT_WIDTH } from '@styles/size';
 import { Text } from '@chakra-ui/react';
 import ProductSkeletonGrid from '@components/molecules/skeleton/ProductSkeletonGrid';
-import WishesContent from '@components/organisms/mypage/WishesContent';
 import useFetchProducts from '@hooks/useFetchProducts';
 import Button from '@components/atoms/button/Button';
+import ProductDisplaySection from '@components/organisms/product/ProductDisplaySection';
 import { generateRandomId } from '@/utils';
-import { WishData } from '@/dto';
+import { ProductData } from '@/dto';
 
 const MAX_RESULTS_PER_PAGE = 10;
 
-function WishesSection() {
-  const wishSectionId = useRef(generateRandomId());
+function OrderHistorySection() {
+  const orderSectionId = useRef(generateRandomId());
 
   const {
     data,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch,
   } = useFetchProducts({
-    productType: 'wished',
+    productType: 'ordered',
     sort: 'name, asc',
     itemsPerPage: MAX_RESULTS_PER_PAGE,
   });
@@ -34,17 +33,16 @@ function WishesSection() {
 
   return (
     <Container elementSize="full-width" maxWidth={MAX_CONTENT_WIDTH} flexDirection="column">
-      <Text fontSize="25px" fontWeight="bold" paddingBottom="10px">관심 상품 목록</Text>
+      <Text fontSize="25px" fontWeight="bold" paddingBottom="10px">주문 내역</Text>
       {data?.pages?.map((page, index) => {
-        const key = `${wishSectionId}-${index}`;
+        const key = `${orderSectionId}-${index}`;
 
         return (
-          <WishesContent
-            wishes={page.content as WishData[]}
+          <ProductDisplaySection
+            products={page.content as ProductData[]}
             maxColumns={5}
-            minColumns={5}
+            minColumns={2}
             key={key}
-            refetch={refetch}
           />
         );
       })}
@@ -60,4 +58,4 @@ function WishesSection() {
   );
 }
 
-export default WishesSection;
+export default OrderHistorySection;

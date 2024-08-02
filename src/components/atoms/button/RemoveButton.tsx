@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { backgroundColors, textColors } from '@styles/colors';
 
-// eslint-disable-next-line import/prefer-default-export
-export const WishRemoveButton = styled.div`
+const RemoveButton = styled.div`
   background-color: ${backgroundColors.badgePrimary};
   color: ${textColors.inset};
   position: absolute;
@@ -10,7 +9,7 @@ export const WishRemoveButton = styled.div`
   left: 2px;
   width: 30px;
   height: 30px;
-  z-index: 1;
+  z-index: 2;
   border-radius: 5px;
   text-align: center;
   display: flex;
@@ -18,3 +17,5 @@ export const WishRemoveButton = styled.div`
   align-items: center;
   cursor: pointer;
 `;
+
+export default RemoveButton;

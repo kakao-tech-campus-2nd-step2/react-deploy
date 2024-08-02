@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import { CategoryContext } from '@/providers/CategoryContextProvider';
 
 interface CategoryItemProps {
-  categoryId: string;
+  categoryId: number;
 }
 
 function CategoryItem({ categoryId }: CategoryItemProps) {

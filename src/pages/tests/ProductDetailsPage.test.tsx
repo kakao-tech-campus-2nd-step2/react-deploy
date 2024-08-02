@@ -7,7 +7,8 @@ import {
   screen,
 } from '@testing-library/react';
 import { RouterWrapper } from '@utils/testUtil/TestWrapper';
-import ProductCounterForm from '@components/organisms/product/ProductCounterForm';import fireEvent from '@testing-library/user-event';
+import ProductCounterForm from '@components/organisms/product/ProductCounterForm';
+import fireEvent from '@testing-library/user-event';
 
 describe('Product details page', () => {
   setupMockBeforeTest();
@@ -18,12 +19,18 @@ describe('Product details page', () => {
       'https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
     price: 145000,
   };
+  const mockOptions = [{
+    id: 1,
+    name: '옵션1',
+    quantity: 10000,
+  }];
   const renderComponent = () => render(
     <RouterWrapper>
       <ProductCounterForm
         productId={mockProductData.id}
         productName={mockProductData.name}
         productPrice={mockProductData.price}
+        productOptions={mockOptions}
       />
     </RouterWrapper>,
   );

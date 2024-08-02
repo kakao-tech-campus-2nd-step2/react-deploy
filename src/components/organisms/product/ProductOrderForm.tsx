@@ -43,6 +43,8 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
       hasCashReceipt: false,
       cashReceiptType: CashReceiptOptions.PERSONAL,
       cashReceiptNumber: '',
+      usePoint: true,
+      pointAmount: 0,
     },
   });
 
@@ -50,18 +52,12 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
     if (!orderHistory) return;
 
     const orderBody: OrderRequestBody = {
-      productId: orderHistory.productId,
-      productOptionId: 1,
-      productQuantity: orderHistory.productQuantity,
-      messageCardTemplateId: 0,
-      messageCardTextMessage: data.messageCardTextMessage,
-      senderId: 0,
-      receiverId: 0,
-      hasCashReceipt: data.hasCashReceipt,
-      cashReceiptType: data.cashReceiptType,
-      cashReceiptNumber: data.cashReceiptNumber,
+      optionId: orderHistory.option.id,
+      message: data.messageCardTextMessage as string,
+      quantity: orderHistory.quantity,
+      point: 0,
     };
-    alert(`${orderBody.productId}번 상품의 주문이 완료되었습니다.`);
+    alert(`${orderBody.optionId}번 상품의 주문이 완료되었습니다.`);
   }, [orderHistory]);
 
   useEffect(() => {
@@ -89,7 +85,11 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
           register={register}
           errors={errors}
         />
-        <ProductOrderHistorySection productDetails={product} count={orderHistory.productQuantity} />
+        <ProductOrderHistorySection
+          productDetails={product}
+          count={orderHistory.quantity}
+          option={orderHistory.option}
+        />
       </Container>
       <Container
         elementSize="full-width"
@@ -99,7 +99,7 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
       >
         <ProductReceiptForm
           productDetails={product}
-          count={orderHistory.productQuantity}
+          count={orderHistory.quantity}
           register={register}
           errors={errors}
           clearErrors={clearErrors}

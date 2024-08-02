@@ -15,6 +15,9 @@ import {
 } from 'react-hook-form';
 import { FormErrorMessages } from '@constants/ErrorMessage';
 import TestIds from '@constants/TestIds';
+import usePoint from '@hooks/usePoint.ts';
+import ProductPointForm
+  from '@components/organisms/product/ProductPointForm';
 import { CashReceiptOptions } from '@/constants';
 import { OrderFormData } from '@/types';
 import { ProductData } from '@/dto';
@@ -46,8 +49,17 @@ function ProductReceiptForm({
     [CashReceiptOptions.PERSONAL]: '개인소득공제',
     [CashReceiptOptions.BUSINESS]: '사업자증빙용',
   };
-  const finalPrice = productDetails.price * count;
+  const pointAmount = watch('pointAmount');
+  const usePointChecked = watch('usePoint');
+  let discount = usePointChecked ? parseInt(pointAmount, 10) : 0;
+
+  if (!pointAmount) {
+    discount = 0;
+  }
+
+  const finalPrice = productDetails.price * count - discount;
   const hasCashReceipt = watch('hasCashReceipt');
+  const { point } = usePoint();
 
   return (
     <Container
@@ -134,6 +146,14 @@ function ProductReceiptForm({
           ) : null
         }
       </Container>
+      <InternalFormDivider />
+      <ProductPointForm
+        point={point}
+        control={control}
+        watch={watch}
+        clearErrors={clearErrors}
+        errors={errors}
+      />
       <InternalFormDivider />
       <Container elementSize="full-width" justifyContent="space-between" padding="16px">
         <Text>최종 결제금액</Text>

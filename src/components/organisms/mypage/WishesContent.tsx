@@ -9,10 +9,11 @@ interface ProductDisplaySectionProps {
   wishes: WishData[];
   maxColumns: number,
   minColumns: number,
+  refetch: () => void;
 }
 
 function WishesContent({
-  wishes, maxColumns, minColumns,
+  wishes, maxColumns, minColumns, refetch,
 }: ProductDisplaySectionProps) {
   const sectionRandomId = useRef(generateRandomId());
 
@@ -28,6 +29,7 @@ function WishesContent({
         return (
           <WishItem
             wishData={wish}
+            refetch={refetch}
             key={key}
           />
         );

@@ -1,14 +1,26 @@
 import { axiosInstance, replacePathParams } from '@utils/network';
 import RequestURLs from '@constants/RequestURLs';
-import { AddWishesBody, DeleteWishesPath, LoginRequestBody } from '@/types/request';
+import {
+  AddWishesBody,
+  CategoryDeleteRequestPath,
+  DeleteWishesPath,
+  LoginRequestBody,
+} from '@/types/request';
 import {
   AddWishesResponse,
   CategoryResponse,
-  LoginResponse,
+  LoginResponse, PointResponse,
   ProductDetailResponse,
+  ProductOptionsResponse,
 } from '@/types/response';
 import { CategoryRepository } from '@/types';
-import { ProductData } from '@/dto';
+import { CategoryData, ProductData, ProductOption } from '@/dto';
+
+export const fetchPoint = async () => {
+  const response = await axiosInstance.get<PointResponse>(RequestURLs.POINT);
+
+  return response.data.point;
+};
 
 export const addWishProduct = async (body: AddWishesBody) => {
   const response = await axiosInstance.post<AddWishesResponse>(RequestURLs.WISHES, body);
@@ -31,6 +43,17 @@ export const requestAuth = async (body: LoginRequestBody, authType: 'login' | 'r
   return response.data;
 };
 
+export const deleteCategory = ({ categoryId }: CategoryDeleteRequestPath) => axiosInstance.delete(
+  replacePathParams(
+    RequestURLs.DELETE_CATEGORY,
+    {
+      categoryId: categoryId.toString(),
+    },
+  ),
+);
+
+export const addCategory = (category: Omit<CategoryData, 'id'>) => axiosInstance.post(RequestURLs.CATEGORY, category);
+
 export const fetchCategories = async () => {
   const response = await axiosInstance.get<CategoryResponse>(RequestURLs.CATEGORY);
   const tmpCategories: CategoryRepository = {};
@@ -49,4 +72,11 @@ export const fetchProductDetail = async ({ productId }: { productId: string }) =
   const response = await axiosInstance.get<ProductDetailResponse>(endpoint);
 
   return response.data as ProductData;
+};
+
+export const fetchProductOptions = async ({ productId } : { productId: string }) => {
+  const endpoint = replacePathParams(RequestURLs.PRODUCT_OPTIONS, { productId });
+  const response = await axiosInstance.get<ProductOptionsResponse>(endpoint);
+
+  return response.data as ProductOption[];
 };

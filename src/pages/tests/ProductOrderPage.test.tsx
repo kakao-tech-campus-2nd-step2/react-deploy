@@ -3,7 +3,8 @@ import {
 } from '@testing-library/react';
 import {
   describe, expect, it, vi,
-} from 'vitest';import fireEvent from '@testing-library/user-event';
+} from 'vitest';
+import fireEvent from '@testing-library/user-event';
 import ProductOrderForm from '@components/organisms/product/ProductOrderForm';
 import TestIds from '@constants/TestIds';
 import setupMockBeforeTest from '@utils/testUtil';
@@ -13,7 +14,12 @@ import { OrderHistoryData } from '@/types';
 
 const mockOrderHistory: OrderHistoryData = {
   productId: 1,
-  productQuantity: 2,
+  quantity: 2,
+  option: {
+    id: 1,
+    name: '옵션1',
+    quantity: 10000,
+  },
 };
 
 vi.mock('@utils/query', () => {
