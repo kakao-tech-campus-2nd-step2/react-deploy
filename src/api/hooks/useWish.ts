@@ -1,4 +1,7 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
+
+import { authSessionStorage } from '@/utils/storage';
 
 import { fetchInstance } from '../instance';
 
@@ -21,16 +24,37 @@ type WishRequestParams = {
 //   return `${BASE_URL}/api/products?${params.toString()}`;
 // };
 
+const token = authSessionStorage.get();
+
 const postWish = async (params: WishRequestParams) => {
   try {
-    const response = await fetchInstance.post(`/api/wishes`, params);
+    const response = await fetchInstance.post(`/api/wishes`, params, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    const status = response.status;
-    console.log('HTTP status: ', status);
+    if (response.status === 200) {
+      console.log('wish posted!');
+    } else {
+      console.log('response status:', response.status);
+    }
 
     return null;
   } catch (error) {
-    console.log('error posting wish', error);
+    const axiosError = error as AxiosError;
+
+    if (axiosError.response) {
+      // 서버 응답이 있는 경우
+      console.log('Error status:', axiosError.response.status);
+      console.log('Error data:', axiosError.response.data);
+    } else if (axiosError.request) {
+      // 요청이 전송되었지만 응답이 없는 경우
+      console.log('No response received:', axiosError.request);
+    } else {
+      // 요청 설정 중에 발생한 에러
+      console.log('Error message:', axiosError.message);
+    }
     throw error;
   }
 };
@@ -39,6 +63,4 @@ export const usePostWish = (): UseMutationResult<null, Error, WishRequestParams>
   return useMutation({
     mutationFn: (params: WishRequestParams) => postWish(params),
   });
-
-  // 사용 시 mutation으로 사용
 };

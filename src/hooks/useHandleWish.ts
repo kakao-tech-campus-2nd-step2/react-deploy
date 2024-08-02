@@ -16,8 +16,7 @@ export const useHandleWish = () => {
             alert('위시에 담았어요!');
             setIsWish(true);
           },
-          onError: (error) => {
-            console.error('Error adding to wish list:', error);
+          onError: () => {
             alert('위시 등록 실패. 다시 시도하세요.');
           },
         },
