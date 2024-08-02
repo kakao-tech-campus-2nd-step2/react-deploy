@@ -6,11 +6,11 @@ export const useHandleWish = () => {
   const [isWish, setIsWish] = useState(false);
   const mutation = usePostWish();
 
-  const handleWishClick = () => {
+  const handleWishClick = (productId: number) => {
     if (!isWish) {
       // 위시 등록 api 요청
       mutation.mutate(
-        { productId: 1 }, // 실제 아이디로 고치기
+        { productId: productId },
         {
           onSuccess: () => {
             alert('위시에 담았어요!');

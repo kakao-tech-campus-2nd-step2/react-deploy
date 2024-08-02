@@ -18,7 +18,7 @@ export const Wish = () => {
       </HeadingText>
       <WishList>
         <WishItem
-          // id={11111}
+          productId={11111}
           name="[선물포장] 사봉 바디스크럽 320g (택1) + 우드스쿱 증정"
           imageURL="https://img1.kakaocdn.net/thumb/C320x320@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240719085807_c54daa7e0d584e65bf58f71a42c3133b.jpg"
           price={49000}

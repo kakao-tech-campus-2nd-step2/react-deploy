@@ -79,7 +79,11 @@ export const OptionSection = ({ productId }: Props) => {
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
         <ButtonBox>
-          <Button theme="darkGray" width="75px" onClick={handleWishClick}>
+          <Button
+            theme="darkGray"
+            width="75px"
+            onClick={() => handleWishClick(parseInt(productId, 10))}
+          >
             {isWish ? (
               <AiFillHeart style={{ color: 'rgb(241, 42, 36)', fontSize: '24px' }} />
             ) : (

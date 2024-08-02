@@ -1,20 +1,23 @@
 import styled from '@emotion/styled';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
 
 import { Image } from '@/components/common/Image';
 import { useHandleWish } from '@/hooks/useHandleWish';
 
 type Props = {
+  productId: number;
   name: string;
   imageURL: string;
   price: number;
 };
 
-export const WishItem = ({ name, imageURL, price }: Props) => {
+export const WishItem = ({ productId, name, imageURL, price }: Props) => {
   const { isWish, handleWishClick } = useHandleWish();
+  const navigate = useNavigate();
 
   const handleWishItemClick = () => {
-    // 상품 상세 페이지로 이동
+    navigate(`/products/${productId}`);
   };
 
   return (
@@ -26,7 +29,7 @@ export const WishItem = ({ name, imageURL, price }: Props) => {
           <strong>{price}</strong>원
         </GoodsInfoText>
       </GoodsInfo>
-      <WishButton onClick={handleWishClick}>
+      <WishButton onClick={() => handleWishClick(productId)}>
         {isWish ? (
           <AiFillHeart style={{ color: 'rgb(241, 42, 36)', fontSize: '24px' }} />
         ) : (
