@@ -19,21 +19,25 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = process.env.REACT_APP_API_JANG;
-// export const BASE_URL = 'https://api.example.com';
+export let BASE_URL = process.env.REACT_APP_API_JANG!;
 
 export const fetchInstance = initInstance({
-  baseURL: `${BASE_URL}`,
+  baseURL: BASE_URL,
 });
 
 fetchInstance.interceptors.request.use((config) => {
   const token = authSessionStorage.get();
   if (token) {
-    // TODO: Bearer 부분 지워야함
+    // TODO: Bearer 부분 제거해야함
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
+
+export const setFetchInstanceBaseURL = (url: string) => {
+  fetchInstance.defaults.baseURL = url;
+  BASE_URL = url;
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {
