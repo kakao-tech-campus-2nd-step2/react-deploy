@@ -1,19 +1,12 @@
-import { css } from '@emotion/react';
-
 import { useFormContext } from 'react-hook-form';
 
-import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-  useNumberInput,
-} from '@chakra-ui/react';
+import { Text, useNumberInput } from '@chakra-ui/react';
 
 import { useMyPoint } from '@/api/hooks/useMyPoint';
 import { OrderField } from '@/schema/index';
 
 import { FormField } from '@/components/ui/Form';
+import { PointInput } from '@/components/ui/Input/PointInput';
 import { Container } from '@/components/ui/Layout/Container';
 
 export const PointField = () => {
@@ -41,21 +34,8 @@ export const PointField = () => {
       <FormField
         control={control}
         name="point"
-        render={() => (
-          <InputGroup>
-            <Input {...input} placeholder={point.toString()} css={inputStyle} />
-            <InputRightElement>P</InputRightElement>
-          </InputGroup>
-        )}
+        render={() => <PointInput {...input} placeholder={point.toString()} />}
       />
     </Container>
   );
 };
-
-const inputStyle = css({
-  textAlign: 'end',
-  paddingRight: '1.8rem',
-  '::placeholder': {
-    textAlign: 'end',
-  },
-});
