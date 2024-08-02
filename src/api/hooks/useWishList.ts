@@ -8,7 +8,7 @@ type WishListParams = Pick<WishListRequestParams, 'maxResults'> & {
 };
 
 export const useWishList = ({
-  maxResults = 20,
+  maxResults = 4,
   initPageToken,
 }: WishListParams) => {
   const { data, status, error, fetchNextPage, hasNextPage, refetch } =
