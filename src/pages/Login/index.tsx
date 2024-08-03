@@ -2,12 +2,11 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import { fetchWithTokenInstance } from '@/api/instance';
+import { fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-//import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
@@ -16,7 +15,11 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-  //const { login } = useAuth()
+
+  const isValidEmail = (emailValue: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailValue);
+  };
 
   const handleConfirm = async () => {
     if (!email || !password) {
@@ -24,35 +27,48 @@ export const LoginPage = () => {
       return;
     }
 
-    // TODO: API 연동
-    try {
-      const response = await fetchWithTokenInstance.post('/api/members/login', {
-        email, password
-      });
-      const { token } = response.data;
-      //await login(token, email, password)
-      authSessionStorage.set(token);
-
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-      return window.location.replace(redirectUrl);
-    } catch (error) {
-      console.error('로그인 실패', error);
-      alert('로그인에 실패했습니다.');
+    if (!isValidEmail(email)) {
+      alert('유효하지 않는 이메일 형식입니다.');
+      return;
     }
 
+    console.log('로그인 시도:', { email, password });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(email);
+    try {
+      const axiosInstance = fetchInstance();
+      const response = await axiosInstance.post('/api/members/login', {
+        email,
+        password,
+      });
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      console.log('로그인 응답:', response.data);
+
+      // 헤더에서 Authorization 토큰 추출
+      const authHeader = response.headers.authorization;
+      if (authHeader) {
+        const token = authHeader.replace('Bearer ', '');
+        authSessionStorage.set(token);
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        console.log('리다이렉트 URL:', redirectUrl);
+        window.location.replace(redirectUrl);
+      } else {
+        console.error('Authorization 헤더에 토큰이 포함되지 않음');
+      }
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      alert('로그인에 실패했습니다.');
+    }
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -60,16 +76,11 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
+        <Spacing height={{ initial: 40, sm: 60 }} />
         <Button onClick={handleConfirm}>로그인</Button>
-        <Other><Link to={RouterPath.join}>회원가입</Link></Other>
-        
+        <Other>
+          <Link to={RouterPath.join}>회원가입</Link>
+        </Other>
       </FormWrapper>
     </Wrapper>
   );
@@ -108,4 +119,4 @@ const Other = styled.div`
   color: #4C4C4C;
   text-decoration: underline;
   cursor: pointer;
-`
+`;

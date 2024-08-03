@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'; // AxiosError 타입을 가져옵니다.
 import { useEffect, useState } from 'react';
 
-import { fetchWithTokenInstance } from '../instance';
+import { fetchInstance } from '../instance';
 
 interface Wish {
   id: number;
@@ -18,8 +18,8 @@ export const useWishlist = () => {
   const fetchWishlist = async () => {
     try {
       setLoading(true);
-      const response = await fetchWithTokenInstance.get('/api/wishes')
-      console.log('위시리스트 fetch response', response.data)
+      const response = await fetchInstance().get('/api/wishes');
+      console.log('위시리스트 fetch response', response.data);
       setWishlist(response.data.content);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -27,18 +27,19 @@ export const useWishlist = () => {
       } else {
         setFetchError('An unexpected error occurred');
       }
-      console.error('위시 리스트 fetch 에러', error)
+      console.error('위시 리스트 fetch 에러', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchWishlist();
-  }, []);
-
+    fetchWishlist()
+  }, [])
+  
   return { wishlist, loading, fetchError, fetchWishlist };
 };
+
 
 export const useAddToWishlist = (fetchWishlist: () => void) => {
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,7 @@ export const useAddToWishlist = (fetchWishlist: () => void) => {
   const addToWishlist = async (productId: number) => {
     try {
       setLoading(true);
-      const response = await fetchWithTokenInstance.post('/api/wishes', { productId });
+      const response = await fetchInstance().post('/api/wishes', { productId });
       console.log('위시리스트 reponse add', response.data)
       await fetchWishlist();
     } catch (error) {
@@ -72,7 +73,7 @@ export const useRemoveFromWishlist = (fetchWishlist: () => void) => {
   const removeFromWishlist = async (wishId: number) => {
     try {
       setLoading(true);
-      await fetchWithTokenInstance.delete(`/api/wishes/${wishId}`);
+      await fetchInstance().delete(`/api/wishes/${wishId}`);
       await fetchWishlist();
     } catch (error) {
       if (error instanceof AxiosError) {
