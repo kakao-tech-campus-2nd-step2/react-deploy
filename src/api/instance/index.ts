@@ -5,7 +5,7 @@ import { useEffect,useState } from 'react';
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
-    timeout: 5000,
+    timeout: 50000,
     ...config,
     headers: {
       Accept: 'application/json',
@@ -17,7 +17,10 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
+export const BASE_URL = "http://43.201.0.118:8080";
+export const fetchInstance = initInstance({
+  baseURL: BASE_URL,
+});
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,9 +33,6 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const fetchInstance = initInstance({
-  baseURL: BASE_URL,
-});
 
 export const useSelectApi = () => {
   const [selectedApi, setSelectedApi] = useState(BASE_URL);

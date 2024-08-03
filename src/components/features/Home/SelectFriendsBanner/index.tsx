@@ -1,5 +1,5 @@
-// import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+
 import { useSelectApi } from '@/api/instance'; // 훅을 사용
 import { Image } from '@/components/common/Image';
 import { Container as CommonContainer } from '@/components/common/layouts/Container';
@@ -24,9 +24,9 @@ export const SelectFriendsBanner = () => {
         />
         <Text>선물 받을 친구를 선택해주세요.</Text>
         <select onChange={handleSelectChange} value={selectedApi}>
-          <option value="https://api1.example.com">사람 1 API</option>
-          <option value="http://13.209.12.98:8080">사람 2 API</option>
-          <option value="https://api3.example.com">사람 3 API</option>
+          <option value="">option1 API</option>
+          <option value="">option2 API</option>
+          <option value="">option3 API</option>
         </select>
       </Container>
     </Wrapper>
