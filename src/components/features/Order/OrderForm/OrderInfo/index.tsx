@@ -9,6 +9,7 @@ import type { OrderHistory } from "@/types";
 import { HeadingText } from "../Common/HeadingText";
 import { LabelText } from "../Common/LabelText";
 import { CashReceiptFields } from "../Fields/CashReceiptFields";
+import { PointFields } from "../Fields/PointFields";
 
 type Props = {
   orderHistory: OrderHistory;
@@ -26,6 +27,8 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
       </Title>
       <Divider color="#ededed" />
       <CashReceiptFields />
+      <Divider color="#ededed" />
+      <PointFields />
       <Divider color="#ededed" />
       <ItemWrapper>
         <LabelText>최종 결제금액</LabelText>

@@ -33,6 +33,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
       cashReceiptType: "PERSONAL",
       cashReceiptNumber: "",
       messageCardTextMessage: "",
+      point: 0,
     },
   });
   const { handleSubmit } = methods;
@@ -54,11 +55,12 @@ export const OrderForm = ({ orderHistory }: Props) => {
       cashReceiptType: values.cashReceiptType || "",
       cashReceiptNumber: values.cashReceiptNumber || "",
       message: values.messageCardTextMessage,
+      point: values.point || 0,
     };
 
     try {
       await addOrder(params);
-      alert("주문이 완료되었습니다.");
+      alert(`주문이 완료되었습니다.`);
       navigate(RouterPath.home);
     } catch (error) {
       alert("주문 처리 중 오류가 발생했습니다.");

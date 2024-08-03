@@ -9,6 +9,7 @@ export type AddOrderRequestParams = {
   cashReceiptType: string;
   cashReceiptNumber: string;
   message: string;
+  point: number;
 };
 
 const addOrderPath = `${BASE_URL}/api/orders`;
