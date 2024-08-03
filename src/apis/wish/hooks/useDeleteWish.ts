@@ -1,22 +1,25 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { DeleteWishRequest } from '@internalTypes/requestTypes';
-import { useMutation, UseMutationResult, UseMutationOptions } from '@tanstack/react-query';
-import { WISH_PATHS } from '../path';
+import { initInstance } from '@apis/instance';
+import { WISH_PATHS } from '@apis/path';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { useAPI } from '@/context/api/useAPI';
 
-const deleteWish = async ({ wishId }: DeleteWishRequest): Promise<void> => {
-  await axios.delete(`${WISH_PATHS.DELETE_WISH}/${wishId}`, {
+const deleteWish = async (request: DeleteWishRequest, baseURL: string): Promise<void> => {
+  const instance = initInstance(baseURL);
+  await instance.delete(`${WISH_PATHS.DELETE_WISH}/${request.wishId}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
     },
   });
 };
 
-const useDeleteWish = (
-  options?: UseMutationOptions<void, AxiosError, DeleteWishRequest>,
-): UseMutationResult<void, AxiosError, DeleteWishRequest> =>
-  useMutation<void, AxiosError, DeleteWishRequest>({
-    mutationFn: deleteWish,
-    ...options,
+const useDeleteWish = (): UseMutationResult<unknown, AxiosError, DeleteWishRequest> => {
+  const { baseURL } = useAPI();
+
+  return useMutation({
+    mutationFn: (request: DeleteWishRequest) => deleteWish(request, baseURL),
   });
+};
 
 export default useDeleteWish;

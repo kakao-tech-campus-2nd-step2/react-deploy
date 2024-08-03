@@ -1,15 +1,16 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
 import { GetWishesRequest } from '@internalTypes/requestTypes';
 import { GetWishesResponse } from '@internalTypes/responseTypes';
+import { WISH_PATHS } from '@apis/path';
+import { initInstance } from '@apis/instance';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { WISH_PATHS } from '../path';
+import { useAPI } from '@/context/api/useAPI';
 
-const getWishes = async (params: GetWishesRequest): Promise<GetWishesResponse> => {
-  const { page, size, sort } = params;
-  const res: AxiosResponse<GetWishesResponse> = await axios.get(WISH_PATHS.GET_WISH, {
-    params: { page, size, sort },
+const getWishes = async (params: GetWishesRequest, baseURL: string): Promise<GetWishesResponse> => {
+  const instance = initInstance(baseURL);
+  const res: AxiosResponse<GetWishesResponse> = await instance.get(WISH_PATHS.GET_WISH(params), {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
     },
   });
   return res.data;
@@ -17,8 +18,10 @@ const getWishes = async (params: GetWishesRequest): Promise<GetWishesResponse> =
 
 export default getWishes;
 
-export const useGetWishes = (params: GetWishesRequest): UseQueryResult<GetWishesResponse, AxiosError> =>
-  useQuery<GetWishesResponse, AxiosError>({
+export const useGetWishes = (params: GetWishesRequest): UseQueryResult<GetWishesResponse, AxiosError> => {
+  const { baseURL } = useAPI();
+  return useQuery<GetWishesResponse, AxiosError>({
     queryKey: ['wishes', params],
-    queryFn: () => getWishes(params),
+    queryFn: () => getWishes(params, baseURL),
   });
+};

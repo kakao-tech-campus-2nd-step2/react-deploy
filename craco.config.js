@@ -14,6 +14,7 @@ module.exports = {
       '@mocks': path.resolve(__dirname, 'src/mocks'),
       '@internalTypes': path.resolve(__dirname, 'src/types'),
       '@apis': path.resolve(__dirname, 'src/apis'),
+      '@features': path.resolve(__dirname, 'src/features'),
     },
   },
   jest: {
@@ -31,6 +32,7 @@ module.exports = {
         '^@types/(.*)$': '<rootDir>/src/types/$1',
         '^@utils/(.*)$': '<rootDir>/src/utils/$1',
         '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+        '^@features/(.*)$': '<rootDir>/src/features/$1',
       },
     },
   },

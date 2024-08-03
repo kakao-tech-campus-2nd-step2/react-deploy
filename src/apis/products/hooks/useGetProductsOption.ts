@@ -1,20 +1,28 @@
-import { useQuery } from '@tanstack/react-query';
-import { ProductOptionsRequest } from '@internalTypes/requestTypes';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { ProductOptionResponse } from '@internalTypes/responseTypes';
+import { ProductOptionsRequest } from '@internalTypes/requestTypes';
+import { initInstance } from '@apis/instance';
 import { AxiosError } from 'axios';
-import axiosInstance from '@apis/instance';
-import { PRODUCTS_PATHS } from '../path';
+import { PRODUCTS_PATHS } from '@apis/path';
+import { useAPI } from '@/context/api/useAPI';
 
-export const getProductsOptions = async (params?: ProductOptionsRequest): Promise<ProductOptionResponse> => {
-  if (!params) throw new Error('params is required');
+export const getProductsOptions = async (
+  params: ProductOptionsRequest,
+  baseURL: string,
+): Promise<ProductOptionResponse> => {
+  const instance = initInstance(baseURL);
   const { productId } = params;
-  const res = await axiosInstance.get<ProductOptionResponse>(PRODUCTS_PATHS.PRODUCTS_OPTIONS(productId));
-
+  const res = await instance.get<ProductOptionResponse>(PRODUCTS_PATHS.PRODUCTS_OPTIONS(productId));
   return res.data;
 };
 
-export const useGetProductsOption = ({ productId }: ProductOptionsRequest) =>
-  useQuery<ProductOptionResponse, AxiosError>({
+export const useGetProductsOption = ({
+  productId,
+}: ProductOptionsRequest): UseQueryResult<ProductOptionResponse, AxiosError> => {
+  const { baseURL } = useAPI();
+
+  return useQuery<ProductOptionResponse, AxiosError>({
     queryKey: ['productOption', productId],
-    queryFn: () => getProductsOptions({ productId }),
+    queryFn: () => getProductsOptions({ productId }, baseURL),
   });
+};
