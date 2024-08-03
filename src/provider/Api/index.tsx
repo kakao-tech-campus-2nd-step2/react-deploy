@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
-import type { ReactNode} from 'react';
-import { createContext,useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import { backend } from '@/config/backendConfig';
 
@@ -11,7 +11,7 @@ interface ApiContextType {
 
 const defaultState: ApiContextType = {
   apiUrl: backend.backend3,
-  setApiUrl: () => {}
+  setApiUrl: () => {},
 };
 
 const ApiContext = createContext<ApiContextType>(defaultState);
@@ -22,7 +22,7 @@ interface ApiProviderProps {
 
 export const ApiProvider = ({ children }: ApiProviderProps) => {
   const [apiUrl, setApiUrl] = useState<string>(
-    () => localStorage.getItem('apiUrl') || backend.backend3
+    () => localStorage.getItem('apiUrl') || backend.backend3,
   );
   const queryClient = useQueryClient();
 
@@ -31,11 +31,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     queryClient.invalidateQueries();
   }, [apiUrl, queryClient]);
 
-  return (
-    <ApiContext.Provider value={{ apiUrl, setApiUrl }}>
-      {children}
-    </ApiContext.Provider>
-  );
+  return <ApiContext.Provider value={{ apiUrl, setApiUrl }}>{children}</ApiContext.Provider>;
 };
 
 export const useApi = () => useContext(ApiContext);

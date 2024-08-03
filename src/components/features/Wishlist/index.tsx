@@ -34,7 +34,7 @@ export const Wishlist = () => {
       const response = await fetch(`${apiUrl}api/wishes/${wishId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       if (response.status === 204) {

@@ -9,7 +9,7 @@ export const useGetPoints = () => {
   });
 
   useEffect(() => {
-    if (!sessionStorage.getItem('points')) { 
+    if (!sessionStorage.getItem('points')) {
       const fetchPoints = async () => {
         try {
           const response = await fetchInstance.get('/api/member/point');

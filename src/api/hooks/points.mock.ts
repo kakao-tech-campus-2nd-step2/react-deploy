@@ -7,9 +7,6 @@ export const pointMockHandlers = [
       return res(ctx.status(401));
     }
 
-    return res(
-      ctx.status(200),
-      ctx.json({ point: 1000 })
-    );
+    return res(ctx.status(200), ctx.json({ point: 1000 }));
   }),
 ];

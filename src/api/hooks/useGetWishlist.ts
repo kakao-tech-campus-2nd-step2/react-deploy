@@ -54,7 +54,7 @@ export const getWishlistPath = ({ pageToken, maxResults }: RequestParams, apiUrl
 export const getWishlist = async (
   params: RequestParams,
   token: string,
-  apiUrl: string
+  apiUrl: string,
 ): Promise<WishlistResponseData> => {
   const url = getWishlistPath(params, apiUrl);
 
@@ -62,7 +62,7 @@ export const getWishlist = async (
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${JSON.parse(token).token}`,
+      Authorization: `Bearer ${JSON.parse(token).token}`,
     },
   });
 

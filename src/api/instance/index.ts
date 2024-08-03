@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import { backend } from '@/config/backendConfig';
 
-
 const initInstance = () => {
   const instance = axios.create({
     timeout: 5000,
@@ -13,14 +12,17 @@ const initInstance = () => {
     },
   });
 
-  instance.interceptors.request.use((config) => {
-    const apiUrl = localStorage.getItem('apiUrl') || backend.backend3;
-    config.baseURL = apiUrl;
+  instance.interceptors.request.use(
+    (config) => {
+      const apiUrl = localStorage.getItem('apiUrl') || backend.backend3;
+      config.baseURL = apiUrl;
 
-    return config;
-  }, (error) => {
-    return Promise.reject(error);
-  });
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    },
+  );
 
   return instance;
 };

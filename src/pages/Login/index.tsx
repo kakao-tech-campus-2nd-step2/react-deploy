@@ -48,14 +48,14 @@ export const LoginPage = () => {
     try {
       const response = await axios.get(`${apiUrl}api/member/point`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       });
-      return response.data.point; 
+      return response.data.point;
     } catch (error) {
       console.error('Failed to fetch points', error);
-      return 0; 
+      return 0;
     }
   };
 
