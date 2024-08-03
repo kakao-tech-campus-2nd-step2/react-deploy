@@ -52,7 +52,7 @@ export const Wishlist = () => {
   };
 
   return (
-    <Container maxW="container.lg" py={8} borderRadius="md" boxShadow="sm">
+    <Container maxW="container.lg" minW="container.lg" py={8} borderRadius="md" boxShadow="sm">
       <Spacing height={4} />
       <HStack justify="space-between" w="100%">
         <IconButton
