@@ -9,6 +9,8 @@ import Paths from '@constants/Paths';
 import { Text } from '@chakra-ui/react';
 import { requestAuth } from '@utils/query';
 import { tokenStorage } from '@utils/storage';
+import { isAxiosError } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 function LoginForm() {
@@ -37,7 +39,15 @@ function LoginForm() {
       tokenStorage.set(authResult.token);
       navigate(-1);
     } catch (e) {
-      console.error(e);
+      if (!isAxiosError(e)) {
+        console.error(e);
+
+        return;
+      }
+
+      if (e.response?.status === StatusCodes.FORBIDDEN) {
+        alert('아이디나 비밀번호가 일치하지 않습니다.');
+      }
     }
   }, [navigate, setIsLoggedIn]);
 

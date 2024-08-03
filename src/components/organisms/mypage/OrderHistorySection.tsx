@@ -22,7 +22,7 @@ function OrderHistorySection() {
     isFetchingNextPage,
   } = useFetchProducts({
     productType: 'ordered',
-    sort: 'name,asc',
+    sort: 'id,asc',
     itemsPerPage: MAX_RESULTS_PER_PAGE,
   });
 
