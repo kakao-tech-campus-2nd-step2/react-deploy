@@ -1,12 +1,10 @@
 import { rest } from 'msw';
 
-import { BASE_URL } from '../instance';
-
 const VALID_EMAIL = 'test@example.com';
 const VALID_PASSWORD = 'password1234';
 
 export const authMockHandler = [
-  rest.post(`${BASE_URL}/api/members/register`, async (_, res, ctx) => {
+  rest.post(`/api/members/register`, async (_, res, ctx) => {
     alert('회원가입이 완료되었습니다.');
     return res(ctx.status(201), ctx.json({ message: 'User registered successfully' }));
   }),

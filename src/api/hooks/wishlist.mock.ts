@@ -1,7 +1,5 @@
 import { rest } from 'msw';
 
-import { BASE_URL } from '../instance';
-
 interface WishlistItem {
   id: number;
   product: {
@@ -19,7 +17,7 @@ const getPagedData = (page: number, size: number) => {
 };
 
 export const wishlistMockHandler = [
-  rest.get(`${BASE_URL}/api/wishes`, async (req, res, ctx) => {
+  rest.get(`/api/wishes`, async (req, res, ctx) => {
     const token = req.headers.get('Authorization');
 
     if (!token) {
@@ -65,7 +63,7 @@ export const wishlistMockHandler = [
       }),
     );
   }),
-  rest.delete(`${BASE_URL}/api/wishes/:wishId`, (req, res, ctx) => {
+  rest.delete(`/api/wishes/:wishId`, (req, res, ctx) => {
     const { wishId } = req.params;
     const wishIndex = WISHLIST_MOCK_DATA.content.findIndex((item) => item.id === Number(wishId));
     if (wishIndex !== -1) {
@@ -74,7 +72,7 @@ export const wishlistMockHandler = [
     }
     return res(ctx.status(404), ctx.json({ message: 'Wish not found' }));
   }),
-  rest.post(`${BASE_URL}/api/wishes/:productId`, (req, res, ctx) => {
+  rest.post(`/api/wishes/:productId`, (req, res, ctx) => {
     const { productId } = req.params;
     const token = req.headers.get('Authorization');
 
