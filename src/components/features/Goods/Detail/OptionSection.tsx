@@ -23,8 +23,8 @@ export const OptionSection = ({ productId }: Props) => {
 
   const authInfo = useAuth();
   const { data: detail } = useGetProductDetail({ productId });
-  const { data: options } = useGetProductOptions({ productId });
-  const [optionId, setOptionId] = useState<number>(options[0].optionId);
+  const { data: options = [] } = useGetProductOptions({ productId }); // 기본값으로 빈 배열 설정
+  const [optionId, setOptionId] = useState<number>(options.length > 0 ? options[0].optionId : 0); // 빈 배열일 경우 기본값 설정
   const selectedOption = options.find((opt) => opt.optionId === optionId);
   const [countAsString, setCountAsString] = useState('1');
   const { isWish, handleWishClick } = useHandleWish();
@@ -57,6 +57,10 @@ export const OptionSection = ({ productId }: Props) => {
 
     navigate(RouterPath.order);
   };
+
+  if (!Array.isArray(options) || options.length === 0) {
+    return <>options 데이터 없음</>;
+  }
 
   return (
     <Wrapper>
