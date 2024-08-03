@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback } from 'react';
-import { currentUrlStorage } from '@utils/storage';
+import { currentUrlStorage, tokenStorage } from '@utils/storage';
 import { Select } from '@chakra-ui/react';
 
 function APISelector() {
@@ -14,6 +14,7 @@ function APISelector() {
 
   const handleURLSelect = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     currentUrlStorage.set(e.target.value);
+    tokenStorage.set();
     window.location.reload();
   }, []);
 

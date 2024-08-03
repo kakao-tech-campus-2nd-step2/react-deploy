@@ -2,12 +2,16 @@ import Container from '@components/atoms/container/Container';
 import Page from '@components/templates/Page';
 import { css } from '@emotion/react';
 import Button from '@components/atoms/button/Button';
-import { useCallback, useContext, useEffect } from 'react';
+import {
+  Suspense, useCallback, useContext, useEffect,
+} from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import WishesSection from '@components/organisms/mypage/WishesSection';
 import OrderHistorySection from '@components/organisms/mypage/OrderHistorySection';
+import { LoadingSpinnerFullWidth } from '@components/atoms/LoadingSpinner';
+import ErrorBoundary from '@components/atoms/boundary/ErrorBoundary';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 const GreetingTitle = styled.h1`
@@ -60,9 +64,12 @@ function MyPage() {
             onClick={onLogoutClick}
           />
         </Container>
-
-        <WishesSection />
-        <OrderHistorySection />
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingSpinnerFullWidth />}>
+            <WishesSection />
+            <OrderHistorySection />
+          </Suspense>
+        </ErrorBoundary>
       </Container>
     </Page>
   );

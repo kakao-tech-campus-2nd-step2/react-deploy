@@ -5,21 +5,29 @@ import {
   CategoryDeleteRequestPath,
   DeleteWishesPath,
   LoginRequestBody,
+  OrderRequestBody,
 } from '@/types/request';
 import {
   AddWishesResponse,
   CategoryResponse,
-  LoginResponse, PointResponse,
+  LoginResponse,
+  PointResponse,
   ProductDetailResponse,
   ProductOptionsResponse,
 } from '@/types/response';
 import { CategoryRepository } from '@/types';
 import { CategoryData, ProductData, ProductOption } from '@/dto';
 
-export const fetchPoint = async () => {
-  const response = await axiosInstance.get<PointResponse>(RequestURLs.POINT);
+export const requestOrder = (body: OrderRequestBody) => axiosInstance.post(RequestURLs.ORDER, body);
 
-  return response.data.point;
+export const fetchPoint = async () => {
+  try {
+    const response = await axiosInstance.get<PointResponse>(RequestURLs.POINT);
+
+    return response.data.point;
+  } catch (e) {
+    return 0;
+  }
 };
 
 export const addWishProduct = async (body: AddWishesBody) => {
@@ -40,7 +48,9 @@ export const requestAuth = async (body: LoginRequestBody, authType: 'login' | 'r
   const url = authType === 'register' ? RequestURLs.REGISTER : RequestURLs.LOGIN;
   const response = await axiosInstance.post<LoginResponse>(url, body);
 
-  return response.data;
+  if (response && response.data) return response.data;
+
+  return null;
 };
 
 export const deleteCategory = ({ categoryId }: CategoryDeleteRequestPath) => axiosInstance.delete(
@@ -71,12 +81,16 @@ export const fetchProductDetail = async ({ productId }: { productId: string }) =
   const endpoint = replacePathParams(RequestURLs.PRODUCT_DETAILS, { productId });
   const response = await axiosInstance.get<ProductDetailResponse>(endpoint);
 
+  if (!response.data) return {} as ProductData; // productData를 받아올 때 에러가 발생한 경우 상위에서 catch됨
+
   return response.data as ProductData;
 };
 
 export const fetchProductOptions = async ({ productId } : { productId: string }) => {
   const endpoint = replacePathParams(RequestURLs.PRODUCT_OPTIONS, { productId });
   const response = await axiosInstance.get<ProductOptionsResponse>(endpoint);
+
+  if (!response.data) return [];
 
   return response.data as ProductOption[];
 };

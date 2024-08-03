@@ -4,6 +4,7 @@ import ProductOrderForm from '@components/organisms/product/ProductOrderForm';
 import useOrderHistory from '@hooks/useOrderHistory';
 import { Suspense } from 'react';
 import LoadingSpinner from '@components/atoms/LoadingSpinner';
+import ErrorBoundary from '@components/atoms/boundary/ErrorBoundary';
 
 function ProductOrderPage() {
   const { orderHistory } = useOrderHistory();
@@ -19,9 +20,11 @@ function ProductOrderPage() {
         }}
         justifyContent="center"
       >
-        <Suspense fallback={<LoadingSpinner />}>
-          <ProductOrderForm orderHistory={orderHistory} />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingSpinner />}>
+            <ProductOrderForm orderHistory={orderHistory} />
+          </Suspense>
+        </ErrorBoundary>
       </Container>
     </Page>
   );

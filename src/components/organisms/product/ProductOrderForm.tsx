@@ -8,9 +8,10 @@ import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { QueryKeys } from '@constants/QueryKeys';
-import { fetchProductDetail } from '@utils/query';
+import { fetchProductDetail, requestOrder } from '@utils/query';
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
+import { orderHistoryStorage } from '@utils/storage';
 import { OrderRequestBody } from '@/types/request';
 import { OrderFormData, OrderHistoryData } from '@/types';
 import { CashReceiptOptions } from '@/constants';
@@ -43,7 +44,7 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
       hasCashReceipt: false,
       cashReceiptType: CashReceiptOptions.PERSONAL,
       cashReceiptNumber: '',
-      usePoint: true,
+      usePoint: false,
       pointAmount: 0,
     },
   });
@@ -55,10 +56,17 @@ function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
       optionId: orderHistory.option.id,
       message: data.messageCardTextMessage as string,
       quantity: orderHistory.quantity,
-      point: 0,
+      point: data.usePoint ? data.pointAmount : 0,
     };
-    alert(`${orderBody.optionId}번 상품의 주문이 완료되었습니다.`);
-  }, [orderHistory]);
+    try {
+      await requestOrder(orderBody);
+      alert('상품 주문이 완료되었습니다.');
+      navigate(Paths.MAIN_PAGE);
+      orderHistoryStorage.set(); // clear order history
+    } catch (e) {
+      alert('상품 주문 중 에러가 발생했습니다.');
+    }
+  }, [orderHistory, navigate]);
 
   useEffect(() => {
     if (!product) navigate(Paths.MAIN_PAGE);

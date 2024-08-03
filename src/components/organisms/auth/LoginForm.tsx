@@ -28,6 +28,13 @@ function LoginForm() {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       }, 'login');
+
+      if (!authResult) {
+        alert('아이디나 비밀번호가 일치하지 않습니다.');
+
+        return;
+      }
+
       setIsLoggedIn(true);
       tokenStorage.set(authResult.token);
       navigate(-1);

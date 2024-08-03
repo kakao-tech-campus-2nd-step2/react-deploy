@@ -43,7 +43,7 @@ const handlers = [
 
       if (!isLoginInfoCorrect(body)) {
         return new HttpResponse('Invalid email or password', {
-          status: StatusCodes.FORBIDDEN,
+          status: StatusCodes.BAD_REQUEST,
         });
       }
 

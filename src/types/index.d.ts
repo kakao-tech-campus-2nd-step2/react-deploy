@@ -1,6 +1,5 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
-import { OrderRequestBody } from '@types/request';
 import { CategoryData, ProductOption } from '@/dto';
 import { CashReceiptOptions } from '@/constants';
 

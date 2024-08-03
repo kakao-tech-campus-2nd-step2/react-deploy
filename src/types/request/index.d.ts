@@ -40,6 +40,7 @@ export interface LoginRequestBody {
 
 export interface AddWishesBody {
   productId: number;
+  count: number;
 }
 
 export interface DeleteWishesPath {
