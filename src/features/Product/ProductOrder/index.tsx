@@ -12,7 +12,11 @@ export interface QuantityValues {
   quantity: number;
 }
 
-export default function ProductOrder() {
+interface ProductOrderProps {
+  price: number;
+}
+
+export default function ProductOrder({ price }: ProductOrderProps) {
   const { productId } = useParams<{ productId: string }>();
   const { data: productOption } = useGetProductsOption({ productId });
   const { isAuthenticated } = useAuth();
@@ -26,7 +30,12 @@ export default function ProductOrder() {
   const handleOrderClick = () => {
     const data = { quantity: watch('quantity') };
     if (productOption) {
-      const orderHistory = { productId: Number(productId), optionId: productOption[0].id, quantity: data.quantity };
+      const orderHistory = {
+        productId: Number(productId),
+        optionId: productOption[0].id,
+        quantity: data.quantity,
+        price,
+      };
       sessionStorage.setItem('orderHistory', JSON.stringify(orderHistory));
       const targetPath = isAuthenticated ? ROUTE_PATH.ORDER : ROUTE_PATH.LOGIN;
       navigate(targetPath);
@@ -44,7 +53,7 @@ export default function ProductOrder() {
         <TotalAmount>
           <dl>
             <dt>총 결제 금액</dt>
-            <dd>145000원</dd>
+            <dd>{`${price}원`}</dd>
           </dl>
         </TotalAmount>
         <Button theme="darkGray" onClick={handleOrderClick}>

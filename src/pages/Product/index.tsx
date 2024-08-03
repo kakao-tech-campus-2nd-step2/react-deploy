@@ -6,16 +6,20 @@ import ProductInfo from '@features/Product/ProductInfo';
 import { ROUTE_PATH } from '@routes/path';
 import useRedirectIfNoParam from '@hooks/useRedirectIfNoParam';
 import ProductOrder from '@features/Product/ProductOrder';
+import { useGetProductsDetail } from '@/apis/products/hooks/useGetProductsDetail';
+import { useParams } from 'react-router-dom';
 
 export default function Product() {
+  const { productId } = useParams<{ productId: string }>();
   useRedirectIfNoParam('productId', ROUTE_PATH.HOME);
+  const { data } = useGetProductsDetail({ productId });
 
   return (
     <Layout>
       <CenteredContainer maxWidth="lg">
         <InnerContainer>
-          <ProductInfo />
-          <ProductOrder />
+          <ProductInfo imageUrl={data?.imageUrl} name={data?.name} price={data?.price} />
+          <ProductOrder price={data?.price} />
         </InnerContainer>
       </CenteredContainer>
     </Layout>

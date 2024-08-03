@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Checkbox, Select, Input } from '@chakra-ui/react';
 import { Button } from '@components/common';
@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { OrderDataFormValues } from '@pages/Order';
 import { useNavigate } from 'react-router-dom';
 import { useSessionStorage } from '@hooks/useSessionStorage';
+import { useGetPoint } from '@apis/point/useGetPoint';
 import { ROUTE_PATH } from '@routes/path';
 import { useOrders } from '@apis/orders/useOrders';
 import { validatePayment } from './validation';
@@ -15,13 +16,17 @@ const FAIL_ORDER = '주문이 실패하였습니다.';
 
 export default function ReceiptForm() {
   const [storedValue, setValue] = useSessionStorage('orderHistory', '');
+  const { optionId, quantity, price } = JSON.parse(storedValue);
+  const [point, setPoint] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(price);
   const navigate = useNavigate();
   const { register, watch, handleSubmit } = useFormContext<OrderDataFormValues>();
   const { hasCashReceipt } = watch();
   const { mutate } = useOrders();
+  const { data: pointData } = useGetPoint();
+  if (pointData) setPoint(pointData.point);
 
   const handleOrders = (message: string) => {
-    const { optionId, quantity } = JSON.parse(storedValue);
     mutate(
       { message, optionId, quantity },
       {
@@ -56,12 +61,17 @@ export default function ReceiptForm() {
       )}
       <TotalAmount>
         <dl>
+          <dt>사용 가능한 포인트</dt>
+          <dd>{`${point} 포인트`}</dd>
           <dt>최종 결제금액</dt>
-          <dd>49900원</dd>
+          <dd>{`${price}원`}</dd>
         </dl>
       </TotalAmount>
+      <Button theme="primary" type="button" onClick={() => setTotalPrice(price - point)}>
+        포인트 사용하기
+      </Button>
       <Button theme="kakao" type="submit">
-        49900원 결제하기
+        {totalPrice} 결제하기
       </Button>
     </form>
   );
@@ -75,8 +85,9 @@ const TotalAmount = styled.div`
 
   dl {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    /* align-items: center; */
     font-weight: 700;
   }
 
@@ -86,5 +97,6 @@ const TotalAmount = styled.div`
 
   dd {
     font-size: 20px;
+    margin-bottom: 24px;
   }
 `;
