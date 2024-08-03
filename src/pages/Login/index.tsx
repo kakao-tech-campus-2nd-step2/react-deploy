@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useApi } from '@/provider/Api';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
@@ -16,6 +18,7 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
+  const { apiUrl } = useApi();
 
   const handleConfirm = async () => {
     if (!email || !password) {
@@ -30,11 +33,29 @@ export const LoginPage = () => {
       sessionStorage.setItem('authToken', token);
       authSessionStorage.set(token);
 
+      const points = await fetchPoints(token);
+      sessionStorage.setItem('points', points.toString());
+
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       window.location.replace(redirectUrl);
     } catch (error) {
       alert('로그인 중 오류가 발생했습니다.');
       console.error(error);
+    }
+  };
+
+  const fetchPoints = async (token: string) => {
+    try {
+      const response = await axios.get(`${apiUrl}api/member/point`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      return response.data.point; 
+    } catch (error) {
+      console.error('Failed to fetch points', error);
+      return 0; 
     }
   };
 
