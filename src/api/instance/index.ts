@@ -21,6 +21,8 @@ export const BASE_URL =
           ? BASE_URL_LEE
           : BASE_URL_KIM;
 
+console.log('BASE_URL: ', BASE_URL); // test
+
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
