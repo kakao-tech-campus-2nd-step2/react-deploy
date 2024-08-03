@@ -54,9 +54,9 @@ jobs:
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
+          username: ec2-user
           script: |
-            cd /react-deploy &&
+            cd /home/ec2-user/react-deploy &&
             git pull origin gh-pages &&
             docker build -t my-react-app-nginx . &&
             docker stop my-react-app &&
