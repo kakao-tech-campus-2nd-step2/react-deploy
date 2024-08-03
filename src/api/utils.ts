@@ -15,6 +15,7 @@ import type {
   ProductRequestParams,
   RegisterUserRequest,
   RegisterUserResponse,
+  UserPointResponse,
 } from '@/api/types';
 import type { OrderListRequestParams } from '@/api/types';
 import type { CreateOrderRequestParams } from '@/api/types';
@@ -54,6 +55,16 @@ export const loginUser = async ({
     return response.data;
   } catch (error) {
     throw new Error('로그인에 실패했습니다.');
+  }
+};
+
+export const getPoints = async (): Promise<UserPointResponse> => {
+  try {
+    const response = await fetchInstance.get('/api/members/points');
+
+    return response.data;
+  } catch (error) {
+    throw new Error('포인트 조회에 실패했습니다.');
   }
 };
 
@@ -153,8 +164,6 @@ export const createOrder = async (order: CreateOrderRequestParams): Promise<Orde
   }
 };
 
-// TODO: 아직 사용하지 않는 함수
-// export const getOrderList: Promise<PaginationResponseData<OrderData>> = async (
 export const getOrderList = async (
   params: OrderListRequestParams,
 ): Promise<PaginationResponseData<OrderData>> => {

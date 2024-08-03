@@ -18,6 +18,10 @@ export type LoginUserResponse = {
   token: string;
 };
 
+export type UserPointResponse = {
+  points: number;
+}
+
 export type AddToWishlistResponse = {
   success: boolean;
   message: string;

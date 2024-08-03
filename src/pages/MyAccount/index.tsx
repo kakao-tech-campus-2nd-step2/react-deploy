@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { useQuery } from '@tanstack/react-query';
 
+import { getPoints } from '@/api/utils';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -10,6 +12,10 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+  const { data } = useQuery({
+    queryFn: getPoints,
+    queryKey: ['points'],
+  });
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -20,7 +26,9 @@ export const MyAccountPage = () => {
 
   return (
     <Wrapper>
-      {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      {authInfo?.name}님 안녕하세요!
+      <div>현재 포인트: {data?.points || 0} 점</div>
+      <Spacing height={64} />
       <Button
         size="small"
         theme="darkGray"
