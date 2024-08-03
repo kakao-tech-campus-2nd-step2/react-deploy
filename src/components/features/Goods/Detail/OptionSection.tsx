@@ -10,6 +10,7 @@ import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import type { OrderHistory } from '@/types';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
@@ -20,10 +21,14 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
-  const [countAsString, setCountAsString] = useState('1');
+  const [selectedOption, setSelectedOption] = useState<string>(
+    options.length > 0 ? options[0].id.toString() : '',
+  );
+  const [count, setCount] = useState<string>('1');
+
   const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
-  }, [detail, countAsString]);
+    return detail.price * Number(count);
+  }, [detail, count]);
 
   const navigate = useNavigate();
   const authInfo = useAuth();
@@ -37,10 +42,12 @@ export const OptionSection = ({ productId }: Props) => {
       return navigate(getDynamicPath.login());
     }
 
-    orderHistorySessionStorage.set({
-      id: parseInt(productId),
-      count: parseInt(countAsString),
-    });
+    const orderItem: OrderHistory = {
+      id: parseInt(selectedOption, 10),
+      count: parseInt(count, 10),
+    };
+
+    orderHistorySessionStorage.set(orderItem);
 
     navigate(RouterPath.order);
   };
@@ -51,7 +58,20 @@ export const OptionSection = ({ productId }: Props) => {
 
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <SelectWrapper>
+        <Select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+          {options.length > 0 ? (
+            options.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))
+          ) : (
+            <option value="">옵션이 없습니다</option>
+          )}
+        </Select>
+        <CountOptionItem name="수량 선택" value={count} onChange={setCount} />
+      </SelectWrapper>
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
@@ -75,7 +95,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-
+const SelectWrapper = styled.div`
+  margin-bottom: 20px;
+`;
 const BottomWrapper = styled.div`
   padding: 12px 0 0;
 `;
@@ -97,4 +119,11 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+const Select = styled.select`
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
 `;

@@ -7,19 +7,19 @@ import App from '@/App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-async function deferRender() {
-  if (process.env.NODE_ENV === 'development') {
-    const { worker } = await import('./mocks/browser');
-    await worker.start();
-  }
+// async function deferRender() {
+//   if (process.env.NODE_ENV === 'development') {
+//     const { worker } = await import('./mocks/browser');
+//     await worker.start();
+//   }
 
-  return;
-}
+//   return;
+// }
 
-deferRender().then(() => {
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-  );
-});
+// deferRender().then(() => {
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
+// });

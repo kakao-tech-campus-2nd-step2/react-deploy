@@ -16,10 +16,10 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
+export const BASE_URL = 'http://ec2-13-125-235-182.ap-northeast-2.compute.amazonaws.com:8080';
+
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: 'http://ec2-13-125-235-182.ap-northeast-2.compute.amazonaws.com:8080',
 });
 
 export const queryClient = new QueryClient({

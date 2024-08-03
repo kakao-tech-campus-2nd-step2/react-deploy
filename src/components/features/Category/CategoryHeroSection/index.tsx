@@ -6,11 +6,11 @@ import { breakpoints } from '@/styles/variants';
 import type { CategoryData } from '@/types';
 
 type Props = {
-  categoryId: string;
+  category_id: string;
 };
 
-export const CategoryHeroSection = ({ categoryId }: Props) => {
-  const { isRender, currentTheme } = useCurrentCategory({ categoryId });
+export const CategoryHeroSection = ({ category_id }: Props) => {
+  const { isRender, currentTheme } = useCurrentCategory({ category_id });
 
   if (!isRender) return null;
 
@@ -70,6 +70,6 @@ const Title = styled.h1`
   }
 `;
 
-export const getCurrentCategory = (categoryId: string, categoryList: CategoryData[]) => {
-  return categoryList.find((category) => category.id.toString() === categoryId);
+export const getCurrentCategory = (category_id: string, categoryList: CategoryData[]) => {
+  return categoryList.find((category) => category.id.toString() === category_id);
 };

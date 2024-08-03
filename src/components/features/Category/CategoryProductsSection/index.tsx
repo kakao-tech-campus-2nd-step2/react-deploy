@@ -6,26 +6,18 @@ import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { LoadingView } from '@/components/common/View/LoadingView';
-import { VisibilityLoader } from '@/components/common/VisibilityLoader';
 import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
 type Props = {
-  categoryId: string;
+  category_id: number;
 };
 
-export const CategoryProductsSection = ({ categoryId }: Props) => {
-  const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useGetProducts({
-      categoryId,
-    });
+export const CategoryProductsSection = ({ category_id }: Props) => {
+  const { data, error, isLoading } = useGetProducts(category_id);
 
   if (isLoading) return <LoadingView />;
-  if (isError) return <TextView>에러가 발생했습니다.</TextView>;
-  if (!data) return <></>;
-  if (data.pages[0].products.length <= 0) return <TextView>상품이 없어요.</TextView>;
-
-  const flattenGoodsList = data.pages.map((page) => page?.products ?? []).flat();
+  if (error) return <TextView>에러가 발생했습니다.</TextView>;
 
   return (
     <Wrapper>
@@ -37,27 +29,17 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
           }}
           gap={16}
         >
-          {flattenGoodsList.map(({ id, imageUrl, name, price }) => (
-            <Link key={id} to={getDynamicPath.productsDetail(id)}>
-              <DefaultGoodsItems
-                key={id}
-                imageSrc={imageUrl}
-                title={name}
-                amount={price}
-                subtitle={''}
-              />
-            </Link>
-          ))}
+          {data &&
+            data.map((product) => (
+              <Link key={product.id} to={getDynamicPath.productsDetail(product.id)}>
+                <DefaultGoodsItems
+                  imageSrc={product.imageUrl}
+                  name={product.name}
+                  price={parseInt(product.price, 10)}
+                />
+              </Link>
+            ))}
         </Grid>
-        {hasNextPage && (
-          <VisibilityLoader
-            callback={() => {
-              if (!isFetchingNextPage) {
-                fetchNextPage();
-              }
-            }}
-          />
-        )}
       </Container>
     </Wrapper>
   );

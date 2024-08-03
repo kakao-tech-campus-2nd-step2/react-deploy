@@ -1,7 +1,7 @@
 export const RouterPath = {
   root: '/',
   home: '/',
-  category: '/category/:categoryId',
+  category: '/category/:category_id',
   myAccount: '/my-account',
   productsDetail: '/products/:productId',
   order: '/order',
@@ -11,7 +11,7 @@ export const RouterPath = {
 };
 
 export const getDynamicPath = {
-  category: (categoryId: string) => RouterPath.category.replace(':categoryId', categoryId),
+  category: (category_id: string) => RouterPath.category.replace(':category_id', category_id),
   login: (redirect?: string) => {
     const currentRedirect = redirect ?? window.location.href;
     return `${RouterPath.login}?redirect=${encodeURIComponent(currentRedirect)}`;

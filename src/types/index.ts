@@ -10,15 +10,14 @@ export type ProductData = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
-  categoryId: number;
+  image_url: string;
+  category_id: number;
 };
 
 export type ProductOptionsData = {
   id: number;
   name: string;
   quantity: number;
-  productId: number;
 };
 
 export type GoodsDetailOptionItemData = {
