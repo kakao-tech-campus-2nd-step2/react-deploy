@@ -21,7 +21,20 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   return { get, set };
 };
 
-export const authSessionStorage = initStorage('authToken', sessionStorage);
+export const authSessionStorage = {
+  set: (token: string) => {
+    localStorage.setItem('authToken', token);
+  },
+  get: (): string | null => {
+    const token = localStorage.getItem('authToken');
+    return token;
+  },
+  clear: () => {
+    localStorage.removeItem('authToken');
+  },
+};
+
+
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
 
 interface StorageKey {

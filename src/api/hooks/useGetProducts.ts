@@ -64,7 +64,7 @@ export const useGetProducts = ({
   initPageToken,
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
+    queryKey: ['products', categoryId, BASE_URL],
     queryFn: async ({ pageParam = initPageToken }) => {
       return getProducts({ categoryId, pageToken: pageParam, maxResults });
     },

@@ -2,6 +2,8 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import { authSessionStorage } from '@/utils/storage';
+
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
@@ -16,11 +18,40 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
-export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
-});
+const apiServers = [
+  { name: '지연우', url: 'http://43.201.112.200:8080' },
+  { name: '김보민', url: 'http://3.36.59.196:8080' },
+  { name: '박규현', url: 'http://3.35.176.195:8080' },
+  { name: '정호성', url: 'http://13.125.10.230:8080' },
+  { name: '조설빈', url: 'http://3.38.190.84:8080' },
+];
+
+export let BASE_URL = apiServers[0].url;
+
+const initInstanceWithAuth = (): AxiosInstance => {
+  const instance = initInstance({
+    baseURL: BASE_URL,
+  });
+
+  instance.interceptors.request.use((requestConfig) => {
+    const token = authSessionStorage.get();
+    if (token && !requestConfig.headers.Authorization) {
+      requestConfig.headers.Authorization = `Bearer ${token}`;
+    }
+    return requestConfig;
+  });
+
+  return instance;
+};
+export const createFetchInstance = (baseURL: string): AxiosInstance => {
+  return initInstance({
+    baseURL,
+  });
+};
+
+export let fetchInstance = createFetchInstance(BASE_URL);
+
+export const fetchWithTokenInstance = initInstanceWithAuth();
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,3 +63,38 @@ export const queryClient = new QueryClient({
     },
   },
 });
+export const changeServerUrl = (serverName: string) => {
+  const server = apiServers.find((s) => s.name === serverName);
+  if (server) {
+    BASE_URL = server.url;
+    fetchInstance = createFetchInstance(server.url);
+  }
+};
+
+export { apiServers };
+
+export const fetchCategories = async (): Promise<Category[]> => {
+  try {
+    const response = await fetchInstance.get('/api/categories');
+    
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else if (response.data.categories) {
+      return response.data.categories;
+    } else {
+      console.error('Unexpected response format:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+};
+
+type Category = {
+  id: number;
+  name: string;
+  color: string;
+  imageUrl: string;
+  description: string | null;
+};

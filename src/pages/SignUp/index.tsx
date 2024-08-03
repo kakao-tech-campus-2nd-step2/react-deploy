@@ -6,6 +6,7 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { register } from '@/provider/Auth/auth';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -21,30 +22,24 @@ export const SignUpPage = () => {
     }
 
     try {
-        const response = await fetch('/api/members/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-  
-        const data = await response.json();
-        if (response.ok) {
-          authSessionStorage.set(data.token);
-          alert('회원가입이 완료되었습니다.');
-          navigate('/');
-        } else {
-          alert(data.error);
-        }
-      } catch (error) {
-        alert('회원가입 중 문제가 발생했습니다.');
-      }
-    };
+      const { token } = await register(email, password);
+      authSessionStorage.set(token);
+      alert('회원가입이 완료되었습니다.');
+      navigate('/');
+    } catch (error) {
+      alert('회원가입 중 문제가 발생했습니다.');
+    }
+  };
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"

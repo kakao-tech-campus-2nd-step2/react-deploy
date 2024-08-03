@@ -1,10 +1,11 @@
 import { Button, useToast } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { useEffect,useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { BASE_URL } from '@/api/instance';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -15,7 +16,10 @@ type Props = ProductDetailRequestParams;
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
-  const { data: options } = useGetProductOptions({ productId });
+  const { data: options = [] } = useGetProductOptions(productId);
+
+  const [selectedOptionIndex] = useState(0);
+  const selectedOption = options[selectedOptionIndex] || { id: 0, quantity: 0 };
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -25,6 +29,14 @@ export const OptionSection = ({ productId }: Props) => {
   const navigate = useNavigate();
   const authInfo = useAuth();
   const toast = useToast();
+
+  useEffect(() => {
+    if (authInfo?.token) {
+      console.log('Current Auth Token:', authInfo.token);
+    } else {
+      console.warn('User is not authenticated.');
+    }
+  }, [authInfo]);
 
   const handleClick = () => {
     if (!authInfo) {
@@ -47,28 +59,65 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     try {
-      const response = await fetch('/api/wishes', {
+      console.log('Adding to wishlist:', {
+        optionId: selectedOption.id,
+        token: authInfo.token, // 토큰 로그 출력
+      });
+  
+      const response = await fetch(`${BASE_URL}/api/wishes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${authInfo.token}`,
         },
-        body: JSON.stringify({ productId: Number(productId) }),
+        body: JSON.stringify({ 
+          optionId: selectedOption.id, 
+          quantity: parseInt(countAsString, 10) 
+        }),
       });
+  
+      console.log('Check if liked response:', response);
+      console.log('Response status:', response.status);
 
-      if (response.ok) {
-        alert('관심 상품 등록')
+      if (response.status === 201) {
+        toast({ title: "관심 상품으로 등록되었습니다.", status: "success" });
       } else {
-        alert('error');
+        const errorData = await response.json();
+        toast({
+          title: "오류 발생",
+          description: `위시리스트에 추가하는 중 오류가 발생했습니다: ${errorData.message || 'Unknown error'}`,
+          status: "error",
+        });
       }
     } catch (error) {
-      alert('error');
+      console.error('Error adding to wishlist:', error);
+      toast({
+        title: "오류 발생",
+        description: "위시리스트에 추가하는 중 문제가 발생했습니다.",
+        status: "error",
+      });
     }
   };
 
+  if (!options.length) {
+    return <div>옵션을 불러오는 중 오류가 발생했습니다.</div>;
+  }
+
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <CountOptionItem
+        name={options[selectedOptionIndex]?.name || '옵션 없음'}
+        minValues={1}
+        maxValues={selectedOption.quantity}
+        value={countAsString}
+        onChange={(value) => {
+          // 수량 제한 적용
+          const numValue = parseInt(value, 10);
+          if (numValue > 0 && numValue <= selectedOption.quantity) {
+            setCountAsString(value);
+          }
+        }}
+      />
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
