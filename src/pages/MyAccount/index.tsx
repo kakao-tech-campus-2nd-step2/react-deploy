@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import type { WishlistResponseData } from '@/api/hooks/useWishlist';
+import type { WishlistRequestParams } from '@/api/hooks/useWishlist';
 import { useDeleteWishlist, useFetchWishlist} from '@/api/hooks/useWishlist';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -20,8 +20,8 @@ export const MyAccountPage = () => {
     window.location.replace(redirectURL);
   };
 
-  const handleDelete = (wishId: number) => {
-    deleteWishlistMutation.mutate(wishId);
+  const handleDelete = (productId: string) => {
+    deleteWishlistMutation.mutate(productId);
   };
 
   if (isLoading) {
@@ -37,10 +37,10 @@ export const MyAccountPage = () => {
 
       <WishlistContainer>
         {wishlist && wishlist.length > 0 ? (
-          wishlist.map((item: WishlistResponseData) => (
-            <WishlistItem key={item.id}>
+          wishlist.map((item: WishlistRequestParams) => (
+            <WishlistItem key={item.productId}>
               <p>Product ID: {item.productId}</p>
-              <Button size="small" theme="darkGray" onClick={() => handleDelete(item.id)}>
+              <Button size="small" theme="darkGray" onClick={() => handleDelete(item.productId)}>
                 삭제
               </Button>
             </WishlistItem>

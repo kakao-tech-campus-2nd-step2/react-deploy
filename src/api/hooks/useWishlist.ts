@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { BASE_URL, fetchInstance } from '../instance';
 
-interface WishlistRequestParams {
+export interface WishlistRequestParams {
   productId: string;
 }
 
