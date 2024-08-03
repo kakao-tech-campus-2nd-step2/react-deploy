@@ -31,6 +31,12 @@ jobs:
       - name: Install Dependencies
         run: npm i
 
+      - name: Create .env file
+        run: |
+          echo REACT_APP_BACKEND_URL_KIM_TAEYUN=${{ secrets.REACT_APP_BACKEND_URL_KIM_TAEYUN }} > .env
+          echo REACT_APP_BACKEND_URL_KANG_SUMIN=${{ secrets.REACT_APP_BACKEND_URL_KANG_SUMIN }} >> .env
+          echo REACT_APP_BACKEND_URL_YOO_KYUNGMI=${{ secrets.REACT_APP_BACKEND_URL_YOO_KYUNGMI }} >> .env
+
       - name: Build
         run: npm run build
 
