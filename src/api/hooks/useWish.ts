@@ -54,7 +54,7 @@ const getWishPath = `${BASE_URL}/api/wishes`;
 const addWish = async (params: WishParams, token: string) => {
   const response = await fetchInstance.post<AddWishResponseData>(getWishPath, params, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
       "Content-Type": "application/json",
     },
   });

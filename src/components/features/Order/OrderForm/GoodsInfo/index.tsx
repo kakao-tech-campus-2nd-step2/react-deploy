@@ -11,7 +11,7 @@ type Props = {
   orderHistory: OrderHistory;
 };
 export const GoodsInfo = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
+  const { productId: id, count } = orderHistory;
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
 
   return (

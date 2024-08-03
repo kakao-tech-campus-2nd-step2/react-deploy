@@ -11,16 +11,21 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
 
   return (
-    <Wrapper>
-      <GoodsImage src={detail.imageUrl} alt={detail.name} />
-      <InfoWrapper>
-        <Title>{detail.name}</Title>
-        <Price>{detail.price}원</Price>
-        <Divider color="#f5f5f5" />
-        <Notice>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</Notice>
-        <Divider color="#f5f5f5" />
-      </InfoWrapper>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <GoodsImage src={detail.imageUrl} alt={detail.name} />
+        <InfoWrapper>
+          <Title>{detail.name}</Title>
+          <Price>{detail.price}원</Price>
+          <Divider color="#f5f5f5" />
+          <Notice>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</Notice>
+          <Divider color="#f5f5f5" />
+        </InfoWrapper>
+      </Wrapper>
+      <Wrapper>
+        <Detail>{detail.description}</Detail>
+      </Wrapper>
+    </>
   );
 };
 
@@ -70,5 +75,11 @@ const Notice = styled.p`
   padding: 24px 12px;
   font-size: 14px;
   font-weight: 700;
+  color: #111;
+`;
+
+const Detail = styled.p`
+  padding: 24px 12px;
+  font-size: 14px;
   color: #111;
 `;

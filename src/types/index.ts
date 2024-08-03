@@ -10,12 +10,14 @@ export type ProductData = {
   id: number;
   name: string;
   price: number;
+  description: string;
   imageUrl: string;
   categoryId: number;
   options: OptionData[];
 };
 
 export type OptionData = {
+  id: number;
   name: string;
   quantity: number;
 };
@@ -38,7 +40,8 @@ export type GoodsDetailOptionItemData = {
 };
 
 export type OrderHistory = {
-  id: number;
+  productId: number;
+  optionId: number;
   count: number;
 };
 

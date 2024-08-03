@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const OrderForm = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
+  const { productId: id, count } = orderHistory;
 
   const methods = useForm<OrderFormData>({
     defaultValues: {

@@ -7,7 +7,6 @@ import {
   type ProductDetailRequestParams,
   useGetProductDetail,
 } from "@/api/hooks/useGetProductDetail";
-import { useGetProductOptions } from "@/api/hooks/useGetProductOptions";
 import { useAddWish } from "@/api/hooks/useWish";
 import { Button } from "@/components/common/Button";
 import { Spacing } from "@/components/common/layouts/Spacing";
@@ -21,8 +20,9 @@ type Props = ProductDetailRequestParams;
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
-  const { data: options } = useGetProductOptions({ productId });
+  const options = detail.options;
 
+  const [currentOption, setCurrentOption] = useState(options[0].id ?? 0);
   const [countAsString, setCountAsString] = useState("1");
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
@@ -44,7 +44,8 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(productId),
+      productId: parseInt(productId),
+      optionId: currentOption,
       count: parseInt(countAsString),
     });
 
@@ -83,9 +84,37 @@ export const OptionSection = ({ productId }: Props) => {
     );
   };
 
+  const handleOption = (id: number) => () => {
+    setCurrentOption(id);
+    setCountAsString("1");
+    console.log(currentOption, countAsString, totalPrice);
+  };
+
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <TopWrapper>
+        {options.map((option) =>
+          option.id === currentOption ? (
+            <CountOptionItem
+              key={option.id}
+              name={option.name}
+              value={countAsString}
+              onChange={setCountAsString}
+              isSelect={true}
+              maxValues={option.quantity}
+            />
+          ) : (
+            <CountOptionItem
+              key={option.id}
+              name={option.name}
+              value={countAsString}
+              onChange={setCountAsString}
+              onClick={handleOption(option.id)}
+              isSelect={false}
+            />
+          ),
+        )}
+      </TopWrapper>
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
@@ -114,6 +143,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const TopWrapper = styled.div`
+  justify-content: flex-start;
 `;
 
 const BottomWrapper = styled.div`
