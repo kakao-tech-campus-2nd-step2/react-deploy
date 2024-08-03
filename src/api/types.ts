@@ -20,7 +20,7 @@ export type LoginUserResponse = {
 
 export type UserPointResponse = {
   points: number;
-}
+};
 
 export type AddToWishlistResponse = {
   success: boolean;
@@ -37,6 +37,7 @@ export type CreateOrderRequestParams = {
   optionId: string | number;
   quantity: number;
   message: string;
+  points?: number;
 };
 
 export type OrderListRequestParams = {

@@ -20,6 +20,9 @@ export type OrderData = {
   quantity: number;
   orderDateTime: string;
   message: string;
+  pointsUsed: number;
+  pointsReceived: number;
+  payment: number;
 };
 
 export type ProductOptionsData = {
