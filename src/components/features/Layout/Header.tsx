@@ -31,9 +31,10 @@ export const Header = () => {
         </Link>
         <RightWrapper>
           <select onChange={handleSelectBackend} value={backendUrl}>
+            <option value="https://yeongu.3.35.17.240.sslip.io">https용 api</option>
             <option value="http://3.35.17.240:8080">A</option>
             <option value="http://3.38.168.104:8080">B</option>
-            <option value="https://api.backend3.com">C</option>
+            <option value="http://13.209.18.238:8080">C</option>
           </select>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
