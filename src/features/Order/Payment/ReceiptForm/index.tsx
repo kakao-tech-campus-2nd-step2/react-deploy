@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Checkbox, Select, Input } from '@chakra-ui/react';
 import { Button } from '@components/common';
@@ -26,9 +26,15 @@ export default function ReceiptForm() {
   const { data: pointData } = useGetPoint();
   if (pointData) setPoint(pointData.point);
 
+  useEffect(() => {
+    if (pointData) {
+      setPoint(pointData.point);
+    }
+  }, [pointData]);
+
   const handleOrders = (message: string) => {
     mutate(
-      { message, optionId, quantity },
+      { message, optionId, quantity, usedPoint: point },
       {
         onSuccess: () => {
           alert(SUCCESS_ORDER);
@@ -67,12 +73,14 @@ export default function ReceiptForm() {
           <dd>{`${price}원`}</dd>
         </dl>
       </TotalAmount>
-      <Button theme="primary" type="button" onClick={() => setTotalPrice(price - point)}>
-        포인트 사용하기
-      </Button>
-      <Button theme="kakao" type="submit">
-        {totalPrice} 결제하기
-      </Button>
+      <ButtonContainer>
+        <Button theme="primary" type="button" onClick={() => setTotalPrice(price - point)}>
+          포인트 사용하기
+        </Button>
+        <Button theme="kakao" type="submit">
+          {totalPrice} 결제하기
+        </Button>
+      </ButtonContainer>
     </form>
   );
 }
@@ -86,8 +94,6 @@ const TotalAmount = styled.div`
   dl {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
-    /* align-items: center; */
     font-weight: 700;
   }
 
@@ -98,5 +104,19 @@ const TotalAmount = styled.div`
   dd {
     font-size: 20px;
     margin-bottom: 24px;
+  }
+
+  dd:last-of-type {
+    margin-bottom: 0;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  button {
+    margin-bottom: 24px;
+  }
+
+  button:last-of-type {
+    margin-bottom: 0;
   }
 `;

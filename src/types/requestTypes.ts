@@ -7,6 +7,7 @@ export interface OrderRequest {
   optionId: number;
   quantity: number;
   message: string;
+  usedPoint: number;
 }
 
 export interface DeleteWishRequest {

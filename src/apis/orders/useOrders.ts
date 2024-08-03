@@ -6,7 +6,10 @@ import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useAPI } from '@context/api/useAPI';
 
-const postOrders = async ({ optionId, quantity, message }: OrderRequest, baseURL: string): Promise<OrderResponse> => {
+const postOrders = async (
+  { optionId, quantity, message, usedPoint }: OrderRequest,
+  baseURL: string,
+): Promise<OrderResponse> => {
   const instance = initInstance(baseURL);
   const res = await instance.post(
     ORDER_PATHS.ORDERS,
@@ -14,6 +17,7 @@ const postOrders = async ({ optionId, quantity, message }: OrderRequest, baseURL
       optionId,
       quantity,
       message,
+      usedPoint,
     },
     {
       headers: {
@@ -28,6 +32,7 @@ export const useOrders = (): UseMutationResult<OrderResponse, AxiosError, OrderR
   const { baseURL } = useAPI();
 
   return useMutation<OrderResponse, AxiosError, OrderRequest>({
-    mutationFn: ({ optionId, quantity, message }: OrderRequest) => postOrders({ optionId, quantity, message }, baseURL),
+    mutationFn: ({ optionId, quantity, message, usedPoint }: OrderRequest) =>
+      postOrders({ optionId, quantity, message, usedPoint }, baseURL),
   });
 };
