@@ -11,8 +11,11 @@ type Props = {
   orderHistory: OrderHistory;
 };
 export const GoodsInfo = ({ orderHistory }: Props) => {
-  const { productId: id, count } = orderHistory;
+  const { productId: id, count, optionId } = orderHistory;
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const optionName = detail.options
+    .filter((option) => option.id === optionId)
+    .map((option) => option.name);
 
   return (
     <Wrapper>
@@ -24,9 +27,11 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
             <Image src={detail.imageUrl} width={86} ratio="square" />
           </GoodsInfoImage>
           <GoodsInfoTextWrapper>
-            <GoodsInfoTextTitle>
-              {detail.name} X {count}개
-            </GoodsInfoTextTitle>
+            <GoodsInfoTextTitle>{detail.name}</GoodsInfoTextTitle>
+            <GoodsInfoTextOption>
+              옵션: {optionName.length != 0 ? optionName[0] : ""}
+            </GoodsInfoTextOption>
+            <GoodsInfoTextOption>수량: {count}개</GoodsInfoTextOption>
           </GoodsInfoTextWrapper>
         </GoodsInfoWrapper>
       </GoodsWrapper>
@@ -67,6 +72,16 @@ const GoodsInfoTextTitle = styled.p`
   font-weight: 400;
   margin-top: 3px;
   color: #222;
+  overflow: hidden;
+  font-weight: 400;
+`;
+
+const GoodsInfoTextOption = styled.p`
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  margin-top: 3px;
+  color: #a4a4a4;
   overflow: hidden;
   font-weight: 400;
 `;

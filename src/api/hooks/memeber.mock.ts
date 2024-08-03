@@ -24,7 +24,7 @@ export const memberMockHandler = [
 
     const token = "mockToken";
 
-    return res(ctx.status(200), ctx.json({ email, token }));
+    return res(ctx.status(200), ctx.json({ email: email, accessToken: token }));
   }),
 
   rest.post(`${BASE_URL}/api/members/register`, async (req, res, ctx) => {

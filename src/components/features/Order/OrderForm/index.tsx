@@ -1,8 +1,12 @@
 import styled from "@emotion/styled";
 import { FormProvider, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
+import type { AddOrderRequestParams } from "@/api/hooks/useOrder";
+import { useAddOrder } from "@/api/hooks/useOrder";
 import { Spacing } from "@/components/common/layouts/Spacing";
 import { SplitLayout } from "@/components/common/layouts/SplitLayout";
+import { RouterPath } from "@/routes/path";
 import type { OrderFormData, OrderHistory } from "@/types";
 
 import { HEADER_HEIGHT } from "../../Layout/Header";
@@ -15,20 +19,27 @@ type Props = {
 };
 
 export const OrderForm = ({ orderHistory }: Props) => {
-  const { productId: id, count } = orderHistory;
+  const { productId: id, count, optionId } = orderHistory;
+  const navigate = useNavigate();
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
       productId: id,
-      productQuantity: count,
+      optionId: optionId,
+      quantity: count,
       senderId: 0,
       receiverId: 0,
       hasCashReceipt: false,
+      cashReceiptType: "PERSONAL",
+      cashReceiptNumber: "",
+      messageCardTextMessage: "",
     },
   });
   const { handleSubmit } = methods;
 
-  const handleForm = (values: OrderFormData) => {
+  const { mutate: addOrder } = useAddOrder();
+
+  const handleForm = async (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
 
     if (!isValid) {
@@ -36,8 +47,22 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    // console.log("values", values);
-    alert("주문이 완료되었습니다.");
+    const params: AddOrderRequestParams = {
+      productId: values.productId,
+      productQuantity: values.quantity,
+      hasCashReceipt: values.hasCashReceipt,
+      cashReceiptType: values.cashReceiptType || "",
+      cashReceiptNumber: values.cashReceiptNumber || "",
+      message: values.messageCardTextMessage,
+    };
+
+    try {
+      await addOrder(params);
+      alert("주문이 완료되었습니다.");
+      navigate(RouterPath.home);
+    } catch (error) {
+      alert("주문 처리 중 오류가 발생했습니다.");
+    }
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수

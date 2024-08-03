@@ -16,7 +16,6 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-// export const BASE_URL = "https://api.example.com";
 export const BASE_URL = "http://15.165.67.223:8080";
 
 export const fetchInstance = initInstance({

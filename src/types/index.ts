@@ -47,7 +47,8 @@ export type OrderHistory = {
 
 export type OrderFormData = {
   productId: number;
-  productQuantity: number;
+  optionId: number;
+  quantity: number;
   messageCardTextMessage: string;
   senderId: number;
   receiverId: number;

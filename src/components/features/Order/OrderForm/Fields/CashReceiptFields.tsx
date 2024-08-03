@@ -26,6 +26,7 @@ export const CashReceiptFields = () => {
       <Spacing />
       <Controller
         control={control}
+        {...register("cashReceiptType")}
         name="cashReceiptType"
         render={({ field }) => (
           <Select {...field} isDisabled={!hasCashReceipt}>
