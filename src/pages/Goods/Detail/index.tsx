@@ -2,7 +2,7 @@ import { Button, Center, useToast, VStack } from '@chakra-ui/react';
 import type { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useAddWish, useRemoveWish } from '@/api/hooks/fetchWishList';
+import { useAddWish } from '@/api/hooks/fetchWishList';
 import { useDeleteProduct } from '@/api/hooks/useDeleteProduct';
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
@@ -10,7 +10,6 @@ import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import { LoadingView } from '@/components/common/View/LoadingView';
 import { GoodsDetail } from '@/components/features/Goods/Detail';
 import { OptionSection } from '@/components/features/Goods/Detail/OptionSection';
-
 export const GoodsDetailPage = () => {
   const { productId = '' } = useParams<ProductDetailRequestParams>();
   const navigate = useNavigate();
@@ -37,36 +36,13 @@ export const GoodsDetailPage = () => {
       });
     },
   });
-  const { mutate: removeWish } = useRemoveWish({
-    onSuccess: () => {
-      toast({
-        title: '성공',
-        description: '관심 상품에서 제거되었습니다.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message: string }>;
-      toast({
-        title: '오류',
-        description: `관심 상품 제거 중 오류가 발생했습니다: ${axiosError.response?.data?.message || axiosError.message}`,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    },
-  });
 
   const handleEditProductClick = () => {
     navigate(`/products/edit/${productId}`);
   };
-
   const handleAddProductClick = () => {
     navigate(`/products/add`);
   };
-
   const handleDeleteProductClick = () => {
     if (window.confirm('정말로 이 상품을 삭제하시겠습니까?')) {
       deleteProduct(productId);
@@ -74,11 +50,7 @@ export const GoodsDetailPage = () => {
   };
 
   const handleAddWishClick = () => {
-    addWish(parseInt(productId, 10)); // 숫자 타입의 productId 전달
-  };
-
-  const handleRemoveWishClick = () => {
-    removeWish(parseInt(productId, 10)); // 숫자 타입의 productId 전달
+    addWish({ productId: parseInt(productId, 10) });
   };
 
   return (
@@ -99,9 +71,6 @@ export const GoodsDetailPage = () => {
               </Button>
               <Button colorScheme="yellow" onClick={handleAddWishClick}>
                 관심 상품 추가
-              </Button>
-              <Button colorScheme="purple" onClick={handleRemoveWishClick}>
-                관심 상품 삭제
               </Button>
             </VStack>
           </Center>

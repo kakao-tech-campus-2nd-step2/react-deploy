@@ -5,10 +5,11 @@ import axios from 'axios';
 import { authSessionStorage } from '@/utils/storage';
 
 // 서버 API 주소
-export const BASE_URL = 'http://43.201.17.220:8080'; //명준
+export const BASE_URL = 'http://43.201.17.220:8080';
 // 다른 서버 주소
+// // 명준
 // http://13.125.199.167:8080 준형
-// http://3.38.211.225:8080 서영
+//'http://3.38.211.225:8080' 서영
 
 const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
