@@ -46,7 +46,10 @@
     "react/button-has-type": "off",
     "react-hooks/rules-of-hooks": "off",
     "no-const-assign": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-unused-expressions": "off",
+    "no-unsafe-optional-chaining": "off",
+    "no-restricted-globals": "off"
   },
   "settings": {
     "import/resolver": {
@@ -62,7 +65,8 @@
           ["@context", "./src/context"],
           ["@internalTypes", "./src/types"],
           ["@apis", "./src/apis"],
-          ["@mocks", "./src/mocks"]
+          ["@mocks", "./src/mocks"],
+          ["@features", "./src/features"]
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

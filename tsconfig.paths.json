@@ -13,6 +13,7 @@
       "@internalTypes/*": ["./src/types/*"],
       "@apis/*": ["./src/apis/*"],
       "@mocks/*": ["./src/mocks/*"],
+      "@features/*": ["./src/features/*"],
     }
   }
 }

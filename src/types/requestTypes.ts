@@ -3,6 +3,13 @@ export interface RankingProductsRequest {
   rankType?: 'MANY_WISH' | 'MANY_RECEIVE' | 'MANY_WISH_RECEIVE';
 }
 
+export interface OrderRequest {
+  optionId: number;
+  quantity: number;
+  message: string;
+  usedPoint: number;
+}
+
 export interface DeleteWishRequest {
   wishId: number;
 }
@@ -14,7 +21,7 @@ export interface GetWishesRequest {
 }
 
 export interface AddWishRequest {
-  productId: number;
+  productId?: number;
 }
 
 export interface ThemeProductsRequest {
@@ -38,6 +45,13 @@ export interface MyAccountWishProductsRequest {
 
 export interface PointUpdateRequest {
   point: number;
+}
+
+export interface GetProductsRequest {
+  page: number;
+  size: number;
+  sort: string;
+  categoryId: number;
 }
 
 export interface ProductOrderRequest {

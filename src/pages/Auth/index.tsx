@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Image } from '@components/common';
-import AuthField from '@components/features/Auth/AuthField';
+import AuthField from '@features/Auth/AuthField';
 import kakaoLogo from '@assets/images/kakao-logo.svg';
 import { useLocation } from 'react-router-dom';
 
