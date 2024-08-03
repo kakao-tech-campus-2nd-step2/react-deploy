@@ -5,6 +5,8 @@
 - 백엔드 팀원 API 사용 : `yarn start`
 - msw mock API 사용 : `yarn start:mock`
 
+> 로그인 ID: test@test.com / PW: test1234
+
 > (2023.08.03)
 > 심규민님 API는 대부분 정상작동하지만, 관심 기능의 경우 API path가 명세와 달라 수정 요청을 했지만 아직 반영되지 않은 것으로 보입니다.
 > 김동현님 API는 현재 정상작동하지 않는 것으로 보입니다.
