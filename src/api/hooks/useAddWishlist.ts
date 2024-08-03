@@ -9,7 +9,7 @@ export interface AddWishlistParams {
 export const addWishlist = async (params: AddWishlistParams) => {
   const response = await fetchInstance.post(`${BASE_URL}/api/wishes`, params, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`, // TODO: 추후 수정 필요
+      Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
     },
   });
   return response.data;
