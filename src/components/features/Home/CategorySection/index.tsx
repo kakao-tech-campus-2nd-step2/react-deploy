@@ -24,14 +24,16 @@ export const CategorySection = () => {
             md: 6,
           }}
         >
-          {data.map((category) => (
-            <Link
-              key={category.categoryId}
-              to={getDynamicPath.category(category.categoryId.toString())}
-            >
-              <CategoryItem image={category.imageUrl} label={category.name} />
-            </Link>
-          ))}
+          {Array.isArray(data)
+            ? data.map((category) => (
+                <Link
+                  key={category.categoryId}
+                  to={getDynamicPath.category(category.categoryId.toString())}
+                >
+                  <CategoryItem image={category.imageUrl} label={category.name} />
+                </Link>
+              ))
+            : null}
         </Grid>
       </Container>
     </Wrapper>
