@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import WishesSection from '@components/organisms/mypage/WishesSection';
+import OrderHistorySection from '@components/organisms/mypage/OrderHistorySection';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 const GreetingTitle = styled.h1`
@@ -15,7 +16,7 @@ const GreetingTitle = styled.h1`
 `;
 
 function MyPage() {
-  const { isLoggedIn, setIsLoggedIn, username } = useContext(LoginContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
   const navigate = useNavigate();
 
   const onLogoutClick = useCallback(() => {
@@ -42,8 +43,7 @@ function MyPage() {
           alignItems="center"
         >
           <GreetingTitle>
-            {username}
-            님 안녕하세요!
+            회원님 안녕하세요!
           </GreetingTitle>
           <div css={css`
             height: 64px;
@@ -62,6 +62,7 @@ function MyPage() {
         </Container>
 
         <WishesSection />
+        <OrderHistorySection />
       </Container>
     </Page>
   );

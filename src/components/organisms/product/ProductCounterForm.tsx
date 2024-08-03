@@ -13,17 +13,23 @@ import { orderHistoryStorage } from '@utils/storage';
 import { addWishProduct } from '@utils/query';
 import { isAxiosError } from 'axios';
 import { StatusCodes } from 'http-status-codes';
+import ProductOptionsSection from '@components/organisms/product/ProductOptionsSection';
 import { LoginContext } from '@/providers/LoginContextProvider';
 import { OrderHistoryData } from '@/types';
+import { ProductOption } from '@/dto';
 
 interface ProductCounterAreaProps {
   productId: number;
   productName: string;
   productPrice: number;
+  productOptions: ProductOption[];
 }
 
-function ProductCounterForm({ productId, productPrice, productName }: ProductCounterAreaProps) {
+function ProductCounterForm({
+  productId, productPrice, productName, productOptions,
+}: ProductCounterAreaProps) {
   const [count, setCount] = useState(1);
+  const [option, setOption] = useState<ProductOption>();
   const loginStatus = useContext(LoginContext);
   const navigate = useNavigate();
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
@@ -44,11 +50,16 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
       if (confirm) {
         navigate(Paths.LOGIN_PAGE);
       }
+
+      return false;
     }
+
+    return true;
   }, [loginStatus.isLoggedIn, navigate]);
 
   const handleAddWishClick = useCallback(async () => {
-    checkLogin();
+    if (!checkLogin()) return;
+
     try {
       await addWishProduct({
         productId,
@@ -76,17 +87,18 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
   }, [checkLogin, productId]);
 
   const handleSubmitClick = useCallback(() => {
-    checkLogin();
+    if (!checkLogin() || !option) return;
 
     const productHistoryData: OrderHistoryData = {
       productId,
-      productQuantity: count,
+      quantity: count,
+      option,
     };
 
     orderHistoryStorage.set(productHistoryData);
 
     navigate(Paths.PRODUCT_ORDER);
-  }, [checkLogin, productId, count, navigate]);
+  }, [checkLogin, option, productId, count, navigate]);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -134,6 +146,11 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
           </HStack>
         </Box>
       </Container>
+      <ProductOptionsSection
+        options={productOptions}
+        currentOption={option}
+        setOption={setOption}
+      />
       <Container flexDirection="column" cssProps={{ gap: '16px' }}>
         <Box
           w="100%"

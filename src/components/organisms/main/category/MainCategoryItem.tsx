@@ -7,11 +7,16 @@ import ResponsiveContainer
   from '@components/atoms/container/ResponsiveContainer';
 import { BREAKPOINT_SM } from '@styles/size';
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
+import RemoveButton from '@components/atoms/button/RemoveButton';
+import { deleteCategory } from '@utils/query';
+import { isAxiosError } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { CategoryContext } from '@/providers/CategoryContextProvider';
 
 interface CategoryItemProps {
-  categoryId: string;
+  categoryId: number;
+  displayDeleteButton?: boolean;
 }
 
 const ResponsiveCategoryCaption = styled.p`
@@ -22,19 +27,59 @@ const ResponsiveCategoryCaption = styled.p`
   }
 `;
 
-function MainCategoryItem({ categoryId }: CategoryItemProps) {
-  const { categories } = useContext(CategoryContext);
+function MainCategoryItem({ categoryId, displayDeleteButton }: CategoryItemProps) {
+  const { categories, refetch } = useContext(CategoryContext);
   const category = categories[categoryId];
 
+  const handleClickDelete = useCallback(async () => {
+    if (!displayDeleteButton) return;
+
+    try {
+      const res = window.confirm('카테고리를 삭제하시겠어요?');
+
+      if (res) {
+        await deleteCategory({ categoryId });
+        alert('삭제가 완료되었습니다.');
+        refetch();
+      }
+    } catch (e) {
+      console.error(e);
+
+      if (!isAxiosError(e)) {
+        return;
+      }
+
+      if (e.response?.status === StatusCodes.BAD_REQUEST) {
+        alert('잘못된 category Id입니다.');
+
+        return;
+      }
+
+      alert('카테고리를 삭제하는 중 에러가 발생했어요.');
+    }
+  }, [displayDeleteButton, categoryId, refetch]);
+
   return (
-    <Link to={Paths.CATEGORY_PAGE(categoryId)}>
-      <Container padding="13px 0px 12px">
-        <Container
-          elementSize="full-width"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <ResponsiveContainer sizeDefault={{ width: '90px', height: '90px' }} sizeSm={{ width: '50px', height: '50px' }}>
+    <Container padding="13px 0px 12px">
+      <Container
+        elementSize="full-width"
+        flexDirection="column"
+        alignItems="center"
+        cssProps={{
+          position: 'relative',
+        }}
+      >
+
+        { displayDeleteButton ? (
+          <RemoveButton onClick={handleClickDelete}>X</RemoveButton>
+        ) : null}
+
+        <Link to={Paths.CATEGORY_PAGE(categoryId)}>
+          <ResponsiveContainer
+            sizeDefault={{ width: '90px', height: '90px' }}
+            sizeSm={{ width: '50px', height: '50px' }}
+          >
+
             <Image
               src={category.imageUrl}
               ratio="square"
@@ -46,12 +91,15 @@ function MainCategoryItem({ categoryId }: CategoryItemProps) {
             `}
             />
           </ResponsiveContainer>
+        </Link>
+
+        <Link to={Paths.CATEGORY_PAGE(categoryId)}>
           <ResponsiveCategoryCaption>
             {category.name}
           </ResponsiveCategoryCaption>
-        </Container>
+        </Link>
       </Container>
-    </Link>
+    </Container>
   );
 }
 

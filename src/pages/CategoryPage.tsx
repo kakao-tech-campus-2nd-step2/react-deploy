@@ -29,7 +29,7 @@ function CategoryPage() {
   return (
     <CategoryContextProvider>
       <Page>
-        <Banner categoryId={categoryId as string} />
+        <Banner categoryId={parseInt(categoryId as string, 10)} />
         <Container elementSize="full-width" justifyContent="center">
           <Container
             elementSize="full-width"

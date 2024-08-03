@@ -6,19 +6,20 @@ import {
 import { Link } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import Image from '@components/atoms/image/Image';
-import { WishRemoveButton } from '@components/organisms/mypage/WishesContent.styles';
 import { useCallback } from 'react';
 import { deleteWishProduct } from '@utils/query';
 import { isAxiosError } from 'axios';
 import { StatusCodes } from 'http-status-codes';
+import RemoveButton from '@components/atoms/button/RemoveButton';
 import { WishData } from '@/dto';
 
 interface WishItemProps {
   wishData: WishData;
+  refetch: () => void;
 }
 
 function WishItem({
-  wishData,
+  wishData, refetch,
 }: WishItemProps) {
   const { product } = wishData;
 
@@ -28,6 +29,7 @@ function WishItem({
         wishId: wishData.id,
       });
       alert('삭제가 완료되었습니다.');
+      refetch();
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response?.status === StatusCodes.NOT_FOUND) {
@@ -45,9 +47,9 @@ function WishItem({
 
   return (
     <GoodsItemWrapper>
-      <WishRemoveButton onClick={onClickRemove}>
+      <RemoveButton onClick={onClickRemove}>
         X
-      </WishRemoveButton>
+      </RemoveButton>
       <Link to={Paths.PRODUCT_DETAILS(product.id.toString())}>
         <Image ratio="square" radius={3} src={product.imageUrl} />
         <Subtitle>{product.name}</Subtitle>

@@ -6,6 +6,12 @@ export interface ProductData {
   categoryId: number;
 }
 
+export interface ProductOption {
+  id: number;
+  name: string;
+  quantity: number;
+}
+
 export interface WishData {
   id: number;
   product: ProductData;

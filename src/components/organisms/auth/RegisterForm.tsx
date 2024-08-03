@@ -15,7 +15,7 @@ import { LoginContext } from '@/providers/LoginContextProvider';
 
 function RegisterForm() {
   const navigate = useNavigate();
-  const { setIsLoggedIn, setUsername } = useContext(LoginContext);
+  const { setIsLoggedIn } = useContext(LoginContext);
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -29,7 +29,6 @@ function RegisterForm() {
         password: passwordRef.current.value,
       }, 'register');
       setIsLoggedIn(true);
-      setUsername(authResult.email);
       tokenStorage.set(authResult.token);
       navigate(-1);
     } catch (e) {
@@ -43,7 +42,7 @@ function RegisterForm() {
         alert('잘못된 입력값입니다.');
       }
     }
-  }, [navigate, setIsLoggedIn, setUsername]);
+  }, [navigate, setIsLoggedIn]);
 
   return (
     <AuthFormContainer>

@@ -83,6 +83,24 @@ const handlers = [
       });
     },
   ),
+  http.get(
+    BASE_URL + RequestURLs.PRODUCT_OPTIONS,
+    async () => (
+      HttpResponse.json(MockData.MOCK_OPTIONS)
+    ),
+  ),
+  http.get(
+    BASE_URL + RequestURLs.ORDER,
+    async () => (
+      HttpResponse.json(MockData.MOCK_CATEGORY_ITEMS)
+    ),
+  ),
+  http.get(
+    BASE_URL + RequestURLs.POINT,
+    async () => (
+      HttpResponse.json(MockData.MOCK_POINT)
+    ),
+  ),
 ];
 
 export default handlers;

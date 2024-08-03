@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { tokenStorage } from '@utils/storage';
+import { currentUrlStorage, tokenStorage } from '@utils/storage';
 import { AuthenticatedRequestURLs } from '@constants/RequestURLs';
+import { StatusCodes } from 'http-status-codes';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: currentUrlStorage.get() || BASE_URL,
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -35,4 +36,8 @@ export function replacePathParams(url: string, pathParams: RequestPath): string 
   });
 
   return replacedUrl;
+}
+
+export function isNotFound(error: Error | null) {
+  return error && axios.isAxiosError(error) && error.response?.status === StatusCodes.NOT_FOUND;
 }
