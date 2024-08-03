@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+import { useGetPoints } from "@/api/hooks/usePoint";
 import { Button } from "@/components/common/Button";
 import { Spacing } from "@/components/common/layouts/Spacing";
 import { WishList } from "@/components/features/MyAccount/WishList";
@@ -9,6 +10,7 @@ import { authSessionStorage } from "@/utils/storage";
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+  const { data } = useGetPoints();
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -19,7 +21,8 @@ export const MyAccountPage = () => {
 
   return (
     <Wrapper>
-      {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      {authInfo?.name}님 안녕하세요! <Spacing height={30} />
+      보유 포인트 : {data?.point ?? 0} <Spacing height={64} />
       <Button
         size="small"
         theme="darkGray"
