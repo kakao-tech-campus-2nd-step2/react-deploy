@@ -59,7 +59,7 @@ jobs:
             cd /react-deploy &&
             git pull origin gh-pages &&
             docker build -t my-react-app-nginx . &&
-            docker stop my-react-app || true &&
-            docker rm my-react-app || true &&
+            docker stop my-react-app &&
+            docker rm my-react-app &&
             docker run --name my-react-app -d -p 80:80 my-react-app-nginx
 
