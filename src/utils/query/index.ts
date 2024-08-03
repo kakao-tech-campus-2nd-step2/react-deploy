@@ -10,7 +10,8 @@ import {
 import {
   AddWishesResponse,
   CategoryResponse,
-  LoginResponse, PointResponse,
+  LoginResponse,
+  PointResponse,
   ProductDetailResponse,
   ProductOptionsResponse,
 } from '@/types/response';

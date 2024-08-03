@@ -35,6 +35,8 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === StatusCodes.UNAUTHORIZED) {
       window.location.href = '/login';
     }
+
+    return error;
   },
 );
 

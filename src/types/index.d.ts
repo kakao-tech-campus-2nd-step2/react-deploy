@@ -86,6 +86,11 @@ export type OrderFormData = {
   pointAmount: number;
 };
 
+export interface JWTTokenHeader {
+  alg: string;
+  typ: string;
+}
+
 export interface ProductFormInputData {
   name: string;
   price: number;
