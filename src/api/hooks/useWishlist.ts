@@ -6,22 +6,17 @@ interface WishlistRequestParams {
   productId: string;
 }
 
-export interface WishlistResponseData {
-  id: number;
-  productId: string;
-}
-
-const WISHLIST_PATH = `${BASE_URL}/api/wishlist`;
-const getWishPath = (wishId: number) => `${BASE_URL}/api/wishes/${wishId}`;
+const WISHLIST_PATH = `${BASE_URL}/api/wishes`;
+const getWishPath = (productId: string) => `${BASE_URL}/api/wishes/${productId}`;
 
 export const fetchWishlist = () =>
-  fetchInstance.get<WishlistResponseData[]>(WISHLIST_PATH).then(res => res.data);
+  fetchInstance.get<WishlistRequestParams[]>(WISHLIST_PATH).then(res => res.data);
 
 export const postWishlist = (params: WishlistRequestParams) =>
-  fetchInstance.post<WishlistResponseData>(WISHLIST_PATH, params).then(res => res.data);
+  fetchInstance.post<WishlistRequestParams>(WISHLIST_PATH, params).then(res => res.data);
 
-const deleteWishlist = (wishId: number) =>
-  fetchInstance.delete<void>(getWishPath(wishId)).then(res => res.status);
+const deleteWishlist = (productId: string) =>
+  fetchInstance.delete<void>(getWishPath(productId)).then(res => res.status);
 
 export const useFetchWishlist = () => {
   return useQuery({

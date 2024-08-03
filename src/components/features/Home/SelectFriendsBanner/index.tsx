@@ -24,9 +24,9 @@ export const SelectFriendsBanner = () => {
         />
         <Text>선물 받을 친구를 선택해주세요.</Text>
         <select onChange={handleSelectChange} value={selectedApi}>
-          <option value="">option1 API</option>
-          <option value="">option2 API</option>
-          <option value="">option3 API</option>
+          <option value="http://43.201.0.118:8080">option1 API</option>
+          <option value="http://43.201.0.118:8080">option2 API</option>
+          <option value="http://43.201.0.118:8080">option3 API</option>
         </select>
       </Container>
     </Wrapper>
