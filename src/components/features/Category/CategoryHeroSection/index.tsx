@@ -12,11 +12,7 @@ type Props = {
 export const CategoryHeroSection = ({ categoryId }: Props) => {
   const { isRender, currentTheme } = useCurrentCategory({ categoryId });
 
-  if (!isRender) return null;
-
-  if (!currentTheme) {
-    return null;
-  }
+  if (!isRender || !currentTheme) return null;
 
   const { color, name, description } = currentTheme;
 
@@ -71,5 +67,11 @@ const Title = styled.h1`
 `;
 
 export const getCurrentCategory = (categoryId: string, categoryList: CategoryData[]) => {
+  if (!Array.isArray(categoryList)) {
+    // 배열이 아닐 수 있음에 예외 처리
+    console.error('categoryList is not an array');
+    return undefined;
+  }
+
   return categoryList.find((category) => category.categoryId.toString() === categoryId);
 };
