@@ -8,25 +8,22 @@ import { BASE_URL, fetchInstance } from '../instance';
 
 export const getPostUserLoginPath = () => `${BASE_URL}/api/members/login`;
 
+export interface PostUserLoginResponse {
+  email: string;
+  token: string;
+}
 export const postUserLogin = async (userInput: UserAccountInput) => {
-  const response = await fetchInstance.post(getPostUserLoginPath(), userInput);
+  const response = await fetchInstance.post<PostUserLoginResponse>(
+    getPostUserLoginPath(),
+    userInput,
+  );
 
   return response.data;
 };
 
-export const usePostUserLogin = ({
-  onSuccess,
-}: {
-  //TODO: onSuccess mutate 의 인자로 변경하기
-  onSuccess?: (
-    data: unknown,
-    variables: UserAccountInput,
-    context: unknown,
-  ) => Promise<unknown> | void;
-}) => {
+export const usePostUserLogin = () => {
   return useMutation({
     mutationKey: [getPostUserLoginPath()],
     mutationFn: (userInput: UserAccountInput) => postUserLogin(userInput),
-    onSuccess,
   });
 };

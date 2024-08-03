@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 
+import type { BaseURL } from '@/api/instance';
+import { BASE_URL_LIST } from '@/api/instance';
 import { Container } from '@/components/common/layouts/Container';
+import { useServer } from '@/hooks/useServer';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 
@@ -9,8 +12,14 @@ export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
 
+  const { server, chageServer } = useServer();
+
   const handleLogin = () => {
     navigate(getDynamicPath.login());
+  };
+  const handleChangeServer = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    chageServer(e.target.value as BaseURL);
+    window.location.reload();
   };
 
   return (
@@ -23,6 +32,13 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <select value={server} onChange={handleChangeServer}>
+            {Object.entries(BASE_URL_LIST).map(([key]) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,7 +65,10 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
 
 const LinkButton = styled.p`
   align-items: center;

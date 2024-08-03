@@ -40,12 +40,12 @@ interface WishlistResponseData {
 export const getWishlistPath = ({
   page = 0,
   size = 10,
-  sort = 'createdDate',
+  sort = 'createdDate,desc',
 }: {
   page?: number;
   size?: number;
   sort?: string;
-}) => `${BASE_URL}/api/wishlist?page=${page}&size=${size}&sort=${sort}`;
+}) => `${BASE_URL}/api/wishes?page=${page}&size=${size}&sort=${sort}`;
 
 export const getWishlist = async ({
   page = 0,
@@ -58,6 +58,9 @@ export const getWishlist = async ({
 }) => {
   const response = await fetchWithToken.get<WishlistResponseData>(
     getWishlistPath({ page, size, sort }),
+    {
+      withCredentials: true,
+    },
   );
   return response.data;
 };
@@ -65,7 +68,7 @@ export const getWishlist = async ({
 export const useGetWishlist = ({
   page = 0,
   size = 10,
-  sort = 'createdDate',
+  sort = 'createdDate,desc', //TODO: crateDate -> createdDate,desc 로 변경
 }: {
   page?: number;
   size?: number;

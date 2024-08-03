@@ -28,6 +28,10 @@ export const OrderForm = ({ orderHistory }: Props) => {
   });
   const { handleSubmit } = methods;
 
+  const onSuccessfulOrder = () => {
+    alert('주문이 완료되었습니다.');
+  };
+
   const handleForm = (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
 
@@ -36,8 +40,16 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log('values', values);
-    alert('주문이 완료되었습니다.');
+    // orderProduct(
+    //   {
+    //     optionId: values.productId, //TODO: optionId로 변경하기
+    //     quantity: values.productQuantity,
+    //     message: values.messageCardTextMessage,
+    //   },
+    //   { onSuccess: onSuccessfulOrder },
+    // );
+
+    onSuccessfulOrder();
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
