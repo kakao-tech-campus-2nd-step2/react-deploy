@@ -7,7 +7,7 @@ import { AuthProvider } from './provider/Auth';
 import { Routes } from './routes';
 
 const App: React.FC = () => {
-  const [selectedEngineer, setSelectedEngineer] = useState('박민규');
+  const [selectedEngineer, setSelectedEngineer] = useState('조홍식');
 
   useEffect(() => {
     // 초기 로드 시 기본 URL 설정

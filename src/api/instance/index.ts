@@ -16,8 +16,8 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
+export const BASE_URL = 'http://spring-gift.duckdns.org';
+
 
 interface Engineers {
   [key: string]: string;
@@ -26,10 +26,10 @@ interface Engineers {
 const engineers: Engineers = {
   '박민규': 'https://backend.lee.com', // 실제 URL로 대체 필요
   '모아림': 'https://backend.park.com', // 실제 URL로 대체 필요
-  '조홍식': 'https://backend.seo.com',  // 실제 URL로 대체 필요
+  '조홍식': 'http://spring-gift.duckdns.org'
 };
 
-let currentBaseUrl = engineers['박민규'];
+let currentBaseUrl = engineers['조홍식'];
 
 export const setApiBaseUrl = (engineer: string) => {
   currentBaseUrl = engineers[engineer];
