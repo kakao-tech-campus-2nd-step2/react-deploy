@@ -1,6 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
+import { useEffect,useState } from 'react';
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
@@ -17,12 +18,6 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 };
 
 export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
-
-
-export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
-});
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,3 +29,19 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+export const fetchInstance = initInstance({
+  baseURL: BASE_URL,
+});
+
+export const useSelectApi = () => {
+  const [selectedApi, setSelectedApi] = useState(BASE_URL);
+  const [axiosInstance, setAxiosInstance] = useState(() => initInstance({ baseURL: selectedApi }));
+
+  useEffect(() => {
+    setAxiosInstance(initInstance({ baseURL: selectedApi }));
+  }, [selectedApi]);
+
+  return { axiosInstance, selectedApi, setSelectedApi };
+};
+

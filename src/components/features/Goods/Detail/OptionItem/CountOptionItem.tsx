@@ -39,7 +39,7 @@ export const CountOptionItem = ({
       <StyledSelect id="option-select" onChange={onOptionChange}>
         {selectOptions.map(option => (
           <option key={option.id} value={option.id}>
-            {option.name}
+            {option.name} (재고{maxValues})
           </option>
         ))}
       </StyledSelect>

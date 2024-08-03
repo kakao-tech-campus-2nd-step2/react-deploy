@@ -109,12 +109,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
-        <Button theme="black" size="large" onClick={handleAddToWishlist}>
-          관심 목록
-        </Button>
+        <BtnWrapper>
+          <HeartButton theme="black" size="large" onClick={handleAddToWishlist}>
+            ❤
+          </HeartButton>
+          <GiftButton theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </GiftButton>
+        </BtnWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -132,6 +134,21 @@ const Wrapper = styled.div`
 const BottomWrapper = styled.div`
   padding: 12px 0 0;
 `;
+
+const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+
+  button {
+    background-color: black;
+    color: white;
+    width: 50px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }`
 
 const PricingWrapper = styled.div`
   margin-bottom: 20px;
@@ -154,10 +171,19 @@ const PricingWrapper = styled.div`
 
 const SelectWrapper = styled.article`
   width: 100%;
-  max-width: 300px;
+  max-width: 500px;
   padding: 16px 16px 60px;
 
   @media screen and (min-width: ${breakpoints.sm}) {
     padding: 32px 32px 80px;
   }
+`;
+
+const HeartButton = styled(Button)`
+  flex: 1;
+  font-size:20px;
+`;
+
+const GiftButton = styled(Button)`
+  flex: 3;
 `;
