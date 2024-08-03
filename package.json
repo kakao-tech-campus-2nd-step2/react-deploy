@@ -8,7 +8,9 @@
     "build": "craco build",
     "test": "jest",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "deploy": "aws s3 sync ./build s3://jyn523-kakao-tech-campus-step2-deploy --profile=kakao-tech-campus-step2",
+    "invalidate": "aws cloudfront create-invalidation --profile=kakao-tech-campus-step2 --distribution-id E2ZWBT587GYSV0 --paths / /index.html /service-worker.js /manifest.json"
   },
   "browserslist": {
     "production": [
@@ -28,6 +30,7 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@tanstack/react-query": "^5.24.1",
+    "aws": "^0.0.3-2",
     "axios": "^1.6.7",
     "framer-motion": "^11.3.17",
     "react": "^18.2.0",
