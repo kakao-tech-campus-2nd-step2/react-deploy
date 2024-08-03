@@ -3,7 +3,7 @@ import type { AxiosError } from 'axios';
 
 import { BASE_URL, fetchInstance } from '../instance';
 
-interface CreateOrderParams {
+export interface CreateOrderParams {
   quantity: number;
   message: string;
   option_id: number;
@@ -13,10 +13,10 @@ interface ErrorResponse {
   message: string;
 }
 
-const createOrder = async (params: CreateOrderParams, token: string): Promise<void> => {
+const createOrder = async (params: CreateOrderParams): Promise<void> => {
   await fetchInstance.post(`${BASE_URL}/api/orders`, params, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
     },
   });
 };
@@ -24,8 +24,8 @@ const createOrder = async (params: CreateOrderParams, token: string): Promise<vo
 export const useCreateOrder = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, AxiosError<ErrorResponse>, CreateOrderParams & { token: string }>({
-    mutationFn: ({ token, ...params }) => createOrder(params, token),
+  return useMutation<void, AxiosError<ErrorResponse>, CreateOrderParams>({
+    mutationFn: ({ ...params }) => createOrder(params),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       alert('주문 완료');

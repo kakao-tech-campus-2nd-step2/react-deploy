@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
-// import { useCreateOrder } from '@/api/hooks/useCreateOrder';
+import type { CreateOrderParams } from '@/api/hooks/useCreateOrder';
+import { useCreateOrder } from '@/api/hooks/useCreateOrder';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -17,6 +18,7 @@ type Props = {
 
 export const OrderForm = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
+  const { mutate: createOrder } = useCreateOrder();
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -33,15 +35,25 @@ export const OrderForm = ({ orderHistory }: Props) => {
   const { handleSubmit } = methods;
 
   const handleForm = (values: OrderFormData) => {
-    const { errorMessage, isValid } = validateOrderForm(values);
+    const transformedValue: CreateOrderParams = {
+      quantity: values.productQuantity,
+      message: values.messageCardTextMessage,
+      option_id: values.productId,
+    };
+
+    const combinedValue = {
+      ...values,
+      ...transformedValue,
+    };
+
+    const { errorMessage, isValid } = validateOrderForm(combinedValue);
 
     if (!isValid) {
       alert(errorMessage);
       return;
     }
 
-    console.log('values', values);
-    alert('주문이 완료되었습니다.');
+    createOrder(transformedValue);
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
