@@ -4,6 +4,7 @@ import {
   type UseInfiniteQueryResult,
 } from '@tanstack/react-query';
 
+import { useApi } from '@/provider/Api';
 import { useAuth } from '@/provider/Auth';
 
 type WishlistItem = {
@@ -41,26 +42,27 @@ type RequestParams = {
   maxResults?: number;
 };
 
-const getWishlistPath = ({ pageToken, maxResults }: RequestParams) => {
+export const getWishlistPath = ({ pageToken, maxResults }: RequestParams, apiUrl: string) => {
   const params = new URLSearchParams();
   params.append('sort', 'createdDate,desc');
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `/api/wishes?${params.toString()}`;
+  return `${apiUrl}api/wishes?${params.toString()}`;
 };
 
 export const getWishlist = async (
   params: RequestParams,
   token: string,
+  apiUrl: string
 ): Promise<WishlistResponseData> => {
-  const url = getWishlistPath(params);
+  const url = getWishlistPath(params, apiUrl);
 
   const response = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${JSON.parse(token).token}`,
     },
   });
 
@@ -76,6 +78,7 @@ export const useGetWishlist = ({
   initPageToken?: string;
 }): UseInfiniteQueryResult<InfiniteData<WishlistResponseData>> => {
   const authInfo = useAuth();
+  const { apiUrl } = useApi();
 
   return useInfiniteQuery({
     queryKey: ['wishlist', maxResults, initPageToken],
@@ -83,7 +86,7 @@ export const useGetWishlist = ({
       if (!authInfo?.token) {
         throw new Error('Authentication token is missing');
       }
-      return getWishlist({ pageToken: pageParam, maxResults }, authInfo.token);
+      return getWishlist({ pageToken: pageParam, maxResults }, authInfo.token, apiUrl);
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => (lastPage.last ? undefined : (lastPage.number + 1).toString()),

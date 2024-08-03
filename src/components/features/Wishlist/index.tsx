@@ -30,10 +30,11 @@ export const Wishlist = () => {
 
   const handleDelete = async (wishId: number) => {
     if (authInfo?.token) {
-      const response = await fetch(`${apiUrl}/api/wishes/${wishId}`, {
+      const token = JSON.parse(authInfo.token).token;
+      const response = await fetch(`${apiUrl}api/wishes/${wishId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${authInfo.token}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
       if (response.status === 204) {

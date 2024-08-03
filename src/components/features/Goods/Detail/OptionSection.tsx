@@ -47,17 +47,23 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   const handleAddToWishlist = async () => {
-    const token = sessionStorage.getItem('token');
     try {
-      await fetch(`${apiUrl}/api/wishes/${productId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ productId }),
-      });
-      alert('관심 등록 완료');
+      const tokenString = sessionStorage.getItem('authToken');
+
+      if (tokenString) {
+        const token = JSON.parse(tokenString).token;
+
+        await fetch(`${apiUrl}api/wishes/${productId}`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ productId }),
+        });
+        alert('관심 등록 완료');
+      }
     } catch (error) {
       console.error(error);
       alert('관심 상품 등록에 실패했습니다.');
