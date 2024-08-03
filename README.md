@@ -22,6 +22,9 @@
 
 ## 2단계 - 배포하기
 
+- [x] AWS S3 + Cloudfront를 사용해 배포 [(배포 링크)](https://d3gb03f2olhnqw.cloudfront.net/)
+- 현재 Mixed Content 오류 발생
+
 ## 3단계 - 포인트
 
 - [x] 포인트 조회 추가
