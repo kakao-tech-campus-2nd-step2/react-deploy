@@ -7,7 +7,11 @@ import { useOrderFormContext } from '@/hooks/useOrderFormContext';
 
 import { LabelText } from '../Common/LabelText';
 
-export const CashReceiptFields = () => {
+export interface ICashReceiptFields {
+  totalPrice: number;
+}
+
+export const CashReceiptFields = ({ totalPrice }: ICashReceiptFields) => {
   const { register, control, watch } = useOrderFormContext();
   const hasCashReceipt = watch('hasCashReceipt');
 
@@ -22,7 +26,6 @@ export const CashReceiptFields = () => {
           </Checkbox>
         )}
       />
-
       <Spacing />
       <Controller
         control={control}
@@ -40,6 +43,13 @@ export const CashReceiptFields = () => {
         placeholder="(-없이) 숫자만 입력해주세요."
         disabled={!hasCashReceipt}
       />
+      <Spacing height={16} />
+      <Input
+        type="number"
+        placeholder="사용할 포인트 입력"
+        {...register('points', { valueAsNumber: true })}
+      />
+      <input value={totalPrice} disabled={true} type="hidden" {...register('totalPrice')} />
     </Wrapper>
   );
 };
