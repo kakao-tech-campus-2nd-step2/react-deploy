@@ -1,6 +1,7 @@
-import { Box, Button, Container, VStack } from '@chakra-ui/react';
+import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { Box, Button, Container, HStack, IconButton } from '@chakra-ui/react';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import { queryClient } from '@/api/instance';
 import { deleteFromWishlist, getWishlist } from '@/api/utils';
@@ -17,9 +18,11 @@ export interface WishlistItem {
   };
 }
 
+const page = 0;
+const size = 10;
+
 export const Wishlist = () => {
-  const page = 0;
-  const size = 10;
+  const [currentIndex, setCurrentIndex] = useState(0);
   const { data } = useSuspenseQuery({
     queryKey: ['wishlist', page, size],
     queryFn: () => getWishlist(page, size),
@@ -37,39 +40,74 @@ export const Wishlist = () => {
   });
 
   const handleDelete = (productId: number) => async () => {
-    // TODO: 알람까지 띄워야 하는지
     deleteMutation.mutateAsync(productId).then(() => alert('관심 물품 삭제에 성공했습니다.'));
   };
 
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, data.contents.length - 1));
+  };
+
   return (
-    <Container maxW="container.md" py={8}>
+    <Container maxW="container.lg" py={8} borderRadius="md" boxShadow="sm">
       <Spacing height={4} />
-      <VStack spacing={4}>
-        {data.contents.map((item: WishlistItem) => (
-          <Fragment key={item.id}>
-            <Box
-              borderRadius="md"
-              border="1px"
-              borderColor="gray.200"
-              p={4}
-              w="300px"
-              bg="white"
-              boxShadow="sm"
-            >
-              <DefaultGoodsItems
-                imageSrc={item.product.imageUrl}
-                subtitle={item.product.name}
-                title={item.product.name}
-                amount={item.product.price}
-              />
-              <Button colorScheme="red" mt={4} onClick={handleDelete(item.product.id)}>
-                삭제
-              </Button>
-              <Spacing height={4} />
-            </Box>
-          </Fragment>
-        ))}
-      </VStack>
+      <HStack justify="space-between" w="100%">
+        <IconButton
+          aria-label="Previous"
+          icon={<ArrowLeftIcon />}
+          onClick={handlePrev}
+          isDisabled={currentIndex === 0}
+        />
+        <HStack w="100%" spacing={4}>
+          {data.contents.slice(currentIndex, currentIndex + 4).map((item: WishlistItem) => (
+            <Fragment key={item.id}>
+              <Box
+                borderRadius="md"
+                border="1px"
+                borderColor="gray.200"
+                p={4}
+                maxW="200px"
+                minW="200px"
+                minH="400px"
+                maxH="400px"
+                bg="white"
+                boxShadow="sm"
+                mx={2}
+                display="flex"
+                flexDirection="column"
+                alignItems="space-between"
+              >
+                <DefaultGoodsItems
+                  imageSrc={item.product.imageUrl}
+                  subtitle={item.product.name}
+                  title={item.product.name}
+                  amount={item.product.price}
+                />
+                <Button
+                  colorScheme="red"
+                  mt="auto"
+                  width="40px"
+                  ml="auto"
+                  mr="auto"
+                  onClick={handleDelete(item.product.id)}
+                >
+                  삭제
+                </Button>
+                <Spacing height={4} />
+              </Box>
+            </Fragment>
+          ))}
+        </HStack>
+        <IconButton
+          aria-label="Next"
+          icon={<ArrowRightIcon />}
+          onClick={handleNext}
+          isDisabled={currentIndex >= data.contents.length - 4}
+        />
+      </HStack>
     </Container>
   );
 };

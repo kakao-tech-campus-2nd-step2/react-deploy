@@ -39,6 +39,7 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <Spacing />
       <AsyncBoundary
         pendingFallback={<div>불러오는 중...</div>}
         rejectedFallback={<div>에러가 발생했습니다.</div>}
