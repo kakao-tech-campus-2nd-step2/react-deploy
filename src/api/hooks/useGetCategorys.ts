@@ -4,9 +4,13 @@ import type { CategoryData } from '@/types';
 
 import { BASE_URL, fetchInstance } from '../instance';
 
+<<<<<<< HEAD
 export type CategoryResponseData = {
   categories: CategoryData[];
 };
+=======
+export type CategoryResponseData = CategoryData[];
+>>>>>>> upstream/dlwltn0430
 
 export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
 const categoriesQueryKey = [getCategoriesPath()];

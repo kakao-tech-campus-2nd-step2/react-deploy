@@ -21,7 +21,11 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
       <GoodsWrapper>
         <GoodsInfoWrapper>
           <GoodsInfoImage>
+<<<<<<< HEAD
             <Image src={detail.image_url} width={86} ratio="square" />
+=======
+            <Image src={detail.imageUrl} width={86} ratio="square" />
+>>>>>>> upstream/dlwltn0430
           </GoodsInfoImage>
           <GoodsInfoTextWrapper>
             <GoodsInfoTextTitle>

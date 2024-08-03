@@ -7,7 +7,10 @@ export const RouterPath = {
   order: '/order',
   login: '/login',
   register: '/register',
+<<<<<<< HEAD
   redirect: '/api/auth/kakao',
+=======
+>>>>>>> upstream/dlwltn0430
   notFound: '*',
 };
 
