@@ -21,7 +21,7 @@ interface ErrorResponse {
 }
 
 const login = async (params: LoginParams): Promise<LoginResponse> => {
-  const { data } = await fetchInstance.post<LoginResponse>(`${BASE_URL}/api/members/login`, params);
+  const { data } = await fetchInstance.post<LoginResponse>(`${BASE_URL}/api/users/login`, params);
   return data;
 };
 
