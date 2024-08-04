@@ -15,6 +15,7 @@ export const MyAccountPage = () => {
   const handleLogout = () => {
     authSessionStorage.set(undefined);
     sessionStorage.removeItem('authEmail');
+    sessionStorage.removeItem('points');
 
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
