@@ -29,7 +29,9 @@ type WishlistRequestBody = {
 
 export const wishlistMockHandler = [
   rest.get(`${BASE_URL}/api/wishes`, (_req, res, ctx) => {
+
     return res(
+      ctx.status(200), // 응답 상태 코드 설정
       ctx.json({
         content: wishlistData,
         pageable: {
@@ -55,7 +57,11 @@ export const wishlistMockHandler = [
       })
     );
   }),
+
   rest.post(`${BASE_URL}/api/wishes`, (req, res, ctx) => {
+    console.log('POST /api/wishes 요청:', req.url.toString()); // 디버깅 로그 추가
+    console.log('요청 바디:', req.body); // 디버깅 로그 추가
+
     const { productId } = req.body as WishlistRequestBody;
     const newWish = {
       id: wishlistData.length + 1,
@@ -68,18 +74,24 @@ export const wishlistMockHandler = [
     };
     wishlistData.push(newWish);
     return res(
-      ctx.status(201),
+      ctx.status(201), // 응답 상태 코드 설정
       ctx.json(newWish)
     );
   }),
+
   rest.delete(`${BASE_URL}/api/wishes/:wishId`, (req, res, ctx) => {
+    console.log('DELETE /api/wishes/:wishId 요청:', req.url.toString()); // 디버깅 로그 추가
+    console.log('요청 파라미터:', req.params); // 디버깅 로그 추가
+
     const { wishId } = req.params as { wishId: string };
     const wishIndex = wishlistData.findIndex((wish) => wish.id === parseInt(wishId, 10));
     if (wishIndex !== -1) {
       wishlistData.splice(wishIndex, 1);
-      return res(ctx.status(204));
+
+      return res(ctx.status(204)); // 응답 상태 코드 설정
     } else {
-      return res(ctx.status(404));
+      return res(ctx.status(404)); // 응답 상태 코드 설정
+
     }
   }),
 ];
