@@ -1,42 +1,35 @@
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 import { BASE_URL } from '@/api/instance';
+import { breakpoints } from '@/styles/variants';
+import { REST_API_KEY, REDIRECT_URI } from '@/provider/Auth/keys';
+import { Link } from 'react-router-dom';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = document.body.textContent?.trim(); // 토큰 가져오기
-    console.log('Token:', token); // 디버깅용
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const token = urlParams.get('token'); // 디버깅용
-    if (token) {
-      console.log('sb');
-      authSessionStorage.set({ token }); // 토큰 저장
-      navigate('/'); // 홈으로 리다이렉트
-      window.location.reload();
-    } else {
-      console.log('No token found');
-    }
-  }, [navigate]);
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`; 
   
-  const handleKakaoLogin = () => {
-    // 카카오 로그인 페이지로 리다이렉트
+  const kakaologinHandler = () => {
     window.location.href = `${BASE_URL}/kakao/login`;
+    // window.location.href = link;
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <Button onClick={handleKakaoLogin}>카카오 로그인입니다</Button>
+        <Button onClick={kakaologinHandler}>카카오 로그인</Button>
+        <Link to="./noneKakaoRegister">
+          <Button>비카카오 회원가입</Button>
+        </Link>
+        <Link to="./noneKakaoLogin">
+          <Button>비카카오 로그인</Button>
+        </Link>
         <Spacing height={20} />
       </FormWrapper>
     </Wrapper>
@@ -67,3 +60,4 @@ const FormWrapper = styled.article`
     padding: 60px 52px;
   }
 `;
+
