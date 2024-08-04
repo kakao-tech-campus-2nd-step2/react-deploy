@@ -3,6 +3,7 @@ import {
   useInfiniteQuery,
   type UseInfiniteQueryResult,
 } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { useApi } from '@/provider/Api';
 import { useAuth } from '@/provider/Auth';
@@ -58,16 +59,14 @@ export const getWishlist = async (
 ): Promise<WishlistResponseData> => {
   const url = getWishlistPath(params, apiUrl);
 
-  const response = await fetch(url, {
-    method: 'GET',
+  const response = await axios.get<WishlistResponseData>(url, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${JSON.parse(token).token}`,
+      'Authorization': `Bearer ${JSON.parse(token).token}`,
     },
   });
 
-  const data: WishlistResponseData = await response.json();
-  return data;
+  return response.data;
 };
 
 export const useGetWishlist = ({
@@ -86,7 +85,7 @@ export const useGetWishlist = ({
       if (!authInfo?.token) {
         throw new Error('Authentication token is missing');
       }
-      return getWishlist({ pageToken: pageParam, maxResults }, authInfo.token, apiUrl);
+      return getWishlist({ pageToken: pageParam, maxResults }, JSON.parse(authInfo.token).token, apiUrl);
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => (lastPage.last ? undefined : (lastPage.number + 1).toString()),
