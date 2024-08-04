@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - gh-pages # 배포를 트리거할 브랜치 이름
+      - step2
 
 jobs:
   build-and-deploy:
@@ -21,9 +21,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set environment variables
+        run: echo "REACT_APP_BASE_URL=https://your-production-api-url" >> .env.production
+
       - name: Build the project
-        run: |
-          npm run build || echo "ESLint 오류가 발생했지만 무시합니다."
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

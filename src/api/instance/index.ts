@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { authSessionStorage } from '@/utils/storage';
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 // 서버 API 주소
 //export const BASE_URL = 'http://43.201.17.220:8080';
 // 다른 서버 주소
