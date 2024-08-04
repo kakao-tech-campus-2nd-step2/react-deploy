@@ -5,7 +5,7 @@ import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { breakpoints } from '@/styles/variants';
 import { addWish } from '@/api/hooks/useWish';
-
+import { authSessionStorage } from '@/utils/storage';
 type Props = ProductDetailRequestParams;
 
 export const GoodsDetailHeader = ({ productId }: Props) => {
@@ -19,6 +19,8 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
     }
 
     try {
+      const storedAuthInfo = authSessionStorage.get();
+      console.log('Stored auth info:', storedAuthInfo);
       await addWish({ productId: Number(productId), token: authInfo.token });
       alert('관심 등록 완료');
     } catch (error) {
