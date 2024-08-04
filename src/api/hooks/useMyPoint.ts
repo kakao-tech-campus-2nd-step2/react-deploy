@@ -6,5 +6,7 @@ export const useMyPoint = () => {
   return useSuspenseQuery({
     queryKey: ['point'],
     queryFn: () => fetchMyPoint(),
+    gcTime: 0,
+    staleTime: 0,
   });
 };

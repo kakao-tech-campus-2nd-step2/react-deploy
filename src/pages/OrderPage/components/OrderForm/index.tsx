@@ -53,7 +53,7 @@ export const OrderForm = ({ orderHistory }: OrderFormProps) => {
       optionId: orderHistory.optionId,
       quantity: orderHistory.quantity,
       message: form.getValues('gitfMessage'),
-      point: 0,
+      point: Number(form.getValues('point')),
     };
 
     mutate(orderResponse);
