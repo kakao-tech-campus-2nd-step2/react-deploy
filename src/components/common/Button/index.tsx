@@ -6,13 +6,15 @@ type Props = {
   theme?: 'kakao' | 'outline' | 'black' | 'lightGray' | 'darkGray';
   size?: 'large' | 'small' | 'responsive';
   width?: string;
+  fontSize?: string;
+  fontWeight?: number;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button: React.FC<Props> = ({ width, ...props }: Props) => {
   return <Wrapper width={width} {...props} />;
 };
 
-const Wrapper = styled.button<Pick<Props, 'theme' | 'size' | 'width'>>(
+const Wrapper = styled.button<Pick<Props, 'theme' | 'size' | 'width' | 'fontSize' | 'fontWeight'>>(
   {
     borderRadius: '4px',
     display: 'flex',
@@ -102,5 +104,11 @@ const Wrapper = styled.button<Pick<Props, 'theme' | 'size' | 'width'>>(
   },
   ({ width = '100%' }) => ({
     width,
+  }),
+  ({ fontSize = '18px' }) => ({
+    fontSize,
+  }),
+  ({ fontWeight = 400 }) => ({
+    fontWeight,
   }),
 );

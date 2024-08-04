@@ -53,7 +53,9 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
       </>
       <Divider color="#ededed" />
       <Spacing height={32} />
-      <Button type="submit">{sellingPrice}원 결제하기</Button>
+      <Button type="submit" fontSize="18px" fontWeight={700}>
+        {sellingPrice}원 결제하기
+      </Button>
     </Wrapper>
   );
 };
