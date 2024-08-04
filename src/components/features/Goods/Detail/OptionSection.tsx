@@ -43,8 +43,8 @@ export const OptionSection = ({ productId }: Props) => {
     orderHistorySessionStorage.set({
       id: selectedOption.id,
       count: parseInt(selectedOption.count),
+      productId: detail.id,
     });
-
     navigate(RouterPath.order);
   };
 
@@ -61,6 +61,7 @@ export const OptionSection = ({ productId }: Props) => {
               name={option.name}
               onChange={handleCountChange(option.id)}
               value={selectedOption.id === option.id ? selectedOption.count : '0'}
+              maxValues={option.quantity}
             />
           </Fragment>
         ))}

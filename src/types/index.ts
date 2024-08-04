@@ -45,6 +45,7 @@ export type GoodsDetailOptionItemData = {
 export type OrderHistory = {
   id: number;
   count: number;
+  productId: number;
 };
 
 export type OrderFormData = {
