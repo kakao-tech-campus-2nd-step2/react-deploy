@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-//import { BASE_URL } from '@/api/instance';
+import { BASE_URL } from '@/api/instance';
+//import { setAuthToken } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -25,7 +26,7 @@ export const LoginPage = () => {
     try {
       console.log('로그인 요청:', { email: id, password });
 
-      const response = await fetch(`http://localhost:3000/api/members/login`, {
+      const response = await fetch(`${BASE_URL}/api/members/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,6 +48,7 @@ export const LoginPage = () => {
       console.log('로그인 성공 응답 데이터:', data);
 
       authSessionStorage.set(data.token); //로그인 성공 시 토큰 저장
+      //      setAuthToken(data.token); // 토큰 설정
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       return window.location.replace(redirectUrl);

@@ -20,7 +20,8 @@ export const getBaseUrl = (): string => {
   const selectedServer = sessionStorage.getItem('selectedServer');
   switch (selectedServer) {
     case 'server1':
-      return 'http://bgmsound.kro.kr:8080';
+      return 'http://localhost:3000';
+    //return 'http://bgmsound.kro.kr:8080';
     case 'server2':
       return 'http://api.server2.example.com';
     case 'server3':
@@ -48,6 +49,15 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+// // 인증 토큰을 추가하는 함수
+// export const setAuthToken = (token: string | null) => {
+//   if (token) {
+//     fetchInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+//   } else {
+//     delete fetchInstance.defaults.headers.common.Authorization;
+//   }
+// };
 
 export const updateFetchInstance = () => {
   fetchInstance = initInstance({

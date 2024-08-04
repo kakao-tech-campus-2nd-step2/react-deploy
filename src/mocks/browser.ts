@@ -14,3 +14,17 @@ export const worker = setupWorker(
   // ...loginHandler,
   ...handlers,
 );
+
+// 요청 무시 설정
+worker.events.on('request:match', (req) => {
+  console.log('Matched request:', req);
+  if (req.url.pathname.startsWith('/static/media/')) {
+    req.passthrough();
+  }
+});
+
+worker.events.on('request:unhandled', (req) => {
+  console.log('Unhandled request:', req);
+});
+
+worker.start();
