@@ -12,6 +12,7 @@ import {
 import styled from '@emotion/styled';
 import { TbParkingCircle } from 'react-icons/tb';
 
+import useGetPoint from '@/api/hooks/useGetPoint';
 import OrderListTab from '@/components/features/MyAccount/Tabs/OrderListTab';
 import WishesTab from '@/components/features/MyAccount/Tabs/WishesTab';
 import { useAuth } from '@/provider/Auth';
@@ -20,6 +21,8 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+
+  const { data: point } = useGetPoint();
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -38,7 +41,7 @@ export const MyAccountPage = () => {
           </Button>
         </Flex>
         <TbParkingCircle size="50" />
-        <Text px="3">1000</Text>
+        <Text px="3">{point?.point}</Text>
       </Flex>
       <Tabs position="relative" w="100%" maxW="1024px" mt="10" variant="unstyled">
         <TabList>

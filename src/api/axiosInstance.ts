@@ -23,7 +23,7 @@ const sessionStorageApiWithAuth = (token: string) => {
     baseURL: apiSessionStorage.get(),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: token,
+      Authorization: 'Bearer ' + token,
     },
   });
 };

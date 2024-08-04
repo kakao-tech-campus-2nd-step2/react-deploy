@@ -26,7 +26,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       setIsReady(true);
     }
-  }, [currentAuth]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(currentAuth)]);
 
   if (!isReady) return <></>;
   return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;

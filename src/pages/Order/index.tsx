@@ -15,6 +15,9 @@ import type { FieldErrors } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
+import useGetPoint from '@/api/hooks/useGetPoint';
+import usePostOrder from '@/api/hooks/usePostOrder';
+import type { PostOrderRequestBody } from '@/api/type';
 import type { RegisterOption } from '@/utils/form';
 import { useCreateRegister } from '@/utils/form';
 
@@ -23,6 +26,7 @@ type OrderInfo = {
   needReceipt: boolean;
   receiptType: '개인소득공제' | '사업자증빙용';
   receiptNumber: string;
+  point: number;
 };
 
 const defaultOrderInfo: OrderInfo = {
@@ -30,14 +34,16 @@ const defaultOrderInfo: OrderInfo = {
   needReceipt: false,
   receiptType: '개인소득공제',
   receiptNumber: '',
+  point: 0,
 };
 
 export const OrderPage = () => {
   const location = useLocation();
-  const { register, handleSubmit, getValues } = useForm<OrderInfo>({
+  const { register, handleSubmit, getValues, setValue } = useForm<OrderInfo>({
     defaultValues: defaultOrderInfo,
   });
   const [needReceiptState, setNeedReceiptState] = useState(defaultOrderInfo.needReceipt);
+  const { data: userPoint } = useGetPoint();
 
   const orderInfoOptions: RegisterOption<OrderInfo>[] = [
     {
@@ -75,6 +81,23 @@ export const OrderPage = () => {
         },
       },
     },
+    {
+      name: 'point' as const,
+      option: {
+        required: {
+          value: true,
+          message: '포인트를 입력해주세요.',
+        },
+        max: {
+          value: userPoint?.point || 0,
+          message: '보유한 포인트보다 많이 사용할 수 없습니다.',
+        },
+        pattern: {
+          value: /^[0-9]+$/,
+          message: '숫자만 입력 가능합니다.',
+        },
+      },
+    },
   ];
 
   const getRegister = useCreateRegister<OrderInfo>({
@@ -95,22 +118,31 @@ export const OrderPage = () => {
     }
   };
 
-  const handleOrder = () => {
-    const needReceipt = getValues('needReceipt');
+  const { mutateAsync: order } = usePostOrder();
 
-    const completedOrder: OrderInfo = {
+  const handleOrder = () => {
+    const completedOrder: PostOrderRequestBody = {
+      optionId: location.state.optionId,
       message: getValues('message'),
-      needReceipt: needReceipt,
-      receiptType: getValues('receiptType'),
-      receiptNumber: getValues('receiptNumber'),
+      quantity: location.state.count,
+      productId: location.state.id,
+      point: getValues('point'),
+      phone: getValues('receiptNumber'),
+      receipt: getValues('needReceipt'),
     };
-    console.log(completedOrder);
-    alert('주문이 완료되었습니다.');
+
+    order(completedOrder).then(() => {
+      alert('주문이 완료되었습니다.');
+    });
   };
 
   const handleError = (errors: FieldErrors<OrderInfo>) => {
     const firstError = Object.values(errors)[0];
     alert(firstError.message);
+  };
+
+  const handleAllPointUse = () => {
+    setValue('point', userPoint?.point || 0);
   };
 
   return (
@@ -166,11 +198,11 @@ export const OrderPage = () => {
         </Flex>
         <Flex w="360px" h="100%" p="5" flexDir="column" borderX="2px" borderColor="#eeeeee">
           <Text fontSize="lg" fontWeight="700">
-            포인트 사용
+            포인트 사용 ({userPoint?.point || 0}포인트 보유)
           </Text>
           <Flex w="100%" justify="space-between" gap="5" py="5">
-            <Input type="number" placeholder="포인트 입력" />
-            <Button bg="#d8d8d8" fontWeight="400">
+            <Input {...getRegister('point')} type="number" placeholder="포인트 입력" />
+            <Button onClick={handleAllPointUse} bg="#d8d8d8" fontWeight="400">
               전액 사용
             </Button>
           </Flex>

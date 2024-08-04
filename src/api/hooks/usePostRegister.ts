@@ -2,7 +2,7 @@ import { useAxiosMutation, type UseAxiosMutationResult } from '@/api';
 import type { PostRegisterRequestBody, PostRegisterResponseBody } from '@/api/type';
 
 export function getRegisterPath(): string {
-  return '/api/register';
+  return '/api/members/register';
 }
 
 function usePostRegister(): UseAxiosMutationResult<

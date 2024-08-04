@@ -49,7 +49,7 @@ export function useAxiosQueryWithPage<T>(
     queryFn: async ({ pageParam }: QueryFunctionContext) =>
       axiosInstance({
         ...axiosOptions,
-        params: { ...axiosOptions.params, initPageToken: pageParam },
+        params: { ...axiosOptions.params, page: pageParam },
       }).then((res) => res.data),
     initialPageParam: '0',
     getNextPageParam: getNextPageParam as GetNextPageParamFunction<unknown>,

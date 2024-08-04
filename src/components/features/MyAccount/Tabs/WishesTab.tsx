@@ -13,7 +13,7 @@ const WishesTab = () => {
   const { ref, inView } = useInView();
 
   const { data, isLoading, isError, hasNextPage, fetchNextPage } = useGetWishes({});
-  const flattenWishsList = data?.pages.map((page) => page?.content ?? []).flat();
+  const flattenWishsList = data?.pages.map((page) => page?.content || page || []).flat();
 
   useEffect(() => {
     if (inView && hasNextPage) {
