@@ -6,6 +6,7 @@ import { useAuth } from '@/provider/Auth';
 import { fetchWishlist, deleteWish } from '@/api/hooks/useWish';
 import { authSessionStorage } from '@/utils/storage';
 import { useNavigate } from 'react-router-dom';
+import { RouterPath } from '@/routes/path';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
@@ -21,8 +22,10 @@ export const MyAccountPage = () => {
     const fetchData = async () => {
       if (authInfo?.token) {
         try {
+          console.log(authInfo.token);
           const data = await fetchWishlist(authInfo.token);
-          setWishList(data.content);
+          console.log(data);
+          setWishList(data);
         } catch (error) {
           console.error('Failed to fetch wishlist', error);
         } finally {
@@ -34,15 +37,21 @@ export const MyAccountPage = () => {
     fetchData();
   }, [authInfo]);
 
-  const handleRemoveWish = async (wishId: number) => {
+  useEffect(() => {
+    console.log('Updated wishlist:', wishList);
+  }, [wishList]);
+
+  const handleRemoveWish = async (productId: number) => {
     if (authInfo?.token) {
       try {
-        await deleteWish(wishId, authInfo.token);
-        setWishList((prev) => prev.filter((wish) => wish.id !== wishId));
+        console.log(productId);
+        await deleteWish(productId, authInfo.token);
+        setWishList((prev) => prev.filter((wish) => wish.product.id !== productId));
       } catch (error) {
         console.error('Failed to remove wish', error);
       }
     }
+    window.location.reload();
   };
 
   if (loading) return <div>Loading...</div>;
@@ -62,10 +71,10 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
-      <button onClick={() => navigate('/orders')}>주문 목록</button>
+      <button onClick={() => navigate(RouterPath.orders)}>주문목록으로 이동하기</button>
       <Spacing height={32} />
       <div>위시리스트</div>
-      {wishList.length > 0 ? (
+      {wishList && wishList.length > 0 ? (
         <WishListContainer>
           {wishList.map((item) => (
             <WishItem key={item.id}>
@@ -73,7 +82,7 @@ export const MyAccountPage = () => {
               <WishDetails>
                 <WishName>{item.product.name}</WishName>
                 <WishPrice>{item.product.price}원</WishPrice>
-                <RemoveButton onClick={() => handleRemoveWish(item.id)}>삭제</RemoveButton>
+                <RemoveButton onClick={() => handleRemoveWish(item.product.id)}>삭제</RemoveButton>
               </WishDetails>
             </WishItem>
           ))}
