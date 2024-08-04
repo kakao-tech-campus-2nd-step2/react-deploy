@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -26,12 +27,32 @@ export const OrderForm = ({ orderHistory }: Props) => {
       senderId: 0,
       receiverId: 0,
       hasCashReceipt: false,
+      usedPoints: 0, // 추가
     },
   });
-  const { handleSubmit } = methods;
+  const { handleSubmit, setValue, watch } = methods;
 
   const { backendUrl } = useBackend();
   const authInfo = useAuth();
+  const [remainingPoints, setRemainingPoints] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchPoints = async () => {
+      if (authInfo) {
+        try {
+          const response = await axios.get(`${backendUrl}/api/members/points`, {
+            headers: {
+              Authorization: `Bearer ${authInfo.token}`,
+            },
+          });
+          setRemainingPoints(response.data.point);
+        } catch (error) {
+          console.error('Failed to fetch points:', error);
+        }
+      }
+    };
+    fetchPoints();
+  }, [authInfo, backendUrl]);
 
   const handleForm = async (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
@@ -48,6 +69,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
           optionId: 1,
           quantity: values.productQuantity,
           message: values.messageCardTextMessage,
+          point: values.usedPoints,
         },
         {
           headers: {
@@ -68,6 +90,12 @@ export const OrderForm = ({ orderHistory }: Props) => {
     }
   };
 
+  // 포인트 사용 입력 핸들러
+  const handlePointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Math.min(Number(e.target.value), remainingPoints);
+    setValue('usedPoints', value);
+  };
+
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
   const preventEnterKeySubmission = (e: React.KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLFormElement;
@@ -79,7 +107,16 @@ export const OrderForm = ({ orderHistory }: Props) => {
   return (
     <FormProvider {...methods}>
       <form action="" onSubmit={handleSubmit(handleForm)} onKeyDown={preventEnterKeySubmission}>
-        <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} />}>
+        <SplitLayout
+          sidebar={
+            <OrderFormOrderInfo
+              orderHistory={orderHistory}
+              usedPoints={watch('usedPoints')}
+              onPointsChange={handlePointsChange}
+              remainingPoints={remainingPoints}
+            />
+          }
+        >
           <Wrapper>
             <OrderFormMessageCard />
             <Spacing height={8} backgroundColor="#ededed" />
