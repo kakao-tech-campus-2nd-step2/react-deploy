@@ -1,4 +1,4 @@
-import { Divider } from '@chakra-ui/react';
+import { Divider, Input } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -12,8 +12,17 @@ import { CashReceiptFields } from '../Fields/CashReceiptFields';
 
 type Props = {
   orderHistory: OrderHistory;
+  usedPoints: number;
+  onPointsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  remainingPoints: number;
 };
-export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
+
+export const OrderFormOrderInfo = ({
+  orderHistory,
+  usedPoints,
+  onPointsChange,
+  remainingPoints,
+}: Props) => {
   const { id, count } = orderHistory;
 
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
@@ -28,12 +37,21 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
       <CashReceiptFields />
       <Divider color="#ededed" />
       <ItemWrapper>
+        <LabelText>잔여 포인트: {remainingPoints}원</LabelText>
+        <Input
+          type="number"
+          value={usedPoints === 0 ? '' : usedPoints}
+          onChange={onPointsChange}
+          placeholder="사용할 포인트"
+        />
+      </ItemWrapper>
+      <ItemWrapper>
         <LabelText>최종 결제금액</LabelText>
-        <HeadingText>{totalPrice}원</HeadingText>
+        <HeadingText>{totalPrice - usedPoints}원</HeadingText>
       </ItemWrapper>
       <Divider color="#ededed" />
       <Spacing height={32} />
-      <Button type="submit">{totalPrice}원 결제하기</Button>
+      <Button type="submit">{totalPrice - usedPoints}원 결제하기</Button>
     </Wrapper>
   );
 };
