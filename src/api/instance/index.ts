@@ -33,7 +33,7 @@ export const getBaseUrl = (): string => {
   }
 };
 
-export const BASE_URL = 'http://bgmsound.kro.kr:8080'; // api확정시 수정
+export const BASE_URL = 'http://localhost:3000'; // api확정시 수정
 
 export let fetchInstance = initInstance({
   baseURL: BASE_URL,

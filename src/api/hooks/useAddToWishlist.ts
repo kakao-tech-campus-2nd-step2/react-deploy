@@ -15,7 +15,7 @@ export const useAddToWishlist = () => {
     setError(null);
 
     try {
-      const response = await axios.post(`http://bgmsound.kro.kr:8080/api/wishes`, { product });
+      const response = await axios.post(`http://localhost:3000/api/wishes`, { product });
       setLoading(false);
       alert('관심 등록 완료');
       return response.data;
