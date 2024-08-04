@@ -37,7 +37,7 @@ export type CreateOrderRequestParams = {
   optionId: string | number;
   quantity: number;
   message: string;
-  points?: number;
+  points: number;
 };
 
 export type OrderListRequestParams = {

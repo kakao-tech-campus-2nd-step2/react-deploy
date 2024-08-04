@@ -58,6 +58,18 @@ export const loginUser = async ({
   }
 };
 
+export const kakaoLoginUser = async (): Promise<LoginUserResponse> => {
+  try {
+    const response = await fetchInstance.get('/api/oauth/login/kakao');
+    const { token } = response.data;
+    localStorage.setItem('token', token);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('카카오 로그인에 실패했습니다.');
+  }
+};
+
 export const getPoints = async (): Promise<UserPointResponse> => {
   try {
     const response = await fetchInstance.get('/api/members/points');

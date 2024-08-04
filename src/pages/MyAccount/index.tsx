@@ -12,10 +12,16 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
-  const { data } = useQuery({
+  const { data: pointsData } = useQuery({
     queryFn: getPoints,
     queryKey: ['points'],
   });
+
+  // TODO: OptionId로 상품 정보 불러오는게 아직 안만들어짐
+  // const { data: orderListData } = useQuery({
+  //   queryFn: () => getOrderList({ page: 0, size: 10, sort: 'orderDateTime,desc' }),
+  //   queryKey: ['orderList'],
+  // });
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -27,7 +33,7 @@ export const MyAccountPage = () => {
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요!
-      <div>현재 포인트: {data?.points} 점</div>
+      <div>현재 포인트: {pointsData?.points} 점</div>
       <Spacing height={64} />
       <Button
         size="small"

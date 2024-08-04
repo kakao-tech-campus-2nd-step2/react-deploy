@@ -51,6 +51,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
       optionId: values.productId,
       message: values.messageCardTextMessage,
       quantity: values.productQuantity,
+      points: isNaN(values.points) ? 0 : values.points,
     });
   };
 

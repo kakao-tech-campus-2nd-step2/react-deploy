@@ -1,8 +1,11 @@
+import { HStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useMutation } from '@tanstack/react-query';
 import type { ChangeEventHandler } from 'react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { kakaoLoginUser } from '@/api/utils';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { EnrollForm } from '@/components/features/Login/EnrollForm';
@@ -26,6 +29,18 @@ export const LoginPage = () => {
     const redirectUrl = queryParams.get('redirect') ?? `${process.env.PUBLIC_URL}/`;
     return window.location.replace(redirectUrl);
   };
+
+  const kakaoLoginMutation = useMutation({
+    mutationFn: kakaoLoginUser,
+    onSuccess: () => {
+      handleConfirm();
+    },
+    onError: () => {
+      alert('카카오 로그인 실패:');
+    },
+  });
+
+  const handleKakaoLogin = () => kakaoLoginMutation.mutate();
 
   return (
     <Wrapper>
@@ -54,9 +69,15 @@ export const LoginPage = () => {
             sm: 20,
           }}
         />
-        <UnderlineButton onClick={onNavigationButtonClick}>
-          {isEnrollButtonClicked ? '로그인하기' : '회원가입하기'}
-        </UnderlineButton>
+        <HStack spacing={4} align="start">
+          <UnderlineButton onClick={onNavigationButtonClick}>
+            {isEnrollButtonClicked ? '로그인하기' : '회원가입하기'}
+          </UnderlineButton>
+          {/* TODO: CORS */}
+          <UnderlineButton disabled={true} onClick={handleKakaoLogin}>
+            카카오 로그인
+          </UnderlineButton>
+        </HStack>
       </FormWrapper>
     </Wrapper>
   );
