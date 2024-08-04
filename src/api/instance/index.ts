@@ -22,13 +22,19 @@ export let BASE_URL = 'http://3.36.86.203:8080';
 export const updateBaseURL = (newBaseURL: string) => {
   BASE_URL = newBaseURL;
   fetchInstance.defaults.baseURL = BASE_URL;
+  console.log(`Base URL updated to: ${BASE_URL}`);
+  localStorage.setItem('baseURL', BASE_URL);
 };
 
 export const fetchInstance = initInstance({
   baseURL: BASE_URL,
 });
 
-
+const storedBaseURL = localStorage.getItem('baseURL');
+if (storedBaseURL) {
+  BASE_URL = storedBaseURL;
+  fetchInstance.defaults.baseURL = BASE_URL;
+}
 
 export const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,22 +1,35 @@
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { updateBaseURL } from '@/api/instance';
+
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
-  const [selectedUser, setSelectedUser] = useState('최유성');
+  const [selectedUser, setSelectedUser] = useState(()=> {
+    return localStorage.getItem('selectedUser') || '최유성';
+  });
+
+  // 컴포넌트가 마운트될 때 baseURL을 설정
+  useEffect(() => {
+
+  const storedBaseURL = localStorage.getItem('baseURL');
+  if (storedBaseURL) {
+    updateBaseURL(storedBaseURL);
+  }
+  }, []);
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
   };
-
+  
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const user = e.target.value;
     setSelectedUser(user);
+
     switch (user) {
       case '최유성':
         updateBaseURL('http://3.36.86.203:8080');
@@ -34,6 +47,7 @@ export const Header = () => {
         updateBaseURL('http://3.36.86.203:8080');
     }
     window.location.reload();
+    localStorage.setItem('selectedUser', user);
   };
 
   return (
