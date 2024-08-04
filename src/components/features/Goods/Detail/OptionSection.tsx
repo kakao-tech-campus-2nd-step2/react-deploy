@@ -38,8 +38,8 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(productId),
-      count: parseInt(countAsString),
+      id: parseInt(productId, 10),
+      count: parseInt(countAsString, 10),
     });
 
     navigate(RouterPath.order);

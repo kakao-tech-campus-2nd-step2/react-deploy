@@ -1,40 +1,39 @@
 import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import type { AxiosError } from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
-const LOCAL_STORAGE_TOKEN_KEY = 'token';
-const QUERY_KEY_WISHLIST = 'wishList';
+import { authSessionStorage } from '@/utils/storage';
+
+import { fetchInstance } from '../instance';
+
+const getToken = () => authSessionStorage.get();
 
 export interface WishItem {
   id: number;
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-  };
+  name: string;
+  price: number;
+  imageUrl: string;
 }
 
 interface WishListResponse {
   content: WishItem[];
-  totalPages: number;
-  totalElements: number;
+  page: {
+    totalPages: number;
+    totalElements: number;
+  };
 }
 
-const fetchWishList = async (
-  token: string,
-  page: number,
-  size: number,
-): Promise<WishListResponse> => {
-  const response = await axios.get(`${API_URL}/wishes`, {
+const fetchWishList = async (page: number, size: number): Promise<WishListResponse> => {
+  const token = getToken();
+  if (!token) throw new Error('토큰이 없습니다.');
+  const response = await fetchInstance.get('/api/wishes', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
     params: {
       page,
       size,
-      sort: 'createdDate,desc',
+      sort: 'id,desc',
     },
   });
   return response.data;
@@ -43,50 +42,66 @@ const fetchWishList = async (
 export const useWishList = (
   page: number = 0,
   size: number = 10,
-  options?: UseQueryOptions<WishListResponse, Error>,
+  options?: UseQueryOptions<WishListResponse, AxiosError>,
 ) => {
-  return useQuery<WishListResponse, Error>({
-    queryKey: [QUERY_KEY_WISHLIST, page, size],
-    queryFn: () => fetchWishList(localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) || '', page, size),
+  return useQuery<WishListResponse, AxiosError>({
+    queryKey: ['wishList', page, size],
+    queryFn: () => fetchWishList(page, size),
+    staleTime: 0,
+    refetchOnWindowFocus: true,
     ...options,
   });
 };
 
-export const useRemoveWish = (options?: UseMutationOptions<void, Error, number>) => {
+export const useRemoveWish = (
+  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
+) => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, Error, number>({
-    mutationFn: async (wishId: number) => {
-      return axios.delete(`${API_URL}/wishes/${wishId}`, {
+  return useMutation<void, AxiosError, { productId: number }>({
+    mutationFn: async ({ productId }) => {
+      const token = getToken();
+      if (!token) throw new Error('토큰이 없습니다.');
+      return fetchInstance.delete(`/api/wishes`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}`,
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
         },
+        data: { productId },
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
+      console.log('Item successfully removed, invalidating and refetching wishList');
+      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.refetchQueries({ queryKey: ['wishList'] }); // 쿼리를 강제로 다시 페치합니다
     },
     ...options,
   });
 };
 
-export const useAddWish = () => {
+export const useAddWish = (
+  options?: UseMutationOptions<void, AxiosError, { productId: number }>,
+) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (productId: number) => {
-      return axios.post(
-        `${API_URL}/wishes`,
+  return useMutation<void, AxiosError, { productId: number }>({
+    mutationFn: ({ productId }) => {
+      const token = getToken();
+      if (!token) throw new Error('토큰이 없습니다.');
+      return fetchInstance.post(
+        '/api/wishes',
         { productId },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}`,
+            Authorization: `Bearer ${token}`,
           },
         },
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
+      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.refetchQueries({ queryKey: ['wishList'] });
     },
+    ...options,
   });
 };

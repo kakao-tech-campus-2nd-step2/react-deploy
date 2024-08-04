@@ -8,13 +8,15 @@ type Props = {
   label: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const CategoryItem = ({ image, label, ...props }: Props) => (
-  <Wrapper {...props}>
-    <CategoryImage src={image} alt={label} />
-    <Label>{label}</Label>
-  </Wrapper>
-);
-
+export const CategoryItem = ({ image, label, ...props }: Props) => {
+  console.log('CategoryItem image:', image); // 이미지 로깅
+  return (
+    <Wrapper {...props}>
+      <CategoryImage src={image} alt={label} />
+      <Label>{label}</Label>
+    </Wrapper>
+  );
+};
 const Wrapper = styled.div`
   width: 100%;
   padding: 13px 0 12px;

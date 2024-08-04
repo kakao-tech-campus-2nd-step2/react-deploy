@@ -2,25 +2,54 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
-const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
+import { authSessionStorage } from '@/utils/storage';
+
+// 서버 API 주소
+export const BASE_URL = 'http://43.201.17.220:8080';
+// 다른 서버 주소
+// // 명준
+// http://13.125.199.167:8080 준형
+//'http://3.38.211.225:8080' 서영
+
+const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
-    ...config,
+    ...axiosConfig,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...config.headers,
+      ...axiosConfig.headers,
     },
   });
+
+  // 인증 토큰 설정
+  instance.interceptors.request.use((requestConfig) => {
+    const token = authSessionStorage.get(); // sessionStorage에서 토큰 가져오기
+    if (token) {
+      requestConfig.headers.Authorization = `Bearer ${token}`;
+    }
+    return requestConfig;
+  });
+
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      console.error('Error fetching data:', error);
+      return Promise.reject(error);
+    },
+  );
 
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
+// 기본 서버 API 주소 설정
 export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+  baseURL: BASE_URL,
 });
+
+export const setBaseURL = (url: string) => {
+  fetchInstance.defaults.baseURL = url;
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {

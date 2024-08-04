@@ -9,18 +9,28 @@ import {
   ListItem,
   Spinner,
   Text,
+  useToast,
 } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
+import type { WishItem } from '@/api/hooks/fetchWishList';
 import { useRemoveWish, useWishList } from '@/api/hooks/fetchWishList';
-import { useAuth } from '@/provider/Auth';
 
 const FavoritesPage = () => {
-  const authInfo = useAuth();
   const [page, setPage] = useState(0);
-  const { data, error, isLoading } = useWishList(page);
-  const removeWish = useRemoveWish();
-  const [wishList, setWishList] = useState(data?.content || []);
+  const queryClient = useQueryClient();
+  const { data, error, isLoading, refetch } = useWishList(page, 10);
+  const removeWish = useRemoveWish({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      refetch(); // 데이터 강제 다시 가져오기
+    },
+  });
+
+  const [wishList, setWishList] = useState<WishItem[]>([]);
+  const toast = useToast();
 
   useEffect(() => {
     if (data) {
@@ -28,16 +38,41 @@ const FavoritesPage = () => {
     }
   }, [data]);
 
-  const handleRemoveFavorite = (id: number) => {
-    removeWish.mutate(id, {
-      onSuccess: () => {
-        setWishList((prevList) => prevList.filter((item) => item.id !== id));
+  const handleRemoveFavorite = (productId: number) => {
+    removeWish.mutate(
+      { productId },
+      {
+        onSuccess: () => {
+          setWishList((prevList) => prevList.filter((item) => item.id !== productId));
+          toast({
+            title: '성공',
+            description: '상품이 관심 목록에서 삭제되었습니다.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+          // 데이터를 강제로 다시 가져옴
+          console.log('Invalidating and refetching wishList');
+          queryClient.invalidateQueries({ queryKey: ['wishList'] });
+          queryClient.refetchQueries({ queryKey: ['wishList'] });
+        },
+        onError: (axiosError: AxiosError) => {
+          const message =
+            (axiosError.response?.data as { message: string })?.message || axiosError.message;
+          toast({
+            title: '오류',
+            description: `상품 삭제 중 오류가 발생했습니다: ${message}`,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        },
       },
-    });
+    );
   };
 
   const handleNextPage = () => {
-    if (data && page < data.totalPages - 1) {
+    if (data && page < data.page.totalPages - 1) {
       setPage(page + 1);
     }
   };
@@ -47,10 +82,6 @@ const FavoritesPage = () => {
       setPage(page - 1);
     }
   };
-
-  if (!authInfo) {
-    return <Text>로그인이 필요합니다.</Text>;
-  }
 
   let content;
   if (isLoading) {
@@ -64,12 +95,12 @@ const FavoritesPage = () => {
           {wishList.map((item) => (
             <ListItem key={item.id} p={4} borderWidth="1px" borderRadius="lg">
               <Flex align="center">
-                <Image boxSize="100px" src={item.product.imageUrl} alt={item.product.name} mr={4} />
+                <Image boxSize="100px" src={item.imageUrl} alt={item.name} mr={4} />
                 <Box flex="1">
                   <Text fontSize="lg" fontWeight="bold">
-                    {item.product.name}
+                    {item.name}
                   </Text>
-                  <Text>{item.product.price}원</Text>
+                  <Text>{item.price}원</Text>
                 </Box>
                 <IconButton
                   icon={<CloseIcon />}
@@ -86,13 +117,14 @@ const FavoritesPage = () => {
           <Button onClick={handlePreviousPage} disabled={page === 0}>
             이전
           </Button>
-          <Button onClick={handleNextPage} disabled={data && page >= data.totalPages - 1}>
+          <Button onClick={handleNextPage} disabled={data && page >= data.page.totalPages - 1}>
             다음
           </Button>
         </Flex>
       </>
     );
   }
+
   return (
     <Box p={5}>
       <Text fontSize="2xl" mb={4}>
