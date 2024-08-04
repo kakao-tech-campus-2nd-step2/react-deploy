@@ -4,25 +4,16 @@ import axios from 'axios';
 import { backend } from '@/config/backendConfig';
 
 const initInstance = () => {
+  const apiUrl = localStorage.getItem('apiUrl') || backend.backend3;
+
   const instance = axios.create({
+    baseURL: apiUrl,
     timeout: 5000,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
   });
-
-  instance.interceptors.request.use(
-    (config) => {
-      const apiUrl = localStorage.getItem('apiUrl') || backend.backend3;
-      config.baseURL = apiUrl;
-
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    },
-  );
 
   return instance;
 };
