@@ -1,0 +1,167 @@
+import styled from '@emotion/styled';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { addToWishlist, removeFromWishlist } from '@/api/hooks/useWishlist';
+import { Button } from '@/components/common/Button';
+import { useAuth } from '@/provider/Auth';
+import { getDynamicPath, RouterPath } from '@/routes/path';
+import { orderHistorySessionStorage } from '@/utils/storage';
+
+import { CountOptionItem } from './OptionItem/CountOptionItem';
+
+const WISHLIST_KEY = 'wishlist';
+
+type Props = {
+  productId: string;
+};
+
+export const OptionSection = ({ productId }: Props) => {
+  const { data: detail } = useGetProductDetail({ productId });
+  const { data: options } = useGetProductOptions({ productId });
+
+  const [countAsString, setCountAsString] = useState('1');
+  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const totalPrice = useMemo(() => detail.price * Number(countAsString), [detail.price, countAsString]);
+
+  const navigate = useNavigate();
+  const authInfo = useAuth();
+
+  useEffect(() => {
+    const storedWishlist = JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
+    setIsFavorite(storedWishlist.includes(parseInt(productId)));
+  }, [productId]);
+
+  const handleClick = () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      navigate(getDynamicPath.login());
+    }
+
+    orderHistorySessionStorage.set({
+      id: parseInt(productId),
+      count: parseInt(countAsString),
+    });
+
+    navigate(RouterPath.order);
+  };
+
+  const toggleFavorite = useCallback(async () => {
+    try {
+      if (isFavorite) {
+        await removeFromWishlist(parseInt(productId));
+        setIsFavorite(false);
+        const storedWishlist = JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify(storedWishlist.filter((id: number) => id !== parseInt(productId))));
+        alert('위시리스트에서 제거되었습니다.');
+      } else {
+        await addToWishlist(parseInt(productId));
+        setIsFavorite(true);
+        const storedWishlist = JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify([...storedWishlist, parseInt(productId)]));
+        alert('위시리스트에 추가되었습니다.');
+      }
+    } catch (error) {
+      console.error('Failed to update wishlist:', error);
+      alert('위시리스트 등록에 실패했습니다.');
+    }
+  }, [isFavorite, productId]);
+
+  return (
+    <Wrapper>
+      <OptionSelector>
+        <label htmlFor="option">옵션</label>
+        <select id="option" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+          <option value="" disabled>옵션을 선택하세요</option>
+          {options.map((option) => (
+            <option key={option.name} value={option.name}>{option.name}</option>
+          ))}
+        </select>
+      </OptionSelector>
+      <CountOptionItem
+        name={selectedOption || '수량'}
+        value={countAsString}
+        onChange={setCountAsString}
+      />
+      <BottomWrapper>
+        <PricingWrapper>
+          총 결제 금액 <span>{totalPrice.toLocaleString()}원</span>
+        </PricingWrapper>
+        <ButtonWrapper>
+          <HeartButton onClick={toggleFavorite} isFavorite={isFavorite}>
+            {isFavorite ? '❤️' : '🤍'}
+          </HeartButton>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonWrapper>
+      </BottomWrapper>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  width: 100%;
+  padding: 30px 12px 30px 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const OptionSelector = styled.div`
+  margin-bottom: 20px;
+  label {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  select {
+    padding: 5px;
+    font-size: 16px;
+  }
+`;
+
+const BottomWrapper = styled.div`
+  padding: 12px 0 0;
+`;
+
+const PricingWrapper = styled.div`
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+  color: #111;
+
+  & span {
+    font-size: 20px;
+    letter-spacing: -0.02em;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const HeartButton = styled.button<{ isFavorite: boolean }>`
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: ${(props) => (props.isFavorite ? 'red' : 'grey')};
+  margin-right: 10px;
+`;
