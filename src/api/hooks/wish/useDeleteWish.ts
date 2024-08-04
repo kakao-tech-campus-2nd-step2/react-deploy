@@ -5,11 +5,15 @@ import { authSessionStorage } from '@/utils/storage';
 
 import { fetchInstance } from '../../instance';
 
+type DeleteWishRequestParams = {
+  wishId: number;
+};
+
 const token = authSessionStorage.get();
 
-const deleteWish = async (wishId: number) => {
+const deleteWish = async (params: DeleteWishRequestParams) => {
   try {
-    const response = await fetchInstance.delete(`/api/wishes/${wishId}`, {
+    const response = await fetchInstance.delete(`/api/wishes/${params.wishId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -40,8 +44,8 @@ const deleteWish = async (wishId: number) => {
   }
 };
 
-export const useDeleteWish = (): UseMutationResult<null, Error, number> => {
+export const useDeleteWish = (): UseMutationResult<null, Error, DeleteWishRequestParams> => {
   return useMutation({
-    mutationFn: (wishId: number) => deleteWish(wishId),
+    mutationFn: (params: DeleteWishRequestParams) => deleteWish(params),
   });
 };
