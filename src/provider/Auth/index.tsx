@@ -19,10 +19,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (currentAuthToken) {
-      const userId = currentAuthToken.substring(0, 5); // 토큰의 앞 5자리만 추출하여 ID로 사용
+      const id = currentAuthToken.slice(0, 5); // 토큰 앞의 5자리 추출
       setAuthInfo({
-        id: userId,
-        name: currentAuthToken,
+        id, // 추출한 ID 설정
+        name: 'User', //사용자 이름을 임의로 설정
         token: currentAuthToken,
       });
       setIsReady(true);
