@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 import { BASE_URL } from '../instance';
 import { PRODUCTS_MOCK_DATA } from './products.mock';
-import { deleteWishlistPath, getWishlistPath, postWishlistPath, type WishResponseData } from './useGetWishlist';
+import { deleteWishlistPath, getWishlistPath, postWishlistPath, type WishData } from './useGetWishlist';
 
 export const wishlistMockHandler = [
     rest.post(postWishlistPath(BASE_URL), async (req, res, ctx) => {
@@ -11,7 +11,7 @@ export const wishlistMockHandler = [
         if(!productId || !authToken) {
             return res(ctx.status(400));
         }
-        const product: WishResponseData["product"] | undefined= PRODUCTS_MOCK_DATA.content.find((_product) => _product.id === productId);
+        const product: WishData["product"] | undefined= PRODUCTS_MOCK_DATA.content.find((_product) => _product.id === productId);
         if (!product) {
             return res(ctx.status(400));
         }
@@ -57,12 +57,12 @@ export const wishlistMockHandler = [
                 });
         }
 
-        return res(ctx.json(result));
+        return res(ctx.json({content: result}));
     }),
 ];
 
 
-const wishlistMockData: (WishResponseData & {user: string})[] = [{
+const wishlistMockData: (WishData & {user: string})[] = [{
     id: 1,
     product: PRODUCTS_MOCK_DATA.content[0],
     createdDate: new Date('2021-09-01'), 

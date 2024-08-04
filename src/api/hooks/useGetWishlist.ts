@@ -12,10 +12,13 @@ interface RequestParams {
     sort?: string;
 }
 
-export interface WishResponseData {
+export interface WishData {
     id: number;
     product: Omit<ProductData, 'categoryId'>;
     createdDate: Date;
+}
+export interface WishResponseData {
+    content: WishData[];
 }
 
 export const postWishlistPath = (baseURL?: string) => `${baseURL ?? ''}/api/wishes`;
@@ -58,8 +61,8 @@ export const deleteWishlist = async (wishId: string, baseURL: string) => {
 }
 
 const getWishlist = async (params: RequestParams, baseURL: string) => {
-    const response = await fetchInstance(baseURL).get<WishResponseData[]>(getWishlistPath(params));
-    return response.data;
+    const response = await fetchInstance(baseURL).get<WishResponseData>(getWishlistPath(params));
+    return response.data.content;
 }
 export const useGetWishlist = (params: RequestParams) => {
     const baseURL = useAPIBaseURL()[0];
