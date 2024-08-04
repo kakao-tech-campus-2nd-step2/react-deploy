@@ -5,13 +5,16 @@ import type { AxiosError } from 'axios';
 import { authSessionStorage } from '@/utils/storage';
 
 import { fetchInstance } from '../instance';
+
 const getToken = () => authSessionStorage.get();
+
 export interface WishItem {
   id: number;
   name: string;
   price: number;
   imageUrl: string;
 }
+
 interface WishListResponse {
   content: WishItem[];
   page: {
@@ -19,6 +22,7 @@ interface WishListResponse {
     totalElements: number;
   };
 }
+
 const fetchWishList = async (page: number, size: number): Promise<WishListResponse> => {
   const token = getToken();
   if (!token) throw new Error('토큰이 없습니다.');
@@ -34,6 +38,7 @@ const fetchWishList = async (page: number, size: number): Promise<WishListRespon
   });
   return response.data;
 };
+
 export const useWishList = (
   page: number = 0,
   size: number = 10,
@@ -42,6 +47,8 @@ export const useWishList = (
   return useQuery<WishListResponse, AxiosError>({
     queryKey: ['wishList', page, size],
     queryFn: () => fetchWishList(page, size),
+    staleTime: 0,
+    refetchOnWindowFocus: true,
     ...options,
   });
 };
@@ -58,12 +65,15 @@ export const useRemoveWish = (
       return fetchInstance.delete(`/api/wishes`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
         },
         data: { productId },
       });
     },
     onSuccess: () => {
+      console.log('Item successfully removed, invalidating and refetching wishList');
       queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.refetchQueries({ queryKey: ['wishList'] }); // 쿼리를 강제로 다시 페치합니다
     },
     ...options,
   });
@@ -90,6 +100,7 @@ export const useAddWish = (
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.refetchQueries({ queryKey: ['wishList'] });
     },
     ...options,
   });

@@ -1,4 +1,4 @@
-import { authSessionStorage } from '@/utils/storage';
+import { authSessionStorage } from '@/utils/storage'; // import the storage utility
 
 import { fetchInstance } from '../instance';
 
