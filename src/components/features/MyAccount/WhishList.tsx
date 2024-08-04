@@ -1,12 +1,13 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { Box, Button, Container, HStack, IconButton } from '@chakra-ui/react';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 
 import { queryClient } from '@/api/instance';
 import { deleteFromWishlist, getWishlist } from '@/api/utils';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useSlideIndex } from '@/hooks/useSlideIndex';
 
 export interface WishlistItem {
   id: number;
@@ -22,13 +23,12 @@ const page = 0;
 const size = 10;
 
 export const Wishlist = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const { data } = useSuspenseQuery({
     queryKey: ['wishlist', page, size],
     queryFn: () => getWishlist(page, size),
   });
+  const { currentIndex, handlePrev, handleNext } = useSlideIndex(data.contents.length);
 
-  // NOTE: 타입 명시 가능
   const deleteMutation = useMutation<void, Error, number>({
     mutationFn: deleteFromWishlist,
     onSuccess: () => {
@@ -43,14 +43,6 @@ export const Wishlist = () => {
     deleteMutation.mutateAsync(productId).then(() => alert('관심 물품 삭제에 성공했습니다.'));
   };
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, data.contents.length - 1));
-  };
-
   return (
     <Container maxW="container.lg" minW="container.lg" py={8} borderRadius="md" boxShadow="sm">
       <Spacing height={4} />
@@ -61,7 +53,7 @@ export const Wishlist = () => {
           onClick={handlePrev}
           isDisabled={currentIndex === 0}
         />
-        <HStack w="100%" spacing={4}>
+        <HStack w="100%" spacing={4} height="calc(400px + 64px)">
           {data.contents.slice(currentIndex, currentIndex + 4).map((item: WishlistItem) => (
             <Fragment key={item.id}>
               <Box
@@ -73,7 +65,7 @@ export const Wishlist = () => {
                 minW="200px"
                 minH="400px"
                 maxH="400px"
-                bg="white"
+                bg="#fefefe"
                 boxShadow="sm"
                 mx={2}
                 display="flex"

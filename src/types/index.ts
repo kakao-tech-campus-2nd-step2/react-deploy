@@ -30,6 +30,11 @@ export type ProductOptionsData = {
   name: string;
   quantity: number;
   productId: number;
+  optionName: string;
+  productName: string;
+  productPrice: number;
+  message: string;
+  orderDateTime: string;
 };
 
 export type GoodsDetailOptionItemData = {

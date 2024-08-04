@@ -1,9 +1,8 @@
 import { Heading } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
-import { Fragment } from 'react';
 
-import { getOrderList, getPoints } from '@/api/utils';
+import { getPoints } from '@/api/utils';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -18,10 +17,6 @@ export const MyAccountPage = () => {
   const { data: pointsData } = useQuery({
     queryFn: getPoints,
     queryKey: ['points'],
-  });
-  const { data: orderListData } = useQuery({
-    queryFn: () => getOrderList({ page: 0, size: 10, sort: 'orderDateTime,desc' }),
-    queryKey: ['orderList'],
   });
 
   const handleLogout = () => {
@@ -58,19 +53,13 @@ export const MyAccountPage = () => {
       <Spacing />
       <Heading>주문 목록</Heading>
       <Spacing />
-      {orderListData &&
-        orderListData.contents &&
-        orderListData.contents.map((option) => (
-          <Fragment key={option.id}>
-            <AsyncBoundary
-              pendingFallback={<div>불러오는 중...</div>}
-              rejectedFallback={<div>에러가 발생했습니다.</div>}
-            >
-              <Options productId={String(option.id)} />
-              <Spacing />
-            </AsyncBoundary>
-          </Fragment>
-        ))}
+      <AsyncBoundary
+        pendingFallback={<div>불러오는 중...</div>}
+        rejectedFallback={<div>에러가 발생했습니다.</div>}
+      >
+        <Options />
+        <Spacing />
+      </AsyncBoundary>
     </Wrapper>
   );
 };
