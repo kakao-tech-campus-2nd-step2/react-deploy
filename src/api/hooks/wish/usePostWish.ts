@@ -1,18 +1,12 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
 import { fetchInstance } from '../../instance';
 
 type WishRequestParams = {
   productId: number;
-};
-
-type ErrorResponse = {
-  detail: string;
 };
 
 // type WishResponseParams = null;
@@ -32,7 +26,7 @@ type ErrorResponse = {
 
 const token = authSessionStorage.get();
 
-const postWish = async (params: WishRequestParams, navigate: ReturnType<typeof useNavigate>) => {
+const postWish = async (params: WishRequestParams) => {
   try {
     const response = await fetchInstance.post(`/api/wishes`, params, {
       headers: {
@@ -48,7 +42,7 @@ const postWish = async (params: WishRequestParams, navigate: ReturnType<typeof u
 
     return null;
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorResponse>;
+    const axiosError = error as AxiosError;
 
     if (axiosError.response) {
       // 서버 응답이 있는 경우
@@ -56,9 +50,7 @@ const postWish = async (params: WishRequestParams, navigate: ReturnType<typeof u
       console.log('Error data:', axiosError.response.data);
 
       if (axiosError.response.status === 401 || 404) {
-        if (confirm(`로그인이 필요한 메뉴입니다.\n로그인하시겠습니까?`)) {
-          navigate(RouterPath.login);
-        }
+        throw new Error('로그인 필요');
       }
     } else if (axiosError.request) {
       // 요청이 전송되었지만 응답이 없는 경우
@@ -72,8 +64,7 @@ const postWish = async (params: WishRequestParams, navigate: ReturnType<typeof u
 };
 
 export const usePostWish = (): UseMutationResult<null, Error, WishRequestParams> => {
-  const navigate = useNavigate();
   return useMutation({
-    mutationFn: (params: WishRequestParams) => postWish(params, navigate),
+    mutationFn: (params: WishRequestParams) => postWish(params),
   });
 };
