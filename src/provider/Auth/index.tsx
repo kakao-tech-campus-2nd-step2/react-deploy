@@ -4,8 +4,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { authSessionStorage } from '@/utils/storage';
 
 type AuthInfo = {
-  id: string;
-  name: string;
   token: string;
 };
 
@@ -14,12 +12,11 @@ type AuthContextData = {
   setAuthInfo: (authInfo: AuthInfo) => void;
 };
 
-export const AuthContext = createContext<AuthContextData | undefined>(undefined);
+const AuthContext = createContext<AuthContextData | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const currentAuthToken = authSessionStorage.get();
-  const [isReady, setIsReady] = useState(!currentAuthToken);
-
+  const [isReady, setIsReady] = useState(false);
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
 
   const handleAuthInfo = (currentAuthInfo: AuthInfo) => {
@@ -29,23 +26,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (currentAuthToken) {
-      setAuthInfo({
-        id: currentAuthToken,
-        name: currentAuthToken,
-        token: currentAuthToken,
-      });
-      setIsReady(true);
+      setAuthInfo({ token: currentAuthToken });
     }
+    setIsReady(true);
   }, [currentAuthToken]);
 
-  if (!isReady) return <></>;
+  if (!isReady) return null;
+
   return (
-    <AuthContext.Provider
-      value={{
-        authInfo,
-        setAuthInfo: handleAuthInfo,
-      }}
-    >
+    <AuthContext.Provider value={{ authInfo, setAuthInfo: handleAuthInfo }}>
       {children}
     </AuthContext.Provider>
   );
@@ -53,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = (): AuthContextData => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
