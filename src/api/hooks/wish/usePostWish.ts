@@ -5,7 +5,7 @@ import { authSessionStorage } from '@/utils/storage';
 
 import { fetchInstance } from '../../instance';
 
-type WishRequestParams = {
+type PostWishRequestParams = {
   productId: number;
 };
 
@@ -26,7 +26,7 @@ type WishRequestParams = {
 
 const token = authSessionStorage.get();
 
-const postWish = async (params: WishRequestParams) => {
+const postWish = async (params: PostWishRequestParams) => {
   try {
     const response = await fetchInstance.post(`/api/wishes`, params, {
       headers: {
@@ -63,8 +63,8 @@ const postWish = async (params: WishRequestParams) => {
   }
 };
 
-export const usePostWish = (): UseMutationResult<null, Error, WishRequestParams> => {
+export const usePostWish = (): UseMutationResult<null, Error, PostWishRequestParams> => {
   return useMutation({
-    mutationFn: (params: WishRequestParams) => postWish(params),
+    mutationFn: (params: PostWishRequestParams) => postWish(params),
   });
 };
