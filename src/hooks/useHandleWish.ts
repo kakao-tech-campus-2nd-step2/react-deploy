@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useDeleteWish } from '@/api/hooks/wish/useDeleteWish';
 import { usePostWish } from '@/api/hooks/wish/usePostWish';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
@@ -8,11 +9,13 @@ import { authSessionStorage } from '@/utils/storage';
 export const useHandleWish = () => {
   const [isWish, setIsWish] = useState(false);
   const navigate = useNavigate();
-  const mutation = usePostWish();
+  const postMutation = usePostWish();
+  const deleteMutation = useDeleteWish();
 
   const token = authSessionStorage.get();
 
   const handleWishClick = (productId: number) => {
+    // 위시 등록 안 되어 있으면
     if (!isWish) {
       if (!token) {
         if (confirm('로그인이 필요한 메뉴입니다.\n로그인하시겠습니까?')) {
@@ -22,7 +25,7 @@ export const useHandleWish = () => {
         }
       }
       // 위시 등록 api 요청
-      mutation.mutate(
+      postMutation.mutate(
         { productId: productId },
         {
           onSuccess: () => {
@@ -33,6 +36,19 @@ export const useHandleWish = () => {
             if (error.message !== '로그인 필요') {
               alert('위시 등록 실패. 다시 시도하세요.');
             }
+          },
+        },
+      );
+    } else {
+      // 위시 등록 되어있으면
+      deleteMutation.mutate(
+        { wishId: 1 }, // 실제 wishId로 바꾸기
+        {
+          onSuccess: () => {
+            setIsWish(false);
+          },
+          onError: () => {
+            alert('위시 삭제 실패. 다시 시도하세요.');
           },
         },
       );
