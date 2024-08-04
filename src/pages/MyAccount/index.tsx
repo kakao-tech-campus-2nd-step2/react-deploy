@@ -1,114 +1,47 @@
 import { Box, Button, Image, Stack, Text, useToast } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useCallback, useEffect, useState } from 'react';
 
-import { BASE_URL } from '@/api/instance'; 
+import { useEffect } from 'react';
+import { usePoint } from '@/api/hooks/usePoint';
+import { useRemoveFromWishlist, useWishlist } from '@/api/hooks/useWishList';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
-import { authSessionStorage } from '@/utils/storage';
-
-interface Wish {
-  id: number;
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-  };
-}
 
 export const MyAccountPage = () => {
-  const authInfo = useAuth();
-  const [wishes, setWishes] = useState<Wish[]>([]);
+  const { authInfo, logout } = useAuth();
+  const { wishlist, loading, fetchError, fetchWishlist } = useWishlist();
+  const { removeFromWishlist, loading: removeLoading, removeError } = useRemoveFromWishlist(fetchWishlist);
+  const { point, loading: pointLoading} = usePoint();
   const toast = useToast();
 
-  const fetchWishes = useCallback(async () => {
-    if (!authInfo?.token) {
-      toast({
-        title: '인증 오류',
-        description: '로그인이 필요합니다.',
-        status: 'warning',
-      });
-      return;
+  useEffect(() => {
+    if (!authInfo) {
+      window.location.replace(`${window.location.origin}${RouterPath.login}`);
     }
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/wishes?page=0&size=10&sort=name,asc`, {
-        headers: {
-          Authorization: `Bearer ${authInfo.token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const data = await response.json();
-      console.log(data);
-
-      if (response.ok) {
-        setWishes(data.content);
-      } else {
-        toast({
-          title: '위시리스트 가져오기 오류',
-          description: data.error || '오류가 발생했습니다.',
-          status: 'error',
-        });
-      }
-    } catch (error) {
-      console.error('네트워크 오류:', error);
-      toast({
-        title: '네트워크 오류',
-        description: '위시리스트를 가져오는 동안 문제가 발생했습니다.',
-        status: 'error',
-      });
-    }
-  }, [authInfo?.token, toast]);
+  }, [authInfo]);
 
   useEffect(() => {
-    if (authInfo?.token) {
-      fetchWishes();
-    }
-  }, [authInfo?.token, fetchWishes]);
-
-  const handleRemoveWish = async (wishId: number) => {
-    if (!authInfo?.token) {
+    if (fetchError) {
       toast({
-        title: '인증 오류',
-        description: '로그인이 필요합니다.',
-        status: 'warning',
-      });
-      return;
-    }
-
-    try {
-      console.log('Removing wish with ID:', wishId);
-
-      const response = await fetch(`${BASE_URL}/api/wishes/${wishId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${authInfo.token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        setWishes((prevWishes) => prevWishes.filter((wish) => wish.id !== wishId));
-        toast({ title: '위시리스트에서 삭제됨', status: 'success' });
-      } else {
-        const errorData = await response.json();
-        console.error('Error removing wish:', errorData); 
-        toast({ title: '위시리스트 삭제 오류', description: errorData.message || '오류가 발생했습니다.', status: 'error' });
-      }
-    } catch (error) {
-      console.error('네트워크 오류:', error);
-      toast({
-        title: '네트워크 오류',
-        description: '위시리스트 항목을 삭제하는 동안 문제가 발생했습니다.',
+        title: '위시리스트 가져오기 오류',
+        description: fetchError,
         status: 'error',
       });
+    }
+  }, [fetchError, toast]);
+
+  const handleRemove = async (wishId: number) => {
+    try {
+      await removeFromWishlist(wishId);
+      toast({ title: '위시리스트에서 삭제됨', status: 'success' });
+    } catch (error) {
+      console.error('관심 상품 삭제 실패', error);
+      toast({ title: '위시리스트 삭제 오류', description: removeError, status: 'error' });
     }
   };
 
   const handleLogout = () => {
-    authSessionStorage.set('');
+    logout();
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
   };
@@ -116,6 +49,13 @@ export const MyAccountPage = () => {
   return (
     <Wrapper>
       <Text fontSize="2xl">{authInfo?.name}님, 안녕하세요!</Text>
+      <Box mt={4} mb={4}>
+        {pointLoading ? (
+          <Text fontSize="xl">포인트 로딩 중...</Text>
+        ) : (
+          <Text fontSize="xl">현재 포인트: {point} 점</Text>
+        )}
+      </Box>
       <Box height="64px" />
       <Button
         size="sm"
@@ -126,17 +66,25 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
-      <Box height="64px" />
-      <Stack spacing={4} mt={4}>
-        {wishes.map((wish) => (
-          <Box key={wish.id} p={5} shadow="md" borderWidth="1px">
-            <Text fontWeight="bold">{wish.product.name}</Text>
-            <Image src={wish.product.imageUrl} alt={wish.product.name} />
-            <Text>{wish.product.price} 원</Text>
-            <Button onClick={() => handleRemoveWish(wish.id)}>삭제</Button>
-          </Box>
-        ))}
-      </Stack>
+      <Box mt={40}>
+        <Text fontSize="2xl" mb={4}>관심 목록</Text>
+        {loading ? (
+          <Text fontSize="xl">로딩 중...</Text>
+        ) : (
+          <Stack spacing={4} mt={4}>
+            {wishlist.map((wish) => (
+              <Box key={wish.id} p={5} shadow="md" borderWidth="1px">
+                <Text fontWeight="bold">{wish.product.name}</Text>
+                <Image src={wish.product.imageUrl} alt={wish.product.name} />
+                <Text>{wish.product.price} 원</Text>
+                <Button onClick={() => handleRemove(wish.id)} isLoading={removeLoading}>
+                  삭제
+                </Button>
+              </Box>
+            ))}
+          </Stack>
+        )}
+      </Box>
     </Wrapper>
   );
 };

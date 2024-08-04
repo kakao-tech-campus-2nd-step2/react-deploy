@@ -27,7 +27,7 @@ export const OptionSection = ({ productId }: Props) => {
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
-  const authInfo = useAuth();
+  const { authInfo } = useAuth();
   const toast = useToast();
 
   useEffect(() => {

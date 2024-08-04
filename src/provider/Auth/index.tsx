@@ -9,7 +9,12 @@ type AuthInfo = {
   token: string;
 };
 
-export const AuthContext = createContext<AuthInfo | undefined>(undefined);
+type AuthContextValue = {
+  authInfo: AuthInfo | undefined;
+  logout: () => void;
+};
+
+export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const currentAuthToken = authSessionStorage.get();
@@ -28,8 +33,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [currentAuthToken]);
 
+  const logout = () => {
+    authSessionStorage.clear(); 
+    setAuthInfo(undefined); 
+  };
+
   if (!isReady) return <></>;
-  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ authInfo, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

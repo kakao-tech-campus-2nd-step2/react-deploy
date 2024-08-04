@@ -15,6 +15,14 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
     },
   });
 
+  instance.interceptors.request.use((config) => {
+    const token = authSessionStorage.get();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
+
   return instance;
 };
 
@@ -28,21 +36,6 @@ const apiServers = [
 
 export let BASE_URL = apiServers[0].url;
 
-const initInstanceWithAuth = (): AxiosInstance => {
-  const instance = initInstance({
-    baseURL: BASE_URL,
-  });
-
-  instance.interceptors.request.use((requestConfig) => {
-    const token = authSessionStorage.get();
-    if (token && !requestConfig.headers.Authorization) {
-      requestConfig.headers.Authorization = `Bearer ${token}`;
-    }
-    return requestConfig;
-  });
-
-  return instance;
-};
 export const createFetchInstance = (baseURL: string): AxiosInstance => {
   return initInstance({
     baseURL,
@@ -51,7 +44,6 @@ export const createFetchInstance = (baseURL: string): AxiosInstance => {
 
 export let fetchInstance = createFetchInstance(BASE_URL);
 
-export const fetchWithTokenInstance = initInstanceWithAuth();
 
 export const queryClient = new QueryClient({
   defaultOptions: {
