@@ -17,7 +17,6 @@ export const Header = () => {
   };
 
   const handleApiChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('clicked: ', event.target.value);
     setApiUrl(event.target.value);
   };
 
@@ -32,12 +31,9 @@ export const Header = () => {
         </Link>
         <RightWrapper>
           <ApiSelector value={apiUrl} onChange={handleApiChange}>
-            {/* <option value={backend.backend1}>강지훈</option> */}
-            {/* <option value={backend.backend2}>김기웅</option> */}
-            <option value={backend.backend3}>김민지</option>
-            <option value={backend.backend4}>박상우</option>
-            <option value={backend.backend5}>배민수</option>
-            {/* <option value={backend.backend6}>송민주</option> */}
+            <option value={backend.backend1}>김민지</option>
+            <option value={backend.backend2}>박상우</option>
+            <option value={backend.backend3}>배민수</option>
           </ApiSelector>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
