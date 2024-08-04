@@ -14,9 +14,9 @@ type Props = {
   orderHistory: OrderHistory;
 };
 export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
+  const { count, productId } = orderHistory;
 
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const { data: detail } = useGetProductDetail({ productId: String(productId) });
   const totalPrice = detail.price * count;
 
   return (
