@@ -1,13 +1,29 @@
 import styled from '@emotion/styled';
 
+import { useGetWishes } from '@/api/hooks/wish/useGetWishes';
 import { HEADER_HEIGHT } from '@/components/features/Layout/Header';
 import { useAuth } from '@/provider/Auth';
 import { breakpoints } from '@/styles/variants';
 
 import { WishItem } from './WishItem';
 
+const PAGE = 0;
+const SIZE = 10;
+const SORT = 'createdDate,desc';
+
 export const Wish = () => {
   const authInfo = useAuth();
+
+  const {
+    data: wishList,
+    isLoading,
+    isError,
+    error,
+  } = useGetWishes({
+    page: PAGE,
+    size: SIZE,
+    sort: SORT,
+  });
 
   return (
     <Wrapper>
@@ -16,13 +32,18 @@ export const Wish = () => {
         <br />
         위시리스트
       </HeadingText>
+      {isLoading && <p>Loading...</p>}
+      {isError && <p>Error: {error?.message}</p>}
       <WishList>
-        <WishItem
-          productId={11111}
-          name="[선물포장] 사봉 바디스크럽 320g (택1) + 우드스쿱 증정"
-          imageURL="https://img1.kakaocdn.net/thumb/C320x320@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240719085807_c54daa7e0d584e65bf58f71a42c3133b.jpg"
-          price={49000}
-        />
+        {wishList?.map((item) => (
+          <WishItem
+            key={item.productId}
+            productId={item.productId}
+            name={item.name}
+            imageUrl={item.imageUrl}
+            price={item.price}
+          />
+        ))}
       </WishList>
     </Wrapper>
   );

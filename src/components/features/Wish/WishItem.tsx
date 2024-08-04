@@ -8,11 +8,11 @@ import { useHandleWish } from '@/hooks/useHandleWish';
 type Props = {
   productId: number;
   name: string;
-  imageURL: string;
+  imageUrl: string;
   price: number;
 };
 
-export const WishItem = ({ productId, name, imageURL, price }: Props) => {
+export const WishItem = ({ productId, name, imageUrl, price }: Props) => {
   const { isWish, handleWishClick } = useHandleWish();
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export const WishItem = ({ productId, name, imageURL, price }: Props) => {
 
   return (
     <Wrapper onClick={handleWishItemClick}>
-      <Image src={imageURL} width={85} />
+      <Image src={imageUrl} width={85} />
       <GoodsInfo>
         <GoodsInfoText>{name}</GoodsInfoText>
         <GoodsInfoText>
