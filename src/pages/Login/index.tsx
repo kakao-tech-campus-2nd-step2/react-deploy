@@ -50,7 +50,7 @@ export const LoginPage = () => {
       authSessionStorage.set(data.token); //로그인 성공 시 토큰 저장
       //      setAuthToken(data.token); // 토큰 설정
 
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/myaccount`;
       return window.location.replace(redirectUrl);
     } catch (error) {
       console.error('로그인 오류:', error);

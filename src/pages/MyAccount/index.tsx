@@ -7,7 +7,7 @@ import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
-import LoveList from './WishList';
+import WishList from './WishList';
 
 const queryClient = new QueryClient();
 
@@ -29,7 +29,7 @@ export const MyAccountPage = () => {
           <Button size="small" onClick={handleLogout} style={{ maxWidth: '200px' }}>
             로그아웃
           </Button>
-          <LoveList />
+          <WishList />
         </VStack>
       </Wrapper>
     </QueryClientProvider>
