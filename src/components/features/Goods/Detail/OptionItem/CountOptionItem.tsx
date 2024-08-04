@@ -12,7 +12,7 @@ type Props = {
 
 export const CountOptionItem = ({
   name,
-  minValues = 1,
+  minValues = 0,
   maxValues = 100,
   value,
   onChange,
@@ -21,7 +21,7 @@ export const CountOptionItem = ({
     step: 1,
     min: minValues,
     max: maxValues,
-    defaultValue: value,
+    value: value,
     onChange: (valueAsString) => {
       onChange(valueAsString);
     },

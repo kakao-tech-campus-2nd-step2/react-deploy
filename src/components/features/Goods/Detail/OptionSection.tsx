@@ -19,10 +19,14 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
-  const [countAsString, setCountAsString] = useState('1');
+  const [selectedOption, setSelectedOption] = useState<{ id: number; count: string }>({
+    id: options?.[0]?.id || 0,
+    count: '1',
+  });
+
   const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
-  }, [detail, countAsString]);
+    return detail.price * Number(selectedOption.count);
+  }, [selectedOption, detail]);
 
   const navigate = useNavigate();
   const authInfo = useAuth();
@@ -37,11 +41,15 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(productId),
-      count: parseInt(countAsString),
+      id: selectedOption.id,
+      count: parseInt(selectedOption.count),
     });
 
     navigate(RouterPath.order);
+  };
+
+  const handleCountChange = (optionId: number) => (newCount: string) => {
+    setSelectedOption({ id: optionId, count: newCount });
   };
 
   return (
@@ -49,7 +57,11 @@ export const OptionSection = ({ productId }: Props) => {
       <VStack spacing={4}>
         {options.map((option) => (
           <Fragment key={option.id}>
-            <CountOptionItem name={option.name} value={countAsString} onChange={setCountAsString} />
+            <CountOptionItem
+              name={option.name}
+              onChange={handleCountChange(option.id)}
+              value={selectedOption.id === option.id ? selectedOption.count : '0'}
+            />
           </Fragment>
         ))}
       </VStack>
@@ -57,7 +69,7 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button theme="black" size="large" disabled={totalPrice === 0} onClick={handleClick}>
           나에게 선물하기
         </Button>
       </BottomWrapper>

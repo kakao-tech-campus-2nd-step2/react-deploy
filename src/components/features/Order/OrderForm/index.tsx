@@ -30,7 +30,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
-      productId: id,
+      optionId: id,
       productQuantity: count,
       senderId: 0,
       receiverId: 0,
@@ -48,7 +48,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
     }
 
     createOrderMutation.mutate({
-      optionId: values.productId,
+      optionId: values.optionId,
       message: values.messageCardTextMessage,
       quantity: values.productQuantity,
       points: isNaN(values.points) ? 0 : values.points,
