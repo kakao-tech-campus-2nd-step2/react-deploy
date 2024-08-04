@@ -40,8 +40,9 @@ export const Wish = () => {
             key={item.productId}
             productId={item.productId}
             name={item.name}
-            imageUrl={item.imageUrl}
             price={item.price}
+            imageUrl={item.imageUrl}
+            wishId={item.wishId}
           />
         ))}
       </WishList>

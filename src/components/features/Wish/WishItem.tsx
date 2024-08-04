@@ -4,15 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { Image } from '@/components/common/Image';
 import { useHandleWish } from '@/hooks/useHandleWish';
+import type { WishData } from '@/types';
 
-type Props = {
-  productId: number;
-  name: string;
-  imageUrl: string;
-  price: number;
-};
+type Props = WishData;
 
-export const WishItem = ({ productId, name, imageUrl, price }: Props) => {
+export const WishItem = ({ productId, name, price, imageUrl, wishId }: Props) => {
   const { isWish, handleWishClick } = useHandleWish();
   const navigate = useNavigate();
 
@@ -29,7 +25,7 @@ export const WishItem = ({ productId, name, imageUrl, price }: Props) => {
           <strong>{price}</strong>원
         </GoodsInfoText>
       </GoodsInfo>
-      <WishButton onClick={() => handleWishClick(productId)}>
+      <WishButton onClick={() => handleWishClick(wishId)}>
         {isWish ? (
           <AiFillHeart style={{ color: 'rgb(241, 42, 36)', fontSize: '24px' }} />
         ) : (

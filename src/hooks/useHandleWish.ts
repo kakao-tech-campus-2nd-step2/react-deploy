@@ -14,7 +14,7 @@ export const useHandleWish = () => {
 
   const token = authSessionStorage.get();
 
-  const handleWishClick = (productId: number) => {
+  const handleWishClick = (id: number) => {
     // 위시 등록 안 되어 있으면
     if (!isWish) {
       if (!token) {
@@ -26,7 +26,7 @@ export const useHandleWish = () => {
       }
       // 위시 등록 api 요청
       postMutation.mutate(
-        { productId: productId },
+        { productId: id },
         {
           onSuccess: () => {
             alert('위시에 담았어요!');
@@ -42,7 +42,7 @@ export const useHandleWish = () => {
     } else {
       // 위시 등록 되어있으면
       deleteMutation.mutate(
-        { wishId: 1 }, // 실제 wishId로 바꾸기
+        { wishId: id },
         {
           onSuccess: () => {
             setIsWish(false);
