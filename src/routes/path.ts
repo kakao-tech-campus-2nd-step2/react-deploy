@@ -8,7 +8,10 @@ export const RouterPath = {
   login: '/login',
   register: '/register',
   notFound: '*',
-  orders: '/orders',
+  orders: '/my-account/orders',
+  kakaoToken: '/kakao/token',
+  noneKakaoLogin: '/login/noneKakaoLogin',
+  noneKakaoRegister: '/login/noneKakaoRegister'
 };
 
 export const getDynamicPath = {
