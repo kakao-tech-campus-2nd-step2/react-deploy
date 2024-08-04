@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches:
-      - step1
+      - step2
   workflow_dispatch:
 
 jobs:
@@ -31,6 +31,12 @@ jobs:
       - name: Install Dependencies
         run: npm i
 
+      - name: Create .env file
+        run: |
+          echo REACT_APP_BACKEND_URL_KIM_TAEYUN=${{ secrets.REACT_APP_BACKEND_URL_KIM_TAEYUN }} > .env
+          echo REACT_APP_BACKEND_URL_KANG_SUMIN=${{ secrets.REACT_APP_BACKEND_URL_KANG_SUMIN }} >> .env
+          echo REACT_APP_BACKEND_URL_YOO_KYUNGMI=${{ secrets.REACT_APP_BACKEND_URL_YOO_KYUNGMI }} >> .env
+
       - name: Build
         run: npm run build
 
@@ -40,3 +46,20 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./build
           publish_branch: gh-pages
+      - name: Wait for Deployment
+        run: sleep 30s
+
+      - name: Set up SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          script: |
+            cd /home/ec2-user/react-deploy &&
+            git pull origin gh-pages &&
+            docker build -t my-react-app-nginx . &&
+            docker stop my-react-app &&
+            docker rm my-react-app &&
+            docker run --name my-react-app -d -p 80:80 my-react-app-nginx
+

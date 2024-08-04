@@ -21,7 +21,6 @@ export const LoginPage = () => {
   const onNavigationButtonClick = () => setIsEnrollButtonClicked(!isEnrollButtonClicked);
 
   const handleConfirm = () => {
-    // TODO: API 연동 전까지 임시 로그인 처리
     authSessionStorage.set(email);
 
     const redirectUrl = queryParams.get('redirect') ?? `${process.env.PUBLIC_URL}/`;
