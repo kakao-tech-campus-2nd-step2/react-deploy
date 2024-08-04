@@ -4,13 +4,47 @@ import { getProductDetailPath } from './useGetProductDetail';
 import { getProductOptionsPath } from './useGetProductOptions';
 import { getProductsPath } from './useGetProducts';
 
+type Product = {
+  id: number;
+  name: string;
+  imageUrl: string;
+  price: number;
+  categoryId: string;
+}
+
+type Pageable = {
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  unpaged: boolean;
+  paged: boolean;
+  sort: {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+  };
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+type ProductsResponse = {
+  content: Product[];
+  pageable: Pageable;
+}
+
 export const productsMockHandler = [
   rest.get(
     getProductsPath({
       categoryId: '2920',
     }),
     (_, res, ctx) => {
-      return res(ctx.status(200), ctx.json(PRODUCTS_MOCK_DATA));
+      return res(ctx.status(200), ctx.json<ProductsResponse>(PRODUCTS_MOCK_DATA));
     },
   ),
   rest.get(
@@ -18,11 +52,11 @@ export const productsMockHandler = [
       categoryId: '2930',
     }),
     (_, res, ctx) => {
-      return res(ctx.status(200), ctx.json(PRODUCTS_MOCK_DATA));
+      return res(ctx.status(200), ctx.json<ProductsResponse>(PRODUCTS_MOCK_DATA));
     },
   ),
   rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+    return res(ctx.status(200), ctx.json<Product>(PRODUCTS_MOCK_DATA.content[0]));
   }),
   rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
     return res(
@@ -43,7 +77,7 @@ export const productsMockHandler = [
   }),
 ];
 
-const PRODUCTS_MOCK_DATA = {
+const PRODUCTS_MOCK_DATA: ProductsResponse = {
   content: [
     {
       id: 3245119,
@@ -88,27 +122,22 @@ const PRODUCTS_MOCK_DATA = {
   ],
   pageable: {
     offset: 0,
+    pageNumber: 0,
+    pageSize: 10,
+    unpaged: false,
+    paged: true,
     sort: {
       empty: false,
       unsorted: true,
       sorted: false,
     },
-    unpaged: false,
-    paged: true,
-    pageSize: 10,
-    pageNumber: 0,
-  },
-  last: true,
-  totalPages: 1,
-  totalElements: 5,
-  size: 10,
-  number: 0,
-  sort: {
+    last: true,
+    totalPages: 1,
+    totalElements: 5,
+    size: 10,
+    number: 0,
+    first: true,
+    numberOfElements: 5,
     empty: false,
-    unsorted: true,
-    sorted: false,
   },
-  first: true,
-  numberOfElements: 5,
-  empty: false,
 };
