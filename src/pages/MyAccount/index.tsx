@@ -65,6 +65,7 @@ export const MyAccountPage = () => {
             rejectedFallback={<div>에러가 발생했습니다.</div>}
           >
             <Options productId={String(option.id)} />
+            <Spacing />
           </AsyncBoundary>
         ))}
     </Wrapper>
