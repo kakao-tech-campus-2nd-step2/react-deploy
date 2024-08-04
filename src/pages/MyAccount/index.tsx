@@ -1,10 +1,12 @@
+import { Heading } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
 
-import { getPoints } from '@/api/utils';
+import { getOrderList, getPoints } from '@/api/utils';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { Options } from '@/components/features/MyAccount/Options';
 import { Wishlist } from '@/components/features/MyAccount/WhishList';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
@@ -16,12 +18,10 @@ export const MyAccountPage = () => {
     queryFn: getPoints,
     queryKey: ['points'],
   });
-
-  // TODO: OptionId로 상품 정보 불러오는게 아직 안만들어짐
-  // const { data: orderListData } = useQuery({
-  //   queryFn: () => getOrderList({ page: 0, size: 10, sort: 'orderDateTime,desc' }),
-  //   queryKey: ['orderList'],
-  // });
+  const { data: orderListData } = useQuery({
+    queryFn: () => getOrderList({ page: 0, size: 10, sort: 'orderDateTime,desc' }),
+    queryKey: ['orderList'],
+  });
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -46,12 +46,27 @@ export const MyAccountPage = () => {
         로그아웃
       </Button>
       <Spacing />
+      <Heading>찜 목록</Heading>
+      <Spacing />
       <AsyncBoundary
         pendingFallback={<div>불러오는 중...</div>}
         rejectedFallback={<div>에러가 발생했습니다.</div>}
       >
         <Wishlist />
       </AsyncBoundary>
+      <Spacing />
+      <Heading>주문 목록</Heading>
+      <Spacing />
+      {orderListData &&
+        orderListData.contents &&
+        orderListData.contents.map((option) => (
+          <AsyncBoundary
+            pendingFallback={<div>불러오는 중...</div>}
+            rejectedFallback={<div>에러가 발생했습니다.</div>}
+          >
+            <Options productId={String(option.id)} />
+          </AsyncBoundary>
+        ))}
     </Wrapper>
   );
 };
