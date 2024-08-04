@@ -36,16 +36,17 @@ export type OrderHistory = {
   count: number;
 };
 
-export type OrderFormData = {
+export interface OrderFormData {
   productId: number;
   productQuantity: number;
-  messageCardTextMessage: string;
   senderId: number;
   receiverId: number;
   hasCashReceipt: boolean;
-  cashReceiptType?: 'PERSONAL' | 'BUSINESS';
+  messageCardTextMessage: string;
+  cashReceiptType?: string;
   cashReceiptNumber?: string;
-};
+  usedPoints: number;
+}
 
 export type MessageCardTemplateData = {
   id: number;
