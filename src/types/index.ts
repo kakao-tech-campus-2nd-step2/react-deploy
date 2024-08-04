@@ -33,6 +33,14 @@ export type GoodsDetailOptionItemData = {
   stockQuantity: number;
 };
 
+export type WishData = {
+  productId: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  wishId: number;
+};
+
 export type OrderHistory = {
   productId: number;
   optionId: number;
