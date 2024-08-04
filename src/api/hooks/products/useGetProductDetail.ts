@@ -2,7 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import type { ProductData } from '@/types';
 
-import { BASE_URL, fetchInstance } from '../instance';
+import { BASE_URL, fetchInstance } from '../../instance';
 
 export type ProductDetailRequestParams = {
   productId: string;

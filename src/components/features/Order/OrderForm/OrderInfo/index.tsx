@@ -1,7 +1,7 @@
 import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
-import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+import { useGetProductDetail } from '@/api/hooks/products/useGetProductDetail';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import type { OrderHistory } from '@/types';

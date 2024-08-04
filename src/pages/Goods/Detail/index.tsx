@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import {
   type ProductDetailRequestParams,
   useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+} from '@/api/hooks/products/useGetProductDetail';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import { LoadingView } from '@/components/common/View/LoadingView';

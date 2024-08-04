@@ -1,6 +1,6 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
-import { fetchInstance } from '../instance';
+import { fetchInstance } from '../../instance';
 
 type MembersRequestParams = {
   email: string;

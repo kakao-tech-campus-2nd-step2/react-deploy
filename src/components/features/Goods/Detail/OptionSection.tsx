@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   type ProductDetailRequestParams,
   useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
-import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+} from '@/api/hooks/products/useGetProductDetail';
+import { useGetProductOptions } from '@/api/hooks/products/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useHandleWish } from '@/hooks/useHandleWish';
 import { useAuth } from '@/provider/Auth';

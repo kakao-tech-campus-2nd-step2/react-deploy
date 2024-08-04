@@ -6,8 +6,8 @@ import {
 
 import type { ProductData } from '@/types';
 
-import { BASE_URL } from '../instance';
-import { fetchInstance } from './../instance/index';
+import { BASE_URL } from '../../instance';
+import { fetchInstance } from '../../instance';
 
 type RequestParams = {
   categoryId: string;
