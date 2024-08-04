@@ -1,5 +1,6 @@
+import { VStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -45,7 +46,13 @@ export const OptionSection = ({ productId }: Props) => {
 
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <VStack spacing={4}>
+        {options.map((option) => (
+          <Fragment key={option.id}>
+            <CountOptionItem name={option.name} value={countAsString} onChange={setCountAsString} />
+          </Fragment>
+        ))}
+      </VStack>
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
