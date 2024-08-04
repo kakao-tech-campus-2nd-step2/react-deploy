@@ -43,7 +43,8 @@ export type WishData = {
 
 export type OrderHistory = {
   productId: number;
-  optionId: number;
+  optionId?: number;
+  optionName?: string;
   count: number;
 };
 

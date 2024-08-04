@@ -27,6 +27,9 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
       <Divider color="#ededed" />
       <CashReceiptFields />
       <Divider color="#ededed" />
+
+      <div>총 상품금액 ({count}개)</div>
+      <Divider color="#ededed" />
       <ItemWrapper>
         <LabelText>최종 결제금액</LabelText>
         <HeadingText>{totalPrice}원</HeadingText>

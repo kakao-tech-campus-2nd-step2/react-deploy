@@ -52,7 +52,9 @@ export const OptionSection = ({ productId }: Props) => {
     orderHistorySessionStorage.set({
       productId: parseInt(productId),
       optionId: optionId,
+      optionName: selectedOption?.name || selectedOption?.optionName || '',
       count: parseInt(countAsString),
+      // totalPrice: totalPrice,
     });
 
     navigate(RouterPath.order);
