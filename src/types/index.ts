@@ -39,13 +39,15 @@ export type OrderHistory = {
 
 export type OrderFormData = {
   productId: number;
+  optionId?: number;
   productQuantity: number;
   messageCardTextMessage: string;
-  senderId: number;
-  receiverId: number;
+  senderId?: number;
+  receiverId?: number;
   hasCashReceipt: boolean;
   cashReceiptType?: 'PERSONAL' | 'BUSINESS';
   cashReceiptNumber?: string;
+  point?: number;
 };
 
 export type MessageCardTemplateData = {

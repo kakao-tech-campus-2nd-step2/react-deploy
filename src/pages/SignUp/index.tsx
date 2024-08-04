@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +9,6 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -27,25 +27,20 @@ export const SignUpPage = () => {
         email: email,
         password: password
       });
-
-      // API 명세 확정 나면 수정 필요!
-      // 회원가입 성공 (200) : 반환 값 세션에 저장 후 메인 페이지로 이동
-      if (response.status === 200) {
-        const data = await response.data;
-        authSessionStorage.set({ email: data.email, token: data.token });
-        window.location.replace(`${window.location.origin}/`);        
-      } 
-
-      // 회원가입 실패 (400) : 메시지 반환
-      else if (response.status === 400) {
-        const data = await response.data;
-        console.error(data.message);
-        alert('회원가입에 실패했습니다.');
-      }
+      const accessToken = response.headers.authorization;
+      return { accessToken, name: response.data.name };
     } 
+    
     catch (error) {
-      console.error(error);
-      alert('회원가입 중 오류가 발생했습니다.');
+      if (error instanceof AxiosError) {
+        const { response } = error;
+
+        if (response?.status === 400) {
+          const data = await response.data;
+          console.error(data.message);
+          alert('회원가입에 실패했습니다.');
+        }
+      }
     }
   };
 
