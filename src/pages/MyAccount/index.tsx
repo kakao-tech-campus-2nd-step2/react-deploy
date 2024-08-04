@@ -1,6 +1,7 @@
 import { Heading } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
+import { Fragment } from 'react';
 
 import { getOrderList, getPoints } from '@/api/utils';
 import { AsyncBoundary } from '@/components/common/AsyncBoundary';
@@ -60,13 +61,15 @@ export const MyAccountPage = () => {
       {orderListData &&
         orderListData.contents &&
         orderListData.contents.map((option) => (
-          <AsyncBoundary
-            pendingFallback={<div>불러오는 중...</div>}
-            rejectedFallback={<div>에러가 발생했습니다.</div>}
-          >
-            <Options productId={String(option.id)} />
-            <Spacing />
-          </AsyncBoundary>
+          <Fragment key={option.id}>
+            <AsyncBoundary
+              pendingFallback={<div>불러오는 중...</div>}
+              rejectedFallback={<div>에러가 발생했습니다.</div>}
+            >
+              <Options productId={String(option.id)} />
+              <Spacing />
+            </AsyncBoundary>
+          </Fragment>
         ))}
     </Wrapper>
   );
