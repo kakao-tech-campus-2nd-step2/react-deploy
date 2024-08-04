@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { authSessionStorage } from '@/utils/storage';
 
 type AuthInfo = {
-  id: string;
   name: string;
   token: string;
 };
@@ -17,15 +16,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const currentAuthToken = authSessionStorage.get();
     if (currentAuthToken) {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        setAuthInfo({
-          id: user.email,
-          name: user.email,
-          token: user.token,
-        });
-      }
+      setAuthInfo({
+        name: "홍길동",
+        token: currentAuthToken.token,
+      });
     }
     setIsReady(true);
   }, []);
