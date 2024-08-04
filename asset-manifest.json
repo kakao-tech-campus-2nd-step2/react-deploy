@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/react-deploy-2/static/css/main.689b7bff.css",
+    "main.js": "/react-deploy-2/static/js/main.43ea1551.js",
+    "static/js/983.31b527ea.chunk.js": "/react-deploy-2/static/js/983.31b527ea.chunk.js",
+    "static/js/689.f8adf1f0.chunk.js": "/react-deploy-2/static/js/689.f8adf1f0.chunk.js",
+    "static/media/kakao_logo.svg": "/react-deploy-2/static/media/kakao_logo.976fd2de0dc47a40dc4cad638b9b69e1.svg",
+    "index.html": "/react-deploy-2/index.html",
+    "main.689b7bff.css.map": "/react-deploy-2/static/css/main.689b7bff.css.map",
+    "main.43ea1551.js.map": "/react-deploy-2/static/js/main.43ea1551.js.map",
+    "983.31b527ea.chunk.js.map": "/react-deploy-2/static/js/983.31b527ea.chunk.js.map",
+    "689.f8adf1f0.chunk.js.map": "/react-deploy-2/static/js/689.f8adf1f0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.689b7bff.css",
+    "static/js/main.43ea1551.js"
+  ]
+}
