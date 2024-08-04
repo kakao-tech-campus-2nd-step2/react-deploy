@@ -8,7 +8,8 @@
     "build": "craco build",
     "test": "craco test",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "deploy": "aws s3 sync ./build s3://kakao-gift-deploy --profile=kakao-gift-deploy"
   },
   "browserslist": {
     "production": [
