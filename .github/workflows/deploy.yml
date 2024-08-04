@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - step2 # 배포를 트리거할 브랜치 이름
+      - gh-pages # 배포를 트리거할 브랜치 이름
 
 jobs:
   build-and-deploy:

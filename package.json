@@ -2,6 +2,7 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://<USERNAME>.github.io/<REPOSITORY_NAME>",
   "scripts": {
     "start": "craco start",
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
