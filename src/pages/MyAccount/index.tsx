@@ -9,7 +9,7 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 interface WishlistItem {
-  id: number;
+  id: number; // Wish ID
   product: {
     id: number;
     name: string;
@@ -50,22 +50,22 @@ export const MyAccount = () => {
     fetchWishlist();
   }, [authInfo, backendUrl]);
 
-  const handleRemoveFromWishlist = async (productId: number) => {
+  const handleRemoveFromWishlist = async (wishId: number) => {
     if (!authInfo) {
       console.error('User is not authenticated');
       return;
     }
 
     try {
-      const response = await axios.delete(`${backendUrl}/api/wishes/${productId}`, {
+      const response = await axios.delete(`${backendUrl}/api/wishes/${wishId}`, {
         headers: {
           Authorization: `Bearer ${authInfo.token}`,
           'Content-Type': 'application/json',
         },
       });
 
-      if (response.status === 200) {
-        setWishlist((prev) => prev.filter((item) => item.product.id !== productId));
+      if (response.status === 204) {
+        setWishlist((prev) => prev.filter((item) => item.id !== wishId));
         alert('관심 상품이 삭제되었습니다.');
       } else {
         console.error('Unexpected response status:', response.status);
@@ -124,7 +124,7 @@ export const MyAccount = () => {
               </Text>
               <Text>{item.product.price}원</Text>
             </Box>
-            <Button colorScheme="red" onClick={() => handleRemoveFromWishlist(item.product.id)}>
+            <Button colorScheme="red" onClick={() => handleRemoveFromWishlist(item.id)}>
               삭제
             </Button>
           </HStack>
