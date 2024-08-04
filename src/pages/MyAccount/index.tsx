@@ -20,14 +20,14 @@ export const MyAccountPage = () => {
   const handleLogout = () => {
     authSessionStorage.set(undefined);
 
-    const redirectURL = `${window.location.origin}${RouterPath.home}`;
+    const redirectURL = `${window.location.origin}/react-deploy${RouterPath.home}`;
     window.location.replace(redirectURL);
   };
 
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요!
-      <div>현재 포인트: {data?.points || 0} 점</div>
+      <div>현재 포인트: {data?.points} 점</div>
       <Spacing height={64} />
       <Button
         size="small"
