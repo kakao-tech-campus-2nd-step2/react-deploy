@@ -1,5 +1,4 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
@@ -8,9 +7,12 @@ import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
 import { RegisterPage } from '@/pages/Register';
-import { OrderedListPage } from '@/pages/OrderedList';
+import { OrderList } from '@/pages/OrderedList';
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
+import { RedirectionComponent } from '@/pages/Login/Redirecting';
+import { NoneKakaoLoginPage } from '@/pages/Login/noneKakaoLogin';
+import { NoneKakaoRegisterPage } from '@/pages/Login/noneKakaoRegister';
 
 const router = createBrowserRouter([
   {
@@ -34,12 +36,12 @@ const router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [
           {
-            path: RouterPath.myAccount,
+            path: '',
             element: <MyAccountPage />,
           },
           {
-            path: 'orders',  // 주문 목록 페이지 추가
-            element: <OrderedListPage />,
+            path: 'orders',
+            element: <OrderList />,
           },
         ],
       },
@@ -54,12 +56,12 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: RouterPath.notFound,
-        element: <Navigate to={RouterPath.home} />,
-      },
-      {
         path: RouterPath.register,
         element: <RegisterPage />,
+      },
+      {
+        path: RouterPath.notFound,
+        element: <Navigate to={RouterPath.home} />,
       },
     ],
   },
@@ -67,6 +69,18 @@ const router = createBrowserRouter([
     path: RouterPath.login,
     element: <LoginPage />,
   },
+  {
+    path: RouterPath.kakaoToken,
+    element: <RedirectionComponent />
+  },
+  {
+    path: RouterPath.noneKakaoLogin,
+    element: <NoneKakaoLoginPage />,
+  },
+  {
+    path: RouterPath.noneKakaoRegister,
+    element: <NoneKakaoRegisterPage />
+  }
 ]);
 
 export const Routes = () => {
