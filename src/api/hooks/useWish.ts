@@ -1,11 +1,14 @@
 import { fetchInstance, BASE_URL } from '../instance';
-
+import { authSessionStorage } from '@/utils/storage';
 type AddWishParams = {
   productId: number;
   token: string;
 };
 
 export const addWish = async ({ productId, token }: AddWishParams) => {
+  console.log(token);
+  const storedAuthInfo = authSessionStorage.get();
+      console.log('Stored auth info:', storedAuthInfo);
   const response = await fetchInstance.post(
     '/api/wishes',
     { productId },
