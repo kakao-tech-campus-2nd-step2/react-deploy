@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -13,6 +13,7 @@ import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
+import { getBaseUrl } from '@/api/instance';
 
 type Props = ProductDetailRequestParams;
 
@@ -24,10 +25,32 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
-  const [counts, setCounts] = useState<CountState>({});
+  const [counts, setCounts] = useState<CountState>(() => {
+    const initialCounts: CountState = {};
+    if (options) {
+      options.forEach(option => {
+        initialCounts[option.id] = '0';
+      });
+    }
+    return initialCounts;
+  });
+
+  useEffect(() => {
+    if (options) {
+      setCounts(prevCounts => {
+        const newCounts = { ...prevCounts };
+        options.forEach(option => {
+          if (!newCounts[option.id]) {
+            newCounts[option.id] = '0';
+          }
+        });
+        return newCounts;
+      });
+    }
+  }, [options]);
+
   const totalPrice = useMemo(() => {
-    if (!detail)
-      return 0;
+    if (!detail) return 0;
     const count = Object.values(counts).reduce((acc, countStr) => acc + Number(countStr), 0);
     return detail.price * count;
   }, [detail, counts]);
@@ -46,21 +69,23 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     try {
-      const response = await fetch('/api/wishes', {
+      const requestBody = {
+        productId: parseInt(productId, 10),
+        quantity: null,
+      };
+
+      console.log('Sending request to add wish', requestBody); // 잘 받아오는지 확인 - 추후 삭제 예정
+
+      const response = await fetch(`${getBaseUrl()}/api/wishes`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authInfo.token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          productId: parseInt(productId, 10),
-          name: detail?.name,
-          price: detail?.price,
-          imageUrl: detail?.imageUrl,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
-      if (response.status === 201) {
+      if (response.ok) {
         alert('관심 등록 완료');
       } else if (response.status === 400) {
         alert('잘못된 요청입니다.');
@@ -89,10 +114,23 @@ export const OptionSection = ({ productId }: Props) => {
 
     const totalCount = Object.values(counts).reduce((acc, countStr) => acc + Number(countStr), 0);
 
-    orderHistorySessionStorage.set({
-      id: parseInt(productId, 10),
-      count: totalCount,
-    });
+    if (totalCount === 0) {
+      alert('옵션을 선택해주세요.');
+      return;
+    }
+
+    const selectedOptions = options
+      .filter(option => Number(counts[option.id]) > 0)
+      .map(option => ({
+        productId: parseInt(productId, 10),
+        optionId: option.id,
+        quantity: Number(counts[option.id]),
+        message: '',
+      }));
+
+    console.log('선택된 옵션 및 수량:', selectedOptions); // 콘솔 로그 추가
+
+    orderHistorySessionStorage.set(selectedOptions);
 
     navigate(RouterPath.order);
   };
@@ -103,7 +141,7 @@ export const OptionSection = ({ productId }: Props) => {
         <CountOptionItem
           key={option.id}
           name={option.name}
-          value={counts[option.id] || '1'}
+          value={counts[option.id]}
           onChange={value => setCounts(prev => ({ ...prev, [option.id]: value }))}
         />
       ))}
