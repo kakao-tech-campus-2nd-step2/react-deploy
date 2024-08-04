@@ -1,52 +1,44 @@
 import { Box, Button, Heading, List, ListItem, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+import { useGetWishlist } from '@/api/hooks/useGetWishlist';
+import { VisibilityLoader } from '@/components/common/VisibilityLoader';
+import { useApi } from '@/provider/Api';
 import { useAuth } from '@/provider/Auth';
 
 type WishlistItem = {
   id: number;
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-  };
+  name: string;
+  price: number;
+  imageUrl: string;
 };
 
 export const Wishlist = () => {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist({
+    maxResults: 10,
+  });
   const authInfo = useAuth();
-  const [wishlist, setWishList] = useState<WishlistItem[]>([]);
+  const { apiUrl } = useApi();
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (authInfo?.token) {
-        try {
-          const response = await fetch('/api/wishes', {
-            headers: {
-              Authorization: `Bearer ${authInfo.token}`,
-            },
-          });
-          const wishData = await response.json();
-          setWishList(wishData.content);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    };
-
-    fetchData();
-  }, [authInfo]);
+    if (data) {
+      const flattenWishlist = data.pages.flatMap((page) => page.content).flat();
+      setWishlist(flattenWishlist);
+    }
+  }, [data]);
 
   const handleDelete = async (wishId: number) => {
     if (authInfo?.token) {
-      const response = await fetch(`/api/wishes/${wishId}`, {
+      const token = JSON.parse(authInfo.token).token;
+      const response = await fetch(`${apiUrl}api/wishes/${wishId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${authInfo.token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       if (response.status === 204) {
-        setWishList((prev) => prev.filter((item) => item.id !== wishId));
+        setWishlist((prevWishlist) => prevWishlist.filter((item) => item.id !== wishId));
       } else {
         alert('삭제 중 오류가 발생했습니다.');
       }
@@ -67,12 +59,12 @@ export const Wishlist = () => {
               <ListItem key={item.id} p={2} borderWidth={1} borderRadius="md">
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box display="flex" alignItems="center" gap="30px">
-                    <img src={item.product.imageUrl} alt={item.product.name} />
+                    <img src={item.imageUrl} alt={item.name} />
                     <Box display="flex" flexDirection="column" gap="10px">
                       <Text fontSize="20px" fontWeight={600}>
-                        {item.product.name}
+                        {item.name}
                       </Text>
-                      <Text fontSize="18px">{item.product.price}원</Text>
+                      <Text fontSize="18px">{item.price}원</Text>
                     </Box>
                   </Box>
                   <Button onClick={() => handleDelete(item.id)}>삭제</Button>
@@ -80,6 +72,15 @@ export const Wishlist = () => {
               </ListItem>
             ))}
           </List>
+        )}
+        {hasNextPage && (
+          <VisibilityLoader
+            callback={() => {
+              if (!isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
+          />
         )}
       </Box>
     </Box>

@@ -2,13 +2,21 @@ import { rest } from 'msw';
 
 import { getCategoriesPath } from './useGetCategorys';
 
+type Category = {
+  id: number;
+  name: string;
+  description: string;
+  color: string;
+  imageUrl: string;
+}
+
 export const categoriesMockHandler = [
   rest.get(getCategoriesPath(), (_, res, ctx) => {
-    return res(ctx.json(CATEGORIES_RESPONSE_DATA));
+    return res(ctx.status(200), ctx.json(CATEGORIES_RESPONSE_DATA));
   }),
 ];
 
-const CATEGORIES_RESPONSE_DATA = [
+const CATEGORIES_RESPONSE_DATA: Category[] = [
   {
     id: 2920,
     name: '생일',

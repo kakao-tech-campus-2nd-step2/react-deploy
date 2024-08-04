@@ -8,6 +8,7 @@ import {
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
+import { useApi } from '@/provider/Api';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -19,7 +20,7 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
-
+  const { apiUrl } = useApi();
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
@@ -47,14 +48,22 @@ export const OptionSection = ({ productId }: Props) => {
 
   const handleAddToWishlist = async () => {
     try {
-      await fetch('/api/wishes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ productId }),
-      });
-      alert('관심 등록 완료');
+      const tokenString = sessionStorage.getItem('authToken');
+
+      if (tokenString) {
+        const token = JSON.parse(tokenString).token;
+
+        await fetch(`${apiUrl}api/wishes/${productId}`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ productId }),
+        });
+        alert('관심 등록 완료');
+      }
     } catch (error) {
       console.error(error);
       alert('관심 상품 등록에 실패했습니다.');

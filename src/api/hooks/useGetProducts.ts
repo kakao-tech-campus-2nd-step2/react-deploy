@@ -6,7 +6,6 @@ import {
 
 import type { ProductData } from '@/types';
 
-import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
@@ -26,10 +25,31 @@ type ProductsResponseData = {
 
 type ProductsResponseRawData = {
   content: ProductData[];
-  number: number;
+  pageable: {
+    offset: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    unpaged: boolean;
+    paged: boolean;
+    pageSize: number;
+    pageNumber: number;
+  };
+  last: boolean;
+  totalPages: number;
   totalElements: number;
   size: number;
-  last: boolean;
+  number: number;
+  sort: {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+  };
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
 };
 
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
@@ -40,7 +60,7 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `/api/products?${params.toString()}`;
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {

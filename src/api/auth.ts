@@ -1,7 +1,7 @@
 import { fetchInstance } from './instance';
 
 export const register = async (email: string, password: string) => {
-  const response = await fetchInstance.post('/api/members/register', {
+  const response = await fetchInstance.post(`/api/members/register`, {
     email,
     password,
   });
@@ -9,7 +9,7 @@ export const register = async (email: string, password: string) => {
 };
 
 export const login = async (email: string, password: string) => {
-  const response = await fetchInstance.post('/api/members/login', {
+  const response = await fetchInstance.post(`/api/members/login`, {
     email,
     password,
   });

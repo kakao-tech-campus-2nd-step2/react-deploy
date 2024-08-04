@@ -8,7 +8,6 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
 export const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -22,12 +21,12 @@ export const RegisterPage = () => {
     }
 
     try {
-      const data = await register(email, password);
+      const response = await register(email, password);
 
-      sessionStorage.setItem('authEmail', data.email);
-      authSessionStorage.set(data.token);
-
-      alert('회원가입이 완료되었습니다.');
+      if (response.status === 201) {
+        sessionStorage.setItem('authEmail', email);
+        alert('회원가입이 완료되었습니다.');
+      }
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       return window.location.replace(redirectUrl);
