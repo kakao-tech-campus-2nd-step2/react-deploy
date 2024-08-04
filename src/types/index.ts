@@ -49,7 +49,7 @@ export type OrderHistory = {
 
 export type OrderFormData = {
   productId: number;
-  optionId: number;
+  optionId?: number;
   quantity: number;
   hasCashReceipt?: boolean;
   cashReceiptType?: 'PERSONAL' | 'BUSINESS';
