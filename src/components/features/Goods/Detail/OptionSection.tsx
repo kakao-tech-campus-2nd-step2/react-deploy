@@ -58,20 +58,20 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
-  if (!Array.isArray(options) || options.length === 0) {
-    return <>options 데이터 없음</>;
-  }
-
   return (
     <Wrapper>
       <OptionContainer>
-        <OptionSelector onChange={handleOptionSelect} defaultValue={optionId}>
-          {options.map((opt) => (
-            <option key={opt.optionId} value={opt.optionId}>
-              {opt.name || opt.optionName}
-            </option>
-          ))}
-        </OptionSelector>
+        {Array.isArray(options) ? (
+          <OptionSelector onChange={handleOptionSelect} defaultValue={optionId}>
+            {options.map((opt) => (
+              <option key={opt.optionId} value={opt.optionId}>
+                {opt.name || opt.optionName}
+              </option>
+            ))}
+          </OptionSelector>
+        ) : (
+          <></>
+        )}
         <CountOptionItem
           name={selectedOption?.name || selectedOption?.optionName || ''}
           value={countAsString}
