@@ -1,3 +1,4 @@
+import { Flex, Spinner } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +13,13 @@ import { CategoryItem } from './CategoryItem';
 export const CategorySection = () => {
   const { data, isLoading, isError } = useGetCategories();
 
-  if (isLoading || isError) return null;
+  if (isLoading)
+    return (
+      <Flex width="100vw" height="240px" justifyContent="center" alignItems="center">
+        <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+      </Flex>
+    );
+  if (isError) return <div>카테고리 불러오기 실패</div>;
   if (!data) return null;
 
   return (
