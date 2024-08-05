@@ -15,7 +15,7 @@ const createWrapper = () => {
 
 test('useGetProducts_상품_데이터_반환', async () => {
   const { result } = renderHook(
-    () => useGetProducts({ categoryId: '2920', maxResults: 10, initPageToken: '0' }),
+    () => useGetProducts({ categoryId: '2920', size: 10, initPageToken: '0' }),
     { wrapper: createWrapper() },
   );
 

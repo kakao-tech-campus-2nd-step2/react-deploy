@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const CategoryHeroSection = ({ categoryId }: Props) => {
-  const { isRender, currentTheme } = useCurrentCategory({ categoryId });
+  const { isRender, currentTheme } = useCurrentCategory({ categoryId: categoryId });
 
   if (!isRender) return null;
 

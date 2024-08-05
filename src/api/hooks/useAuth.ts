@@ -8,6 +8,7 @@ import { authSessionStorage } from '@/utils/storage';
 export const useAuth = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('test');
   const [queryParams] = useSearchParams();
 
   const redirectAfterAuth = () => {
@@ -47,8 +48,8 @@ export const useAuth = () => {
   };
 
   const register = async () => {
-    if (!id || !password) {
-      alert('이메일과 비밀번호를 입력해주세요.');
+    if (!id || !password || !name) {
+      alert('이메일, 비밀번호, 이름을 입력해주세요.');
       return;
     }
 
@@ -56,9 +57,11 @@ export const useAuth = () => {
       const response = await fetchInstance.post(ApiPath.members.register, {
         email: id,
         password,
+        name,
+        loginType: 'NORMAL',
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         const data = response.data;
         console.log('회원가입 성공:', data);
         authSessionStorage.set(response.data.token);
@@ -76,6 +79,8 @@ export const useAuth = () => {
     setId,
     password,
     setPassword,
+    name,
+    setName,
     login,
     register,
   };
