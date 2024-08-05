@@ -21,7 +21,7 @@ const SignUpPage: React.FC = () => {
     try {
       await registerAndLogin(email, password);
       alert('회원가입 및 자동 로그인 성공!');
-      window.location.replace('/react-deploy');
+      window.location.replace('/react-deploy/'); // 여기 경로를 수정
     } catch (error) {
       alert('회원가입 실패: ' + (error as Error).message);
     }
