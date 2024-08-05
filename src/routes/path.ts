@@ -1,6 +1,6 @@
 export const RouterPath = {
   root: '/',
-  home: '/',
+  home: `${process.env.REACT_APP_PUBLIC_URL}/`,
   category: '/category/:categoryId',
   myAccount: '/my-account',
   orderList: '/order-list',
