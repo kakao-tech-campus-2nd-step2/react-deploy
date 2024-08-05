@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
+import { RouterPath } from '@/routes/path';
 
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
 
   const handleLogin = () => {
-    navigate(getDynamicPath.login());
+    navigate('/login');
   };
 
   return (

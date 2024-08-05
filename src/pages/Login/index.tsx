@@ -7,7 +7,6 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -22,21 +21,22 @@ export const LoginPage = () => {
     if (token) {
       console.log(queryParams);
       authSessionStorage.set({ token: token });
-      const redirectUrl = queryParams.get('redirect') ?? `.`;
+      const redirectUrl = queryParams.get('redirect') ?? `/`;
       return window.location.replace(redirectUrl);
     }
   }, [queryParams]);
 
   const handleConfirm = async () => {
     try {
+      console.log(process.env.REACT_APP_API);
       const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
         email: email,
         password: password,
       });
+      console.log(BASE_URL);
       const data = await response.data;
       authSessionStorage.set({ token: data.token, email: email });
-      const redirectUrl = queryParams.get('redirect') ?? '';
-      navigate(getDynamicPath.login(redirectUrl));
+      navigate('/');
     } catch (error) {
       console.error('Failed sign in', error);
       alert('로그인 중 오류가 발생했습니다.');
@@ -44,7 +44,7 @@ export const LoginPage = () => {
   };
   const handleKakaoLogin = async () => {
     const redirectUrl = encodeURIComponent(`${window.location.origin}/react-deploy/login`);
-    window.location.href = `${BASE_URL}/api/members/kakao?redirect_url=${redirectUrl}`;
+    window.location.replace(`${BASE_URL}/api/members/kakao?redirect_url=${redirectUrl}`);
   };
   return (
     <Wrapper>

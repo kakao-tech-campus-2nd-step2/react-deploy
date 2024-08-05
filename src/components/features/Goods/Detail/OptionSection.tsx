@@ -12,7 +12,7 @@ import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { usePostWishs } from '@/api/hooks/usePostWishs';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
+import { RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 type Props = ProductDetailRequestParams;
@@ -40,7 +40,7 @@ export const OptionSection = ({ productId }: Props) => {
       const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
 
       if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      return navigate('/login');
     }
 
     orderHistorySessionStorage.set({
@@ -57,7 +57,7 @@ export const OptionSection = ({ productId }: Props) => {
       const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
 
       if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      return navigate('/login');
     }
     postWishs(Number(productId), {
       onSuccess: () => {

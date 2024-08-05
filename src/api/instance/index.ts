@@ -12,7 +12,6 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
       ...config.headers,
     },
   });
-
   return instance;
 };
 
