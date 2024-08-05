@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
