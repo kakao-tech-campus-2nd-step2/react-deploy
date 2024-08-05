@@ -14,7 +14,7 @@ export const useCurrentCategory = ({ category_id }: Props) => {
     return true;
   }, [data, isLoading, isError]);
 
-  const currentTheme = getCurrentCategory(category_id, data ?? []);
+  const currentTheme = getCurrentCategory(category_id, data?.categories ?? []);
 
   return {
     isRender,
