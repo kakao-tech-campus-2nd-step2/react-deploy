@@ -33,3 +33,11 @@
   4. 페인팅 : 레이아웃을 이용하여 계산된 위치에 요소들을 표시하는 과정
 
   => 로더가 서버로부터 전달받은 리소스 스트림을 읽어오고 파서가 DOM Tree와 CSSOM Tree를 생성한다. 여기서 렌더링에 필요한 노드만 선택하여 페이지를 렌더링한다.
+
+**[api명세](https://alive-tail-1fa.notion.site/API-778e7fee2b6c45f4bf19c06ac1e15461?pvs=4)**
+
+**<백엔드 분이 주신 url>**
+
+- 아래 endpoint로 접속해볼 수 있습니다!
+  - 52.78.81.37:8080
+  - ex: http://52.78.81.37:8080/api/products?sort=name,asc&category_id=1
