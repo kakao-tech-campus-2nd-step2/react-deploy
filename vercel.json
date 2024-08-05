@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+       "source": "/api/categories",
+      "destination": "http://3.36.86.203:8080/api/categories"
+    }
+  ]
+}
