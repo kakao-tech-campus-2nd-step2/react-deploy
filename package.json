@@ -2,7 +2,7 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Hyoeunkh.gihub.io/react-deploy",
+  "homepage": "https://hyoeunkh.gihub.io/react-deploy/",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
