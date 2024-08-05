@@ -15,25 +15,23 @@ export interface WishListItem {
   };
 }
 
-interface GetWishListResponse {
-  content: WishListItem[];
-  totalElements: number;
-  last: boolean;
-  number: number;
-  size: number;
-}
-
-export const getWishList = async (page: number, size: number): Promise<GetWishListResponse> => {
-  const response = await fetchInstance.get<GetWishListResponse>(ApiPath.wishes.root, {
+export const getWishList = async (
+  page?: number,
+  size?: number,
+  sort?: string,
+): Promise<WishListItem[]> => {
+  const response = await fetchInstance.get<WishListItem[]>(ApiPath.wishes.root, {
     params: {
       page,
       size,
-      sort: 'createdDate,desc',
+      sort: sort || 'id,desc',
     },
     headers: {
       Authorization: `Bearer ${authSessionStorage.get()}`,
     },
   });
+
+  console.log(response.data);
   return response.data;
 };
 
