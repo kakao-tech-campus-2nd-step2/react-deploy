@@ -31,7 +31,7 @@ export const NoneKakaoRegisterPage = () => {
 
     try {
       const data: RegisterDatas = { email, password };
-      const response = await fetchInstance.post(`${BASE_URL}/api/members`, {
+      const response = await fetchInstance.post(`/api/members/register`, {
         email,
         password,
       });

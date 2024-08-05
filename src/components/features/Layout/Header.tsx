@@ -62,9 +62,9 @@ export const Header = () => {
         <RightWrapper>
           <select value={selectedUser} onChange={handleUserChange}>
             <option value="최유성">최유성</option>
-            <option value="오승환">오승환</option>
-            <option value="고승현">고승현</option>
-            <option value="김병수">김병수</option>
+            <option value="오승환" disabled>오승환</option>
+            <option value="고승현" disabled>고승현</option>
+            <option value="김병수" disabled>김병수</option>
           </select>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>

@@ -12,7 +12,7 @@ export const LoginPage = () => {
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`; 
   
   const kakaologinHandler = () => {
-    window.location.href = `${BASE_URL}/kakao/login`;
+    window.location.href = `/kakao/login`;
     // window.location.href = link;
   };
 

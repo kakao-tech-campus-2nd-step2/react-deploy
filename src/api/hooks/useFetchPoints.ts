@@ -10,7 +10,7 @@ export const useFetchPoints = (token: string) => {
   useEffect(() => {
     const fetchPoints = async () => {
       try {
-        const response = await fetchInstance.get<{ point: number }>(`${BASE_URL}/api/members/points`, {
+        const response = await fetchInstance.get<{ point: number }>(`/api/members/points`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

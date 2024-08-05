@@ -19,7 +19,7 @@ export const NoneKakaoLoginPage = () => {
     }
 
     try {
-      const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
+      const response = await fetchInstance.post(`/api/members/login`, {
         email,
         password,
       });

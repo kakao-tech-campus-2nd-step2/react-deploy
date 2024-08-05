@@ -21,7 +21,7 @@ export const addWish = async ({ productId, token }: AddWishParams) => {
 };
 
 export const fetchWishlist = async (token: string) => {
-  const response = await fetch(`${BASE_URL}/api/wishes?page=0&size=10&sort=createdDate,desc`, {
+  const response = await fetch(`/api/wishes?page=0&size=10&sort=createdDate,desc`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -35,7 +35,7 @@ export const fetchWishlist = async (token: string) => {
 };
 
 export const deleteWish = async (wishId: number, token: string) => {
-  const response = await fetch(`${BASE_URL}/api/wishes/${wishId}`, {
+  const response = await fetch(`/api/wishes/${wishId}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,

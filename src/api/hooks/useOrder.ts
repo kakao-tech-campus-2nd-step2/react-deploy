@@ -23,7 +23,7 @@ type CreateOrderVariables = {
 
 const createOrder = async ({ params, token }: CreateOrderVariables): Promise<OrderResponse> => {
   const response = await fetchInstance.post<OrderResponse>(
-    `${BASE_URL}/api/orders`,
+    `/api/orders`,
     params,
     {
       headers: {
