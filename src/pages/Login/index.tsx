@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import dotenv from 'dotenv';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -9,6 +10,8 @@ import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineText
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
+
+dotenv.config();
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
