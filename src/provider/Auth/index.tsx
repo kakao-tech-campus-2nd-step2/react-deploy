@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { authSessionStorage } from '@/utils/storage';
+import { authTokenStorage } from '@/utils/storage';
 
 type AuthInfo = {
-  id: string;
+  id: number;
   name: string;
   token: string;
 };
@@ -12,14 +12,14 @@ type AuthInfo = {
 export const AuthContext = createContext<AuthInfo | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const currentAuthToken = authSessionStorage.get();
+  const currentAuthToken = authTokenStorage.get();
   const [isReady, setIsReady] = useState(!currentAuthToken);
 
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
 
   useEffect(() => {
     if (currentAuthToken) {
-      const id = currentAuthToken.slice(0, 5); // 토큰 앞의 5자리 추출
+      const id = parseInt(currentAuthToken.slice(0, 5), 10); // 토큰 앞의 5자리 추출
       setAuthInfo({
         id, // 추출한 ID 설정
         name: 'User', //사용자 이름을 임의로 설정

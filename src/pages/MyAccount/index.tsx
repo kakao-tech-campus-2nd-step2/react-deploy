@@ -1,11 +1,12 @@
-import { Box, Button, VStack } from '@chakra-ui/react';
+import { Box, Button, Text, VStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import { usePoint } from '@/api/hooks/usePoint';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
-import { authSessionStorage } from '@/utils/storage';
+import { authTokenStorage } from '@/utils/storage';
 
 import WishList from './WishList';
 
@@ -13,9 +14,10 @@ const queryClient = new QueryClient();
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+  const { point, loading: pointLoading, error: pointError } = usePoint();
 
   const handleLogout = () => {
-    authSessionStorage.set(undefined);
+    authTokenStorage.set(undefined);
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
   };
@@ -26,6 +28,13 @@ export const MyAccountPage = () => {
         <VStack spacing={8}>
           <Box>{authInfo?.name}님 안녕하세요!</Box>
           <Spacing height={64} />
+          {pointLoading ? (
+            <Text>포인트 로딩 중...</Text>
+          ) : pointError ? (
+            <Text>포인트를 가져오는데 실패했습니다.</Text>
+          ) : (
+            <Text>현재 포인트: {point} 점</Text>
+          )}
           <Button size="small" onClick={handleLogout} style={{ maxWidth: '200px' }}>
             로그아웃
           </Button>

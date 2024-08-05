@@ -2,14 +2,13 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { BASE_URL } from '@/api/instance';
-//import { setAuthToken } from '@/api/instance';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
+import { authEmailStorage, authTokenStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
   const [id, setId] = useState('');
@@ -17,7 +16,7 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = async () => {
+  const handleLogin = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
@@ -35,7 +34,6 @@ export const LoginPage = () => {
       });
 
       console.log('로그인 요청2:', { email: id, password });
-
       console.log('로그인 응답 상태:', response.status);
 
       if (!response.ok) {
@@ -47,14 +45,39 @@ export const LoginPage = () => {
       const data = await response.json();
       console.log('로그인 성공 응답 데이터:', data);
 
-      authSessionStorage.set(data.token); //로그인 성공 시 토큰 저장
-      //      setAuthToken(data.token); // 토큰 설정
+      authTokenStorage.set(data.token); // 로그인 성공 시 토큰 저장
+      authEmailStorage.set(id); // 로그인 성공 시 이메일 저장
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/myaccount`;
       return window.location.replace(redirectUrl);
     } catch (error) {
       console.error('로그인 오류:', error);
-      alert(error);
+      alert('로그인 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleKakaoLogin = async () => {
+    try {
+      const response = await fetchInstance.get(`${BASE_URL}/api/oauth2/kakao`, {
+        params: {
+          code: 'testCode',
+        },
+      });
+
+      if (response.status === 200) {
+        const data = response.data;
+        authTokenStorage.set(data.token);
+        authEmailStorage.set('kakaoUser');
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
+      } else if (response.status === 400) {
+        const data = response.data;
+        console.error(data.message);
+        alert('카카오 로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('카카오 로그인 오류');
     }
   };
 
@@ -66,7 +89,11 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -74,11 +101,12 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing height={{ initial: 40, sm: 60 }} />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={handleLogin}>로그인</Button>
         <Spacing height={{ initial: 20, sm: 40 }} />
         <Button onClick={handleSignUp}>회원가입</Button>
+        <Spacing height={{ initial: 20, sm: 40 }} />
+        <Button onClick={handleKakaoLogin}>카카오톡으로 로그인</Button>
       </FormWrapper>
     </Wrapper>
   );

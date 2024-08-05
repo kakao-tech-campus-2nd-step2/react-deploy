@@ -3,7 +3,7 @@ import { rest } from 'msw';
 import { categoriesMockHandler } from '@/api/hooks/categories.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
 
-//가상 데이터베이스
+// 가상 데이터베이스
 export const userDatabase: { email: string; password: string }[] = [
   { email: 'server1@example.com', password: 'password1' },
   { email: 'server2@example.com', password: 'password2' },
@@ -23,10 +23,10 @@ export const handlers = [
       return res(ctx.status(400), ctx.json({ message: '이메일과 비밀번호를 입력해주세요 ' }));
     }
 
-    //가상 데이터베이스에 사용자 정보 저장
+    // 가상 데이터베이스에 사용자 정보 저장
     userDatabase.push({ email, password });
 
-    //성공 응답 예제
+    // 성공 응답 예제
     return res(
       ctx.status(200),
       ctx.json({
@@ -44,7 +44,7 @@ export const handlers = [
       (user) => user.email === email && user.password === password,
     );
 
-    //성공시
+    // 성공 시
     if (loginUser) {
       return res(
         ctx.status(200),
@@ -54,11 +54,32 @@ export const handlers = [
       );
     } else {
       console.log('로그인 실패: 사용자 정보 불일치');
-      //실패시
+      // 실패 시
       return res(
         ctx.status(400),
         ctx.json({ message: '로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요' }),
       );
     }
+  }),
+
+  // 카카오 로그인 핸들러 추가
+  rest.get('/api/oauth2/kakao', (req, res, ctx) => {
+    const code = req.url.searchParams.get('code');
+
+    if (code === 'exampleCode') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          token: 'example-token',
+        }),
+      );
+    }
+
+    return res(
+      ctx.status(400),
+      ctx.json({
+        message: 'Invalid code',
+      }),
+    );
   }),
 ];

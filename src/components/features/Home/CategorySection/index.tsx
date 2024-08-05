@@ -12,8 +12,17 @@ import { CategoryItem } from './CategoryItem';
 export const CategorySection = () => {
   const { data, isLoading, isError } = useGetCategories();
 
-  if (isLoading || isError) return null;
-  if (!data) return null;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading categories</div>;
+  }
+
+  if (!data || data.length === 0) {
+    return <div>No categories found</div>;
+  }
 
   return (
     <Wrapper>
