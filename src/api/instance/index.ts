@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
-    timeout: 5000,
+    timeout: 10000,
     ...config,
     headers: {
       Accept: 'application/json',
@@ -16,8 +16,8 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = '';
-// TODO: 추후 서버 API 주소 변경 필요
+export const BASE_URL = 'https://do-free.duckdns.org/stopmin';
+
 export const fetchInstance = initInstance({
   baseURL: BASE_URL,
 });
