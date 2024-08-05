@@ -1,5 +1,6 @@
+import { VStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -18,10 +19,14 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
-  const [countAsString, setCountAsString] = useState('1');
+  const [selectedOption, setSelectedOption] = useState<{ id: number; count: string }>({
+    id: options?.[0]?.id || 0,
+    count: '1',
+  });
+
   const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
-  }, [detail, countAsString]);
+    return detail.price * Number(selectedOption.count);
+  }, [selectedOption, detail]);
 
   const navigate = useNavigate();
   const authInfo = useAuth();
@@ -36,21 +41,37 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(productId),
-      count: parseInt(countAsString),
+      id: selectedOption.id,
+      count: parseInt(selectedOption.count),
+      productId: parseInt(productId),
     });
 
     navigate(RouterPath.order);
   };
 
+  const handleCountChange = (optionId: number) => (newCount: string) => {
+    setSelectedOption({ id: optionId, count: newCount });
+  };
+
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <VStack spacing={4}>
+        {options.map((option) => (
+          <Fragment key={option.id}>
+            <CountOptionItem
+              name={option.name}
+              onChange={handleCountChange(option.id)}
+              value={selectedOption.id === option.id ? selectedOption.count : '0'}
+              maxValues={option.quantity}
+            />
+          </Fragment>
+        ))}
+      </VStack>
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button theme="black" size="large" disabled={totalPrice === 0} onClick={handleClick}>
           나에게 선물하기
         </Button>
       </BottomWrapper>

@@ -18,6 +18,10 @@ export type LoginUserResponse = {
   token: string;
 };
 
+export type UserPointResponse = {
+  points: number;
+};
+
 export type AddToWishlistResponse = {
   success: boolean;
   message: string;
@@ -33,6 +37,7 @@ export type CreateOrderRequestParams = {
   optionId: string | number;
   quantity: number;
   message: string;
+  points: number;
 };
 
 export type OrderListRequestParams = {
@@ -59,3 +64,7 @@ export type ProductDetailResponseData = ProductData;
 export type ProductOptionsResponseData = ProductOptionsData[];
 
 export type CategoryResponseData = CategoryData[];
+
+export type CommonResponse = {
+  message: string;
+};

@@ -20,6 +20,9 @@ export type OrderData = {
   quantity: number;
   orderDateTime: string;
   message: string;
+  pointsUsed: number;
+  pointsReceived: number;
+  payment: number;
 };
 
 export type ProductOptionsData = {
@@ -27,6 +30,11 @@ export type ProductOptionsData = {
   name: string;
   quantity: number;
   productId: number;
+  optionName: string;
+  productName: string;
+  productPrice: number;
+  message: string;
+  orderDateTime: string;
 };
 
 export type GoodsDetailOptionItemData = {
@@ -42,10 +50,11 @@ export type GoodsDetailOptionItemData = {
 export type OrderHistory = {
   id: number;
   count: number;
+  productId: number;
 };
 
 export type OrderFormData = {
-  productId: number;
+  optionId: number;
   productQuantity: number;
   messageCardTextMessage: string;
   senderId: number;
@@ -53,6 +62,8 @@ export type OrderFormData = {
   hasCashReceipt: boolean;
   cashReceiptType?: 'PERSONAL' | 'BUSINESS';
   cashReceiptNumber?: string;
+  points: number;
+  totalPrice: number;
 };
 
 export type MessageCardTemplateData = {

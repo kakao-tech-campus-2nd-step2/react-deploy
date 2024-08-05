@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { createOrder } from '@/api/utils';
+import { createOrder, getPoints } from '@/api/utils';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -18,6 +18,10 @@ type Props = {
 
 export const OrderForm = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
+  const { data } = useQuery({
+    queryFn: getPoints,
+    queryKey: ['points'],
+  });
   const createOrderMutation = useMutation({
     mutationFn: createOrder,
     onSuccess: () => alert('주문이 완료되었습니다.'),
@@ -26,7 +30,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
-      productId: id,
+      optionId: id,
       productQuantity: count,
       senderId: 0,
       receiverId: 0,
@@ -36,7 +40,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
   const { handleSubmit } = methods;
 
   const handleForm = (values: OrderFormData) => {
-    const { errorMessage, isValid } = validateOrderForm(values);
+    const { errorMessage, isValid } = validateOrderForm(values, data?.points);
 
     if (!isValid) {
       alert(errorMessage);
@@ -44,9 +48,10 @@ export const OrderForm = ({ orderHistory }: Props) => {
     }
 
     createOrderMutation.mutate({
-      optionId: values.productId,
+      optionId: values.optionId,
       message: values.messageCardTextMessage,
       quantity: values.productQuantity,
+      points: isNaN(values.points) ? 0 : values.points,
     });
   };
 
@@ -75,6 +80,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
 
 export const validateOrderForm = (
   values: OrderFormData,
+  currentPoints = 0,
 ): { errorMessage?: string; isValid: boolean } => {
   if (values.hasCashReceipt) {
     if (!values.cashReceiptNumber) {
@@ -102,6 +108,20 @@ export const validateOrderForm = (
   if (values.messageCardTextMessage.length > 100) {
     return {
       errorMessage: '메시지는 100자 이내로 입력해주세요.',
+      isValid: false,
+    };
+  }
+
+  if (values.points && values.points > currentPoints) {
+    return {
+      errorMessage: `사용할 수 있는 최대 포인트는 ${currentPoints}점입니다.`,
+      isValid: false,
+    };
+  }
+
+  if (values.points && values.points > values.totalPrice / 2) {
+    return {
+      errorMessage: `결제 금액의 50% (${values.totalPrice / 2}원) 이하의 포인트만 사용할 수 있습니다.`,
       isValid: false,
     };
   }

@@ -14,9 +14,9 @@ type Props = {
   orderHistory: OrderHistory;
 };
 export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
+  const { count, productId } = orderHistory;
 
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const { data: detail } = useGetProductDetail({ productId: String(productId) });
   const totalPrice = detail.price * count;
 
   return (
@@ -25,7 +25,7 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
         <HeadingText>결제 정보</HeadingText>
       </Title>
       <Divider color="#ededed" />
-      <CashReceiptFields />
+      <CashReceiptFields totalPrice={totalPrice} />
       <Divider color="#ededed" />
       <ItemWrapper>
         <LabelText>최종 결제금액</LabelText>

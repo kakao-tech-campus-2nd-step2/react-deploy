@@ -21,6 +21,7 @@ afterAll(() => worker.close());
 const testOrderHistory = {
   id: 3245119,
   count: 3,
+  productId: 5,
 };
 
 const setup = async () => {
