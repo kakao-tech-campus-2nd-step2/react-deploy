@@ -25,7 +25,7 @@
       "destination": "http://3.36.86.203:8080/api/products/:productId/options"
     },
     {
-      "source": "/api/products/:productId/",
+      "source": "/api/products/:productId",
       "destination": "http://3.36.86.203:8080/api/products/:productId"
     },
     {
@@ -39,10 +39,6 @@
     {
       "source": "/api/members/login",
       "destination": "http://3.36.86.203:8080/api/members/login"
-    },
-    {
-      "source": "/api/members/register",
-      "destination": "http://3.36.86.203:8080/api/members/register"
     }
   ]
 }
