@@ -14,11 +14,7 @@ export const useCurrentCategory = ({ categoryId }: Props) => {
     return true;
   }, [data, isLoading, isError]);
 
-<<<<<<< HEAD
   const currentTheme = getCurrentCategory(categoryId, data?.categories ?? []);
-=======
-  const currentTheme = getCurrentCategory(categoryId, data ?? []);
->>>>>>> upstream/dlwltn0430
 
   return {
     isRender,

@@ -66,19 +66,11 @@ export const MyAccountPage = () => {
             alignItems="center"
             mt={7}
           >
-<<<<<<< HEAD
             <Image boxSize="100px" src={item.image_url} alt={item.product_name} />
             <Box ml={4} mr={4}>
               <Text fontSize="xl">{item.product_name}</Text>
               <Text fontSize="xl" as="b">
                 {/* {item.price}원 */}
-=======
-            <Image boxSize="100px" src={item.product.imageUrl} alt={item.product.name} />
-            <Box ml={4} mr={4}>
-              <Text fontSize="xl">{item.product.name}</Text>
-              <Text fontSize="xl" as="b">
-                {item.product.price}원
->>>>>>> upstream/dlwltn0430
               </Text>
             </Box>
             <Box ml="auto" onClick={() => handleDelete(item.id)}>

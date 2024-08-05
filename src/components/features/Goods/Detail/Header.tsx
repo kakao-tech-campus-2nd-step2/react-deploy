@@ -2,11 +2,8 @@ import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-<<<<<<< HEAD
 import { useAddWishlist } from '@/api/hooks/useAddWishlist';
 import { useDeleteWishlistItem } from '@/api/hooks/useDeleteWishlistItem';
-=======
->>>>>>> upstream/dlwltn0430
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { breakpoints } from '@/styles/variants';
@@ -15,7 +12,6 @@ type Props = ProductDetailRequestParams;
 
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
-<<<<<<< HEAD
 
   const [isFavorite, setIsFavorite] = useState(false);
   const addWishlist = useAddWishlist();
@@ -48,22 +44,11 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
         },
       );
     }
-=======
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
-    alert(isFavorite ? '관심 등록 해제' : '관심 등록 완료');
->>>>>>> upstream/dlwltn0430
   };
 
   return (
     <Wrapper>
-<<<<<<< HEAD
       <GoodsImage src={detail.image_url} alt={detail.name} />
-=======
-      <GoodsImage src={detail.imageUrl} alt={detail.name} />
->>>>>>> upstream/dlwltn0430
       <InfoWrapper>
         <Title>{detail.name}</Title>
         <Price>{detail.price}원</Price>
