@@ -11,7 +11,7 @@ export const MyAccountPage = () => {
   const authInfo = useAuth();
   const handleLogout = () => {
     authSessionStorage.set(undefined);
-    window.location.replace(RouterPath.home);
+    window.location.replace(`${process.env.PUBLIC_URL}${RouterPath.home}`);
   };
 
   return (
