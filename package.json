@@ -6,7 +6,7 @@
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
-    "build": "env-cmd -f .env.production craco build",
+    "build": "env-cmd -f ./.env.production craco build",
     "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write '**/*.{ts,tsx}'",
