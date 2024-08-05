@@ -20,8 +20,8 @@ export const LoginForm = ({
     onSuccess: () => {
       handleConfirm();
     },
-    onError: () => {
-      alert('로그인에 실패했습니다.');
+    onError: (err) => {
+      alert(err.message);
     },
   });
 

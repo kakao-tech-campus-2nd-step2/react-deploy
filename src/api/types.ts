@@ -64,3 +64,7 @@ export type ProductDetailResponseData = ProductData;
 export type ProductOptionsResponseData = ProductOptionsData[];
 
 export type CategoryResponseData = CategoryData[];
+
+export type CommonResponse = {
+  message: string;
+};

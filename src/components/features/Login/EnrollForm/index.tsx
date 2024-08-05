@@ -37,8 +37,8 @@ export const EnrollForm = ({
     onSuccess: () => {
       handleConfirm();
     },
-    onError: () => {
-      alert('회원가입에 실패했습니다.');
+    onError: (err) => {
+      alert(err.message);
     },
   });
 

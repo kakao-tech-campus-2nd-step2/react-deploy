@@ -1,3 +1,5 @@
+import type { AxiosError } from 'axios';
+
 import { getCategoriesPath } from '@/api/hooks/useGetCategorys';
 import { getProductDetailPath } from '@/api/hooks/useGetProductDetail';
 import { getProductOptionsPath } from '@/api/hooks/useGetProductOptions';
@@ -19,8 +21,16 @@ import type {
 } from '@/api/types';
 import type { OrderListRequestParams } from '@/api/types';
 import type { CreateOrderRequestParams } from '@/api/types';
+import type { CommonResponse } from '@/api/types';
 import type { WishlistItem } from '@/components/features/MyAccount/WhishList';
 import type { OrderData, ProductData } from '@/types';
+import type { ProductOptionsData } from '@/types';
+
+export const errorMessages: {
+  [key: string]: (task: string) => string;
+} = {
+  unknown: (task: string) => `알 수 없는 이유로 ${task}에 실패했습니다. 잠시 후 다시 시도해 주세요`,
+};
 
 export const registerUser = async ({
   email,
@@ -36,7 +46,10 @@ export const registerUser = async ({
 
     return response.data;
   } catch (error) {
-    throw new Error('회원가입에 실패했습니다.');
+    throw new Error(
+      (error as AxiosError<CommonResponse>).response?.data?.message ??
+        errorMessages.unkown('회원가입'),
+    );
   }
 };
 
@@ -54,7 +67,10 @@ export const loginUser = async ({
 
     return response.data;
   } catch (error) {
-    throw new Error('로그인에 실패했습니다.');
+    throw new Error(
+      (error as AxiosError<CommonResponse>).response?.data?.message ??
+        errorMessages.unknown('로그인'),
+    );
   }
 };
 
@@ -178,7 +194,7 @@ export const createOrder = async (order: CreateOrderRequestParams): Promise<Orde
 
 export const getOrderList = async (
   params: OrderListRequestParams,
-): Promise<PaginationResponseData<OrderData>> => {
+): Promise<PaginationResponseData<ProductOptionsData>> => {
   try {
     const response = await fetchInstance.get('/api/orders', {
       params: params,
