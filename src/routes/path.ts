@@ -1,6 +1,8 @@
+const basename = process.env.PUBLIC_URL || '';
+
 export const RouterPath = {
-  root: '/',
-  home: `/`,
+  root: `${basename}/`,
+  home: `${basename}/`,
   category: '/category/:categoryId',
   myAccount: '/my-account',
   orderList: '/order-list',
