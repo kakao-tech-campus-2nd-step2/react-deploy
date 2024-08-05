@@ -76,7 +76,7 @@ const router = createBrowserRouter(
       element: <SignUpPage />,
     },
   ],
-  { basename: process.env.REACT_APP_PUBLIC_URL },
+  { basename: process.env.PUBLIC_URL },
 );
 
 export const Routes = () => {
