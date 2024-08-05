@@ -43,7 +43,7 @@ export const LoginPage = () => {
     }
   };
   const handleKakaoLogin = async () => {
-    const redirectUrl = encodeURIComponent(`${window.location.origin}/react-deploy/login`);
+    const redirectUrl = encodeURIComponent(`${process.env.REACT_APP_PUBLIC_URL}/login`);
     window.location.replace(`${BASE_URL}/api/members/kakao?redirect_url=${redirectUrl}`);
   };
   return (
