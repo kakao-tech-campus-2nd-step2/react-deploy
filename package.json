@@ -10,7 +10,8 @@
     "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "deploy": "npm run build && gh-pages -d build"
+    "deploy": "npm run build && gh-pages -d build",
+    "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}' --quiet"
   },
   "browserslist": {
     "production": [

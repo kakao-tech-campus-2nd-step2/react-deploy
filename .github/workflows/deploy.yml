@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Lint the code
+        run: npm run lint
+
       - name: Set environment variables
         run: |
           echo "REACT_APP_API_URL=http://43.201.17.220:8080" > .env.production
