@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
@@ -12,6 +13,7 @@ import { authSessionStorage } from '@/utils/storage';
 export const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleConfirm = async () => {
     if (!email || !password) {
@@ -27,7 +29,7 @@ export const SignUpPage = () => {
 
       const data = response.data;
       authSessionStorage.set({ token: data.token, email: email, password: password });
-      window.location.replace(`${window.location.origin}/react-deploy/`);
+      navigate('/');
     } catch (error) {
       console.error('Failed sign up', error);
       alert('회원가입 중 오류가 발생했습니다.');

@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -14,13 +15,14 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = queryParams.get('token');
     if (token) {
       console.log(queryParams);
       authSessionStorage.set({ token: token });
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/`;
+      const redirectUrl = queryParams.get('redirect') ?? `.`;
       return window.location.replace(redirectUrl);
     }
   }, [queryParams]);
@@ -33,8 +35,8 @@ export const LoginPage = () => {
       });
       const data = await response.data;
       authSessionStorage.set({ token: data.token, email: email });
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/`;
-      return window.location.replace(redirectUrl);
+      const redirectUrl = queryParams.get('redirect') ?? '';
+      navigate(getDynamicPath.login(redirectUrl));
     } catch (error) {
       console.error('Failed sign in', error);
       alert('로그인 중 오류가 발생했습니다.');
@@ -72,7 +74,7 @@ export const LoginPage = () => {
         />
         <Button onClick={handleKakaoLogin}>카카오계정 로그인</Button>
       </FormWrapper>
-      <CustomButton onClick={() => window.location.replace('/signUp')}>회원가입</CustomButton>
+      <CustomButton onClick={() => navigate('/signUp')}>회원가입</CustomButton>
     </Wrapper>
   );
 };
