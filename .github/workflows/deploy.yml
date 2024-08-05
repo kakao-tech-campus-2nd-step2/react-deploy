@@ -22,7 +22,12 @@ jobs:
         run: npm install
 
       - name: Set environment variables
-        run: echo "REACT_APP_BASE_URL=https://your-production-api-url" >> .env.production
+        run: |
+          echo "REACT_APP_API_URL=http://43.201.17.220:8080" > .env.production
+          echo "BASE_URL=http://43.201.17.220:8080" >> .env.production
+
+      - name: Display .env.production for debug
+        run: cat .env.production
 
       - name: Build the project
         run: npm run build

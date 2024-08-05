@@ -5,15 +5,10 @@ import axios from 'axios';
 import { authSessionStorage } from '@/utils/storage';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-// 서버 API 주소
-//export const BASE_URL = 'http://43.201.17.220:8080';
-// 다른 서버 주소
-// // 명준
-// http://13.125.199.167:8080 준형
-//'http://3.38.211.225:8080' 서영
 
 const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
+    baseURL: API_URL,
     timeout: 5000,
     ...axiosConfig,
     headers: {
@@ -23,9 +18,8 @@ const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
     },
   });
 
-  // 인증 토큰 설정
   instance.interceptors.request.use((requestConfig) => {
-    const token = authSessionStorage.get(); // sessionStorage에서 토큰 가져오기
+    const token = authSessionStorage.get();
     if (token) {
       requestConfig.headers.Authorization = `Bearer ${token}`;
     }
@@ -43,10 +37,7 @@ const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-// 기본 서버 API 주소 설정
-export const fetchInstance = initInstance({
-  baseURL: API_URL,
-});
+export const fetchInstance = initInstance({});
 
 export const setBaseURL = (url: string) => {
   fetchInstance.defaults.baseURL = url;
