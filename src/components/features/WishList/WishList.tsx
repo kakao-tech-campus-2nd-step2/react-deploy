@@ -1,4 +1,4 @@
-import { Button,HStack, Image, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Button, HStack, Image, Spinner, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { useDeleteWish } from '@/api/hooks/useDeleteWish';
@@ -6,7 +6,7 @@ import type { WishListItem } from '@/api/hooks/useGetWishList';
 import { useGetWishList } from '@/api/hooks/useGetWishList';
 
 export const WishList = () => {
-  const [page, setPage] = React.useState(0);
+  const [page] = React.useState(0);
   const { data, isLoading, isError, error } = useGetWishList(page, 10);
   const { mutate: deleteWish } = useDeleteWish();
 
@@ -18,16 +18,12 @@ export const WishList = () => {
     return <Text color="red.500">관심 목록을 불러오는 데 실패했습니다: {error.message}</Text>;
   }
 
+  if (!data) {
+    return <Text>위시 리스트가 비어 있습니다.</Text>;
+  }
+
   const handleDelete = (wishId: number) => {
     deleteWish(wishId);
-  };
-
-  const handleNextPage = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setPage((prevPage) => Math.max(prevPage - 1, 0));
   };
 
   return (
@@ -35,7 +31,7 @@ export const WishList = () => {
       <Text fontSize="2xl" fontWeight="bold">
         관심 목록
       </Text>
-      {data?.content.map((item: WishListItem) => (
+      {data?.map((item: WishListItem) => (
         <HStack key={item.id} spacing={4} p={4} borderWidth="1px" borderRadius="md" width="100%">
           <Image src={item.product.imageUrl} alt={item.product.name} boxSize="80px" />
           <VStack align="start">
@@ -47,14 +43,6 @@ export const WishList = () => {
           </Button>
         </HStack>
       ))}
-      <HStack>
-        <Button onClick={handlePrevPage} isDisabled={page === 0}>
-          이전
-        </Button>
-        <Button onClick={handleNextPage} isDisabled={data?.last}>
-          다음
-        </Button>
-      </HStack>
     </VStack>
   );
 };
