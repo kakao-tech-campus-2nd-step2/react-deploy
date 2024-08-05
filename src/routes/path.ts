@@ -13,6 +13,7 @@ export const ApiPath = {
   members: {
     register: '/api/members/register',
     login: '/api/members/login',
+    point: '/api/members/point',
   },
   wishes: {
     root: '/api/wishes',
@@ -24,6 +25,10 @@ export const ApiPath = {
     options: (productId: string) => `/api/products/${productId}/options`,
   },
   categories: '/api/categories',
+  orders: {
+    root: '/api/orders',
+    price: '/api/orders/price',
+  },
 };
 
 export const getDynamicPath = {
