@@ -6,6 +6,7 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -27,7 +28,7 @@ export const SignUpPage = () => {
 
       const data = response.data;
       authSessionStorage.set({ token: data.token, email: email, password: password });
-      window.location.replace('/');
+      window.location.replace(RouterPath.home);
     } catch (error) {
       console.error('Failed sign up', error);
       alert('회원가입 중 오류가 발생했습니다.');
