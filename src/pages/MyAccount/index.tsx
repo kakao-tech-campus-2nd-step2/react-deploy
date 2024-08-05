@@ -8,11 +8,18 @@ import { authSessionStorage } from '@/utils/storage';
 import { useNavigate } from 'react-router-dom';
 import { RouterPath } from '@/routes/path';
 
+import { useFetchPoints } from '@/api/hooks/useFetchPoints';
+
+
 export const MyAccountPage = () => {
   const authInfo = useAuth();
   const [wishList, setWishList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+
+  const { points, loading: pointsLoading, error: pointsError } = useFetchPoints(authInfo?.token || '');
+
   const handleLogout = () => {
     authSessionStorage.set(undefined);
     window.location.replace('/');
@@ -22,9 +29,9 @@ export const MyAccountPage = () => {
     const fetchData = async () => {
       if (authInfo?.token) {
         try {
-          console.log(authInfo.token);
+
           const data = await fetchWishlist(authInfo.token);
-          console.log(data);
+
           setWishList(data);
         } catch (error) {
           console.error('Failed to fetch wishlist', error);
@@ -37,14 +44,11 @@ export const MyAccountPage = () => {
     fetchData();
   }, [authInfo]);
 
-  useEffect(() => {
-    console.log('Updated wishlist:', wishList);
-  }, [wishList]);
 
   const handleRemoveWish = async (productId: number) => {
     if (authInfo?.token) {
       try {
-        console.log(productId);
+
         await deleteWish(productId, authInfo.token);
         setWishList((prev) => prev.filter((wish) => wish.product.id !== productId));
       } catch (error) {
@@ -61,17 +65,17 @@ export const MyAccountPage = () => {
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
-      <Button
-        size="small"
-        theme="darkGray"
-        onClick={handleLogout}
-        style={{
-          maxWidth: '200px',
-        }}
-      >
-        로그아웃
-      </Button>
-      <button onClick={() => navigate(RouterPath.orders)}>주문목록으로 이동하기</button>
+
+      <StyledButton onClick={handleLogout}> 로그아웃 </StyledButton>
+      <Spacing height={32} />
+      <StyledButton onClick={() => navigate(RouterPath.orders)}>주문목록으로 이동하기</StyledButton>
+      <Spacing height={64} />
+      {pointsError ? (
+        <div>포인트 조회에 실패했습니다.</div>
+      ) : (
+        <div>보유 포인트: {points}점</div>
+      )}
+
       <Spacing height={32} />
       <div>위시리스트</div>
       {wishList && wishList.length > 0 ? (
@@ -155,9 +159,18 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `;
 
+
+const StyledButton = styled(Button)`
+  max-width: 200px;
+  size="small"
+  theme="darkGray"
+`;
+
+
 const EmptyMessage = styled.p`
   font-size: 24px;
   color: #777;
 `;
+
 
 export default MyAccountPage;

@@ -1,7 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import { authSessionStorage } from '@/utils/storage';
+
+
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
@@ -17,7 +18,9 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export let BASE_URL = 'http://3.36.86.203:8080';
+
+export let BASE_URL = '/';
+
 
 export const updateBaseURL = (newBaseURL: string) => {
   BASE_URL = newBaseURL;

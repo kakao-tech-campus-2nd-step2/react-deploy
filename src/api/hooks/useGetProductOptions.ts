@@ -10,7 +10,9 @@ type Props = ProductDetailRequestParams;
 export type ProductOptionsResponseData = ProductOptionsData[];
 
 export const getProductOptionsPath = (productId: string) =>
-  `${BASE_URL}/api/products/${productId}/options`;
+
+  `/api/products/${productId}/options`;
+
 
 export const getProductOptions = async (params: ProductDetailRequestParams) => {
   const response = await fetchInstance.get<ProductOptionsResponseData>(

@@ -1,4 +1,7 @@
-import { useState } from 'react';
+
+// src/api/hooks/useOrder.ts
+import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+
 import { fetchInstance, BASE_URL } from '../instance';
 
 type OrderParams = {
@@ -15,32 +18,28 @@ type OrderResponse = {
   message: string;
 };
 
-export const useOrder = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [order, setOrder] = useState<OrderResponse | null>(null);
 
-  const createOrder = async (params: OrderParams, token: string) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetchInstance.post<OrderResponse>(
-        `${BASE_URL}/api/orders`,
-        params,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Authorization 헤더 추가
-          },
-        }
-      );
-      setOrder(response.data);
-    } catch (err) {
-      setError(err as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return { createOrder, order, isLoading, error };
+type CreateOrderVariables = {
+  params: OrderParams;
+  token: string;
 };
+
+const createOrder = async ({ params, token }: CreateOrderVariables): Promise<OrderResponse> => {
+  const response = await fetchInstance.post<OrderResponse>(
+    `/api/orders`,
+    params,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const useOrder = () => {
+  return useMutation<OrderResponse, Error, CreateOrderVariables>({
+    mutationFn: createOrder
+  });
+};
+

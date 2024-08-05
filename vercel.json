@@ -1,0 +1,44 @@
+{
+  "rewrites": [
+    {
+       "source": "/api/categories",
+      "destination": "http://3.36.86.203:8080/api/categories"
+    },
+    {
+      "source": "/api/products",
+      "destination": "http://3.36.86.203:8080/api/products"
+    },
+    {
+      "source": "/kakao/login",
+      "destination": "http://3.36.86.203:8080/kakao/login"
+    },
+    {
+      "source": "/api/members/register",
+      "destination": "http://3.36.86.203:8080/api/members/register"
+    },
+    {
+      "source": "/api/members/points",
+      "destination": "http://3.36.86.203:8080/api/members/points"
+    },
+    {
+      "source": "/api/products/:productId/options",
+      "destination": "http://3.36.86.203:8080/api/products/:productId/options"
+    },
+    {
+      "source": "/api/products/:productId",
+      "destination": "http://3.36.86.203:8080/api/products/:productId"
+    },
+    {
+      "source": "/api/orders",
+      "destination": "http://3.36.86.203:8080/api/orders"
+    },
+    {
+      "source": "/api/wishes",
+      "destination": "http://3.36.86.203:8080/api/wishes"
+    },
+    {
+      "source": "/api/members/login",
+      "destination": "http://3.36.86.203:8080/api/members/login"
+    }
+  ]
+}

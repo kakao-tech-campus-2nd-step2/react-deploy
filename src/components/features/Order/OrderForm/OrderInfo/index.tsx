@@ -10,40 +10,19 @@ import { HeadingText } from '../Common/HeadingText';
 import { LabelText } from '../Common/LabelText';
 import { CashReceiptFields } from '../Fields/CashReceiptFields';
 
-import { useOrder } from '@/api/hooks/useOrder';
-import { useAuth } from '@/provider/Auth';
 
 type Props = {
   orderHistory: OrderHistory;
+  isLoading: boolean;
 };
-export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
+
+export const OrderFormOrderInfo = ({ orderHistory, isLoading }: Props) => {
+=======
+
   const { id, count } = orderHistory;
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
   const totalPrice = detail.price * count;
 
-  const { createOrder, isLoading, order, error } = useOrder();
-  const authInfo = useAuth();
-
-  const handleOrderSubmit = async () => {
-    if (!authInfo?.token) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
-
-    try {
-      console.log(id);
-      await createOrder({
-        optionId: id,
-        quantity: count,
-        message: "주문한 상품입니다.",
-      },
-      authInfo.token
-    );
-      alert('주문이 성공적으로 처리되었습니다.');
-    } catch (error) {
-      alert('주문 처리 중 문제가 발생했습니다.');
-    }
-  };
 
   return (
     <Wrapper>
@@ -60,8 +39,9 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
       <Divider color="#ededed" />
       <Spacing height={32} />
       <Button 
-        type="button" 
-        onClick={handleOrderSubmit} 
+
+        type="submit" 
+
         disabled={isLoading} // 로딩 중일 때 버튼 비활성화
       >
         {isLoading ? '결제 처리 중...' : `${totalPrice}원 결제하기`}
