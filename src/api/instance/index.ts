@@ -65,14 +65,6 @@ export const queryClient = new QueryClient({
   },
 });
 
-// // 인증 토큰을 추가하는 함수
-// export const setAuthToken = (token: string | null) => {
-//   if (token) {
-//     fetchInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-//   } else {
-//     delete fetchInstance.defaults.headers.common.Authorization;
-//   }
-// };
 
 export const updateFetchInstance = () => {
   fetchInstance = initInstance({

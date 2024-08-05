@@ -8,7 +8,7 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authTokenStorage } from '@/utils/storage';
+//import { authTokenStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -39,9 +39,11 @@ export const SignUpPage = () => {
         throw new Error(errorData.message || '회원가입 실패!');
       }
 
-      const data = await response.json();
+      const responseText = await response.text();
+      const data = responseText ? JSON.parse(responseText) : null;
+
       console.log('회원가입 성공 데이터:', data);
-      authTokenStorage.set(data.token); //회원가입 성공하면 토큰저장
+      //authTokenStorage.set(data.token); //회원가입 성공하면 토큰저장
       alert('회원가입이 완료되었습니다.');
       navigate('/');
     } catch (error) {
