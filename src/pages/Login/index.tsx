@@ -28,7 +28,8 @@ export const LoginPage = () => {
       alert('로그인 성공!');
       authSessionStorage.set(token);
 
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/`;
+      const redirectUrl =
+        queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/temp-redirect`;
       window.location.replace(redirectUrl);
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;

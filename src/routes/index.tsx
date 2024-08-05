@@ -13,6 +13,7 @@ import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
 import SignUpPage from '@/pages/SignUp';
+import TempRedirect from '@/pages/TempRedirect'; // 추가된 임시 리디렉션 페이지
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -94,6 +95,10 @@ const router = createBrowserRouter(
     {
       path: RouterPath.signUp,
       element: <SignUpPage />,
+    },
+    {
+      path: '/temp-redirect', // 임시 리디렉션 경로 추가
+      element: <TempRedirect />,
     },
   ],
   {
