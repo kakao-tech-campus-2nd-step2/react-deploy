@@ -6,11 +6,11 @@ import { breakpoints } from '@/styles/variants';
 import type { CategoryData } from '@/types';
 
 type Props = {
-  category_id: string;
+  categoryId: string;
 };
 
-export const CategoryHeroSection = ({ category_id }: Props) => {
-  const { isRender, currentTheme } = useCurrentCategory({ category_id });
+export const CategoryHeroSection = ({ categoryId }: Props) => {
+  const { isRender, currentTheme } = useCurrentCategory({ categoryId });
 
   if (!isRender) return null;
 
