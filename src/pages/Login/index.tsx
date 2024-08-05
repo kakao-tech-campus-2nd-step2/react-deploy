@@ -20,7 +20,7 @@ export const LoginPage = () => {
     if (token) {
       console.log(queryParams);
       authSessionStorage.set({ token: token });
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/`;
       return window.location.replace(redirectUrl);
     }
   }, [queryParams]);
@@ -33,7 +33,7 @@ export const LoginPage = () => {
       });
       const data = await response.data;
       authSessionStorage.set({ token: data.token, email: email });
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/`;
       return window.location.replace(redirectUrl);
     } catch (error) {
       console.error('Failed sign in', error);
@@ -41,7 +41,7 @@ export const LoginPage = () => {
     }
   };
   const handleKakaoLogin = async () => {
-    const redirectUrl = encodeURIComponent('https://hyoeunkh.github.io/react-deploy/login');
+    const redirectUrl = encodeURIComponent(`${window.location.origin}/react-deploy/login`);
     window.location.replace(`${BASE_URL}/api/members/kakao?redirect_url=${redirectUrl}`);
   };
   return (
