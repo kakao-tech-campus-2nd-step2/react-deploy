@@ -16,7 +16,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export let BASE_URL = 'http://3.36.86.203:8080';
+export let BASE_URL = '/';
 
 export const updateBaseURL = (newBaseURL: string) => {
   BASE_URL = newBaseURL;
