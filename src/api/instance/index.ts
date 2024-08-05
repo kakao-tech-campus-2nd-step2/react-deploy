@@ -18,7 +18,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 
 export const BASE_URL = process.env.REACT_APP_API;
 export const fetchInstance = initInstance({
-  baseURL: process.env.REACT_APP_API,
+  baseURL: BASE_URL,
 });
 
 export const queryClient = new QueryClient({
