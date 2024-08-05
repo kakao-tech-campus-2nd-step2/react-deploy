@@ -20,7 +20,6 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
 
     try {
       const storedAuthInfo = authSessionStorage.get();
-      console.log('Stored auth info:', storedAuthInfo);
       await addWish({ productId: Number(productId), token: authInfo.token });
       alert('관심 등록 완료');
     } catch (error) {

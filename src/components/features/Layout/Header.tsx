@@ -10,18 +10,17 @@ export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
   const [selectedUser, setSelectedUser] = useState(()=> {
-    // return localStorage.getItem('selectedUser') || '최유성';
-    return '최유성';
+    return localStorage.getItem('selectedUser') || '최유성';
   });
 
   // 컴포넌트가 마운트될 때 baseURL을 설정
-  // useEffect(() => {
+  useEffect(() => {
 
-  // const storedBaseURL = localStorage.getItem('baseURL');
-  // if (storedBaseURL) {
-  //   updateBaseURL(storedBaseURL);
-  // }
-  // }, []);
+  const storedBaseURL = localStorage.getItem('baseURL');
+  if (storedBaseURL) {
+    updateBaseURL(storedBaseURL);
+  }
+  }, []);
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());

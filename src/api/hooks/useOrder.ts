@@ -23,7 +23,6 @@ export const useOrder = () => {
   const createOrder = async (params: OrderParams, token: string) => {
     setIsLoading(true);
     setError(null);
-    console.log(params);
     try {
       const response = await fetchInstance.post<OrderResponse>(
         `${BASE_URL}/api/orders`,
@@ -34,7 +33,7 @@ export const useOrder = () => {
           },
         }
       );
-      console.log(response);
+
       setOrder(response.data);
       return response.data;
     } catch (err) {
