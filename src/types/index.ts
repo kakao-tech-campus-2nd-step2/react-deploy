@@ -3,22 +3,22 @@ export type CategoryData = {
   name: string;
   description: string;
   color: string;
-  imageUrl: string;
+  image_url: string;
 };
 
 export type ProductData = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
-  categoryId: number;
+  image_url: string;
+  category_id: number;
 };
 
 export type ProductOptionsData = {
   id: number;
   name: string;
   quantity: number;
-  productId: number;
+  product_id: number;
 };
 
 export type GoodsDetailOptionItemData = {
@@ -28,7 +28,7 @@ export type GoodsDetailOptionItemData = {
   options: GoodsDetailOptionItemData[]; // 재귀적으로 동일한 구조를 가질 수 있음
   id?: number;
   price?: number;
-  stockQuantity: number;
+  stock_quantity: number;
 };
 
 export type OrderHistory = {
@@ -37,19 +37,19 @@ export type OrderHistory = {
 };
 
 export type OrderFormData = {
-  productId: number;
-  productQuantity: number;
-  messageCardTextMessage: string;
-  senderId: number;
-  receiverId: number;
-  hasCashReceipt: boolean;
-  cashReceiptType?: 'PERSONAL' | 'BUSINESS';
-  cashReceiptNumber?: string;
+  product_id: number;
+  product_quantity: number;
+  message: string;
+  sender_id: number;
+  receiver_id: number;
+  has_cash_receipt: boolean;
+  cash_receipt_type?: 'PERSONAL' | 'BUSINESS';
+  cash_receipt_number?: string;
 };
 
 export type MessageCardTemplateData = {
   id: number;
-  defaultTextMessage: string;
-  thumbUrl: string;
-  imageUrl: string;
+  default_text_message: string;
+  thumb_url: string;
+  image_url: string;
 };

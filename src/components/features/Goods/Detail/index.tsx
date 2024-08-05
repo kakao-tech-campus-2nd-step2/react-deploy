@@ -7,10 +7,10 @@ import { GoodsDetailHeader } from './Header';
 
 type Props = ProductDetailRequestParams;
 
-export const GoodsDetail = ({ productId }: Props) => {
+export const GoodsDetail = ({ product_id }: Props) => {
   return (
     <Wrapper>
-      <GoodsDetailHeader productId={productId} />
+      <GoodsDetailHeader product_id={product_id} />
     </Wrapper>
   );
 };

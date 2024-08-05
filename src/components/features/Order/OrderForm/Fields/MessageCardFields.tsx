@@ -10,7 +10,7 @@ export const MessageCardFields = () => {
     <Wrapper>
       <TextMessageWrapper>
         <Textarea
-          {...register('messageCardTextMessage')}
+          {...register('message')}
           placeholder="선물과 함께 보낼 메시지를 적어보세요"
           resize="none"
           height="100"

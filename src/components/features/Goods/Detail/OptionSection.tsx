@@ -16,9 +16,9 @@ import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
 
-export const OptionSection = ({ productId }: Props) => {
-  const { data: detail } = useGetProductDetail({ productId });
-  const { data: options } = useGetProductOptions({ productId });
+export const OptionSection = ({ product_id }: Props) => {
+  const { data: detail } = useGetProductDetail({ product_id });
+  const { data: options } = useGetProductOptions({ product_id });
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -38,7 +38,7 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(productId),
+      id: parseInt(product_id),
       count: parseInt(countAsString),
     });
 
@@ -49,7 +49,7 @@ export const OptionSection = ({ productId }: Props) => {
     <Wrapper>
       <CountOptionItem
         name={options[0].name}
-        productId={parseInt(productId)}
+        product_id={parseInt(product_id)}
         value={countAsString}
         onChange={setCountAsString}
       />

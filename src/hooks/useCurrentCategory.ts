@@ -3,9 +3,9 @@ import { useMemo } from 'react';
 import { useGetCategories } from '@/api/hooks/useGetCategorys';
 import { getCurrentCategory } from '@/components/features/Category/CategoryHeroSection';
 
-type Props = { categoryId: string };
+type Props = { category_id: string };
 
-export const useCurrentCategory = ({ categoryId }: Props) => {
+export const useCurrentCategory = ({ category_id }: Props) => {
   const { data, isLoading, isError } = useGetCategories();
 
   const isRender = useMemo(() => {
@@ -14,7 +14,7 @@ export const useCurrentCategory = ({ categoryId }: Props) => {
     return true;
   }, [data, isLoading, isError]);
 
-  const currentTheme = getCurrentCategory(categoryId, data ?? []);
+  const currentTheme = getCurrentCategory(category_id, data ?? []);
 
   return {
     isRender,
