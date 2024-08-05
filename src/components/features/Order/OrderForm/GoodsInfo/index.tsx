@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Image } from '@/components/common/Image';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import type { OrderHistory } from '@/types';
@@ -8,11 +8,17 @@ import type { OrderHistory } from '@/types';
 import { LabelText } from '../Common/LabelText';
 
 type Props = {
-  orderHistory: OrderHistory;
+  orderHistory: OrderHistory[];
 };
+
 export const GoodsInfo = ({ orderHistory }: Props) => {
-  const { id, count } = orderHistory;
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const productId = orderHistory[0].productId;
+  const { data: detail, isLoading: isDetailLoading } = useGetProductDetail({ productId: productId.toString() });
+  const { data: options, isLoading: isOptionsLoading } = useGetProductOptions({ productId: productId.toString() });
+
+  if (isDetailLoading || isOptionsLoading) {
+    return <div>정보를 불러오는 중입니다...</div>;
+  }
 
   return (
     <Wrapper>
@@ -24,9 +30,16 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
             <Image src={detail.imageUrl} width={86} ratio="square" />
           </GoodsInfoImage>
           <GoodsInfoTextWrapper>
-            <GoodsInfoTextTitle>
-              {detail.name} X {count}개
-            </GoodsInfoTextTitle>
+            <GoodsInfoTextTitle>{detail.name}</GoodsInfoTextTitle>
+            {orderHistory.map((order, index) => {
+              const selectedOption = options.find(option => option.id === order.optionId);
+              return (
+                <GoodsInfoTextOption key={index}>
+                  {selectedOption ? `${selectedOption.name} X ${order.quantity}개` : '옵션 없음'}
+                </GoodsInfoTextOption>
+              );
+            })}
+            <GoodsInfoTextMessage>{orderHistory[0].message}</GoodsInfoTextMessage>
           </GoodsInfoTextWrapper>
         </GoodsInfoWrapper>
       </GoodsWrapper>
@@ -69,4 +82,22 @@ const GoodsInfoTextTitle = styled.p`
   color: #222;
   overflow: hidden;
   font-weight: 400;
+`;
+
+const GoodsInfoTextMessage = styled.p`
+  font-size: 12px;
+  line-height: 16px;
+  color: #666;
+  margin-top: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
+
+const GoodsInfoTextOption = styled.p`
+  font-size: 12px;
+  line-height: 16px;
+  color: #666;
+  margin-top: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
 `;

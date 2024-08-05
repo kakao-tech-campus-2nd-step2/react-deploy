@@ -1,70 +1,127 @@
 import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import base64 from 'base-64';
 
-import { RouterPath } from '@/routes/path';
-import { authSessionStorage } from '@/utils/storage';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-}
+import { fetchInstance, getBaseUrl } from '@/api/instance';
 
 interface WishlistItem {
-  id: number;
-  product: Product;
+  wishId: number;
+  productId: number;
+  productName: string;
+  productPrice: number;
+  productImageUrl: string;
+}
+
+interface WishlistResponseData {
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+  size: number;
+  content: WishlistItem[];
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  empty: boolean;
 }
 
 export const MyAccountPage = () => {
-  const authInfo = JSON.parse(authSessionStorage.get() || '{}');
+  const authInfo = localStorage.getItem('authToken');
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [userName, setUserName] = useState<string>("사용자");
 
   useEffect(() => {
-    const fetchWishlist = async () => {
+    if (authInfo) {
       try {
-        const response = await fetch(`/api/wishes?page=${page}&size=10&sort=createdDate,desc`, {
-          headers: {
-            Authorization: `Bearer ${authInfo.token}`,
-          },
-        });
-
-        if (response.status === 200) {
-          const data = await response.json();
-          setWishlist(data.content);
-          setTotalPages(data.totalPages);
-        } else if (response.status === 401) {
-          alert('토큰이 유효하지 않습니다. 다시 로그인해주세요.');
-        } else {
-          alert('위시 리스트를 불러오는데 실패했습니다.');
+        const [headerEncoded, payloadEncoded, signature] = authInfo.split('.');
+        const payload = JSON.parse(base64.decode(payloadEncoded));
+  
+        console.log('Token Header:', JSON.parse(base64.decode(headerEncoded)));
+        console.log('Token Payload:', payload);
+        console.log('Token Signature:', signature);
+        console.log('Payload Keys:', Object.keys(payload));
+  
+        if (payload.sub) {
+          const email = payload.sub;
+          const displayName = email.split('@')[0];
+          setUserName(displayName);
         }
       } catch (error) {
-        console.error('위시 리스트 조회 에러:', error);
-        alert('위시 리스트 조회 에러가 발생했습니다.');
+        console.error('토큰 디코딩 에러:', error);
       }
-    };
+    } else {
+      setUserName("사용자");
+    }
+  }, [authInfo]);
 
-    fetchWishlist();
-  }, [page, authInfo.token]);
+  const getWishlistPath = () => `${getBaseUrl()}/api/wishes`;
+
+  const fetchWishlist = async (page: number) => {
+    try {
+      const response = await fetchInstance.get<WishlistResponseData>(
+        `${getWishlistPath()}?page=${page}&size=10&sort=createdDate,desc`,
+        {
+          headers: {
+            Authorization: `Bearer ${authInfo}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+        console.log('Response data:', data);
+        setWishlist(data.content);
+        setTotalPages(data.totalPages);
+      } else if (response.status === 403) {
+        alert('토큰이 유효하지 않습니다. 다시 로그인해주세요.');
+      } else {
+        alert('위시 리스트를 불러오는데 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('위시 리스트 조회 에러:', error);
+      alert('위시 리스트 조회 에러가 발생했습니다.');
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlist(page);
+  }, [page, authInfo]);
 
   const handleDelete = async (wishId: number) => {
     try {
-      const response = await fetch(`/api/wishes/${wishId}`, {
+      const response = await fetch(`${getBaseUrl()}/api/wishes/${wishId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${authInfo.token}`,
+          Authorization: `Bearer ${authInfo}`,
         },
       });
 
-      if (response.status === 204) {
-        setWishlist((prev) => prev.filter((item) => item.id !== wishId));
+      if (response.ok) {
+        setWishlist((prev) => prev.filter((item) => item.wishId !== wishId));
         alert('관심 목록에서 삭제되었습니다.');
-      } else if (response.status === 404) {
+      } else if (response.status === 400) {
         alert('관심 상품을 찾을 수 없습니다.');
-      } else if (response.status === 401) {
+      } else if (response.status === 403) {
         alert('토큰이 유효하지 않습니다. 다시 로그인해주세요.');
       } else {
         alert('관심 목록 삭제에 실패했습니다.');
@@ -76,32 +133,31 @@ export const MyAccountPage = () => {
   };
 
   const handleLogout = () => {
-    authSessionStorage.set(undefined);
-
-    const redirectURL = `${window.location.origin}${RouterPath.home}`;
+    localStorage.removeItem('authToken');
+    const redirectURL = `${window.location.origin}`;
     window.location.replace(redirectURL);
   };
 
   return (
     <Wrapper>
       <Text fontSize="2xl" fontWeight="bold">
-        {authInfo?.email}님 안녕하세요!
+        {authInfo ? userName : "로그인이 필요합니다"}님 안녕하세요!
       </Text>
       <Box height="64px" />
       <VStack spacing={4} align="stretch">
         {wishlist.length > 0 ? (
           wishlist.map((item) => (
-            <Box key={item.id} p={4} borderWidth="1px" borderRadius="lg">
+            <Box key={item.wishId} p={4} borderWidth="1px" borderRadius="lg">
               <HStack spacing={4}>
-                <Image boxSize="50px" src={item.product.imageUrl} alt={item.product.name} />
+                <Image boxSize="50px" src={item.productImageUrl} alt={item.productName} />
                 <VStack align="start">
-                  <Text fontSize="lg" fontWeight="bold">{item.product.name}</Text>
-                  <Text>{item.product.price}원</Text>
+                  <Text fontSize="lg" fontWeight="bold">{item.productName}</Text>
+                  <Text>{item.productPrice}원</Text>
                 </VStack>
                 <Button
                   colorScheme="red"
                   size="sm"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.wishId)}
                 >
                   삭제
                 </Button>
@@ -109,7 +165,7 @@ export const MyAccountPage = () => {
             </Box>
           ))
         ) : (
-          <Text>위시리스트에 상품이 없습니다.</Text>
+          <CenteredText>위시리스트에 상품이 없습니다.</CenteredText>
         )}
       </VStack>
       <HStack spacing={4} mt={4}>
@@ -145,4 +201,10 @@ const Wrapper = styled.div`
   justify-content: center;
   font-weight: 700;
   font-size: 36px;
+`;
+
+const CenteredText = styled(Text)`
+  text-align: center;
+  font-size: 14px;
+  color: gray;
 `;

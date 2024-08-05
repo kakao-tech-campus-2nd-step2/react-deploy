@@ -2,6 +2,8 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+let BASE_URL = localStorage.getItem('baseURL') || 'https://api.example.com';
+
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
@@ -16,10 +18,8 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = 'https://api.example.com';
-// TODO: 추후 서버 API 주소 변경 필요
-export const fetchInstance = initInstance({
-  baseURL: 'https://api.example.com',
+export let fetchInstance = initInstance({
+  baseURL: BASE_URL,
 });
 
 export const queryClient = new QueryClient({
@@ -32,3 +32,17 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+export const updateBaseUrl = (newBaseUrl: string) => {
+  BASE_URL = newBaseUrl;
+  localStorage.setItem('baseURL', newBaseUrl);
+  fetchInstance = initInstance({
+    baseURL: BASE_URL,
+  });
+  // 선택한 이름마다 잘 받아오는지 확인용, 추후 삭제 예정
+  console.log('Updated fetchInstance:', fetchInstance.defaults.baseURL);
+};
+
+export const getBaseUrl = () => {
+  return localStorage.getItem('baseURL') || 'https://api.example.com';
+};

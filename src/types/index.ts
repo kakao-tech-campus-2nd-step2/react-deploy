@@ -32,14 +32,16 @@ export type GoodsDetailOptionItemData = {
 };
 
 export type OrderHistory = {
-  id: number;
-  count: number;
+  productId: number;
+  optionId: number;
+  quantity: number;
+  message: string;
 };
 
 export type OrderFormData = {
-  productId: number;
+  optionId: number;
   productQuantity: number;
-  messageCardTextMessage: string;
+  message: string;
   senderId: number;
   receiverId: number;
   hasCashReceipt: boolean;
