@@ -7,9 +7,6 @@ export const OrderList = () => {
   const [page, setPage] = useState(0);
   const { orders, loading, error } = useOrderList({ page, size: 10 });
 
-  const handleNextPage = () => setPage((prevPage) => prevPage + 1);
-  const handlePrevPage = () => setPage((prevPage) => Math.max(prevPage - 1, 0));
-
   if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
   if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
 
@@ -43,14 +40,6 @@ export const OrderList = () => {
           ))}
         </OrderListContainer>
       )}
-      <Pagination>
-        <StyledButton onClick={handlePrevPage} disabled={page === 0}>
-          이전 페이지
-        </StyledButton>
-        <StyledButton onClick={handleNextPage} disabled={orders.length < 10}>
-          다음 페이지
-        </StyledButton>
-      </Pagination>
     </Wrapper>
   );
 };
@@ -92,27 +81,6 @@ const OrderDetail = styled.div`
   strong {
     font-weight: 600;
     color: #000;
-  }
-`;
-
-const Pagination = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-`;
-
-const StyledButton = styled(ChakraButton)`
-  background-color: #4a90e2;
-  color: white;
-
-  &:hover {
-    background-color: #357abd;
-  }
-
-  &:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
   }
 `;
 
