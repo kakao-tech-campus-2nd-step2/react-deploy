@@ -38,7 +38,9 @@ export const Header = () => {
         updateBaseURL('http://3.35.176.235:8080');
         break;
       case '고승현':
+
         updateBaseURL('http://15.165.18.8:8080'); //http://3.36.86.203:8080
+
         break;
       case '김병수':
         updateBaseURL('http://13.124.128.255:8080');
@@ -62,9 +64,11 @@ export const Header = () => {
         <RightWrapper>
           <select value={selectedUser} onChange={handleUserChange}>
             <option value="최유성">최유성</option>
+
             <option value="오승환" disabled>오승환</option>
             <option value="고승현" disabled>고승현</option>
             <option value="김병수" disabled>김병수</option>
+
           </select>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>

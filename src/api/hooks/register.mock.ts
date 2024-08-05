@@ -3,7 +3,9 @@ import { BASE_URL } from '../instance';
 import { userSessionStorage } from '@/utils/storage';
 
 export const registerMockHandler = [
+
   rest.post(`/api/members/register`, async (req, res, ctx) => {
+
     const { email, password } = await req.json<{ email: string; password: string }>();
 
     if (email && password) {

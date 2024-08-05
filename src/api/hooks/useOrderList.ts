@@ -36,7 +36,9 @@ export const useOrderList = ({ page, size, sort = 'orderDateTime,desc' }: UseOrd
       
       try {
         const response = await fetchInstance.get<Order[]>(
+
           `/api/orders?page=${page}&size=${size}&sort=${sort}`,
+
           {
             headers: {
               Authorization: `Bearer ${authInfo.token}`, // 인증 토큰 추가

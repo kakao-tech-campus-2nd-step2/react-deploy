@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useOrderList } from '@/api/hooks/useOrderList';
+
 import { Button as ChakraButton, Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+
 
 export const OrderList = () => {
   const [page, setPage] = useState(0);
   const { orders, loading, error } = useOrderList({ page, size: 10 });
+
 
   if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
   if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
@@ -105,3 +108,4 @@ const EmptyMessage = styled.div`
 `;
 
 export default OrderList;
+

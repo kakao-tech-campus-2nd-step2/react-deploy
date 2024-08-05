@@ -1,17 +1,22 @@
+
 // src/components/features/Order/OrderForm/index.tsx
+
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
+
 import { HEADER_HEIGHT } from '../../Layout/Header';
 import { GoodsInfo } from './GoodsInfo';
 import { OrderFormMessageCard } from './MessageCard';
 import { OrderFormOrderInfo } from './OrderInfo';
+
 import { useOrder } from '@/api/hooks/useOrder';
 import { useAuth } from '@/provider/Auth';
 import { AxiosError } from 'axios';
+
 
 type Props = {
   orderHistory: OrderHistory;
@@ -30,11 +35,13 @@ export const OrderForm = ({ orderHistory }: Props) => {
     },
   });
   const { handleSubmit } = methods;
+
   const navigate = useNavigate();
   
   const { mutate: createOrder, status } = useOrder();
   const authInfo = useAuth();
   const isLoading = status === "pending"; // "pending" 상태를 로딩 중으로 간주
+
 
   const handleForm = async (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
@@ -43,6 +50,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
       alert(errorMessage);
       return;
     }
+
 
     if (!authInfo?.token) {
       alert('로그인이 필요합니다.');
@@ -94,7 +102,9 @@ export const OrderForm = ({ orderHistory }: Props) => {
   return (
     <FormProvider {...methods}>
       <form action="" onSubmit={handleSubmit(handleForm)} onKeyDown={preventEnterKeySubmission}>
+
         <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} isLoading={isLoading} />}>
+
           <Wrapper>
             <OrderFormMessageCard />
             <Spacing height={8} backgroundColor="#ededed" />

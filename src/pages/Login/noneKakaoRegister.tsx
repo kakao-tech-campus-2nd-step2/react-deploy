@@ -1,9 +1,11 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Button } from '@/components/common/Button'; // 공통 Button 사용
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { BASE_URL, fetchInstance } from '@/api/instance';
+
 import { authSessionStorage } from '@/utils/storage';
 import { RouterPath } from '@/routes/path';
 
@@ -18,6 +20,7 @@ export const NoneKakaoRegisterPage = () => {
   }
 
   const handleRegister = async () => {
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
       alert('이메일을 올바르게 입력해주세요');
@@ -30,6 +33,7 @@ export const NoneKakaoRegisterPage = () => {
     }
 
     try {
+
       const data: RegisterDatas = { email, password };
       const response = await fetchInstance.post(`/api/members/register`, {
         email,
@@ -43,9 +47,11 @@ export const NoneKakaoRegisterPage = () => {
       alert('회원가입 처리되었습니다. 로그인 해주세요.');
     } catch (error) {
       alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
+
       console.error('Registration failed:', error);
     }
   };
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
@@ -124,3 +130,4 @@ const Input = styled.input`
 `;
 
 export default NoneKakaoRegisterPage;
+

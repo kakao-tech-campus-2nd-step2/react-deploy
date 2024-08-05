@@ -10,15 +10,19 @@ import { HeadingText } from '../Common/HeadingText';
 import { LabelText } from '../Common/LabelText';
 import { CashReceiptFields } from '../Fields/CashReceiptFields';
 
+
 type Props = {
   orderHistory: OrderHistory;
   isLoading: boolean;
 };
 
 export const OrderFormOrderInfo = ({ orderHistory, isLoading }: Props) => {
+=======
+
   const { id, count } = orderHistory;
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
   const totalPrice = detail.price * count;
+
 
   return (
     <Wrapper>
@@ -35,7 +39,9 @@ export const OrderFormOrderInfo = ({ orderHistory, isLoading }: Props) => {
       <Divider color="#ededed" />
       <Spacing height={32} />
       <Button 
+
         type="submit" 
+
         disabled={isLoading} // 로딩 중일 때 버튼 비활성화
       >
         {isLoading ? '결제 처리 중...' : `${totalPrice}원 결제하기`}

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import { Button } from '@/components/common/Button'; // 공통 Button 사용
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { BASE_URL, fetchInstance } from '@/api/instance';
 import { authSessionStorage } from '@/utils/storage';
+
 
 export const NoneKakaoLoginPage = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +14,7 @@ export const NoneKakaoLoginPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
       alert('이메일을 올바르게 입력해주세요');
@@ -19,6 +22,7 @@ export const NoneKakaoLoginPage = () => {
     }
 
     try {
+
       const response = await fetchInstance.post(`/api/members/login`, {
         email,
         password,
@@ -31,9 +35,11 @@ export const NoneKakaoLoginPage = () => {
       window.location.reload();
     } catch (error) {
       alert('올바르지 않은 이메일 또는 비밀번호입니다.');
+
       console.error('Login failed:', error);
     }
   };
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
@@ -112,3 +118,4 @@ const Input = styled.input`
 `;
 
 export default NoneKakaoLoginPage;
+

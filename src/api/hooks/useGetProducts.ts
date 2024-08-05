@@ -40,7 +40,9 @@ export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestPa
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
+
   return `/api/products?${params.toString()}`;
+
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
