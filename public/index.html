@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="ko">
-
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-    <title>Kakao Tech</title>
-  </head>
-
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
-
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React App</title>
+  <script type="text/javascript">
+    // 404 페이지에서 index.html로 리디렉션
+    if (window.location.pathname !== '/react-deploy/' && !window.location.pathname.startsWith('/react-deploy/')) {
+      var redirectUrl = window.location.origin + '/react-deploy/index.html';
+      window.location.replace(redirectUrl);
+    }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
 </html>
