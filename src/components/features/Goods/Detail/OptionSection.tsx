@@ -74,7 +74,7 @@ export const OptionSection = ({ productId }: Props) => {
           id: detail.id,
           name: detail.name,
           price: detail.price,
-          imageUrl: detail.imageUrl,
+          imageUrl: detail.image_url,
         }
       };
 

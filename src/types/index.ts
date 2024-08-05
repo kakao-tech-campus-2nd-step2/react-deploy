@@ -10,8 +10,8 @@ export type ProductData = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
-  categoryId: number;
+  image_url: string;
+  category_name: string;
 };
 
 export type ProductOptionsData = {
