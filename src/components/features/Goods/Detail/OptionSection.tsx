@@ -1,23 +1,30 @@
 import styled from '@emotion/styled';
-import axios from 'axios';
 import { useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { type InterestItem } from '@/types';
-import { orderHistorySessionStorage } from '@/utils/storage';
+import { authSessionStorage, orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
+import { OptionSelector } from './OptionItem/OptionSelector';
 
 type Props = ProductDetailRequestParams;
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+  
+  const methods = useForm();
+  const { watch } = methods;
+
+  const watchedOption = watch('optionSelect');
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -29,16 +36,22 @@ export const OptionSection = ({ productId }: Props) => {
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다. 로그인 페이지로 이동하시겠습니까?',
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
       );
 
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());
     }
 
+    if (!watchedOption) {
+      alert('옵션이 선택되지 않았습니다.');
+      return;
+    }
+
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
+      optionId: watchedOption.id,
     });
 
     navigate(RouterPath.order);
@@ -50,8 +63,8 @@ export const OptionSection = ({ productId }: Props) => {
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
       );
 
-    if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      if (!isConfirm) return;
+        return navigate(getDynamicPath.login());
     };
 
     try {
@@ -61,85 +74,106 @@ export const OptionSection = ({ productId }: Props) => {
           id: detail.id,
           name: detail.name,
           price: detail.price,
-          imageUrl: detail.imageUrl,
+          imageUrl: detail.image_url,
         }
       };
 
-      const response = await axios.post('/api/wishes', interestItem, {
+      const response = await fetchInstance.post(`${BASE_URL}/api/wishes`, interestItem, {
         headers: {
-          Authorization: `Bearer ${authInfo.token}`,
+          Authorization: `${authSessionStorage.get()?.token}`,
           'Content-Type': 'application/json'
         }
       });
 
+      // 관심 상품 등록 성공 (201)
       if (response.status === 201) {
-        alert('관심 상품으로 등록되었습니다.');
+        alert('관심 상품으로 등록 성공하였습니다.');
+      }
+
+      // 관심 상품 등록 실패 (400)
+      else if (response.status === 400) {
+        alert('관심 상품으로 등록 실패하였습니다.');
+      }
+      // 상품 찾기 실패 (404)
+      else if (response.status === 404) {
+        alert('상품을 찾을 수 없습니다.');  
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          alert(error.response.data.message);
-        } else {
-          alert('알 수 없는 오류가 발생했습니다.');
-        }
-      }
+        console.error(error);
+        alert('관심 상품 등록 중 오류가 발생했습니다.');
     }
   };
 
   return (
-    <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
-      <BottomWrapper>
-        <PricingWrapper>
-          총 결제 금액 <span>{totalPrice}원</span>
-        </PricingWrapper>
-        <ButtonWrapper>
-          <Button theme="black" size="small" onClick={handleInterestClick} >
-            관심 상품 추가
-          </Button>
-          <Button theme="black" size="large" onClick={handleClick}>
-            나에게 선물하기
-          </Button>
-        </ButtonWrapper>
-      </BottomWrapper>
-    </Wrapper>
+    <FormProvider {...methods}>
+      <Wrapper>
+        <OptionSelectorWrapper>
+          <OptionSelector options={options} />
+        </OptionSelectorWrapper>
+        <CountOptionItem name={watchedOption?.name} value={countAsString} onChange={setCountAsString} />
+        <BottomWrapper>
+          <PricingWrapper>
+            <span>총 결제 금액</span>
+            <Price>{totalPrice}원</Price>
+          </PricingWrapper>
+          <ButtonWrapper>
+            <Button theme="black" size="small" onClick={handleInterestClick}>
+              관심 상품 추가
+            </Button>
+            <Button theme="black" size="large" onClick={handleClick}>
+              나에게 선물하기
+            </Button>
+          </ButtonWrapper>
+        </BottomWrapper>
+      </Wrapper>
+    </FormProvider>
   );
 };
 
 const Wrapper = styled.div`
+  margin-top: 30px;
   width: 100%;
-  padding: 30px 12px 30px 30px;
-  height: 100%;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 24px;
+  background-color: #fafafa; 
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const OptionSelectorWrapper = styled.div`
+  margin-bottom: 16px;
+  background-color: #fafafa; 
+  border: 1px solid #e0e0e0; 
+  border-radius: 4px; 
+  padding: 8px;
 `;
 
 const BottomWrapper = styled.div`
-  padding: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 const PricingWrapper = styled.div`
-  margin-bottom: 20px;
-  padding: 18px 20px;
+  padding: 16px;
   border-radius: 4px;
-  background-color: #f5f5f5;
+  background-color: #ffffff; 
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e0e0e0; 
+`;
 
-  font-size: 14px;
+const Price = styled.span`
+  font-size: 20px;
   font-weight: 700;
-  line-height: 14px;
-  color: #111;
-
-  & span {
-    font-size: 20px;
-    letter-spacing: -0.02em;
-  }
+  color: #333;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 `;

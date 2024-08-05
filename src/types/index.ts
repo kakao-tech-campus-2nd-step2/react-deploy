@@ -1,17 +1,17 @@
 export type CategoryData = {
   id: number;
   name: string;
-  description: string;
   color: string;
-  imageUrl: string;
+  image_url: string;
+  description: string;
 };
 
 export type ProductData = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
-  categoryId: number;
+  image_url: string;
+  category_name: string;
 };
 
 export type ProductOptionsData = {
@@ -34,17 +34,20 @@ export type GoodsDetailOptionItemData = {
 export type OrderHistory = {
   id: number;
   count: number;
+  optionId: number;
 };
 
 export type OrderFormData = {
   productId: number;
+  optionId?: number;
   productQuantity: number;
   messageCardTextMessage: string;
-  senderId: number;
-  receiverId: number;
+  senderId?: number;
+  receiverId?: number;
   hasCashReceipt: boolean;
   cashReceiptType?: 'PERSONAL' | 'BUSINESS';
   cashReceiptNumber?: string;
+  point?: number;
 };
 
 export type MessageCardTemplateData = {
@@ -65,4 +68,10 @@ type Product = {
 export type InterestItem = {
   productId: number;
   product: Product;
+}
+
+// 서버(api) 선택을 위한 타입 정의
+export type Server = {
+  name: string;
+  url: string;
 }

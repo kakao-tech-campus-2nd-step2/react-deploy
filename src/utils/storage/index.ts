@@ -32,6 +32,10 @@ export type OrderHistory = {
 */
 
 interface StorageKey {
-  authToken?: string;
+  authToken?: {
+    email: string;
+    password?: string;
+    token?: string;
+  };
   orderHistory?: OrderHistory;
 }

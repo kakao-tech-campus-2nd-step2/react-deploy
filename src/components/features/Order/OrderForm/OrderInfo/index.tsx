@@ -1,10 +1,13 @@
 import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import type { OrderHistory } from '@/types';
+import { useOrderFormContext } from '@/hooks/useOrderFormContext';
+import type { OrderFormData, OrderHistory } from '@/types';
 
 import { HeadingText } from '../Common/HeadingText';
 import { LabelText } from '../Common/LabelText';
@@ -17,7 +20,51 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
 
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
-  const totalPrice = detail.price * count;
+  const initTotalPrice = detail.price * count;
+  const [totalPrice, setTotalPrice] = useState(initTotalPrice);
+  const { handleSubmit, getValues, register, watch } = useOrderFormContext();
+
+  const point = watch("point", 0);
+
+  useEffect(() => {
+    setTotalPrice(initTotalPrice - (point ?? 0)); // 포인트가 undefined일 경우 0으로 처리
+  }, [point, initTotalPrice]);
+
+  const onSubmit = async () => {
+    const formData = getValues();
+
+    const orderData: OrderFormData = {
+      productId: id,
+      optionId: 1, // 임시 데이터
+      productQuantity: count,
+      hasCashReceipt: formData.hasCashReceipt,
+      cashReceiptType: formData.cashReceiptType,
+      cashReceiptNumber: formData.cashReceiptNumber,
+      messageCardTextMessage: formData.messageCardTextMessage,
+      point: formData.point
+    };
+
+    try {
+      const response = await fetchInstance.post(`${BASE_URL}/api/orders`, orderData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        const earnedPoints = totalPrice * 0.05;
+        console.log("주문 완료!", response.data);
+        alert(`주문 성공! 적립 포인트: ${earnedPoints.toFixed(2)}점`);
+      } 
+      
+      else {
+        console.error("주문 실패:", response.data);
+        alert("주문에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("주문 오류:", error);
+    }
+  };
 
   return (
     <Wrapper>
@@ -31,9 +78,15 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
         <LabelText>최종 결제금액</LabelText>
         <HeadingText>{totalPrice}원</HeadingText>
       </ItemWrapper>
+      <ItemWrapper>
+        <LabelText>사용할 포인트</LabelText>
+        <InputWrapper>
+          <StyledInput type="number" {...register("point", { valueAsNumber: true })} />
+        </InputWrapper>
+      </ItemWrapper>
       <Divider color="#ededed" />
       <Spacing height={32} />
-      <Button type="submit" data-testid="submit-button">{totalPrice}원 결제하기</Button>
+      <Button type="submit" data-testid="submit-button" onClick={handleSubmit(onSubmit)}>{totalPrice}원 결제하기</Button>
     </Wrapper>
   );
 };
@@ -56,4 +109,22 @@ const ItemWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 50%;
+`;
+
+const StyledInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  &:focus {
+    border-color: #007bff;
+  }
 `;

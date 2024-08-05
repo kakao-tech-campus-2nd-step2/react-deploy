@@ -24,9 +24,9 @@ export const CategorySection = () => {
             md: 6,
           }}
         >
-          {data.map((category) => (
-            <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
-              <CategoryItem image={category.imageUrl} label={category.name} />
+          {data.map((content) => (
+            <Link key={content.id} to={getDynamicPath.category(content.id.toString())}>
+              <CategoryItem image={content.image_url} label={content.name} />
             </Link>
           ))}
         </Grid>

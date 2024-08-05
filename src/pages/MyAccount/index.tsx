@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
@@ -26,14 +26,28 @@ export const MyAccountPage = () => {
   const fetchInterest = useCallback(
     async (page: number) => {
       if (!authInfo) return;
-      
+
       try {
-        const response = await axios.get(`/api/wishes?page=${page}&size=${pageSize}`, {
+        // API 명세가 확정나면 수정 해야함!
+        // axios 대신 fetchInstance 사용
+        const response = await fetchInstance.get(`${BASE_URL}/api/wishes`, {
+          params: {
+            page: page,
+            size: pageSize,
+            userId: authInfo.email,
+            pageable: {
+              "page": page,
+              "size": pageSize,
+              "sort": [
+                "name,asc"
+              ]
+            }
+          },
           headers: {
-            Authorization: `Bearer ${authInfo.token}`,
+            Authorization: `${authSessionStorage.get()?.token}`,
           },
         });
-      
+        // 조회 후 상태 업데이트
         setInterestList(response.data.content);
         setTotalPages(response.data.totalPages);
       } catch (error) {
@@ -46,9 +60,13 @@ export const MyAccountPage = () => {
     if (!authInfo) return;
 
     try {
-      await axios.delete(`/api/wishes/${productId}`, {
+      await fetchInstance.delete(`${BASE_URL}/api/wishes/${productId}`, {
+        params: {
+          productId: productId,
+          userId: authInfo.email
+        },
         headers: {
-          Authorization: `Bearer ${authInfo.token}`,
+          Authorization: `${authSessionStorage.get()?.token}`,
         },
       });
       // 삭제 후 상태 업데이트

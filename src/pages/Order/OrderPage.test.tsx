@@ -19,7 +19,8 @@ export type OrderHistory = {
 
 const orderHistoryMock: OrderHistory = {
   id: 1,   // 임의 설정
-  count: 1 // 임의 설정
+  count: 1, // 임의 설정
+  optionId: 1, // 임의 설정
 };
 
 const queryClient = new QueryClient();

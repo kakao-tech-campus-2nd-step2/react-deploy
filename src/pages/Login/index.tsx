@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { BASE_URL } from '@/api/instance';
+import { BASE_URL, fetchInstance } from '@/api/instance';
+import KAKAO_LOGIN from '@/assets/kakao_login_large_wide.png';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -11,48 +12,77 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const exampleCode = 'exampleCode';
+
   const handleLogin = async () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
-    }
-
     try {
-      const response = await fetch(`${BASE_URL}/api/members/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // JSON 형식의 문자열로 변환
-        body: JSON.stringify({ id: id, password }),
+      // 기존: fetch 사용 → 수정: 만들어진 instance 활용
+      const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
+        email: email,
+        password: password,
       });
+      
+      // 로그인 성공 (200) : 액세스 토큰을 생성하여 반환
+      if (response.status === 200) {
+        alert('로그인에 성공했습니다.');
 
-      if (!response.ok) {
-        throw new Error('로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요.');
+        const data = await response.data;
+        authSessionStorage.set({ email: email, token: data.token });
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
       }
-
-      const data = await response.json();
-      authSessionStorage.set(data.id);
-
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-      return window.location.replace(redirectUrl);
-    } 
-    
-    catch (error) {
-      alert(error);
+      
+      // 로그인 실패 (400) : 메시지 반환
+      else if (response.status === 400) {
+        const data = await response.data;
+        console.error(data.message);
+        alert('로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('로그인 중 오류가 발생했습니다.');
     }
-  };
+  }
+
+  const handleKakaoLogin = async () => {
+    try {
+      const response = await fetchInstance.get(`${BASE_URL}/api/oauth2/kakao`, {
+        params: {
+          // 명세 확정되면 수정 필요!
+          code: exampleCode
+        }
+      });
+      
+      // 카카오 로그인 성공 (200) : 액세스 토큰을 생성하여 반환
+      if (response.status === 200) {
+        const data = await response.data;
+        authSessionStorage.set({ email: exampleCode, token: data.token });
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
+      }
+    
+      // 카카오 로그인 실패 (400) : 메시지 반환
+      else if (response.status === 400) {
+        const data = await response.data;
+        console.error(data.message);
+        alert('카카오 로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('카카오 로그인 중 오류가 발생했습니다.');
+    }
+  }
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="아이디" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="아이디" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -67,9 +97,13 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleLogin}>로그인</Button>
+        <Button theme={'darkGray'} onClick={handleLogin}>로그인</Button>
         <Spacing height={20} />
-        <Button onClick={() => navigate('/signup')}>회원 가입</Button>
+        <Button theme={'darkGray'} onClick={() => navigate('/signup')}>회원 가입</Button>
+        <Spacing height={20} />
+        <KakaoLoginButton onClick={handleKakaoLogin}>
+          <KakaoLogo src={KAKAO_LOGIN} alt="카카오로 로그인하기" />
+        </KakaoLoginButton>
       </FormWrapper>
     </Wrapper>
   );
@@ -99,3 +133,17 @@ const FormWrapper = styled.article`
     padding: 60px 52px;
   }
 `;
+
+const KakaoLoginButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const KakaoLogo = styled.img`
+  height: auto;
+`;
+

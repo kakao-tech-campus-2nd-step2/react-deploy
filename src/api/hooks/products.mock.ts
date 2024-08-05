@@ -6,23 +6,29 @@ import { getProductsPath } from './useGetProducts';
 
 export const productsMockHandler = [
   rest.get(
-    getProductsPath({
-      categoryId: '2920',
-    }),
+    getProductsPath(),
     (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
     },
   ),
   rest.get(
-    getProductsPath({
-      categoryId: '2930',
-    }),
+    getProductsPath(),
     (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
     },
   ),
-  rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+  rest.get(getProductDetailPath(':productId'), (req, res, ctx) => {
+    const { productId } = req.params as { productId: string };
+    const product = PRODUCTS_MOCK_DATA.content.find(p => p.id === parseInt(productId, 10));
+    
+    if (product) {
+      return res(ctx.json(product));
+    } else {
+      return res(
+        ctx.status(404),
+        ctx.json({ errorMessage: 'Product not found' }),
+      );
+    }
   }),
   rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
     return res(

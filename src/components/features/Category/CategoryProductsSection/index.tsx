@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
 import { useGetProducts } from '@/api/hooks/useGetProducts';
@@ -6,26 +8,30 @@ import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { LoadingView } from '@/components/common/View/LoadingView';
-import { VisibilityLoader } from '@/components/common/VisibilityLoader';
 import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
-type Props = {
-  categoryId: string;
+type CategoryProductsSectionProps = {
+  categoryId: number;
 };
 
-export const CategoryProductsSection = ({ categoryId }: Props) => {
-  const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useGetProducts({
-      categoryId,
-    });
+export const CategoryProductsSection = ({ categoryId }: CategoryProductsSectionProps) => {
+  const { categoryProducts, status, error, fetchNextPage, hasNextPage } =
+    useGetProducts({ categoryId });
 
-  if (isLoading) return <LoadingView />;
-  if (isError) return <TextView>에러가 발생했습니다.</TextView>;
-  if (!data) return <></>;
-  if (data.pages[0].products.length <= 0) return <TextView>상품이 없어요.</TextView>;
+  const { ref, inView } = useInView();
 
-  const flattenGoodsList = data.pages.map((page) => page?.products ?? []).flat();
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  if (status === 'pending') return <LoadingView />;
+
+  if (error) return <TextView>에러가 발생했습니다.</TextView>;
+
+  if (!categoryProducts?.length) return <TextView>상품이 없어요.</TextView>;
 
   return (
     <Wrapper>
@@ -37,11 +43,11 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
           }}
           gap={16}
         >
-          {flattenGoodsList.map(({ id, imageUrl, name, price }) => (
-            <Link key={id} to={getDynamicPath.productsDetail(id)}>
+          {categoryProducts.map(({ id, image_url, name, price }, index) => (
+            <Link key={id} to={getDynamicPath.productsDetail(id)} ref={categoryProducts.length === index + 1 ? ref : undefined}>
               <DefaultGoodsItems
                 key={id}
-                imageSrc={imageUrl}
+                imageSrc={image_url}
                 title={name}
                 amount={price}
                 subtitle={''}
@@ -49,15 +55,6 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
             </Link>
           ))}
         </Grid>
-        {hasNextPage && (
-          <VisibilityLoader
-            callback={() => {
-              if (!isFetchingNextPage) {
-                fetchNextPage();
-              }
-            }}
-          />
-        )}
       </Container>
     </Wrapper>
   );
