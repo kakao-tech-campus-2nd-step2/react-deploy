@@ -22,8 +22,7 @@ export const LoginPage = () => {
     if (token) {
       console.log(queryParams);
       authSessionStorage.set({ token: token });
-      const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
-      return window.location.replace(redirectUrl);
+      return window.location.replace('/');
     }
   }, [queryParams]);
 
@@ -35,7 +34,7 @@ export const LoginPage = () => {
       });
       const data = await response.data;
       authSessionStorage.set({ token: data.token, email: email });
-      navigate('/');
+      window.location.replace('/');
     } catch (error) {
       console.error('Failed sign in', error);
       alert('로그인 중 오류가 발생했습니다.');

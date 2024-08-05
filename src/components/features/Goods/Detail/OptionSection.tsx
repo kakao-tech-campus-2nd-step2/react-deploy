@@ -40,7 +40,7 @@ export const OptionSection = ({ productId }: Props) => {
       const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
 
       if (!isConfirm) return;
-      return navigate('/login');
+      return navigate(RouterPath.login);
     }
 
     orderHistorySessionStorage.set({
@@ -57,7 +57,7 @@ export const OptionSection = ({ productId }: Props) => {
       const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
 
       if (!isConfirm) return;
-      return navigate('/login');
+      return navigate(RouterPath.login);
     }
     postWishs(Number(productId), {
       onSuccess: () => {
