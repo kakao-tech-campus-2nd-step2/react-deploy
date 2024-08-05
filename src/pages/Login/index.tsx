@@ -73,7 +73,7 @@ export const LoginPage = () => {
         />
         <Button onClick={handleKakaoLogin}>카카오계정 로그인</Button>
       </FormWrapper>
-      <CustomButton onClick={() => window.location.replace('/signUp')}>회원가입</CustomButton>
+      <CustomButton onClick={() => navigate(RouterPath.signUp)}>회원가입</CustomButton>
     </Wrapper>
   );
 };

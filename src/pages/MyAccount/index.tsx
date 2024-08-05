@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -9,10 +10,10 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+  const navigate = useNavigate();
   const handleLogout = () => {
     authSessionStorage.set(undefined);
-    const redirectURL = `${window.location.origin}${RouterPath.home}`;
-    window.location.replace(redirectURL);
+    navigate(RouterPath.home);
   };
 
   return (
