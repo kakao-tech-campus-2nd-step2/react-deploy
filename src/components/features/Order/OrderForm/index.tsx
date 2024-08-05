@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import type { PostOrderRequestParams } from '@/api/hooks/usePostOrder';
+import { usePostOrder } from '@/api/hooks/usePostOrder';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -28,6 +30,8 @@ export const OrderForm = ({ orderHistory }: Props) => {
   });
   const { handleSubmit } = methods;
 
+  const { mutate: postOrder } = usePostOrder();
+
   const handleForm = (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
 
@@ -36,8 +40,26 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log('values', values);
-    alert('주문이 완료되었습니다.');
+    const postOrderParams: PostOrderRequestParams = {
+      optionId: 1,
+      message: values.messageCardTextMessage,
+      quantity: values.productQuantity,
+      productId: values.productId,
+      point: 0,
+      phone: values.cashReceiptNumber || '',
+      receipt: values.hasCashReceipt,
+    };
+
+    postOrder(postOrderParams, {
+      onSuccess: (data) => {
+        alert('주문이 성공적으로 처리되었습니다.');
+        console.log('주문 성공:', data);
+      },
+      onError: (error) => {
+        alert('주문 처리에 실패했습니다.');
+        console.error('주문 오류:', error);
+      },
+    });
   };
 
   // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
