@@ -6,8 +6,10 @@ import { useCurrentCategory } from '@/hooks/useCurrentCategory';
 import { RouterPath } from '@/routes/path';
 
 export const CategoryPage = () => {
-  const { category_id = '' } = useParams<{ category_id: string }>();
-  const { isRender, currentTheme } = useCurrentCategory({ category_id });
+  const { categoryId = '' } = useParams<{ categoryId: string }>();
+  console.log('Category ID:', categoryId);
+
+  const { isRender, currentTheme } = useCurrentCategory({ categoryId });
 
   if (!isRender) return null;
 
@@ -17,8 +19,8 @@ export const CategoryPage = () => {
 
   return (
     <>
-      <CategoryHeroSection category_id={category_id} />
-      <CategoryProductsSection category_id={category_id} />
+      <CategoryHeroSection category_id={categoryId} />
+      <CategoryProductsSection category_id={categoryId} />
     </>
   );
 };
