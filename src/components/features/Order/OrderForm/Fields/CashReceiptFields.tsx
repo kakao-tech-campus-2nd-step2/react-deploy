@@ -1,7 +1,9 @@
-import { Checkbox, Input, Select } from '@chakra-ui/react';
+import { Checkbox, Input, Select, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useQuery } from '@tanstack/react-query';
 import { Controller } from 'react-hook-form';
 
+import { getPoints } from '@/api/utils';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { useOrderFormContext } from '@/hooks/useOrderFormContext';
 
@@ -13,6 +15,10 @@ export interface ICashReceiptFields {
 
 export const CashReceiptFields = ({ totalPrice }: ICashReceiptFields) => {
   const { register, control, watch } = useOrderFormContext();
+  const { data: pointsData } = useQuery({
+    queryFn: getPoints,
+    queryKey: ['points'],
+  });
   const hasCashReceipt = watch('hasCashReceipt');
 
   return (
@@ -44,6 +50,8 @@ export const CashReceiptFields = ({ totalPrice }: ICashReceiptFields) => {
         disabled={!hasCashReceipt}
       />
       <Spacing height={16} />
+      <Text>현재 보유 포인트: {pointsData?.points ?? 0}</Text>
+      <Spacing />
       <Input
         type="number"
         placeholder="사용할 포인트 입력"
