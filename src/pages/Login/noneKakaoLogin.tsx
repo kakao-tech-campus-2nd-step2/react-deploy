@@ -30,13 +30,19 @@ export const NoneKakaoLoginPage = () => {
       navigate('/');
       window.location.reload();
     } catch (error) {
-      alert('올바르지 않은 이메일 및 비밀번호입니다.');
+      alert('올바르지 않은 이메일 또는 비밀번호입니다.');
       console.error('Login failed:', error);
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onKeyDown={handleKeyDown}>
       <FormWrapper>
         <Title>비회원 로그인</Title>
         <Input

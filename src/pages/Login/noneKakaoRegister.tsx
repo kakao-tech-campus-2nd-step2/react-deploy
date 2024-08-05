@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Button } from '@/components/common/Button'; // 공통 Button 사용
@@ -31,27 +31,30 @@ export const NoneKakaoRegisterPage = () => {
 
     try {
       const data: RegisterDatas = { email, password };
-      console.log(data);
-      const response = await fetchInstance.post(`${BASE_URL}/api/members/register`, {
+      const response = await fetchInstance.post(`${BASE_URL}/api/members`, {
         email,
         password,
       });
       const token = response.data.token;
-      console.log(response.data);
       if (token) {
         authSessionStorage.set({ token });
-        console.log('Token saved to authSessionStorage:', token);
       }
-      // 회원가입 성공 시 로그인 페이지로 이동
       navigate(RouterPath.noneKakaoLogin);
-      window.location.reload();
+      alert('회원가입 처리되었습니다. 로그인 해주세요.');
     } catch (error) {
+      alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
       console.error('Registration failed:', error);
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      handleRegister();
+    }
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onKeyDown={handleKeyDown}>
       <FormWrapper>
         <Title>회원가입</Title>
         <Input
