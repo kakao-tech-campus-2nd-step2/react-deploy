@@ -97,7 +97,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: '/react-deploy',
+    basename: '/react-deploy/',
   },
 );
 

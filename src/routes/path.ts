@@ -1,10 +1,10 @@
 export const RouterPath = {
-  root: '/react-deploy',
-  home: '/react-deploy',
+  root: '/react-deploy/',
+  home: '/react-deploy/',
   category: '/category/:categoryId',
   addProduct: '/products/add',
   addCategory: '/category/add',
-  editCategory: '/category/edit/:categoryId',
+  editCategory: '/category/add',
   myAccount: '/my-account',
   productsDetail: '/products/:productId',
   editProduct: '/products/edit/:productId',
