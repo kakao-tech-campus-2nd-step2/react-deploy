@@ -20,7 +20,7 @@ export const CategoryPage = () => {
   return (
     <>
       <CategoryHeroSection categoryId={categoryId} />
-      <CategoryProductsSection category_id={categoryId} />
+      <CategoryProductsSection categoryId={categoryId} />
     </>
   );
 };

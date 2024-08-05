@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-
 import { useGetProducts } from '@/api/hooks/useGetProducts';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
@@ -11,21 +10,31 @@ import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
 type Props = {
-  category_id: string;
+  categoryId: string;
 };
 
-export const CategoryProductsSection = ({ category_id }: Props) => {
+export const CategoryProductsSection = ({ categoryId }: Props) => {
   const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useGetProducts({
-      category_id,
+      categoryId,
     });
+
+  console.log('Fetched Data:', data);
+  console.log('isError:', isError);
+  console.log('isLoading:', isLoading);
 
   if (isLoading) return <LoadingView />;
   if (isError) return <TextView>에러가 발생했습니다.</TextView>;
-  if (!data) return <></>;
-  if (data.pages[0].products.length <= 0) return <TextView>상품이 없어요.</TextView>;
+  if (!data || !data.pages || !Array.isArray(data.pages))
+    return <TextView>상품이 없어요.</TextView>;
 
-  const flattenGoodsList = data.pages.map((page) => page?.products ?? []).flat();
+  const flattenGoodsList = data.pages
+    .flatMap((page) => page?.products ?? [])
+    .filter((product) => product && product.id && product.name && product.price);
+
+  console.log('Flatten Goods List:', flattenGoodsList);
+
+  if (flattenGoodsList.length === 0) return <TextView>유효한 상품이 없어요.</TextView>;
 
   return (
     <Wrapper>
