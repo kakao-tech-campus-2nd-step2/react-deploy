@@ -14,15 +14,16 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const token = searchParams.get('token');
+    const token = queryParams.get('token');
     if (token) {
+      console.log(queryParams);
       authSessionStorage.set({ token: token });
-      window.location.replace('/');
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      return window.location.replace(redirectUrl);
     }
-  }, [searchParams]);
+  }, [queryParams]);
 
   const handleConfirm = async () => {
     try {
@@ -40,15 +41,9 @@ export const LoginPage = () => {
     }
   };
   const handleKakaoLogin = async () => {
-    try {
-      const response = await fetchInstance.post(`${BASE_URL}/api/members/kakao`);
-      console.log(response.data);
-    } catch (error) {
-      console.error('Failed sign in', error);
-      alert('로그인 중 오류가 발생했습니다.');
-    }
+    const redirectUrl = encodeURIComponent('https://hyoeunkh.github.io/react-deploy/login');
+    window.location.replace(`${BASE_URL}/api/members/kakao?redirect_url=${redirectUrl}`);
   };
-
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
