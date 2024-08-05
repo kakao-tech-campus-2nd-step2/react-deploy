@@ -3,7 +3,7 @@ export type CategoryData = {
   name: string;
   description: string;
   color: string;
-  imageUrl: string;
+  image_url: string;
 };
 
 export type ProductData = {

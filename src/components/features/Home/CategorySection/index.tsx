@@ -35,7 +35,7 @@ export const CategorySection = () => {
         >
           {data.map((category) => (
             <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
-              <CategoryItem image={category.imageUrl} label={category.name} />
+              <CategoryItem image={category.image_url} label={category.name} />
             </Link>
           ))}
         </Grid>

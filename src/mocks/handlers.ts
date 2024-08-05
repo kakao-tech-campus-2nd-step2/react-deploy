@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { categoriesMockHandler } from '@/api/hooks/categories.mock';
+//import { categoriesMockHandler } from '@/api/hooks/categories.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
 
 // 가상 데이터베이스
@@ -12,7 +12,7 @@ export const userDatabase: { email: string; password: string }[] = [
 ];
 
 export const handlers = [
-  ...categoriesMockHandler,
+  //...categoriesMockHandler,
   ...productsMockHandler,
 
   // 회원가입 핸들러 추가
