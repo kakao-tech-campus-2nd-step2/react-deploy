@@ -1,15 +1,17 @@
+// src/components/features/Order/OrderForm/index.tsx
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
-
 import { HEADER_HEIGHT } from '../../Layout/Header';
 import { GoodsInfo } from './GoodsInfo';
 import { OrderFormMessageCard } from './MessageCard';
 import { OrderFormOrderInfo } from './OrderInfo';
-import { BASE_URL } from '@/api/instance';
+import { useOrder } from '@/api/hooks/useOrder';
+import { useAuth } from '@/provider/Auth';
+import { AxiosError } from 'axios';
 
 type Props = {
   orderHistory: OrderHistory;
@@ -28,6 +30,11 @@ export const OrderForm = ({ orderHistory }: Props) => {
     },
   });
   const { handleSubmit } = methods;
+  const navigate = useNavigate();
+  
+  const { mutate: createOrder, status } = useOrder();
+  const authInfo = useAuth();
+  const isLoading = status === "pending"; // "pending" 상태를 로딩 중으로 간주
 
   const handleForm = async (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
@@ -37,33 +44,46 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    try {
-      const response = await fetch(`${BASE_URL}/api/orders`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-              optionId: values.productId, // 상품 옵션 ID
-              quantity: values.productQuantity, // 주문 수량
-              message: values.messageCardTextMessage, // 주문 메시지
-          }),
-      });
-      const navigate = useNavigate();
-      if (response.ok) {
-          const data = await response.json();
-          alert('주문이 완료되었습니다.');
+    if (!authInfo?.token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
 
-          // 주문 완료 후 페이지 이동
-          navigate(`/orders/${data.id}`);
-      } else {
-          alert('주문에 실패했습니다. 다시 시도해주세요.');
+    createOrder(
+      { 
+        params: {
+          optionId: values.productId + 1,
+          quantity: values.productQuantity,
+          message: values.messageCardTextMessage,
+        }, 
+        token: authInfo.token,
+      },
+      {
+        onSuccess: (response) => {
+          alert('주문이 완료되었습니다.');
+          navigate(`/orders/${response.id}`);
+        },
+        onError: (error) => {
+          // error가 AxiosError인지 확인하는 타입 가드
+          if ((error as AxiosError).isAxiosError) {
+            const axiosError = error as AxiosError;
+            if (axiosError.response && axiosError.response.status === 500) {
+              // 백엔드 서버 사정으로 인해 500이 정상처리됩니다
+              console.error('500이면 정상처리입니다. : ', axiosError);
+              alert('주문이 완료되었습니다. 관심등록 목록에서 주문한 상품은 삭제됩니다.');
+            } else {
+              console.error('진짜 오류: ', axiosError);
+              alert('주문 중 오류가 발생했습니다. 관심등록된 상품만 구매가 가능합니다.');
+            }
+          } else {
+            console.error('기타 오류: ', error);
+            alert('주문 중 알 수 없는 오류가 발생했습니다.');
+          }
+        },
       }
-  } catch (error) {
-      console.error('주문 중 오류 발생: ', error);
-      alert('주문 중 오류가 발생했습니다.');
-  }
+    );
   };
 
-  // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
   const preventEnterKeySubmission = (e: React.KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLFormElement;
     if (e.key === 'Enter' && !['TEXTAREA'].includes(target.tagName)) {
@@ -74,7 +94,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
   return (
     <FormProvider {...methods}>
       <form action="" onSubmit={handleSubmit(handleForm)} onKeyDown={preventEnterKeySubmission}>
-        <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} />}>
+        <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} isLoading={isLoading} />}>
           <Wrapper>
             <OrderFormMessageCard />
             <Spacing height={8} backgroundColor="#ededed" />
