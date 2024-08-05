@@ -10,17 +10,18 @@ export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
   const [selectedUser, setSelectedUser] = useState(()=> {
-    return localStorage.getItem('selectedUser') || '최유성';
+    // return localStorage.getItem('selectedUser') || '최유성';
+    return '최유성';
   });
 
   // 컴포넌트가 마운트될 때 baseURL을 설정
-  useEffect(() => {
+  // useEffect(() => {
 
-  const storedBaseURL = localStorage.getItem('baseURL');
-  if (storedBaseURL) {
-    updateBaseURL(storedBaseURL);
-  }
-  }, []);
+  // const storedBaseURL = localStorage.getItem('baseURL');
+  // if (storedBaseURL) {
+  //   updateBaseURL(storedBaseURL);
+  // }
+  // }, []);
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());
@@ -38,7 +39,7 @@ export const Header = () => {
         updateBaseURL('http://3.35.176.235:8080');
         break;
       case '고승현':
-        updateBaseURL('http://13.209.84.167:8080');
+        updateBaseURL('http://15.165.18.8:8080'); //http://3.36.86.203:8080
         break;
       case '김병수':
         updateBaseURL('http://13.124.128.255:8080');
