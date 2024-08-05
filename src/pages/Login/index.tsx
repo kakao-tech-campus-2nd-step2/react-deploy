@@ -12,8 +12,8 @@ import { breakpoints } from '@/styles/variants';
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   const { mutate: login } = useLogin();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!email || !password) {
@@ -52,7 +52,7 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing height={20} />
+        <Spacing />
         <Button onClick={handleRegister}>회원가입</Button>
       </FormWrapper>
     </Wrapper>

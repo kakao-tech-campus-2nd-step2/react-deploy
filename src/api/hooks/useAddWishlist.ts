@@ -1,20 +1,24 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { fetchInstance } from '../instance';
-import { WISH_LIST_PATH } from './useGetWishlist';
+import { BASE_URL, fetchInstance } from '../instance';
 
-export const deleteWishlistItem = async (id: number) => {
-  await fetchInstance.delete(`${WISH_LIST_PATH}/${id}`, {
+export interface AddWishlistParams {
+  product_id: number;
+}
+
+export const addWishlist = async (params: AddWishlistParams) => {
+  const response = await fetchInstance.post(`${BASE_URL}/api/wishes`, params, {
     headers: {
       Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
     },
   });
+  return response.data;
 };
 
-export const useDeleteWishlistItem = () => {
+export const useAddWishlist = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (wishId: number) => deleteWishlistItem(wishId),
+    mutationFn: addWishlist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
     },

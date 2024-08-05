@@ -21,10 +21,7 @@ interface ErrorResponse {
 }
 
 const register = async (params: RegisterParams): Promise<RegisterResponse> => {
-  const { data } = await fetchInstance.post<RegisterResponse>(
-    `${BASE_URL}/api/members/register`,
-    params,
-  );
+  const { data } = await fetchInstance.post<RegisterResponse>(`${BASE_URL}/api/users/join`, params);
   return data;
 };
 

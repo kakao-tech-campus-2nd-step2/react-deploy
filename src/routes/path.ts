@@ -7,6 +7,7 @@ export const RouterPath = {
   order: '/order',
   login: '/login',
   register: '/register',
+  redirect: '/api/auth/kakao',
   notFound: '*',
 };
 
