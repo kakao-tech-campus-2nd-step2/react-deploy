@@ -20,41 +20,32 @@ export const LoginPage = () => {
   const exampleCode = 'exampleCode';
 
   const handleLogin = async () => {
-    const registerUser = authSessionStorage.get();
+    try {
+      // 기존: fetch 사용 → 수정: 만들어진 instance 활용
+      const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
+        email: email,
+        password: password,
+      });
+      
+      // 로그인 성공 (200) : 액세스 토큰을 생성하여 반환
+      if (response.status === 200) {
+        alert('로그인에 성공했습니다.');
 
-    // 유저 데이터베이스가 있는 경우
-    if (registerUser){
-      // 로그인 시도 시, 등록된 사용자와 비교
-      if (registerUser && email === registerUser.email && password === registerUser.password) {
-        try {
-          // 기존: fetch 사용 → 수정: 만들어진 instance 활용
-          const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
-            email: email,
-            password: password,
-          });
-          
-          // 로그인 성공 (200) : 액세스 토큰을 생성하여 반환
-          if (response.status === 200) {
-            const data = await response.data;
-            authSessionStorage.set({ email: email, token: data.token });
-            const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-            return window.location.replace(redirectUrl);
-          }
-          
-          // 로그인 실패 (400) : 메시지 반환
-          else if (response.status === 400) {
-            const data = await response.data;
-            console.error(data.message);
-            alert('로그인에 실패했습니다.');
-          }
-        } catch (error) {
-          console.error(error);
-          alert('로그인 중 오류가 발생했습니다.');
-        }
+        const data = await response.data;
+        authSessionStorage.set({ email: email, token: data.token });
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
       }
-    } else {
-      // 유저 데이터베이스가 없는 경우
-      alert('알 수 없는 오류가 발생했습니다.');
+      
+      // 로그인 실패 (400) : 메시지 반환
+      else if (response.status === 400) {
+        const data = await response.data;
+        console.error(data.message);
+        alert('로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('로그인 중 오류가 발생했습니다.');
     }
   }
 

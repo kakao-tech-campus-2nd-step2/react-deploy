@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
@@ -9,10 +8,12 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
+import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
@@ -27,20 +28,27 @@ export const SignUpPage = () => {
         email: email,
         password: password
       });
-      const accessToken = response.headers.authorization;
-      return { accessToken, name: response.data.name };
+      
+      // 회원가입 성공 (200) : 액세스 토큰을 생성하여 반환
+      if (response.status === 200) {
+        alert('회원가입에 성공했습니다.');
+        
+        const data = await response.data;
+        authSessionStorage.set({ email: email, token: data.token });
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
+      }
+
+      else if (response.status === 400) {
+        const data = await response.data;
+        console.error(data.message);
+        alert('회원가입에 실패했습니다.');
+      }
     } 
     
     catch (error) {
-      if (error instanceof AxiosError) {
-        const { response } = error;
-
-        if (response?.status === 400) {
-          const data = await response.data;
-          console.error(data.message);
-          alert('회원가입에 실패했습니다.');
-        }
-      }
+      console.error(error);
+      alert('회원가입 중 오류가 발생했습니다.');
     }
   };
 
