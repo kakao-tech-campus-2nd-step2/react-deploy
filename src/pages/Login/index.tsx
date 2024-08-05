@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { getBaseURL } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -28,14 +29,17 @@ export const LoginPage = () => {
     }
 
     try {
-      const response = await fetch('/api/members/login', {
+      const baseURL = getBaseURL();
+      const requestURL = baseURL ? `${baseURL}/api/login` : '/api/login';
+
+      const response = await fetch(requestURL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ id: 0, email, password }),
       });
-
+      console.log(response);
       if (response.ok) {
         const { token }: LoginResponse = await response.json();
         authSessionStorage.set(token);

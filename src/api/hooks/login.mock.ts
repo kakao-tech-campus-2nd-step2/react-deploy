@@ -20,7 +20,7 @@ const userMockList: User[] = [
 ];
 
 export const loginHandlers = [
-  rest.post('/api/members/login', async (req, res, ctx) => {
+  rest.post('/api/login', async (req, res, ctx) => {
     const { email, password }: LoginRequestBody = await req.json();
 
     const foundUser = userMockList.find((user) => user.email === email);

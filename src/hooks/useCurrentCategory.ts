@@ -14,7 +14,17 @@ export const useCurrentCategory = ({ categoryId }: Props) => {
     return true;
   }, [data, isLoading, isError]);
 
-  const currentTheme = getCurrentCategory(categoryId, data ?? []);
+  const currentCategory = getCurrentCategory(categoryId, data ?? []);
+
+  // const currentTheme = getCurrentCategory(categoryId, data ?? []);
+  const currentTheme = currentCategory
+    ? {
+        id: currentCategory.id,
+        name: currentCategory.name,
+        backgroundColor: currentCategory.color,
+        title: currentCategory.title !== undefined ? currentCategory.title : currentCategory.name,
+      }
+    : null;
 
   return {
     isRender,

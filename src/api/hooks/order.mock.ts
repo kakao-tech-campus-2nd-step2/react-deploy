@@ -11,7 +11,7 @@ export const mockOrderResponse: OrderResultData = {
   optionName: 'Mock Option',
 };
 
-export const postOrder = async (
+export const postMockOrder = async (
   productId: number,
   quantity: number,
 ): Promise<{ resultData: OrderResultData }> => {

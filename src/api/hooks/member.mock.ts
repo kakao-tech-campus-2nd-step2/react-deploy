@@ -15,7 +15,7 @@ const userMockList: User[] = [
 ];
 
 export const memberMockHandler = [
-  rest.post('/api/members/register', async (req, res, ctx) => {
+  rest.post('/api/user/register', async (req, res, ctx) => {
     try {
       const { email, password } = await req.json();
       if (!email || !password) {

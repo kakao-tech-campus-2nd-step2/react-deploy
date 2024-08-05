@@ -14,7 +14,6 @@ export const CategoryPage = () => {
   if (!currentTheme) {
     return <Navigate to={RouterPath.notFound} />;
   }
-
   return (
     <>
       <CategoryHeroSection categoryId={categoryId} />

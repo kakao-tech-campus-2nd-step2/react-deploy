@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { postOrder } from '@/api/hooks/order.mock'; // Adjust the path as needed
+import { postMockOrder } from '@/api/hooks/order.mock';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -38,7 +38,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
     }
 
     try {
-      const response = await postOrder(values.productId, values.productQuantity);
+      const response = await postMockOrder(values.productId, values.productQuantity);
       console.log(response);
       alert(`주문이 완료되었습니다.`);
     } catch (error) {

@@ -7,15 +7,7 @@ import { getProductsPath } from './useGetProducts';
 export const productsMockHandler = [
   rest.get(
     getProductsPath({
-      categoryId: '2920',
-    }),
-    (_, res, ctx) => {
-      return res(ctx.json(PRODUCTS_MOCK_DATA));
-    },
-  ),
-  rest.get(
-    getProductsPath({
-      categoryId: '2930',
+      categoryId: '1',
     }),
     (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
@@ -23,7 +15,7 @@ export const productsMockHandler = [
   ),
   rest.get(getProductDetailPath(':productId'), (req, res, ctx) => {
     const { productId } = req.params;
-    const product = PRODUCTS_MOCK_DATA.resultData.find((p) => p.id === Number(productId));
+    const product = PRODUCTS_MOCK_DATA.content.find((p) => p.id === Number(productId));
     if (product) {
       return res(ctx.json(product));
     } else {
@@ -51,18 +43,20 @@ export const productsMockHandler = [
 ];
 
 const PRODUCTS_MOCK_DATA = {
-  resultData: [
+  totalPages: 1,
+  totalElements: 3,
+  first: true,
+  last: true,
+  size: 20,
+  content: [
     {
       id: 3245119,
       name: '[단독각인] 피렌체 1221 에디션 오드코롱 50ml (13종 택1)',
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
       price: 145000,
-      createdAt: '2024-08-01T08:20:04.078Z',
-      updatedAt: '2024-08-01T08:20:04.078Z',
-      wishUserId: [1, 2, 3],
       categoryId: 2920,
-      optionsId: [101, 102],
+      optionId: [101, 102],
     },
     {
       id: 2263833,
@@ -70,11 +64,8 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20200513102805_4867c1e4a7ae43b5825e9ae14e2830e3.png',
       price: 100000,
-      createdAt: '2024-08-01T08:20:04.078Z',
-      updatedAt: '2024-08-01T08:20:04.078Z',
-      wishUserId: [1, 3],
       categoryId: 2920,
-      optionsId: [103, 104],
+      optionId: [103, 104],
     },
     {
       id: 6502823,
@@ -82,9 +73,6 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240215112140_11f857e972bc4de6ac1d2f1af47ce182.jpg',
       price: 108000,
-      createdAt: '2024-08-01T08:20:04.078Z',
-      updatedAt: '2024-08-01T08:20:04.078Z',
-      wishUserId: [1, 3],
       categoryId: 2930,
       optionsId: [105, 106],
     },
@@ -94,9 +82,6 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240214150740_ad25267defa64912a7c030a7b57dc090.jpg',
       price: 122000,
-      createdAt: '2024-08-01T08:20:04.078Z',
-      updatedAt: '2024-08-01T08:20:04.078Z',
-      wishUserId: [1, 2],
       categoryId: 2930,
       optionsId: [107, 108],
     },
@@ -106,15 +91,28 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240118135914_a6e1a7442ea04aa49add5e02ed62b4c3.jpg',
       price: 133000,
-      createdAt: '2024-08-01T08:20:04.078Z',
-      updatedAt: '2024-08-01T08:20:04.078Z',
-      wishUserId: [1, , 3],
       categoryId: 2930,
       optionsId: [109, 110],
     },
   ],
   number: 0,
-  totalElements: 5,
-  size: 10,
-  last: true,
+  sort: {
+    empty: false,
+    sorted: true,
+    unsorted: false,
+  },
+  numberOfElements: 3,
+  pageable: {
+    pageNumber: 0,
+    pageSize: 20,
+    sort: {
+      empty: false,
+      sorted: true,
+      unsorted: false,
+    },
+    offset: 0,
+    paged: true,
+    unpaged: false,
+  },
+  empty: false,
 };

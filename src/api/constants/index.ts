@@ -1,6 +1,6 @@
 export const servers: { [key: string]: string } = {
-  권순호: 'https://api.example.com',
-  김도헌: 'https://api1.example.com',
-  김동혁: 'https://api2.example.com',
-  박지희: 'https://api3.example.com',
+  박지희: 'http://43.203.255.125:8080',
+  김도헌: 'http://13.209.83.84:8080',
+  김동혁: 'http://43.203.225.165:8080',
+  권순호: 'http://3.36.86.84:8080',
 };
