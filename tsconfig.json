@@ -25,5 +25,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "build", "public"]
+  "exclude": ["node_modules", "build", "public", "mockServiceWorker.js"]
 }
