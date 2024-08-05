@@ -25,6 +25,10 @@
       "destination": "http://3.36.86.203:8080/api/products/:productId/options"
     },
     {
+      "source": "/api/products/:productId/",
+      "destination": "http://3.36.86.203:8080/api/products/:productId/options"
+    },
+    {
       "source": "/api/orders",
       "destination": "http://3.36.86.203:8080/api/orders"
     },
