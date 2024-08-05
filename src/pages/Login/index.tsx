@@ -44,7 +44,7 @@ export const LoginPage = () => {
   };
   const handleKakaoLogin = async () => {
     const redirectUrl = encodeURIComponent(`${window.location.origin}/react-deploy/login`);
-    window.location.replace(`${BASE_URL}/api/members/kakao?redirect_url=${redirectUrl}`);
+    window.location.href = `${BASE_URL}/api/members/kakao?redirect_url=${redirectUrl}`;
   };
   return (
     <Wrapper>
