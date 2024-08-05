@@ -2,7 +2,6 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://15.165.74.97:8080/",
   "homepage": "https://00306.github.io/react-deploy",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
