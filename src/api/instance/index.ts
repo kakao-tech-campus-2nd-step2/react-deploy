@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { authSessionStorage } from '@/utils/storage';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://43.201.17.220:8080';
+const API_URL = process.env.REACT_APP_API_URL || 'https://kakao-gift.43.201.17.220.sslip.io/';
 
 const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
