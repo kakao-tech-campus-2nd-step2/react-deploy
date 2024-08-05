@@ -18,10 +18,10 @@ export const Dropdown = ({ onSelect }: DropdownProps) => {
   return (
     <Box width="200px">
       <Select placeholder="백엔드 API 선택" value={selectedOption} onChange={handleChange}>
-        <option value="http://43.203.200.130:8080/">정지민</option>
-        <option value="/">정진택</option>
-        <option value="http://15.165.74.97:8080/">이풍헌</option>
-        <option value="/">김건호</option>
+        <option value="https://do-free.duckdns.org/stopmin">정지민</option>
+        <option value="https://do-free.duckdns.org/jjt4515">정진택</option>
+        <option value="https://do-free.duckdns.org/canyos">이풍헌</option>
+        <option value="https://do-free.duckdns.org/amm0124">김건호</option>
       </Select>
     </Box>
   );
