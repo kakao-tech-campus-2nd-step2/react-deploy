@@ -21,19 +21,17 @@ export const LoginPage = () => {
     if (token) {
       console.log(queryParams);
       authSessionStorage.set({ token: token });
-      const redirectUrl = queryParams.get('redirect') ?? `/`;
+      const redirectUrl = queryParams.get('redirect') ?? `${process.env.REACT_APP_PUBLIC_URL}`;
       return window.location.replace(redirectUrl);
     }
   }, [queryParams]);
 
   const handleConfirm = async () => {
     try {
-      console.log(process.env.REACT_APP_API);
       const response = await fetchInstance.post(`${BASE_URL}/api/members/login`, {
         email: email,
         password: password,
       });
-      console.log(BASE_URL);
       const data = await response.data;
       authSessionStorage.set({ token: data.token, email: email });
       navigate('/');
