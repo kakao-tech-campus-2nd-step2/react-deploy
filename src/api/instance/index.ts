@@ -23,11 +23,15 @@ const initInstance = (axiosConfig: AxiosRequestConfig): AxiosInstance => {
     if (token) {
       requestConfig.headers.Authorization = `Bearer ${token}`;
     }
+    console.log('API 요청:', requestConfig);
     return requestConfig;
   });
 
   instance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      console.log('API 응답:', response);
+      return response;
+    },
     (error) => {
       console.error('Error fetching data:', error);
       return Promise.reject(error);

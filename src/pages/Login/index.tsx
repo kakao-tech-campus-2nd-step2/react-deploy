@@ -19,19 +19,23 @@ export const LoginPage = () => {
 
   const handleConfirm = async () => {
     if (!id || !password) {
+      console.log('로그인 시도:', id, password);
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
       const { token } = await login(id, password);
+      console.log('로그인 성공:', token);
       alert('로그인 성공!');
       authSessionStorage.set(token);
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/`;
+      console.log('리디렉션 URL:', redirectUrl);
       window.location.replace(redirectUrl);
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
+      console.error('로그인 실패:', axiosError);
       alert(`로그인 실패: ${axiosError.response?.data?.message || axiosError.message}`);
     }
   };
