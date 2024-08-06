@@ -38,7 +38,7 @@ export const OptionSection = ({ productId }: Props) => {
   });
 
   const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
+    return detail?.price * Number(countAsString) || 0;
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
@@ -120,6 +120,7 @@ export const OptionSection = ({ productId }: Props) => {
       console.error((err as Error).message);
     }
   };
+
   const handleSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptionId = e.target.value;
     const selectedOption =
@@ -171,13 +172,15 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button colorScheme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
       </BottomWrapper>
+      <Button colorScheme="yellow" size="lg" onClick={handleClick} style={{ marginTop: '20px' }}>
+        나에게 선물하기
+      </Button>
     </Wrapper>
   );
 };
+
+export default OptionSection;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -186,10 +189,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 `;
 
 const BottomWrapper = styled.div`
   padding: 12px 0 0;
+  position: relative;
+  z-index: 1;
 `;
 
 const PricingWrapper = styled.div`
@@ -199,14 +206,14 @@ const PricingWrapper = styled.div`
   background-color: #f5f5f5;
   display: flex;
   justify-content: space-between;
-
   font-size: 14px;
   font-weight: 700;
   line-height: 14px;
   color: #111;
-
   & span {
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+  position: relative;
+  z-index: 1;
 `;

@@ -53,6 +53,7 @@ export type OrderFormData = {
   hasCashReceipt: boolean;
   cashReceiptType?: 'PERSONAL' | 'BUSINESS';
   cashReceiptNumber?: string;
+  usePoints?: boolean;
 };
 
 export type MessageCardTemplateData = {

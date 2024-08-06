@@ -1,8 +1,8 @@
 import { Box, Button, Image, Text, VStack } from '@chakra-ui/react';
+import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { BASE_URL, fetchInstance } from '@/api/instance';
-import { useAuth } from '@/provider/Auth';
+import { fetchInstance } from '@/api/instance';
 
 interface Product {
   id: number;
@@ -17,48 +17,27 @@ interface WishItem {
 }
 
 // 관심 목록 가져오는 함수
-const fetchWishlist = async (userId: number, token: string, page = 0, size = 10) => {
-  const response = await fetchInstance.get(`${BASE_URL}/api/wishes`, {
-    params: { userId, page, size },
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+const fetchWishlist = async () => {
+  const response = await fetchInstance.get('/api/wishes');
   return response.data.content;
 };
 
 const WishList = () => {
   const queryClient = useQueryClient();
-  const authInfo = useAuth(); // 사용자 정보 가져오기
 
   // useQuery를 사용하여 관심 목록 데이터를 가져옴
-  const {
-    data: interestList,
-    error,
-    isLoading,
-  } = useQuery<WishItem[]>(
-    ['wishlist', authInfo?.id], // queryKey에 userId 포함
-    () => fetchWishlist(Number(authInfo?.id), authInfo?.token ?? ''),
-  );
+  const { data: interestList, error, isLoading } = useQuery<WishItem[]>('wishlist', fetchWishlist);
 
   // useMutation을 사용하여 관심 목록 아이템 삭제 요청을 처리
-  const removeMutation = useMutation(
-    (id: number) =>
-      fetchInstance.delete(`${BASE_URL}/api/wishes/${id}`, {
-        headers: {
-          Authorization: `Bearer ${authInfo?.token}`,
-        },
-      }),
-    {
-      onSuccess: () => {
-        // 성공 시 관심 목록 데이터를 무효화하고 다시 가져옴
-        queryClient.invalidateQueries('wishlist');
-      },
-      onError: () => {
-        alert('삭제 실패');
-      },
+  const removeMutation = useMutation((id: number) => axios.delete(`/api/wishes/${id}`), {
+    onSuccess: () => {
+      // 성공 시 관심 목록 데이터를 무효화하고 다시 가져옴
+      queryClient.invalidateQueries('wishlist');
     },
-  );
+    onError: () => {
+      alert('삭제 실패');
+    },
+  });
 
   const handleRemoveClick = async (id: number) => {
     removeMutation.mutate(id);

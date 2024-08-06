@@ -2,6 +2,7 @@ import '@/styles';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import App from '@/App';
 
@@ -28,10 +29,15 @@ async function deferRender() {
   return;
 }
 
+// QueryClient를 생성합니다.
+const queryClient = new QueryClient();
+
 deferRender().then(() => {
   root.render(
     <React.StrictMode>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </React.StrictMode>,
   );
 });

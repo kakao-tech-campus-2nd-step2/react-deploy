@@ -1,8 +1,12 @@
 import styled from '@emotion/styled';
-import React from 'react';
-//import { useFormContext } from 'react-hook-form';
+import React, { useMemo, useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+//import { useQueryClient } from 'react-query';
+import { usePoint } from '@/api/hooks/usePoint';
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import type { OrderFormData, OrderHistory } from '@/types';
@@ -18,6 +22,8 @@ type Props = {
 
 export const OrderForm = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
+  const [usePoints, setUsePoints] = useState(false);
+  const { data: userPoints = 0, refetch } = usePoint(); // 포인트 데이터 가져오기
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -26,18 +32,37 @@ export const OrderForm = ({ orderHistory }: Props) => {
       senderId: 0,
       receiverId: 0,
       hasCashReceipt: false,
+      messageCardTextMessage: '',
+      cashReceiptNumber: '',
+      usePoints: false,
     },
   });
-  const { handleSubmit, register, watch } = methods;
+  const { handleSubmit } = methods;
+  const { data: detail } = useGetProductDetail({ productId: id.toString() }); // 제품 세부 정보 가져오기
+  const [countAsString] = useState('1');
+  const totalPrice = useMemo(() => {
+    return detail?.price * Number(countAsString) || 0; // 제품 세부 정보에서 가격 가져오기
+  }, [detail, countAsString]);
 
-  const hasCashReceipt = watch('hasCashReceipt');
+  //const productQuantity = watch('productQuantity');
+  //const productPrice = 10000; // 예시로 단가 10000원으로 설정
+  //const totalPrice = productQuantity * productPrice;
+  const discount = usePoints ? Math.min(userPoints, totalPrice * 0.1) : 0; // 포인트 사용 금액 계산
+  const finalPrice = totalPrice - discount;
 
-  const handleForm = (values: OrderFormData) => {
+  const handleForm: SubmitHandler<OrderFormData> = (values) => {
     const { errorMessage, isValid } = validateOrderForm(values);
 
     if (!isValid) {
       alert(errorMessage);
       return;
+    }
+
+    if (usePoints) {
+      // 포인트 차감 로직
+      fetchInstance.post(`${BASE_URL}/api/points`, { pointsToAdd: -discount }).then(() => {
+        refetch(); // 포인트를 차감한 후 포인트 데이터를 다시 가져옵니다.
+      });
     }
 
     console.log('values', values);
@@ -59,26 +84,21 @@ export const OrderForm = ({ orderHistory }: Props) => {
             <OrderFormMessageCard />
             <Spacing height={8} backgroundColor="#ededed" />
             <GoodsInfo orderHistory={orderHistory} />
-
-            <label>
-              <input type="checkbox" {...register('hasCashReceipt')} />
-              현금영수증
-            </label>
-            <label>
-              <select {...register('cashReceiptType')} disabled={!hasCashReceipt}>
-                <option value="">현금영수증 종류</option>
-                <option value="PERSONAL">개인</option>
-                <option value="BUSINESS">사업자</option>
-              </select>
-            </label>
+            <Spacing height={8} />
             <label>
               <input
-                type="text"
-                {...register('cashReceiptNumber')}
-                disabled={!hasCashReceipt}
-                placeholder="현금영수증 번호"
+                type="checkbox"
+                checked={usePoints}
+                onChange={(e) => setUsePoints(e.target.checked)}
               />
+              포인트 사용 (사용 가능 포인트: {userPoints})
             </label>
+            <Spacing height={8} />
+            <div>
+              <p>총 결제 금액: {totalPrice}원</p>
+              <p>포인트 차감: {discount}원</p>
+              <p>최종 결제 금액: {finalPrice}원</p>
+            </div>
           </Wrapper>
         </SplitLayout>
       </form>

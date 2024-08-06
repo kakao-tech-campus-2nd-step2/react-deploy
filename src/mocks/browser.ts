@@ -4,6 +4,7 @@ import { categoriesMockHandler } from '@/api/hooks/categories.mock';
 import { interestHandlers } from '@/api/hooks/interestHandlers';
 //import { loginHandler } from '@/api/hooks/login.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
+import { pointHandlers } from '@/api/hooks/usePoint';
 
 import { handlers } from './handlers';
 
@@ -13,6 +14,7 @@ export const worker = setupWorker(
   ...interestHandlers,
   // ...loginHandler,
   ...handlers,
+  ...pointHandlers,
 );
 
 // 요청 무시 설정
