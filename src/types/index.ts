@@ -17,7 +17,7 @@ export type ProductData = {
 export type ProductOptionsData = {
   id: number;
   name: string;
-  quantity: number;
+  stock_quantity: number;
   product_id: number;
 };
 

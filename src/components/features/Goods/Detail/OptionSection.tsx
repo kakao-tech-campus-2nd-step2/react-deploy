@@ -2,10 +2,7 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
@@ -14,15 +11,21 @@ import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
-type Props = ProductDetailRequestParams;
+type Props = {
+  productId: string;
+};
 
-export const OptionSection = ({ product_id }: Props) => {
-  const { data: detail } = useGetProductDetail({ product_id });
-  const { data: options } = useGetProductOptions({ product_id });
+export const OptionSection = ({ productId }: Props) => {
+  const { data: detail } = useGetProductDetail({ productId });
+  const { data: optionsData } = useGetProductOptions({ productId });
+
+  console.log('Product detail:', detail);
+  console.log('Product options:', optionsData);
 
   const [countAsString, setCountAsString] = useState('1');
+
   const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
+    return detail ? detail.price * Number(countAsString) : 0;
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
@@ -38,21 +41,26 @@ export const OptionSection = ({ product_id }: Props) => {
     }
 
     orderHistorySessionStorage.set({
-      id: parseInt(product_id),
+      id: parseInt(productId),
       count: parseInt(countAsString),
     });
 
     navigate(RouterPath.order);
   };
 
+  const options = optionsData.options;
+
   return (
     <Wrapper>
-      <CountOptionItem
-        name={options[0].name}
-        product_id={parseInt(product_id)}
-        value={countAsString}
-        onChange={setCountAsString}
-      />
+      {options.length > 0 && (
+        <CountOptionItem
+          name={options[0].name}
+          product_id={parseInt(productId)}
+          max_values={options[0].stock_quantity}
+          value={countAsString}
+          onChange={setCountAsString}
+        />
+      )}
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>

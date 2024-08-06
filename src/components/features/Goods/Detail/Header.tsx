@@ -7,8 +7,10 @@ import { breakpoints } from '@/styles/variants';
 
 type Props = ProductDetailRequestParams;
 
-export const GoodsDetailHeader = ({ product_id }: Props) => {
-  const { data: detail } = useGetProductDetail({ product_id });
+export const GoodsDetailHeader = ({ productId }: Props) => {
+  const { data: detail } = useGetProductDetail({ productId });
+
+  if (!detail) return <div>No product details found.</div>;
 
   return (
     <Wrapper>
