@@ -5,8 +5,8 @@
   "homepage": "https://hyoeunkh.github.io/react-deploy",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
-    "start": "craco start",
-    "build": "craco build",
+    "start": "export HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem craco start",
+    "build": "export HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem craco build",
     "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write '**/*.{ts,tsx}'",
