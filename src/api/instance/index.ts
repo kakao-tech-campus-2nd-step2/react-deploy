@@ -2,7 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
-import { authTokenStorage } from '@/utils/storage';
+//import { authTokenStorage } from '@/utils/storage';
 
 const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
@@ -14,19 +14,19 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
     },
   });
 
-  instance.interceptors.request.use(
-    (reqconfig) => {
-      const token = authTokenStorage.get();
-      console.log(token);
-      if (token) {
-        reqconfig.headers.Authorization = `Bearer ${token}`;
-      }
-      return reqconfig;
-    },
-    (error) => {
-      return Promise.reject(error);
-    },
-  );
+  // instance.interceptors.request.use(
+  //   (reqconfig) => {
+  //     const token = authTokenStorage.get();
+  //     console.log(token);
+  //     if (token) {
+  //       reqconfig.headers.Authorization = `Bearer ${token}`;
+  //     }
+  //     return reqconfig;
+  //   },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   },
+  // );
 
   return instance;
 };
