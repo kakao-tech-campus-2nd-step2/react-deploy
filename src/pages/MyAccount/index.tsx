@@ -10,8 +10,12 @@ import { getWishList, removeWish } from '@/api/wish';
 
 type WishItem = {
   id: number;
-  productId: number;
-  productName: string;
+  product: {
+    productId: number;
+    name: string;
+    image_url: string;
+    price: number;
+  };
 };
 
 export const MyAccountPage = () => {
@@ -71,12 +75,16 @@ export const MyAccountPage = () => {
         <Text fontWeight="bold" fontSize="20px">
           관심 상품
         </Text>
-        {wishList.map((wish) => (
-          <StyledBox key={wish.id} alignItems="center">
-            <Text>{wish.productName}</Text>
-            <CloseButton onClick={() => handleRemoveWish(wish.id)} />
-          </StyledBox>
-        ))}
+        {wishList.length > 0 ? (
+          wishList.map((wish) => (
+            <StyledBox key={wish.id} alignItems="center">
+              <Text>{wish.product.name}</Text>
+              <CloseButton onClick={() => handleRemoveWish(wish.id)} />
+            </StyledBox>
+          ))
+        ) : (
+          <Text>관심 상품이 없습니다.</Text>
+        )}
       </VStack>
     </Container>
   );

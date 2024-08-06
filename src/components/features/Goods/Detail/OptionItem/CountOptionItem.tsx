@@ -41,6 +41,7 @@ export const CountOptionItem = ({
     setIsChecked((prev) => !prev);
     try {
       const success = await addWish(product_id);
+      console.log('addWish success:', success);
       if (success) {
         alert('관심 등록 완료');
       } else {
