@@ -1,20 +1,20 @@
-import type { ComponentProps, Ref } from 'react';
-import { forwardRef, Suspense, useImperativeHandle, useRef } from 'react';
-import type { ErrorBoundaryProps } from 'react-error-boundary';
-import { ErrorBoundary } from 'react-error-boundary';
+import type { ComponentProps } from "react";
+import { forwardRef, Suspense, useImperativeHandle, useRef } from "react";
+import type { ErrorBoundaryProps } from "react-error-boundary";
+import { ErrorBoundary } from "react-error-boundary";
 
 type Props = {
   children: React.ReactNode;
-  rejectedFallback?: ErrorBoundaryProps['fallback'];
-  pendingFallback?: ComponentProps<typeof Suspense>['fallback'];
+  rejectedFallback?: ErrorBoundaryProps["fallback"];
+  pendingFallback?: ComponentProps<typeof Suspense>["fallback"];
 };
 
 interface ResetRef {
   reset?(): void;
 }
 
-export const AsyncBoundary = forwardRef(
-  ({ pendingFallback, rejectedFallback, children }: Props, resetRef: Ref<ResetRef>) => {
+export const AsyncBoundary = forwardRef<ResetRef, Props>(
+  ({ pendingFallback, rejectedFallback, children }, resetRef) => {
     const ref = useRef<ErrorBoundary | null>(null);
 
     useImperativeHandle(resetRef, () => ({
@@ -26,5 +26,5 @@ export const AsyncBoundary = forwardRef(
         <Suspense fallback={pendingFallback ?? <></>}>{children}</Suspense>
       </ErrorBoundary>
     );
-  },
+  }
 );
