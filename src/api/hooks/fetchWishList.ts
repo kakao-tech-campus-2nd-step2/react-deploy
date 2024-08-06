@@ -28,13 +28,18 @@ interface WishListResponse {
   };
 }
 
-const fetchWishList = async (page: number, size: number): Promise<WishListResponse> => {
+// Helper function to get authorization headers
+const getAuthHeaders = () => {
   const token = getToken();
   if (!token) throw new Error('토큰이 없습니다.');
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+};
+
+const fetchWishList = async (page: number, size: number): Promise<WishListResponse> => {
   const response = await fetchInstance.get('/api/wishes', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: getAuthHeaders(),
     params: {
       page,
       size,
@@ -65,11 +70,9 @@ export const useRemoveWish = (
 
   return useMutation<void, AxiosError, { productId: number }>({
     mutationFn: async ({ productId }) => {
-      const token = getToken();
-      if (!token) throw new Error('토큰이 없습니다.');
       return fetchInstance.delete(`/api/wishes`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          ...getAuthHeaders(),
           'Cache-Control': 'no-cache',
         },
         data: { productId },
@@ -91,15 +94,11 @@ export const useAddWish = (
 
   return useMutation<void, AxiosError, { productId: number }>({
     mutationFn: ({ productId }) => {
-      const token = getToken();
-      if (!token) throw new Error('토큰이 없습니다.');
       return fetchInstance.post(
         '/api/wishes',
         { productId },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: getAuthHeaders(),
         },
       );
     },
