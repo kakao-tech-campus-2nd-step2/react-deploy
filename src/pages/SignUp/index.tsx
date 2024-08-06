@@ -29,7 +29,7 @@ export const SignUpPage = () => {
       const data = response.data;
       console.log(data);
       authSessionStorage.set({ token: data.token, email: email, password: password });
-      window.location.replace(`${RouterPath.home}`);
+      // window.location.replace(`${RouterPath.home}`);
     } catch (error) {
       console.error('Failed sign up', error);
       alert('회원가입 중 오류가 발생했습니다.');
