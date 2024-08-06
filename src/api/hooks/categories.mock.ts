@@ -27,7 +27,6 @@ const CATEGORIES_RESPONSE_DATA = [
   },
   {
     id: 3302,
-    key: 'life_health',
     name: '건강/비타민',
     imageUrl:
       'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20230907164349_6605944da7c24d82b9c6ed60fcb75283.jpg',
@@ -37,7 +36,6 @@ const CATEGORIES_RESPONSE_DATA = [
   },
   {
     id: 3301,
-    key: 'life_adult',
     name: '과일/한우',
     imageUrl:
       'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240213090444_1b3dc970aec54eabbf3fbb7d35c0b7af.jpg',
@@ -47,7 +45,6 @@ const CATEGORIES_RESPONSE_DATA = [
   },
   {
     id: 2926,
-    key: 'life_pregnancy',
     name: '출산/키즈',
     imageUrl:
       'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292620240221_MLFJR.jpeg',

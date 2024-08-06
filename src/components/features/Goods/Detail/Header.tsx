@@ -12,7 +12,7 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
 
   return (
     <Wrapper>
-      <GoodsImage src={detail.imageUrl} alt={detail.name} />
+      <GoodsImage src={detail.image_url} alt={detail.name} />
       <InfoWrapper>
         <Title>{detail.name}</Title>
         <Price>{detail.price}원</Price>

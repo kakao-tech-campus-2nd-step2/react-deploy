@@ -32,21 +32,22 @@ type ProductsResponseRawData = {
   last: boolean;
 };
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+export const getProductsPath = ({}: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
-  params.append('sort', 'name,asc');
-  if (pageToken) params.append('page', pageToken);
-  if (maxResults) params.append('size', maxResults.toString());
+  params.append('page', '0');
+  params.append('size', '10');
+  params.append('sort', 'id,asc');
+  //if (pageToken) params.append('page', pageToken);
+  //if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `${BASE_URL}/api/products?page=0&size=10&sort=id,asc`;
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
   const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
   const data = response.data;
-
+  console.log(data);
   return {
     products: data.content,
     nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,

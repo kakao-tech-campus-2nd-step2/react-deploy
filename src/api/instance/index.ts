@@ -10,7 +10,6 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
     ...config,
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
       ...config.headers,
     },
   });
@@ -18,6 +17,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   instance.interceptors.request.use(
     (reqconfig) => {
       const token = authTokenStorage.get();
+      console.log(token);
       if (token) {
         reqconfig.headers.Authorization = `Bearer ${token}`;
       }
@@ -64,7 +64,6 @@ export const queryClient = new QueryClient({
     },
   },
 });
-
 
 export const updateFetchInstance = () => {
   fetchInstance = initInstance({

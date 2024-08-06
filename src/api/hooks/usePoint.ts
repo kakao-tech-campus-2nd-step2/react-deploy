@@ -1,7 +1,7 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
-import { BASE_URL } from '../instance';
+import { BASE_URL, fetchInstance } from '../instance';
 
 export const usePoint = () => {
   const [point, setPoint] = useState<number | null>(null);
@@ -11,15 +11,9 @@ export const usePoint = () => {
   const fetchPoint = async () => {
     try {
       setLoading(true);
-      const authToken = localStorage.getItem('authToken');
       console.log('Using BASE_URL:', BASE_URL); // BASE_URL 확인
-      console.log('Auth Token:', authToken); // 토큰 확인
 
-      const response = await axios.get(`${BASE_URL}/api/members/me`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await fetchInstance.get(`${BASE_URL}/api/members/me?userId=2`, {});
 
       console.log('Response:', response.data); // 응답 데이터 확인
       setPoint(response.data.remain_point); // API 명세에 따라 response.data.remain_point로 설정

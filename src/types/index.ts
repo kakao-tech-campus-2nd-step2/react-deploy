@@ -10,7 +10,7 @@ export type ProductData = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
+  image_url: string;
   categoryId: number;
 };
 
@@ -29,6 +29,14 @@ export type GoodsDetailOptionItemData = {
   id?: number;
   price?: number;
   stockQuantity: number;
+};
+
+export type ProductResponseData = {
+  page: number;
+  size: number;
+  total_elements: number;
+  total_pages: number;
+  contents: ProductData[];
 };
 
 export type OrderHistory = {
