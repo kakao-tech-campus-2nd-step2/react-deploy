@@ -31,13 +31,13 @@ export type GoodsDetailOptionItemData = {
   stockQuantity: number;
 };
 
-export type ProductResponseData = {
-  page: number;
-  size: number;
-  total_elements: number;
-  total_pages: number;
-  contents: ProductData[];
-};
+// export type ProductResponseData = { //백서버연결할때 사용
+//   page: number;
+//   size: number;
+//   total_elements: number;
+//   total_pages: number;
+//   contents: ProductData[];
+// };
 
 export type OrderHistory = {
   id: number;

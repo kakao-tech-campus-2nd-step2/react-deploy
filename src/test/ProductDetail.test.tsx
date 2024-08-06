@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-//import React from 'react';
+// import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { PRODUCTS_MOCK_DATA } from '@/api/hooks/products.mock';
@@ -53,7 +53,7 @@ describe('GoodsDetail 컴포넌트', () => {
   it('상품 이미지를 표시', async () => {
     const product = PRODUCTS_MOCK_DATA.content[0];
     const productId = product.id.toString();
-    const { imageUrl } = product;
+    const { image_url: imageUrl } = product; // image_url을 imageUrl로 변경
 
     renderWithProviders(<GoodsDetail productId={productId} />);
 

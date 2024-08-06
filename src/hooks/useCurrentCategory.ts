@@ -14,6 +14,7 @@ export const useCurrentCategory = ({ categoryId }: Props) => {
     return true;
   }, [data, isLoading, isError]);
 
+  // `contents` 배열을 추출하여 전달
   const currentTheme = getCurrentCategory(categoryId, data ?? []);
 
   return {

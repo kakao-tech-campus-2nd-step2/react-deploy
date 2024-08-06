@@ -9,20 +9,17 @@ import { breakpoints } from '@/styles/variants';
 
 import { CategoryItem } from './CategoryItem';
 
+interface Category {
+  id: number;
+  name: string;
+  image_url: string;
+}
+
 export const CategorySection = () => {
   const { data, isLoading, isError } = useGetCategories();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading categories</div>;
-  }
-
-  if (!data || data.length === 0) {
-    return <div>No categories found</div>;
-  }
+  if (isLoading || isError) return null;
+  if (!data) return null;
 
   return (
     <Wrapper>
@@ -33,8 +30,11 @@ export const CategorySection = () => {
             md: 6,
           }}
         >
-          {data.map((category) => (
-            <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
+          {data.map((category: Category) => (
+            <Link
+              key={category.id?.toString()}
+              to={getDynamicPath.category(category.id?.toString() || '')}
+            >
               <CategoryItem image={category.image_url} label={category.name} />
             </Link>
           ))}

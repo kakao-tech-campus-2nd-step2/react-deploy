@@ -35,8 +35,8 @@ export const getBaseUrl = (): string => {
   const selectedServer = sessionStorage.getItem('selectedServer');
   switch (selectedServer) {
     case 'server1':
-      //  return 'http://localhost:3000';
-      return 'http://bgmsound.kro.kr:8080';
+      return 'http://localhost:3000';
+    //return 'http://bgmsound.kro.kr:8080';
     case 'server2':
       return 'http://api.server2.example.com';
     case 'server3':
@@ -48,7 +48,7 @@ export const getBaseUrl = (): string => {
   }
 };
 
-export const BASE_URL = 'http://bgmsound.kro.kr:8080'; //'http://localhost:3000'; // api확정시 수정
+export const BASE_URL = 'http://localhost:3000'; // api확정시 수정
 
 export let fetchInstance = initInstance({
   baseURL: BASE_URL,
