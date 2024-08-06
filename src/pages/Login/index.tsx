@@ -4,7 +4,9 @@ import KAKAO_LOGO from "@/assets/kakao_logo.svg";
 
 export const KakaoLogin = () => {
   const Rest_api_key = "0554f7c2eaba28fbf805032da1e0b14d";
+
   const redirect_uri = "http://43.203.28.55:8080/api/oauth/token"; //Redirect URI
+
   // oauth 요청 URL
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
   const handleLogin = () => {

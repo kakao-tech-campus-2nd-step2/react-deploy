@@ -1,3 +1,4 @@
+
 import type { ComponentProps } from "react";
 import { forwardRef, Suspense, useImperativeHandle, useRef } from "react";
 import type { ErrorBoundaryProps } from "react-error-boundary";
@@ -15,6 +16,7 @@ interface ResetRef {
 
 export const AsyncBoundary = forwardRef<ResetRef, Props>(
   ({ pendingFallback, rejectedFallback, children }, resetRef) => {
+
     const ref = useRef<ErrorBoundary | null>(null);
 
     useImperativeHandle(resetRef, () => ({
@@ -27,4 +29,5 @@ export const AsyncBoundary = forwardRef<ResetRef, Props>(
       </ErrorBoundary>
     );
   }
+
 );
