@@ -1,6 +1,5 @@
 import { rest } from 'msw';
 
-const BASE_URL = 'http://localhost:3000';
 
 interface ProductDetail {
   id: number;
@@ -20,7 +19,7 @@ const mockProductDetail: ProductDetail = {
 };
 
 export const productDetailMockHandler = [
-  rest.get(`${BASE_URL}/api/products/:productId`, (req, res, ctx) => {
+  rest.get(`/api/products/:productId`, (req, res, ctx) => {
     const { productId } = req.params;
 
     // 실제 환경에서는 여기서 productId를 사용하여 다양한 상품을 반환할 수 있습니다.

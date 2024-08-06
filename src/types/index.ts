@@ -1,3 +1,8 @@
+export type LoginResponse = {
+  email: string;
+  token: string;
+};
+
 export type CategoryData = {
   id: number;
   name: string;
@@ -5,6 +10,8 @@ export type CategoryData = {
   color: string;
   imageUrl: string;
 };
+
+export type ProductId = number;
 
 export type ProductData = {
   id: number;
