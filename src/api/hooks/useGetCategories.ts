@@ -2,20 +2,58 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { CategoryData } from '@/types';
 
-import { BASE_URL, fetchInstance } from '../instance';
+import { getBaseUrl, fetchInstance } from '../instance';
 
-export type CategoryResponseData = CategoryData[];
+export type CategoryResponseData = {
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+  size: number;
+  content: CategoryData[];
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  empty: boolean;
+};
 
-export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
-const categoriesQueryKey = [getCategoriesPath()];
+export const getCategoriesPath = () => `${getBaseUrl()}/api/categories`;
 
-export const getCategories = async () => {
-  const response = await fetchInstance.get<CategoryResponseData>(getCategoriesPath());
-  return response.data;
+export const getCategories = async (): Promise<CategoryData[]> => {
+  let allCategories: CategoryData[] = [];
+  let currentPage = 0;
+  let hasNextPage = true;
+
+  while (hasNextPage) {
+    const response = await fetchInstance.get<CategoryResponseData>(
+      `${getCategoriesPath()}?page=${currentPage}&size=100`
+    );
+    allCategories = [...allCategories, ...response.data.content];
+    hasNextPage = !response.data.last;
+    currentPage++;
+  }
+
+  return allCategories;
 };
 
 export const useGetCategories = () =>
   useQuery({
-    queryKey: categoriesQueryKey,
+    queryKey: ['categories'],
     queryFn: getCategories,
   });

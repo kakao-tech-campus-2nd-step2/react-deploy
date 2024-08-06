@@ -6,7 +6,7 @@ import {
 
 import type { ProductData } from '@/types';
 
-import { BASE_URL } from '../instance';
+import { getBaseUrl } from '../instance';
 import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
@@ -35,12 +35,14 @@ type ProductsResponseRawData = {
 export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
+  if (pageToken)
+    params.append('page', pageToken);
+  if (maxResults)
+    params.append('size', maxResults.toString());
   params.append('sort', 'name,asc');
-  if (pageToken) params.append('page', pageToken);
-  if (maxResults) params.append('size', maxResults.toString());
+  params.append('categoryId', categoryId);
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `${getBaseUrl()}/api/products?${params.toString()}`;
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
@@ -58,6 +60,7 @@ export const getProducts = async (params: RequestParams): Promise<ProductsRespon
 };
 
 type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
+
 export const useGetProducts = ({
   categoryId,
   maxResults = 20,
