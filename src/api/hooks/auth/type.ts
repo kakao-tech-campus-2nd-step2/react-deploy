@@ -12,3 +12,4 @@ export type KakaoResponseData = {
   tokenType: string;
   token: string;
 };
+
