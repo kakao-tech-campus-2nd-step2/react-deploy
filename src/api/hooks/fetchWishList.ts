@@ -8,6 +8,11 @@ import { fetchInstance } from '../instance';
 
 const getToken = () => authSessionStorage.get();
 
+// Constants for query keys
+const QUERY_KEYS = {
+  WISH_LIST: 'wishList',
+};
+
 export interface WishItem {
   id: number;
   name: string;
@@ -45,7 +50,7 @@ export const useWishList = (
   options?: UseQueryOptions<WishListResponse, AxiosError>,
 ) => {
   return useQuery<WishListResponse, AxiosError>({
-    queryKey: ['wishList', page, size],
+    queryKey: [QUERY_KEYS.WISH_LIST, page, size],
     queryFn: () => fetchWishList(page, size),
     staleTime: 0,
     refetchOnWindowFocus: true,
@@ -72,8 +77,8 @@ export const useRemoveWish = (
     },
     onSuccess: () => {
       console.log('Item successfully removed, invalidating and refetching wishList');
-      queryClient.invalidateQueries({ queryKey: ['wishList'] });
-      queryClient.refetchQueries({ queryKey: ['wishList'] }); // 쿼리를 강제로 다시 페치합니다
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WISH_LIST] });
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.WISH_LIST] }); // 쿼리를 강제로 다시 페치합니다
     },
     ...options,
   });
@@ -99,8 +104,8 @@ export const useAddWish = (
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishList'] });
-      queryClient.refetchQueries({ queryKey: ['wishList'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WISH_LIST] });
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.WISH_LIST] });
     },
     ...options,
   });
