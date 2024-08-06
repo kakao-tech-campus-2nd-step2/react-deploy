@@ -128,12 +128,10 @@ const PricingWrapper = styled.div`
   background-color: #f5f5f5;
   display: flex;
   justify-content: space-between;
-
   font-size: 14px;
   font-weight: 700;
   line-height: 14px;
   color: #111;
-
   & span {
     font-size: 20px;
     letter-spacing: -0.02em;
@@ -146,12 +144,10 @@ const WishButton = styled.button`
   border-radius: 4px;
   background-color: #f5f5f5;
   display: flex;
-
   font-size: 14px;
   font-weight: 700;
   line-height: 14px;
   color: #111;
-
   &:hover {
     background-color: #e0e0e0;
   }

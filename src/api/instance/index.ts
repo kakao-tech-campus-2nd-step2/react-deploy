@@ -18,7 +18,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
 };
 
 // 기본 API URL
-export const BASE_URL = 'http://3.34.142.38:8080';
+export const BASE_URL = 'http://localhost:3000';
 
 // 엔지니어별 API URL
 export const apiUrls: Record<string, string> = {

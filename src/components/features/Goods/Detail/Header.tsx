@@ -40,7 +40,6 @@ const Wrapper = styled.header`
   width: 100%;
   display: flex;
   flex-direction: column;
-
   @media screen and (min-width: ${breakpoints.sm}) {
     flex-direction: row;
   }
@@ -53,7 +52,6 @@ const GoodsImage = styled.img`
 
 const InfoWrapper = styled.div`
   width: 100%;
-
   @media screen and (min-width: ${breakpoints.sm}) {
     padding-left: 24px;
   }
