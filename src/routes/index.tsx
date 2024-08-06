@@ -13,71 +13,68 @@ import { OrderPage } from '@/pages/Order';
 import { OrderListPage } from '@/pages/OrderList';
 import { SignUpPage } from '@/pages/SignUp';
 
-const router = createBrowserRouter(
-  [
-    {
-      path: RouterPath.root,
-      element: <Layout />,
-      children: [
-        {
-          path: RouterPath.home,
-          element: <HomePage />,
-        },
-        {
-          path: RouterPath.category,
-          element: <CategoryPage />,
-        },
-        {
-          path: RouterPath.productsDetail,
-          element: <GoodsDetailPage />,
-        },
-        {
-          path: RouterPath.myAccount,
-          element: <PrivateRoute />,
-          children: [
-            {
-              path: RouterPath.myAccount,
-              element: <MyAccountPage />,
-            },
-          ],
-        },
-        {
-          path: RouterPath.order,
-          element: <PrivateRoute />,
-          children: [
-            {
-              path: RouterPath.order,
-              element: <OrderPage />,
-            },
-          ],
-        },
-        {
-          path: RouterPath.orderList,
-          element: <PrivateRoute />,
-          children: [
-            {
-              path: RouterPath.orderList,
-              element: <OrderListPage />,
-            },
-          ],
-        },
-        {
-          path: RouterPath.notFound,
-          element: <Navigate to={RouterPath.home} />,
-        },
-      ],
-    },
-    {
-      path: RouterPath.login,
-      element: <LoginPage />,
-    },
-    {
-      path: RouterPath.signUp,
-      element: <SignUpPage />,
-    },
-  ],
-  { basename: process.env.PUBLIC_URL },
-);
+const router = createBrowserRouter([
+  {
+    path: RouterPath.root,
+    element: <Layout />,
+    children: [
+      {
+        path: RouterPath.home,
+        element: <HomePage />,
+      },
+      {
+        path: RouterPath.category,
+        element: <CategoryPage />,
+      },
+      {
+        path: RouterPath.productsDetail,
+        element: <GoodsDetailPage />,
+      },
+      {
+        path: RouterPath.myAccount,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.myAccount,
+            element: <MyAccountPage />,
+          },
+        ],
+      },
+      {
+        path: RouterPath.order,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.order,
+            element: <OrderPage />,
+          },
+        ],
+      },
+      {
+        path: RouterPath.orderList,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.orderList,
+            element: <OrderListPage />,
+          },
+        ],
+      },
+      {
+        path: RouterPath.notFound,
+        element: <Navigate to={RouterPath.home} />,
+      },
+    ],
+  },
+  {
+    path: RouterPath.login,
+    element: <LoginPage />,
+  },
+  {
+    path: RouterPath.signUp,
+    element: <SignUpPage />,
+  },
+]);
 
 export const Routes = () => {
   return <RouterProvider router={router} />;

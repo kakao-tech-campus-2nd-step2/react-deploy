@@ -10,7 +10,7 @@ export const Header = () => {
   const authInfo = useAuth();
 
   const handleLogin = () => {
-    navigate('/login');
+    navigate(RouterPath.login);
   };
 
   return (
