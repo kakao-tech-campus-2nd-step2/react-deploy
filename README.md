@@ -16,8 +16,6 @@
 - [X] 위시 리스트에 상품 추가 api를 호출한다.
 - [X] 위시 리스트를 조회한다.
 - [X] 위시 리스트에서 상품을 삭제한다.
-- [ ] 서버가 여러대이면 선택할 수 있게 한다.
 
 # step2
-- [ ] github action을 사용하여 CI/CD를 구성한다.
-- [ ] cloudflare의 Pages에배포한다.
+- [X] github action을 사용하여 github pages로 배포한다.
