@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { App, Home, Theme, Auth, MyAccount, Product, Order } from '@pages/index';
+import { App, Home, Category, Auth, MyAccount, Product, Order } from '@pages/index';
 import PrivateRoute from './components/PrivateRoute';
 import { ROUTE_PATH } from './path';
 
@@ -33,8 +33,8 @@ export const router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [
           {
-            path: ROUTE_PATH.THEME,
-            element: <Theme />,
+            path: ROUTE_PATH.CATEGORY,
+            element: <Category />,
           },
           {
             path: ROUTE_PATH.MY_ACCOUNT,

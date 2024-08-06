@@ -1,4 +1,6 @@
-import { ProductData, MessageCardTemplateData, ThemeData } from './dataTypes';
+import { ProductData, MessageCardTemplateData, ThemeData, CategoryData } from './dataTypes';
+
+export type CategoriesResponse = CategoryData[];
 
 export interface RankingProductsResponse {
   products: ProductData[];
@@ -14,27 +16,34 @@ export interface WishProduct {
   };
 }
 
+export interface OrderResponse {
+  id: number;
+  optionId: number;
+  quantity: number;
+  orderDateTime: string;
+  message: string;
+}
+
+export interface Wish {
+  wishId: number;
+  productId: number;
+  productName: string;
+  productPrice: number;
+  productImageUrl: string;
+  category: Omit<CategoryData, 'color'>;
+}
+
 export interface GetWishesResponse {
-  content: WishProduct[];
-  pageable: {
-    sort: {
-      sorted: boolean;
-      unsorted: boolean;
-      empty: boolean;
-    };
-    pageNumber: number;
-    pageSize: number;
-    offset: number;
-    unpaged: boolean;
-    paged: boolean;
-  };
   totalPages: number;
   totalElements: number;
-  last: boolean;
-  number: number;
   size: number;
-  numberOfElements: number;
+  content: Wish[];
+  number: number;
+  sort: Sort;
   first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  pageable: Pageable;
   empty: boolean;
 }
 
@@ -47,60 +56,27 @@ export interface ThemesResponse {
   themes: ThemeData[];
 }
 
-export interface ThemeProductsResponse {
-  products: ProductData[];
-  nextPageToken: string | null;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
-  };
-}
-
 export interface ProductDetailResponse {
-  detail: {
-    brandInfo: {
-      id: number;
-      name: string;
-      imageURL: string;
-    };
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: {
     id: number;
-    imageURL: string;
-    isAccessableProductPage: boolean;
     name: string;
-    price: {
-      basicPrice: number;
-      discountRate: number;
-      sellingPrice: number;
-    };
-    productDescription: {
-      displayImage: string;
-    };
-    productDetailInfo: {
-      announcements: [];
-      terms: [];
-    };
-    review: {
-      averageRating: number;
-      totalReviewCount: number;
-    };
-    wish: {
-      isWished: boolean;
-      wishCount: number;
-    };
+    color: string;
+    imageUrl: string;
+    description: string;
   };
 }
 
-export interface ProductOptionResponse {
-  options: {
-    giftOrderLimit: number;
-    hasOption: boolean;
-    names: string[];
-    options: string[];
-    productId: number;
-    productName: string;
-    productPrice: number;
-  };
+export interface ProductOption {
+  id: number;
+  name: string;
+  quantity: number;
 }
+
+export type ProductOptionResponse = ProductOption[];
 
 export interface MessageCardTemplatesResponse {
   templates: MessageCardTemplateData[];
@@ -121,4 +97,39 @@ export interface MyAccountWishProductsResponse {
     totalResults: number;
     resultsPerPage: number;
   };
+}
+
+// Member
+export interface MemberResponse {
+  token: string;
+}
+
+// products
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface Pageable {
+  offset: number;
+  sort: Sort;
+  paged: boolean;
+  pageSize: number;
+  pageNumber: number;
+  unpaged: boolean;
+}
+
+export interface GetProductsResponse {
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: ProductData[];
+  number: number;
+  sort: Sort;
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  pageable: Pageable;
+  empty: boolean;
 }

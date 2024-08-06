@@ -1,7 +1,7 @@
 export const ROUTE_PATH = {
   PREV: -1,
   HOME: '/',
-  THEME: '/theme/:themeKey',
+  CATEGORY: '/category/:categoryId',
   LOGIN: '/login',
   MY_ACCOUNT: '/my-account',
   PRODUCT: '/products/:productId',

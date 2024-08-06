@@ -1,20 +1,24 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { ProductDetailRequest } from '@internalTypes/requestTypes';
 import { ProductDetailResponse } from '@internalTypes/responseTypes';
+import { initInstance } from '@apis/instance';
 import { AxiosError } from 'axios';
-import axiosInstance from '@apis/instance';
-import { PRODUCTS_PATHS } from '../path';
+import { PRODUCTS_PATHS } from '@apis/path';
+import { useAPI } from '@/context/api/useAPI';
 
-const getProductsDetail = async (params?: ProductDetailRequest): Promise<ProductDetailResponse> => {
-  if (!params) throw new Error('params is required');
-  const { productId } = params;
-  const res = await axiosInstance.get<ProductDetailResponse>(PRODUCTS_PATHS.PRODUCTS_DETAIL(productId));
-
+const getProductsDetail = async (params: ProductDetailRequest, baseURL: string): Promise<ProductDetailResponse> => {
+  const instance = initInstance(baseURL);
+  const res = await instance.get<ProductDetailResponse>(PRODUCTS_PATHS.PRODUCTS_DETAIL(params.productId));
   return res.data;
 };
 
-export const useGetProductsDetail = ({ productId }: ProductDetailRequest) =>
-  useQuery<ProductDetailResponse, AxiosError>({
+export const useGetProductsDetail = ({
+  productId,
+}: ProductDetailRequest): UseQueryResult<ProductDetailResponse, AxiosError> => {
+  const { baseURL } = useAPI();
+
+  return useQuery<ProductDetailResponse, AxiosError>({
     queryKey: ['productDetail', productId],
-    queryFn: () => getProductsDetail({ productId }),
+    queryFn: () => getProductsDetail({ productId }, baseURL),
   });
+};
