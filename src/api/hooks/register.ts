@@ -20,6 +20,10 @@ export const registerAndLogin = async (email: string, password: string): Promise
     const token = response.data.token;
     authSessionStorage.set(token);
   } catch (error) {
+
+
+    console.error('회원가입 및 로그인 처리 중 오류가 발생했습니다.', error);
+
     throw error; // Optionally handle the error further or rethrow it
   }
 };

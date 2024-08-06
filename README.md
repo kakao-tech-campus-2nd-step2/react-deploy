@@ -19,3 +19,5 @@
 
 # step2
 - [X] github action을 사용하여 github pages로 배포한다.
+
+
