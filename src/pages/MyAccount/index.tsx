@@ -1,14 +1,20 @@
+import { Box, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 
+import { useGetPoints } from '@/api/hooks/point/point.api';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { WishList } from '@/components/features/MyAccount/WishList';
-import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
-  const { authInfo } = useAuth();
+  const { mutate, data, status, error } = useGetPoints();
+
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -19,7 +25,18 @@ export const MyAccountPage = () => {
 
   return (
     <Wrapper>
-      {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      <Text>개발자님 안녕하세요!</Text>
+      <Spacing height={64} />
+      <Box>
+        <Text>포인트</Text>
+        {status === 'pending' ? (
+          <Text>Loading...</Text>
+        ) : status === 'error' ? (
+          <Text>Error fetching points: {error.message}</Text>
+        ) : (
+          <Text>{data?.point ?? 0}</Text>
+        )}
+      </Box>
       <Button
         size="small"
         theme="darkGray"

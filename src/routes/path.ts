@@ -6,7 +6,7 @@ export const RouterPath = {
   productsDetail: '/products/:productId',
   order: '/order',
   login: '/login',
-  register: '/register',
+  kakaoCallback: '/oauth/kakao/callback',
   notFound: '*',
 };
 
@@ -21,4 +21,5 @@ export const getDynamicPath = {
       ':productId',
       typeof goodsId === 'number' ? goodsId.toString() : goodsId,
     ),
+  kakaoCallback: (code: string) => `${RouterPath.kakaoCallback}?code=${encodeURIComponent(code)}`, // 다이내믹 경로 생성을 위한 함수 추가
 };
