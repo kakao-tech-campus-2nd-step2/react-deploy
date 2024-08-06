@@ -27,6 +27,7 @@ export const SignUpPage = () => {
       });
 
       const data = response.data;
+      console.log(data);
       authSessionStorage.set({ token: data.token, email: email, password: password });
       window.location.replace(`${RouterPath.home}`);
     } catch (error) {
