@@ -6,6 +6,7 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -20,27 +21,15 @@ export const SignUpPage = () => {
     }
 
     try {
-      const response = await fetchInstance.post(
-        `${BASE_URL}/api/members/register`,
-        {
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      const response = await fetchInstance.post(`${BASE_URL}/api/members/register`, {
+        email: email,
+        password: password,
+      });
 
-      if (response.status === 201) {
-        const data = response.data;
-        authSessionStorage.set({ token: data.token, email: data.email, password: password });
-        window.location.replace(`${window.location.origin}/`);
-      } else {
-        console.error('Unexpected response', response);
-        alert('회원가입에 실패했습니다. 다시 시도해주세요.');
-      }
+      const data = response.data;
+      console.log(data);
+      authSessionStorage.set({ token: data.token, email: email, password: password });
+      window.location.replace(`${RouterPath.home}`);
     } catch (error) {
       console.error('Failed sign up', error);
       alert('회원가입 중 오류가 발생했습니다.');

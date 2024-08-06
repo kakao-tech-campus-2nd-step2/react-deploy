@@ -5,17 +5,11 @@ import { BASE_URL, fetchInstance } from '../instance';
 import { authSessionStorage } from '@/utils/storage';
 
 const postWishs = async (productId: number) => {
-  const response = await fetchInstance.post(
-    `${BASE_URL}/api/wishes`,
-    {
-      productId,
+  const response = await fetchInstance.post(`${BASE_URL}/api/wishes/${productId}`, {
+    headers: {
+      Authorization: `Bearer ${authSessionStorage.get()?.token}`,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${authSessionStorage.get()?.token}`,
-      },
-    },
-  );
+  });
   return response.data;
 };
 

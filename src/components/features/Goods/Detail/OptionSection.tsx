@@ -1,16 +1,18 @@
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { VscHeart } from 'react-icons/vsc';
 import { useNavigate } from 'react-router-dom';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
+import { OptionSelect } from './OptionItem/OptionSelect';
 
 import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { usePostWishs } from '@/api/hooks/usePostWishs';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
+import { RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 type Props = ProductDetailRequestParams;
@@ -18,6 +20,11 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+
+  const methods = useForm();
+  const { watch } = methods;
+
+  const option = watch('optionSelect');
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -33,12 +40,13 @@ export const OptionSection = ({ productId }: Props) => {
       const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
 
       if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      return navigate(RouterPath.login);
     }
 
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
+      optionId: option.id,
     });
 
     navigate(RouterPath.order);
@@ -49,7 +57,7 @@ export const OptionSection = ({ productId }: Props) => {
       const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
 
       if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      return navigate(RouterPath.login);
     }
     postWishs(Number(productId), {
       onSuccess: () => {
@@ -61,22 +69,25 @@ export const OptionSection = ({ productId }: Props) => {
     });
   };
   return (
-    <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
-      <BottomWrapper>
-        <PricingWrapper>
-          총 결제 금액 <span>{totalPrice}원</span>
-        </PricingWrapper>
-        <ButtonWrapper>
-          <CustomButton onClick={handleWishClick}>
-            <VscHeart size={30} />
-          </CustomButton>
-          <Button theme="black" size="large" onClick={handleClick}>
-            나에게 선물하기
-          </Button>
-        </ButtonWrapper>
-      </BottomWrapper>
-    </Wrapper>
+    <FormProvider {...methods}>
+      <Wrapper>
+        <OptionSelect options={options} />
+        <CountOptionItem name={option?.name} value={countAsString} onChange={setCountAsString} />
+        <BottomWrapper>
+          <PricingWrapper>
+            총 결제 금액 <span>{totalPrice}원</span>
+          </PricingWrapper>
+          <ButtonWrapper>
+            <CustomButton onClick={handleWishClick}>
+              <VscHeart size={30} />
+            </CustomButton>
+            <Button theme="black" size="large" onClick={handleClick}>
+              나에게 선물하기
+            </Button>
+          </ButtonWrapper>
+        </BottomWrapper>
+      </Wrapper>
+    </FormProvider>
   );
 };
 

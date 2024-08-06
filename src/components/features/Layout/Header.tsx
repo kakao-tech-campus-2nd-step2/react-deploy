@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { Container } from '@/components/common/layouts/Container';
 import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
+import { RouterPath } from '@/routes/path';
 
 export const Header = () => {
   const navigate = useNavigate();
   const authInfo = useAuth();
 
   const handleLogin = () => {
-    navigate(getDynamicPath.login());
+    navigate(RouterPath.login);
   };
 
   return (
@@ -21,7 +21,10 @@ export const Header = () => {
         </Link>
         <RightWrapper>
           {authInfo ? (
-            <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
+            <>
+              <LinkButton onClick={() => navigate(RouterPath.orderList)}>주문 목록</LinkButton>
+              <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
+            </>
           ) : (
             <LinkButton onClick={handleLogin}>로그인</LinkButton>
           )}
@@ -46,7 +49,10 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+const RightWrapper = styled.div`
+  display: flex;
+  gap: 30px;
+`;
 
 const LinkButton = styled.p`
   align-items: center;

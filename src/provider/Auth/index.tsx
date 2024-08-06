@@ -12,20 +12,20 @@ type AuthInfo = {
 export const AuthContext = createContext<AuthInfo | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const currentAuthToken = authSessionStorage.get()?.email;
   const [isReady, setIsReady] = useState(false);
 
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
 
   useEffect(() => {
+    const currentAuthToken = authSessionStorage.get();
     if (currentAuthToken) {
       setAuthInfo({
-        email: currentAuthToken,
-        token: currentAuthToken,
+        email: currentAuthToken.email || '',
+        token: currentAuthToken.token,
       });
     }
     setIsReady(true);
-  }, [currentAuthToken]);
+  }, []);
 
   if (!isReady) return <></>;
   return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;

@@ -9,12 +9,9 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
-
   const handleLogout = () => {
     authSessionStorage.set(undefined);
-
-    const redirectURL = `${window.location.origin}${RouterPath.home}`;
-    window.location.replace(redirectURL);
+    window.location.replace(`${RouterPath.home}`);
   };
 
   return (

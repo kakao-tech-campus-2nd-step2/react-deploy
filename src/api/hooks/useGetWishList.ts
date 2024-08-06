@@ -22,10 +22,9 @@ type WishListResponseData = {
 export const getWishListPath = ({ pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('sort', 'name,asc');
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
-
+  params.append('sort', 'createdDate,desc');
   return `${BASE_URL}/api/wishes?${params.toString()}`;
 };
 
