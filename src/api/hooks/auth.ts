@@ -26,10 +26,11 @@ export const fetchNewToken = async (): Promise<string> => {
 };
 
 export const getToken = async (): Promise<string> => {
-  let token = authSessionStorage.get();
+  const token = authSessionStorage.get();
 
-  if (!token) {
-    token = await fetchNewToken();
+  if (token) {
+    return token;
   }
-  return token;
+
+  return fetchNewToken();
 };
