@@ -2,18 +2,15 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hyoeunkh.github.io/react-deploy",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
-    "start": "export HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem craco start",
-    "build": "export HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem craco build",
+    "start": "craco start",
+    "build": "craco build",
     "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write '**/*.{ts,tsx}'",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "predeploy": "npm run build",
-    "deploy": "cp build/index.html build/404.html && gh-pages -d build"
+    "build-storybook": "storybook build"
   },
   "browserslist": {
     "production": [
