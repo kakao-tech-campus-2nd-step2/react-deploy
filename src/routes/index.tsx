@@ -97,7 +97,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: process.env.REACT_APP_PUBLIC_URL || '/react-deploy/',
+    basename: '/react-deploy/',
   },
 );
 

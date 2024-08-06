@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting...</title>
   <script type="text/javascript">
-    // 404 페이지에서 원래 URL로 리디렉션
     (function() {
       var origin = window.location.origin;
       var pathname = window.location.pathname;
+      var search = window.location.search;
+      var hash = window.location.hash;
 
-      // 현재 URL이 '/'로 끝나는 경우
       if (pathname.endsWith('/')) {
         pathname = pathname.slice(0, -1);
       }
 
-      var redirectUrl = origin + '/react-deploy' + pathname;
+      var redirectUrl = origin + '/react-deploy' + pathname + search + hash;
       window.location.replace(redirectUrl);
     })();
   </script>
