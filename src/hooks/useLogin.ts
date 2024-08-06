@@ -1,40 +1,36 @@
-import { useState } from "react";
-import axios from "axios";
-import { authSessionStorage } from "@/utils/storage";
-import { useSearchParams } from "react-router-dom";
+import { useState } from 'react';
+import axios from 'axios';
+import { authSessionStorage } from '@/utils/storage';
+import { useSearchParams } from 'react-router-dom';
 
 export const useLogin = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [queryParams] = useSearchParams();
 
   const handleLogin = async (id: string, password: string) => {
     setLoading(true);
-    setError("");
+    setError('');
 
     if (!id || !password) {
-      setError("아이디와 비밀번호를 입력해주세요.");
+      setError('아이디와 비밀번호를 입력해주세요.');
       setLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post(
-        "https://pnuece.pnu.app/api/members/login",
-        {
-          email: id,
-          password,
-        }
-      );
+      const response = await axios.post('/api/members/login', {
+        email: id,
+        password,
+      });
 
       const { token } = response.data;
-      authSessionStorage.set({ token, id });
+      authSessionStorage.set(token);
 
-      const redirectUrl =
-        queryParams.get("redirect") ?? `${window.location.origin}/`;
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       window.location.replace(redirectUrl);
     } catch (error: any) {
-      const message = error.response?.data?.message || "로그인에 실패했습니다.";
+      const message = error.response?.data?.message || '로그인에 실패했습니다.';
       setError(message);
     } finally {
       setLoading(false);

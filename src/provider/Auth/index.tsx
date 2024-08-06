@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import { authSessionStorage } from "@/utils/storage";
+import { authSessionStorage } from '@/utils/storage';
 
 type AuthInfo = {
   id: string;
@@ -20,18 +20,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (currentAuthToken) {
       setAuthInfo({
-        id: currentAuthToken.id, // TODO: 임시로 로그인 페이지에서 입력한 이름을 ID, token, name으로 사용
-        name: currentAuthToken.id,
-        token: currentAuthToken.token,
+        id: currentAuthToken, // TODO: 임시로 로그인 페이지에서 입력한 이름을 ID, token, name으로 사용
+        name: currentAuthToken,
+        token: currentAuthToken,
       });
       setIsReady(true);
     }
   }, [currentAuthToken]);
 
   if (!isReady) return <></>;
-  return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);

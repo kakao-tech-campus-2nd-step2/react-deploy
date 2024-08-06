@@ -31,8 +31,6 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
   if (!data || !data.pages || !data.pages[0] || !data.pages[0].products)
     return <TextView>상품이 없어요.</TextView>;
 
-  console.log("data: ", data);
-
   const flattenGoodsList = data.pages
     .map((page) => page?.products ?? [])
     .flat();

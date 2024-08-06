@@ -2,7 +2,7 @@
   "name": "kakao-tech-campus-frontend-project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rudtj.github.io/react-deploy/",
+  "homepage": "http://rudtj.github.io/react-deploy",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
@@ -39,7 +39,7 @@
     "react-error-boundary": "^4.0.12",
     "react-hook-form": "^7.50.1",
     "react-intersection-observer": "^9.8.1",
-    "react-router-dom": "^6.22.1",
+    "react-router-dom": "^6.26.0",
     "stream-http": "^3.2.0",
     "timers-browserify": "^2.0.12"
   },
@@ -60,6 +60,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/aria-query": "^5.0.4",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.82",
     "@types/react": "^18.2.57",

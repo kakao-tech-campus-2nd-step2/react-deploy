@@ -16,8 +16,7 @@ const initInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const BASE_URL = "https://pnuece.pnu.app";
-// TODO: 추후 서버 API 주소 변경 필요
+export const BASE_URL = "https://pnuece.pnu.app/admin/products";
 export const fetchInstance = initInstance({
   baseURL: BASE_URL,
 });

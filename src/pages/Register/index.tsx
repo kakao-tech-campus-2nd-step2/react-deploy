@@ -1,19 +1,19 @@
-import styled from "@emotion/styled";
-import { useState } from "react";
-import KAKAO_LOGO from "@/assets/kakao_logo.svg";
-import { Button } from "@/components/common/Button";
-import { UnderlineTextField } from "@/components/common/Form/Input/UnderlineTextField";
-import { Spacing } from "@/components/common/layouts/Spacing";
-import { breakpoints } from "@/styles/variants";
-import { useRegister } from "@/hooks/useRegister";
+import styled from '@emotion/styled';
+import { useState } from 'react';
+import KAKAO_LOGO from '@/assets/kakao_logo.svg';
+import { Button } from '@/components/common/Button';
+import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
+import { Spacing } from '@/components/common/layouts/Spacing';
+import { breakpoints } from '@/styles/variants';
+import { useRegister } from '@/hooks/useRegister';
 
 export const RegisterPage = () => {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { handleRegister } = useRegister();
 
   const handleSubmit = async () => {
-    handleRegister(id, password);
+    handleRegister(email, password);
   };
 
   return (
@@ -22,8 +22,8 @@ export const RegisterPage = () => {
       <FormWrapper>
         <UnderlineTextField
           placeholder="이메일"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Spacing />
         <UnderlineTextField
