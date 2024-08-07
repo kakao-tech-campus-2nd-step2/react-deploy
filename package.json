@@ -7,13 +7,16 @@
       "^axios$": "axios/dist/node/axios.cjs"
     }
   },
+  "homepage": "https://hojeong26.github.io/react-deploy",
   "scripts": {
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -37,6 +40,7 @@
     "axios": "^1.6.7",
     "craco-alias": "^3.0.1",
     "framer-motion": "^11.0.6",
+    "gh-pages": "^6.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.12",
