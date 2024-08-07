@@ -7,7 +7,7 @@ import { getProductsPath } from './useGetProducts';
 export const productsMockHandler = [
   rest.get(
     getProductsPath({
-      category_id: '2920',
+      categoryId: '2920',
     }),
     (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
@@ -15,7 +15,7 @@ export const productsMockHandler = [
   ),
   rest.get(
     getProductsPath({
-      category_id: '2930',
+      categoryId: '2930',
     }),
     (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
