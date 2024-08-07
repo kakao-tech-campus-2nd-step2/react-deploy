@@ -19,9 +19,9 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
       categoryId,
     });
 
-  console.log('Fetched Data:', data);
-  console.log('isError:', isError);
-  console.log('isLoading:', isLoading);
+  // console.log('Fetched Data:', data);
+  // console.log('isError:', isError);
+  // console.log('isLoading:', isLoading);
 
   if (isLoading) return <LoadingView />;
   if (isError) return <TextView>에러가 발생했습니다.</TextView>;
