@@ -8,10 +8,47 @@
 
 
 - Github Page
+
+1. 저장소 생성: GitHub에서 username.github.io 형식의 새로운 저장소를 생성(uername은 자신의 GitHub 사용자 이름)
+2. 웹사이트 파일 업로드: 저장소에 HTML, CSS, JavaScript 파일을 업로드.
+3. GitHub Pages 활성화: 저장소의 "Settings">"Pages">"Source"를 설정하고 배포할 브랜치(ex: main 또는 gh-pages)를 선택.
+4. 배포 확인: 배포가 완료되면 https://username.github.io에서 웹사이트를 확인.
+
+
 - CloudFlare Page
+
+1. Cloudflare 계정 생성 및 로그인
+2. 프로젝트 설정: Cloudflare 대시보드에서 "Pages"를 선택하고 새로운 프로젝트를 시작.
+3. GitHub 연동: GitHub 계정을 연동하여 프로젝트 저장소를 선택.
+4. 빌드 설정: 필요한 경우 빌드 명령어와 배포 디렉토리를 설정(ex: npm run build와 build 디렉토리)
+5. 배포: Cloudflare가 자동으로 배포를 진행. 완료 후 제공된 URL에서 웹사이트를 확인.
+
+
 - AWS S3 + CloudFront + Route53
+
+1. S3 버킷 생성: AWS Management Console에서 S3를 선택하고 새로운 버킷을 생성. 웹사이트 호스팅을 활성화하고 정적 웹사이트 파일을 업로드.
+2. CloudFront 배포 생성: CloudFront에서 새로운 배포를 생성하고 S3 버킷을 원본으로 설정. 필요한 캐싱 정책과 배포 설정을 구성.
+3. Route 53 도메인 설정: Route 53에서 도메인을 구매하거나 기존 도메인을 관리하여 CloudFront 배포와 연결. A 레코드를 설정하여 CloudFront 배포의 도메인 이름으로 트래픽을 라우팅.
+4. 배포 확인: 설정이 완료되면 도메인 이름으로 웹사이트를 확인.
+
+
 - Netlify
+
+1. Netlify 계정 생성 및 로그인
+2. 프로젝트 연결: "New site from Git"을 선택하고 GitHub, GitLab, Bitbucket 등에서 프로젝트 저장소를 연결.
+3. 빌드 설정: Netlify가 자동으로 빌드 명령어와 배포 디렉토리를 감지할 수 있지만, 필요시 설정 가능.
+4. 배포: "Deploy site"를 클릭하면 Netlify가 자동으로 배포를 진행. 완료 후 제공된 URL에서 웹사이트를 확인.
+
+
 - Heroku
+
+1. Heroku 계정 생성 및 로그인
+2. Heroku CLI 설치: 로컬 시스템에 Heroku CLI(Command Line Interface)를 설치.
+3. 애플리케이션 준비: Heroku에서 지원하는 언어나 프레임워크에 맞게 애플리케이션을 준비. (ex: Procfile, requirements.txt, package.json 등)
+4. Git 저장소 초기화: 애플리케이션 디렉토리에서 Git 저장소를 초기화하고 변경 사항을 커밋.
+5. Heroku 애플리케이션 생성: heroku create 명령어를 사용하여 새로운 애플리케이션을 생성.
+6. 배포: git push heroku main 명령어를 사용하여 애플리케이션을 Heroku에 배포.
+7. 배포 확인: 배포가 완료되면 Heroku가 제공하는 URL에서 애플리케이션을 확인.
 
 
 > 2. CSRF나 XSS 공격을 막는 방법은 무엇일까요?
