@@ -28,16 +28,18 @@ export const LoginPage = () => {
       alert('로그인 성공!');
       authSessionStorage.set(token);
 
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/react-deploy/`;
+
       window.location.replace(redirectUrl);
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
+
       alert(`로그인 실패: ${axiosError.response?.data?.message || axiosError.message}`);
     }
   };
 
   const handleSignUp = () => {
-    navigate('/signUp');
+    navigate('/react-deploy/signUp'); // 절대 경로 사용
   };
 
   return (
@@ -90,3 +92,4 @@ const FormWrapper = styled.article`
     padding: 60px 52px;
   }
 `;
+

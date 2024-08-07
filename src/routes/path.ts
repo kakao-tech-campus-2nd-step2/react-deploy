@@ -1,6 +1,6 @@
 export const RouterPath = {
-  root: '/',
-  home: '/',
+  root: '/react-deploy/',
+  home: '/react-deploy/',
   category: '/category/:categoryId',
   addProduct: '/products/add',
   addCategory: '/category/add',

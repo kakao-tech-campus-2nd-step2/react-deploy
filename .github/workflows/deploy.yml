@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - step2
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint the code
+        run: npm run lint
+
+      - name: Set environment variables
+        run: |
+          echo "REACT_APP_API_URL=https://kakao-gift.43.201.17.220.sslip.io" >> .env.production
+          echo "REACT_APP_PUBLIC_URL=https://hehelee.github.io/react-deploy" >> .env.production
+
+      - name: Display .env.production for debug
+        run: cat .env.production
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
