@@ -7,25 +7,25 @@ import { addWish } from '@/api/wish';
 
 type Props = {
   name: string;
-  productId: number;
-  minValues?: number;
-  maxValues?: number;
+  product_id: number;
+  min_values?: number;
+  max_values?: number;
   value: string;
   onChange: (value: string) => void;
 };
 
 export const CountOptionItem = ({
   name,
-  productId,
-  minValues = 1,
-  maxValues = 100,
+  product_id,
+  min_values = 1,
+  max_values = 100,
   value,
   onChange,
 }: Props) => {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1,
-    min: minValues,
-    max: maxValues,
+    min: min_values,
+    max: max_values,
     defaultValue: value,
     onChange: (valueAsString) => {
       onChange(valueAsString);
@@ -40,7 +40,8 @@ export const CountOptionItem = ({
   const wishhandler = async () => {
     setIsChecked((prev) => !prev);
     try {
-      const success = await addWish(productId);
+      const success = await addWish(product_id);
+      console.log('addWish success:', success);
       if (success) {
         alert('관심 등록 완료');
       } else {

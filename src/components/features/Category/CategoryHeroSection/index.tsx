@@ -70,6 +70,6 @@ const Title = styled.h1`
   }
 `;
 
-export const getCurrentCategory = (categoryId: string, categoryList: CategoryData[]) => {
-  return categoryList.find((category) => category.id.toString() === categoryId);
+export const getCurrentCategory = (category_id: string, categoryList: CategoryData[]) => {
+  return categoryList.find((category) => category.id.toString() === category_id);
 };

@@ -7,6 +7,8 @@ import { RouterPath } from '@/routes/path';
 
 export const CategoryPage = () => {
   const { categoryId = '' } = useParams<{ categoryId: string }>();
+  console.log('Category ID:', categoryId);
+
   const { isRender, currentTheme } = useCurrentCategory({ categoryId });
 
   if (!isRender) return null;

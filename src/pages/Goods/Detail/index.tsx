@@ -10,6 +10,10 @@ import { OptionSection } from '@/components/features/Goods/Detail/OptionSection'
 export const GoodsDetailPage = () => {
   const { productId = '' } = useParams<ProductDetailRequestParams>();
 
+  if (!productId) {
+    return <div>No product ID found</div>;
+  }
+
   return (
     <>
       <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>

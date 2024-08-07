@@ -14,6 +14,8 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
 
+  if (!detail) return <div>No product details found.</div>;
+
   return (
     <Wrapper>
       <LabelText>선물내역</LabelText>
@@ -21,7 +23,7 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
       <GoodsWrapper>
         <GoodsInfoWrapper>
           <GoodsInfoImage>
-            <Image src={detail.imageUrl} width={86} ratio="square" />
+            <Image src={detail.image_url} width={86} ratio="square" />
           </GoodsInfoImage>
           <GoodsInfoTextWrapper>
             <GoodsInfoTextTitle>

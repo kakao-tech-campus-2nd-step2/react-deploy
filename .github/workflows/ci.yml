@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - step1
+  pull_request:
+    branches:
+      - hojeong26
+    # paths: // path는 특정 폴더에 변경사항이 생겼을 때 작동하도록 설정할 수 있음
+    #   - "services/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          publish_dir: ./build

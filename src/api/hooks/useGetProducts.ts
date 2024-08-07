@@ -11,64 +11,63 @@ import { fetchInstance } from './../instance/index';
 
 type RequestParams = {
   categoryId: string;
-  pageToken?: string;
-  maxResults?: number;
+  page_token?: string;
+  max_results?: number;
 };
 
 type ProductsResponseData = {
   products: ProductData[];
-  nextPageToken?: string;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
+  next_page_token?: string;
+  page_info: {
+    total_results: number;
+    results_per_page: number;
   };
 };
 
 type ProductsResponseRawData = {
-  content: ProductData[];
-  number: number;
-  totalElements: number;
-  size: number;
-  last: boolean;
+  products: ProductData[];
 };
 
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+export const getProductsPath = ({ categoryId, page_token, max_results }: RequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
   params.append('sort', 'name,asc');
-  if (pageToken) params.append('page', pageToken);
-  if (maxResults) params.append('size', maxResults.toString());
+  params.append('category_id', categoryId);
+  if (page_token) params.append('page', page_token);
+  if (max_results) params.append('size', max_results.toString());
 
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
 
 export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
+  const url = getProductsPath(params);
+  const response = await fetchInstance.get<ProductsResponseRawData>(url);
   const data = response.data;
 
+  console.log('Fetched Data:', data);
+
   return {
-    products: data.content,
-    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
-    pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
+    products: data.products.filter((product) => product.id && product.name && product.price),
+    next_page_token: undefined,
+    page_info: {
+      total_results: data.products.length,
+      results_per_page: data.products.length,
     },
   };
 };
 
-type Params = Pick<RequestParams, 'maxResults' | 'categoryId'> & { initPageToken?: string };
+type Params = Pick<RequestParams, 'max_results' | 'categoryId'> & { init_page_token?: string };
 export const useGetProducts = ({
   categoryId,
-  maxResults = 20,
-  initPageToken,
+  max_results = 20,
+  init_page_token,
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   return useInfiniteQuery({
-    queryKey: ['products', categoryId, maxResults, initPageToken],
-    queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+    queryKey: ['products', categoryId, max_results, init_page_token],
+    queryFn: async ({ pageParam = init_page_token }) => {
+      return getProducts({ categoryId, page_token: pageParam, max_results });
     },
-    initialPageParam: initPageToken,
-    getNextPageParam: (lastPage) => lastPage.nextPageToken,
+    initialPageParam: init_page_token,
+    getNextPageParam: (lastPage) => lastPage.next_page_token,
   });
 };

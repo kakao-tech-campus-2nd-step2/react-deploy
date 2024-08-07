@@ -12,8 +12,19 @@ import { CategoryItem } from './CategoryItem';
 export const CategorySection = () => {
   const { data, isLoading, isError } = useGetCategories();
 
-  if (isLoading || isError) return null;
-  if (!data) return null;
+  console.log('Data:', data); // 데이터 확인을 위한 디버깅 메시지
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading categories.</div>;
+  }
+
+  if (!data || !Array.isArray(data.categories)) {
+    return <div>No categories available.</div>;
+  }
 
   return (
     <Wrapper>
@@ -24,9 +35,9 @@ export const CategorySection = () => {
             md: 6,
           }}
         >
-          {data.map((category) => (
+          {data.categories.map((category) => (
             <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
-              <CategoryItem image={category.imageUrl} label={category.name} />
+              <CategoryItem image={category.image_url} label={category.name} />
             </Link>
           ))}
         </Grid>

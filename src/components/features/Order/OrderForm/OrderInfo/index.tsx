@@ -17,6 +17,7 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
 
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  if (!detail) return <div>No product details found.</div>;
   const totalPrice = detail.price * count;
 
   return (

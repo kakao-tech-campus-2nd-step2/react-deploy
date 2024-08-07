@@ -10,9 +10,11 @@ type Props = ProductDetailRequestParams;
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
 
+  if (!detail) return <div>No product details found.</div>;
+
   return (
     <Wrapper>
-      <GoodsImage src={detail.imageUrl} alt={detail.name} />
+      <GoodsImage src={detail.image_url} alt={detail.name} />
       <InfoWrapper>
         <Title>{detail.name}</Title>
         <Price>{detail.price}원</Price>

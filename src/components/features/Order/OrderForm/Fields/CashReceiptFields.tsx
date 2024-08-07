@@ -14,7 +14,7 @@ export const CashReceiptFields = () => {
     <Wrapper>
       <Controller
         control={control}
-        name="hasCashReceipt"
+        name="has_cash_receipt"
         render={({ field: { onChange, value, ref } }) => (
           <Checkbox ref={ref} onChange={onChange} isChecked={value} colorScheme="yellow" size="lg">
             <LabelText>현금영수증 신청</LabelText>
@@ -25,7 +25,7 @@ export const CashReceiptFields = () => {
       <Spacing />
       <Controller
         control={control}
-        name="cashReceiptType"
+        name="cash_receipt_type"
         render={({ field }) => (
           <Select {...field}>
             <option value="PERSONAL">개인소득공제</option>
@@ -34,7 +34,7 @@ export const CashReceiptFields = () => {
         )}
       />
       <Spacing height={8} />
-      <Input {...register('cashReceiptNumber')} placeholder="(-없이) 숫자만 입력해주세요." />
+      <Input {...register('cash_receipt_number')} placeholder="(-없이) 숫자만 입력해주세요." />
     </Wrapper>
   );
 };
