@@ -11,9 +11,7 @@ const App = () => {
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Routes /> 
-          </BrowserRouter>
         </AuthProvider>
       </QueryClientProvider>
     </ChakraProvider>
