@@ -3,7 +3,7 @@ import { useAxiosMutation } from '@/api';
 import type { PostLoginRequestBody, PostLoginResponseBody } from '@/api/type';
 
 export function getLoginPath(): string {
-  return '/api/login';
+  return '/api/members/login';
 }
 
 function usePostLogin(): UseAxiosMutationResult<PostLoginResponseBody, PostLoginRequestBody> {

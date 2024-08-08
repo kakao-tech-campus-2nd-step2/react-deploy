@@ -15,7 +15,7 @@ export function getWishesPath({ size, sort }: RequestParams): string {
 
 function useGetWishes({
   size = 10,
-  sort = 'createdDate,desc',
+  sort = 'id,desc',
 }: RequestParams): UseAxiosQueryWithPageResult<GetWishesResponseBody> {
   const token = authSessionStorage.get()?.token ?? '';
 
@@ -25,7 +25,10 @@ function useGetWishes({
       url: getWishesPath({ size, sort }),
     },
     ['wishes'],
-    (lastPage) => (!lastPage.last ? (lastPage.number + 1).toString() : undefined),
+    (lastPage) =>
+      lastPage.last !== undefined && !lastPage.last
+        ? (lastPage?.number || 0 + 1).toString()
+        : undefined,
     sessionStorageApiWithAuth(token),
   );
 }

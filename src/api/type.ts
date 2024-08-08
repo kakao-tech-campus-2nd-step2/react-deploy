@@ -12,36 +12,13 @@ export type ProductData = {
   price: number;
 };
 
-export type ProductDetailData = ProductData & {
-  isAccessableProductPage: boolean;
-  review: {
-    averageRating: number;
-    totalReviewCount: number;
-  };
-  productDescription: {
-    images: string[];
-  };
-  productDetailInfo: {
-    announcements: {
-      displayOrder: number;
-      name: string;
-      value: string;
-    }[];
-    terms: {
-      displayOrder: number;
-      title: string;
-      description: string;
-    }[];
-  };
-};
+export type ProductDetailData = ProductData;
 
 export type CategoryData = {
   id: number;
-  key: string;
   name: string;
   imageUrl: string;
-  title: string;
-  description?: string;
+  description: string;
   color: string;
 };
 
@@ -95,6 +72,19 @@ export type WishesData = {
   product: ProductData;
 };
 
+export type OrderLog = {
+  id: number;
+  productId: number;
+  name: string;
+  imageUrl: string;
+  optionId: number;
+  count: number;
+  price: number;
+  orderDateTime: string;
+  message: string;
+  success: boolean;
+};
+
 // RequestBody Types
 export type ProductOrderRequestBody = {
   productId: number;
@@ -132,6 +122,16 @@ export type DeleteWishesRequestBody = {
   wishId: number;
 };
 
+export type PostOrderRequestBody = {
+  optionId: number;
+  message: string;
+  quantity: number;
+  productId: number;
+  point: number;
+  phone: string;
+  receipt: boolean;
+};
+
 // ResponseBody Types
 export type GetRankingProductsResponseBody = {
   products: ProductData[];
@@ -140,7 +140,7 @@ export type GetRankingProductsResponseBody = {
 export type GetCategoriesResponseBody = CategoryData[];
 
 export type GetCategoriesProductsResponseBody = {
-  content: ProductData[];
+  products: ProductData[];
   number: number;
   totalElements: number;
   size: number;
@@ -161,20 +161,29 @@ export type PostRegisterResponseBody = {
   token: string;
 };
 
-export type PostWishesResponseBody = {
-  id: number;
-  productId: number;
-};
+export type PostWishesResponseBody = void;
 
 export type GetWishesResponseBody = {
   content: WishesData[];
   pageable: PageableData;
-  totalPage: number;
   totalElements: number;
   last: boolean;
   number: number;
   size: number;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
+};
+
+export type GetOrderPriceResponseBody = {
+  price: number;
+};
+
+export type GetPointResponseBody = {
+  point: number;
+};
+
+export type GetOrdersResponseBody = {
+  contents: OrderLog[];
+  number: number;
+  totalElements: number;
+  size: number;
+  last: boolean;
 };

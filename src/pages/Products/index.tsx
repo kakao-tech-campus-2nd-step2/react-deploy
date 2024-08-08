@@ -98,7 +98,7 @@ export const ProductsPage = () => {
       }
     } else if (productsDetail) {
       navigate(RouterPath.order, {
-        state: { ...productsDetail, count: getValues('count') },
+        state: { ...productsDetail, count: getValues('count'), optionId: productOptions?.[0].id },
       });
     }
   };
@@ -178,12 +178,6 @@ export const ProductsPage = () => {
               </Flex>
             </Flex>
             <Flex w="100%" flexDir="column" gap="3">
-              <Flex w="100%" px="5" py="2" justify="space-between" align="center" bg="#eeeeee">
-                <Text fontSize="sm" fontWeight="800">
-                  총 결제 금액
-                </Text>
-                <Text fontSize="lg" fontWeight="800">{`${productsDetail?.price}원`}</Text>
-              </Flex>
               <Button
                 onClick={handleSubmit(handleOrderClick)}
                 h="50px"

@@ -23,7 +23,7 @@ export const CategoryGoodsSection = ({ categoryId }: Props) => {
     categoryId,
   });
 
-  const flattenGoodsList = data?.pages.map((page) => page?.content ?? []).flat();
+  const flattenGoodsList = data?.pages.map((page) => page?.products ?? []).flat();
 
   useEffect(() => {
     if (inView && hasNextPage) {

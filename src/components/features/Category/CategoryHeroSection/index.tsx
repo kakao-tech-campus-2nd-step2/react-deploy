@@ -16,13 +16,12 @@ export const CategoryHeroSection = ({ categoryId, categoryList }: Props) => {
     return null;
   }
 
-  const { color, name, title, description } = currentTheme;
+  const { color, name, description } = currentTheme;
 
   return (
     <Wrapper backgroundColor={color}>
       <Container>
         <Label>{name}</Label>
-        <Title>{title}</Title>
         {description && <Description>{description}</Description>}
       </Container>
     </Wrapper>
@@ -48,24 +47,6 @@ const Label = styled.p`
   @media screen and (min-width: ${breakpoints.sm}) {
     font-size: 20px;
     line-height: 24px;
-  }
-`;
-
-const Title = styled.h1`
-  font-weight: 700;
-  color: #fff;
-  font-size: 18px;
-  line-height: 26px;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-
-  @media screen and (min-width: ${breakpoints.sm}) {
-    font-size: 30px;
-    line-height: 40px;
-    padding-top: 12px;
-    word-break: break-word;
   }
 `;
 

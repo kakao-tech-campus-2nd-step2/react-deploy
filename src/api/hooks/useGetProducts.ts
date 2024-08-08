@@ -4,22 +4,23 @@ import type { GetCategoriesProductsResponseBody } from '@/api/type';
 
 type RequestParams = {
   categoryId: string;
-  maxResults?: number;
-  initPageToken?: string;
+  size?: number;
+  page?: number;
+  sort?: string;
 };
 
-export function getProductsPath({ categoryId, maxResults }: RequestParams): string {
-  return `/api/products?categoryId=${categoryId}` + (maxResults ? `&maxResults=${maxResults}` : '');
+export function getProductsPath({ categoryId, size, sort = 'id,desc' }: RequestParams): string {
+  return `/api/products?categoryId=${categoryId}` + (size ? `&size=${size}` : '') + `&sort=${sort}`;
 }
 
 function useGetProducts({
   categoryId,
-  maxResults = 20,
+  size = 20,
 }: RequestParams): UseAxiosQueryWithPageResult<GetCategoriesProductsResponseBody> {
   return useAxiosQueryWithPage<GetCategoriesProductsResponseBody>(
     {
       method: 'GET',
-      url: getProductsPath({ categoryId, maxResults }),
+      url: getProductsPath({ categoryId, size }),
     },
     ['products', categoryId],
     (lastPage) => (!lastPage.last ? (lastPage.number + 1).toString() : undefined),
